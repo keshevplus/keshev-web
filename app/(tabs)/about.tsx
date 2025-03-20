@@ -4,22 +4,25 @@ export default function AboutScreen() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Image
-          source={{ uri: 'https://images.unsplash.com/photo-1625047509168-a7026afe0c33?q=80&w=800&auto=format&fit=crop' }}
+        {/* <Image
+          source={{
+            uri: 'https://images.unsplash.com/photo-1625047509168-a7026afe0c33?q=80&w=800&auto=format&fit=crop',
+          }}
           style={styles.headerImage}
-        />
+        /> */}
         <View style={styles.overlay}>
-          <Text style={styles.title}>About Mobiliil</Text>
-          <Text style={styles.subtitle}>Your trusted car service partner</Text>
+          <Text style={styles.title}>אודות קשב פלוס</Text>
+          <Text style={styles.subtitle}>המרכז להפרעות קשב ופעלתנות יתר</Text>
         </View>
       </View>
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Our Story</Text>
         <Text style={styles.text}>
-          Founded in 2020, Mobiliil has grown to become a leading automotive service provider. 
-          We pride ourselves on delivering exceptional car care services with a focus on quality, 
-          reliability, and customer satisfaction.
+          Founded in 2020, Mobiliil has grown to become a leading automotive
+          service provider. We pride ourselves on delivering exceptional car
+          care services with a focus on quality, reliability, and customer
+          satisfaction.
         </Text>
       </View>
 
@@ -27,10 +30,22 @@ export default function AboutScreen() {
         <Text style={styles.sectionTitle}>Our Values</Text>
         <View style={styles.valuesGrid}>
           {[
-            { title: 'Quality', description: 'We never compromise on the quality of our service' },
-            { title: 'Integrity', description: 'Honest and transparent in everything we do' },
-            { title: 'Innovation', description: 'Using the latest technology and techniques' },
-            { title: 'Customer First', description: 'Your satisfaction is our top priority' },
+            {
+              title: 'Quality',
+              description: 'We never compromise on the quality of our service',
+            },
+            {
+              title: 'Integrity',
+              description: 'Honest and transparent in everything we do',
+            },
+            {
+              title: 'Innovation',
+              description: 'Using the latest technology and techniques',
+            },
+            {
+              title: 'Customer First',
+              description: 'Your satisfaction is our top priority',
+            },
           ].map((value, index) => (
             <View key={index} style={styles.valueCard}>
               <Text style={styles.valueTitle}>{value.title}</Text>
@@ -44,8 +59,18 @@ export default function AboutScreen() {
         <Text style={styles.sectionTitle}>Our Team</Text>
         <View style={styles.teamGrid}>
           {[
-            { name: 'John Smith', role: 'Master Mechanic', image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop' },
-            { name: 'Sarah Johnson', role: 'Service Manager', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop' },
+            {
+              name: 'John Smith',
+              role: 'Master Mechanic',
+              image:
+                'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop',
+            },
+            {
+              name: 'Sarah Johnson',
+              role: 'Service Manager',
+              image:
+                'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop',
+            },
           ].map((member, index) => (
             <View key={index} style={styles.teamMember}>
               <Image source={{ uri: member.image }} style={styles.teamImage} />

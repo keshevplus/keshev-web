@@ -1,16 +1,10 @@
 export default function Treatment() {
   return (
     <div>
-      <div className="relative h-[400px]">
-        <img
-          src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?q=80&w=1920&auto=format&fit=crop"
-          alt="Treatment"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/80">
-          <div className="container mx-auto px-4 h-full flex flex-col justify-end pb-20">
-            <h1 className="text-5xl font-bold text-white mb-4">טיפול</h1>
-            <p className="text-xl text-white/90">אפשרויות הטיפול שלנו</p>
+      <div className="relative h-[100px] mt-16">
+        <div className="absolute text-center py-16 inset-0 bg-gradient-to-b from-transparent bg-green-800 mx-auto px-8 h-full flex flex-col justify-center to-black/80">
+          <div className="container py-0">
+            <h1 className="text-5xl  font-bold text-white mx-4 ">טיפול</h1>
           </div>
         </div>
       </div>

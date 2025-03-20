@@ -19,14 +19,14 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm">
-      <div className="container mx-auto py-10">
-        <div className="flex items-center justify-between h-full">
+      <div className="container mx-auto pt-0 px-4">
+        <div className="flex items-center justify-center h-full">
           {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <img
+          <Link to="/" className="flex items-start">
+            <absolute
               src="\assets\images\logo.png"
               alt="קשב"
-              className="left-0 right-0 h-20 w-auto scale-150"
+              className="left-0 right-0 h-40 w-auto scale-75"
             />
           </Link>
           <Link
@@ -63,14 +63,14 @@ export default function Navbar() {
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="lg:hidden bg-black/95 absolute top-20 left-0 right-0">
-          <div className="container mx-auto px-4 py-4">
-            <div className="flex flex-col space-y-4">
+        <div className="lg:hidden bg-green-800 absolute top-20 my-10 left-0 right-0">
+          <div className="container mx-auto  px-4 py-4">
+            <div className="flex-auto flex flex-col items-end px-10 space-y-12">
               {navItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`text-white hover:text-[#FF4D4D] transition-colors px-3 py-2 text-lg ${
+                  className={`text-white hover:text-[orange] transition-colors px-3 py-2 text-lg ${
                     isActive(item.path) ? 'text-[#FF4D4D]' : ''
                   }`}
                   onClick={() => setIsMenuOpen(false)}
