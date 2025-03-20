@@ -13,7 +13,7 @@ import Admin from './pages/Admin';
 function App() {
   return (
     <Router>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-0 flex flex-col">
         <Navbar />
         <main className="flex-grow">
           <Routes>

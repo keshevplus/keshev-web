@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, TextInput, Pressable, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Pressable,
+  ScrollView,
+} from 'react-native';
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -44,21 +51,21 @@ export default function ContactScreen() {
           <Ionicons name="mail" size={24} color="#ff4d4d" />
           <View style={styles.infoText}>
             <Text style={styles.infoTitle}>Email</Text>
-            <Text style={styles.infoContent}>info@mobiliil.com</Text>
+            <Text style={styles.infoContent}>dr@keshevplus.co.il</Text>
           </View>
         </View>
       </View>
 
       <View style={styles.formContainer}>
         <Text style={styles.formTitle}>Send us a message</Text>
-        
+
         <TextInput
           style={styles.input}
           placeholder="Your Name"
           value={form.name}
           onChangeText={(text) => setForm({ ...form, name: text })}
         />
-        
+
         <TextInput
           style={styles.input}
           placeholder="Email Address"
@@ -66,7 +73,7 @@ export default function ContactScreen() {
           onChangeText={(text) => setForm({ ...form, email: text })}
           keyboardType="email-address"
         />
-        
+
         <TextInput
           style={styles.input}
           placeholder="Phone Number"
@@ -74,7 +81,7 @@ export default function ContactScreen() {
           onChangeText={(text) => setForm({ ...form, phone: text })}
           keyboardType="phone-pad"
         />
-        
+
         <TextInput
           style={[styles.input, styles.messageInput]}
           placeholder="Your Message"
