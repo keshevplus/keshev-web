@@ -9,11 +9,12 @@ export default function Navbar() {
   const isActive = (path: string) => location.pathname === path;
 
   const navItems = [
+    { path: '/', text: 'בית' },
     { path: '/about', text: 'אודותינו' },
     { path: '/services', text: 'שירותינו' },
     { path: '/adhd', text: 'מהי ADHD?' },
     { path: '/diagnosis', text: 'תהליך האבחון' },
-    { path: '/treatment', text: 'טיפול' },
+    { path: '/forms', text: 'שאלונים' },
     { path: '/contact', text: 'יצירת קשר' },
   ];
 
@@ -23,17 +24,11 @@ export default function Navbar() {
         <div className="flex items-center justify-center h-full">
           {/* Logo */}
           <Link to="/" className="flex items-start">
-            <absolute
+            <img
               src="\assets\images\logo.png"
               alt="קשב"
               className="left-0 right-0 h-40 w-auto scale-75"
             />
-          </Link>
-          <Link
-            to="tel:0544777469"
-            className="bg-[green] text-white hover:bg-[darkgreen] transition-colors px-4 py-2 rounded-lg text-lg"
-          >
-            התקשרו עכשיו 054-4777469
           </Link>
 
           {/* Desktop Navigation */}
@@ -42,7 +37,7 @@ export default function Navbar() {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`text-black hover:text-[green] hover:underline transition-colors px-3 py-2 text-lg ${
+                className={`text-black hover:bg-green-800 border- hover:text-white hover:animate-pulse transition-colors px-3 py-2 text-lg ${
                   isActive(item.path) ? 'text-[green]' : ''
                 }`}
               >
@@ -50,6 +45,12 @@ export default function Navbar() {
               </Link>
             ))}
           </div>
+          <Link
+            to="tel:0544777469"
+            className="bg-[green] text-white max-w-20 hover:bg-[darkgreen] transition-colors px-4 py-2 rounded-lg text-lg"
+          >
+            התקשרו עכשיו 054-4777469
+          </Link>
 
           {/* Mobile Menu Button */}
           <button
@@ -63,15 +64,15 @@ export default function Navbar() {
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="lg:hidden bg-green-800 absolute top-20 my-10 left-0 right-0">
-          <div className="container mx-auto  px-4 py-4">
-            <div className="flex-auto flex flex-col items-end px-10 space-y-12">
+        <div className="lg:hidden bg-green-900/95 absolute top-20 my-10 left-0 right-0">
+          <div className="container mx-auto p-5">
+            <div className="flex-auto flex flex-col items-center space-y-3">
               {navItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`text-white hover:text-[orange] transition-colors px-3 py-2 text-lg ${
-                    isActive(item.path) ? 'text-[#FF4D4D]' : ''
+                  className={`text-white text-6xl font-bold hover:text-[#FF4D4D] transition-colors px-3 py-2 ${
+                    isActive(item.path) ? 'text-[orange-400]' : ''
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >

@@ -4,11 +4,6 @@ export default function Home() {
   return (
     <div className="display flex-auto">
       <div className="relative h-screen">
-        <img
-          src="https://uploads-ssl.webflow.com/65a0c8d7e8c1d2c0e4f0b8c2/65a0c8d7e8c1d2c0e4f0b8c4_hero-image.jpg"
-          alt="קשב פלוס"
-          className="w-full h-auto object-contain invisible"
-        />
         <div className="relative inset-0 bg-black/80">
           <div className="container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
             <Link to="/" className="flex items-center">
