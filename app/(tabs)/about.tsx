@@ -1,15 +1,10 @@
+import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 
 export default function AboutScreen() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        {/* <Image
-          source={{
-            uri: 'https://images.unsplash.com/photo-1625047509168-a7026afe0c33?q=80&w=800&auto=format&fit=crop',
-          }}
-          style={styles.headerImage}
-        /> */}
         <View style={styles.overlay}>
           <Text style={styles.title}>אודות קשב פלוס</Text>
           <Text style={styles.subtitle}>המרכז להפרעות קשב ופעלתנות יתר</Text>
@@ -19,9 +14,9 @@ export default function AboutScreen() {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Our Story</Text>
         <Text style={styles.text}>
-          Founded in 2020, Mobiliil has grown to become a leading automotive
-          service provider. We pride ourselves on delivering exceptional car
-          care services with a focus on quality, reliability, and customer
+          Founded in 2020, has grown to become a leading automotive service
+          provider. We pride ourselves on delivering exceptional car care
+          services with a focus on quality, reliability, and customer
           satisfaction.
         </Text>
       </View>
