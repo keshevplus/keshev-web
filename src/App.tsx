@@ -1,16 +1,20 @@
-import { BrowserRouter as Router } from 'react-router-dom';
 import AppRoutes from './components/AppRoutes';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import BodyContent from './components/BodyContent';
+import PageTitle from './components/PageTitle';
 
 function App() {
   return (
     <div>
-      <Router>
+      <>
         <Navbar />
-        <AppRoutes />
+        <BodyContent>
+          <PageTitle>Test</PageTitle>
+          <AppRoutes />
+        </BodyContent>
         <Footer />
-      </Router>
+      </>
     </div>
   );
 }

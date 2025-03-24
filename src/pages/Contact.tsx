@@ -1,127 +1,73 @@
-import PageTitle from '../components/PageTitle';
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: '',
-  });
+  const [contactData, setContactData] = useState<any[]>([]);
 
-  React.useEffect(() => {
-    document.title = 'יצירת קשר';
+  useEffect(() => {
+    // Simulate fetching data
+    const fetchData = async () => {
+      const data = [
+        {
+          heading: 'יצירת קשר',
+          subheading: 'צוות המומחים שלנו ישמח לעמוד לרשותכם ולסייע בכל שאלה.',
+          body: [
+            {
+              title: 'כתובת',
+              description: 'רמת גן, ישראל',
+              icon: '📍',
+            },
+            {
+              title: 'טלפון',
+              description: '054-4777469',
+              icon: '📞',
+            },
+            {
+              title: 'אימייל',
+              description: 'dr@keshevplus.co.il',
+              icon: '✉️',
+            },
+          ],
+        },
+      ];
+      setContactData(data);
+    };
+
+    fetchData();
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Handle form submission
-    console.log('Form submitted:', formData);
-  };
+  if (!contactData.length) return <div>Loading...</div>;
 
   return (
     <div>
-      <PageTitle title="יצירת קשר">
-        <div className="bg-white py-0 px-0">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              <div>
-                <div className="bg-white rounded-lg shadow-md p-8">
-                  <h2 className="text-2xl font-semibold mb-6">צרו איתנו קשר</h2>
-                  <div className="space-y-4">
-                    <div>
-                      <h3 className="text-lg font-semibold mb-2">כתובת</h3>
-                      <p className="text-gray-600">רמת גן</p>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold mb-2">טלפון</h3>
-                      <p className="text-gray-600">0544777469</p>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold mb-2">אימייל</h3>
-                      <p className="text-gray-600">dr@keshevplus.co.il1</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-lg shadow-md p-8">
-                <h2 className="text-2xl font-semibold mb-6">
-                  Send us a Message
-                </h2>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <label htmlFor="name" className="block text-gray-700 mb-2">
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                      value={formData.name}
-                      onChange={(e) =>
-                        setFormData({ ...formData, name: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block text-gray-700 mb-2">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                      value={formData.email}
-                      onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="phone" className="block text-gray-700 mb-2">
-                      Phone
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                      value={formData.phone}
-                      onChange={(e) =>
-                        setFormData({ ...formData, phone: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="message"
-                      className="block text-gray-700 mb-2"
-                    >
-                      Message
-                    </label>
-                    <textarea
-                      id="message"
-                      rows={4}
-                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                      value={formData.message}
-                      onChange={(e) =>
-                        setFormData({ ...formData, message: e.target.value })
-                      }
-                    ></textarea>
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors"
-                  >
-                    Send Message
-                  </button>
-                </form>
-              </div>
-            </div>
+      <div className="relative h-[100px] mt-16">
+        <div className="text-center py-16 inset-0 bg-gradient-to-b from-transparent bg-green-800 mx-auto px-8 h-full flex flex-col justify-center to-black/80">
+          <div className="container py-0 font-bold">
+            <h1 className="text-5xl text-white mx-4">
+              {contactData[0].heading}
+            </h1>
           </div>
         </div>
-      </PageTitle>
+      </div>
+
+      <div className="bg-white py-16 px-4">
+        <div className="container mx-auto">
+          <h3 className="text-2xl font-bold mb-4 text-center">
+            {contactData[0].subheading}
+          </h3>
+          <ul className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {contactData[0].body.map((item, index) => (
+              <li
+                key={index}
+                className="bg-white rounded-lg shadow-lg p-6 text-center"
+              >
+                <div className="text-4xl mb-4">{item.icon}</div>
+                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                <p className="text-gray-600">{item.description}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }

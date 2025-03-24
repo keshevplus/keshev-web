@@ -1,12 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
   margin: 0;
-  font-family: 'Heebo', sans-serif;
+  font-family: 'Arial', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   direction: rtl;
@@ -31,19 +29,10 @@ body {
     font-size: 3rem !important;
   }
   h2 {
-    font-size: 2.5rem !important;
-  }
-  h3 {
     font-size: 2rem !important;
   }
-  h4 {
+  h3 {
     font-size: 1.5rem !important;
-  }
-  h5 {
-    font-size: 1.25rem !important;
-  }
-  h6 {
-    font-size: 1rem !important;
   }
 }
 

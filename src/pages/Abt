@@ -13,11 +13,8 @@ export default function About() {
           body: [
             {
               title: "דר' איירין כוכב-רייפמן",
-              description: `
-    רופאה מומחית לאבחון וטיפול בהפרעות קשב ופעלתנות יתר (ADHD/ADD) בילדים, בנוער ובמבוגרים.
-    בעלת ניסיון רב בתחום הטיפולי, מאבחנת ומטפלת תוך שימוש בגישות טיפוליות מגוונות ומתקדמות.
-    בוגרת לימודי רפואה באוניברסיטת בולוניה שבאיטליה, לאחר מכן סטאג' בתל השומר, התמחות ברפואת משפחה בקופ"ח מאוחדת, הסמכה לאבחון וטיפול בהפרעות קשב ופעלתנות יתר של משרד הבריאות.
-          `,
+              description:
+                'בוגרת לימודי רפואה באוניברסיטת בולוניה שבאיטליה, לאחר מכן סטאג\' בתל השומר, התמחות ברפואת משפחה בקופ"ח מאוחדת, הסמכה לאבחון וטיפול בהפרעות קשב ופעלתנות יתר של משרד הבריאות.',
               image: '/assets/images/hero-about.jpeg',
             },
           ],
@@ -34,11 +31,9 @@ export default function About() {
   return (
     <div>
       <div className="relative h-[100px] mt-16">
-        <div className="text-justify py-16 inset-0 bg-gradient-to-b from-transparent bg-green-800 mx-auto px-8 h-full flex flex-col justify-center to-black/80">
-          <div className="container py-0 font-extrabold">
-            <h1 className="text-center text-5xl text-white mx-4">
-              {aboutData[0].heading}
-            </h1>
+        <div className="text-center py-16 inset-0 bg-gradient-to-b from-transparent bg-green-800 mx-auto px-8 h-full flex flex-col justify-center to-black/80">
+          <div className="container py-0 font-bold">
+            <h1 className="text-5xl text-white mx-4">{aboutData[0].heading}</h1>
           </div>
         </div>
       </div>
@@ -56,12 +51,20 @@ export default function About() {
             <h3 className="text-6xl font-bold mb-4">
               {aboutData[0].subheading}
             </h3>
-            <h4 className="text-2xl md:text-4xl font-semibold mb-4 text-green-950 text-center ">
-              {aboutData[0].body[0].title}
-            </h4>
+            <h2 className="text-3xl md:text-5xl font-semibold mb-4">
+              קשב פלוס, נעים להכיר
+            </h2>
             <p className="text-gray-600 text-lg md:text-2xl mt-4">
               {aboutData[0].body[0].description}
             </p>
+            <ul className="list-none gap-4">
+              {aboutData[0].body.map((item, index) => (
+                <li key={index}>
+                  <h3 className="text-2xl font-semibold">{item.title}</h3>
+                  <p className="text-xl mb-4">{item.description}</p>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
