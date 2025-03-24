@@ -1,68 +1,77 @@
-import { useState, useEffect } from 'react';
+import { usePageData } from '../hooks/usePageData';
+import { PageContent } from '../types/content';
 
 export default function About() {
-  const [aboutData, setAboutData] = useState<any[]>([]);
+  const { data, isLoading, error } = usePageData('about');
 
-  useEffect(() => {
-    // Simulate fetching data
-    const fetchData = async () => {
-      const data = [
-        {
-          heading: 'אודותינו',
-          subheading: 'קשב פלוס, נעים מאוד',
-          body: [
-            {
-              title: "דר' איירין כוכב-רייפמן",
-              description: `
-        רופאה מומחית לאבחון וטיפול בהפרעות קשב ופעלתנות יתר (ADHD/ADD) בילדים, בנוער ובמבוגרים.
-        בעלת ניסיון רב בתחום הטיפולי, מאבחנת ומטפלת תוך שימוש בגישות טיפוליות מגוונות ומתקדמות.
-        בוגרת לימודי רפואה באוניברסיטת בולוניה שבאיטליה, לאחר מכן סטאג' בתל השומר, התמחות ברפואת משפחה בקופ"ח מאוחדת, הסמכה לאבחון וטיפול בהפרעות קשב ופעלתנות יתר של משרד הבריאות.
-          `,
-              image: '/assets/images/hero-about.jpeg',
-            },
-          ],
-        },
-      ];
-      setAboutData(data);
-    };
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!data.length) return null;
 
-    fetchData();
-  }, []);
-
-  if (!aboutData.length) return <div>Loading...</div>;
+  const pageData: PageContent = data[0];
 
   return (
     <div>
-      <div className="relative h-[100px] mt-16">
+      <div className="relative h-[150px] mt-12">
         <div className="text-justify py-16 inset-0 bg-gradient-to-b from-transparent bg-green-800 mx-auto px-8 h-full flex flex-col justify-center to-black/80">
-          <div className="container py-0 font-extrabold">
+          <div className="container py-0 font-bold">
             <h1 className="text-center text-5xl text-white mx-4">
-              {aboutData[0].heading}
+              {pageData.heading}
             </h1>
           </div>
         </div>
       </div>
 
-      <div className="bg-white py-16 px-4">
-        <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap- items-center">
-          <div className="order-first md:order-last flex justify-center">
-            <img
-              src={aboutData[0].body[0].image}
-              alt={aboutData[0].body[0].title}
-              className="w-full max-w-sm md:max-w-md h-auto rounded-full"
-            />
-          </div>
-          <div className="text-center md:text-right">
-            <h3 className="text-6xl font-bold mb-4">
-              {aboutData[0].subheading}
-            </h3>
-            <h4 className="text-2xl md:text-4xl font-semibold mb-4 text-green-950 text-center ">
-              {aboutData[0].body[0].title}
-            </h4>
-            <p className="text-gray-600 text-lg md:text-2xl mt-4">
-              {aboutData[0].body[0].description}
-            </p>
-          </div>
+      <div className="bg-white py-12 px-8">
+        <div className="container mx-auto">
+          {pageData.body.map((item, index) => (
+            <div
+              key={index}
+              className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start"
+            >
+              <div
+                className={`order-first ${
+                  index % 2 === 0 ? 'md:order-last' : 'md:order-first'
+                } flex justify-center `}
+              >
+                <figure>
+                  <figcaption className="md:text-2xl text-green-800 min-w-full ">
+                    {typeof item === 'object' && 'title' in item
+                      ? item.title
+                      : ''}
+                  </figcaption>
+                  <img
+                    src={
+                      typeof item === 'object' && 'image' in item
+                        ? item.image
+                        : ''
+                    }
+                    alt={
+                      typeof item === 'object' && 'title' in item
+                        ? item.title
+                        : ''
+                    }
+                    className="max-w-xs mb-12 md:max-w-xs h-auto rounded-full"
+                  />
+                </figure>
+              </div>
+              <div
+                className={`text-center ${
+                  index % 2 === 0 ? 'md:text-right' : 'md:text-left'
+                }`}
+              >
+                <h3 className="text-2xl md:text-5xl font-semibold  text-green-950">
+                  {data[0].subheading}
+                </h3>
+
+                <p className="text-gray-600 text-lg md:text-2xl mt-4">
+                  {typeof item === 'object' && 'description' in item
+                    ? item.description
+                    : ''}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
