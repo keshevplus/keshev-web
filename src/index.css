@@ -25,6 +25,9 @@ body {
 }
 
 @media (max-width: 768px) {
+  body {
+    font-family: Arial, sans-serif;
+  }
   h1 {
     font-size: 3rem !important;
   }
@@ -37,6 +40,9 @@ body {
 }
 
 @media (max-width: 640px) {
+  body {
+    font-family: Arial, sans-serif;
+  }
   h1 {
     font-size: 2rem !important;
   }
