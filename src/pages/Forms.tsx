@@ -43,26 +43,27 @@ export default function Forms() {
       </div>
 
       <div className="bg-white py-16 px-4">
-        <div className="container mx-auto">
-          <h3 className="text-2xl font-bold mb-4 text-center">
+        <div className="container mx-auto md:max-w-[70%]">
+          <h3 className="text-xl md:text-4xl font-semibold text-black text-center mb-8">
             {formsData[0].subheading}
           </h3>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {formsData[0].body.map((form, index) => (
-              <li
-                key={index}
-                className="bg-white rounded-lg shadow-lg min-w-px-100 p-2"
-              >
-                <div className="flex items-start">
+              <li key={index} className="bg-white rounded-lg shadow-lg p-6">
+                <div className="flex flex-row items-start">
+                  <div className="flex-grow text-right">
+                    <h3 className="text-xl md:text-2xl font-semibold text-green-800">
+                      {form.title}
+                    </h3>
+                    <p className="text-gray-900 text-md md:text-xl">
+                      {form.description}
+                    </p>
+                  </div>
                   <img
                     src={form.image}
                     alt={form.title}
-                    className="w-16 h-16 object-cover mx-4"
+                    className="w-16 h-16 object-cover mr-4"
                   />
-                  <div>
-                    <h3 className="text-xl font-semibold">{form.title}</h3>
-                    <p className="text-gray-600">{form.description}</p>
-                  </div>
                 </div>
               </li>
             ))}

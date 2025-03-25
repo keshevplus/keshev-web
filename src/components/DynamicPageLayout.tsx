@@ -27,7 +27,7 @@ const DynamicPageLayout: React.FC<DynamicPageLayoutProps> = ({ data }) => {
         </div>
       </div>
 
-      <div className="bg-white py-16 px-4">
+      <div className="bg-white py-16 px-4 max-w-[70%]">
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="text-center md:text-right">
             <h3 className="text-2xl font-bold mb-4">

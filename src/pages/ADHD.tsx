@@ -1,89 +1,93 @@
-import { useState, useEffect } from 'react';
+import { usePageData } from '../hooks/usePageData';
+import PageLayout from '../components/PageLayout';
+import { PageContent } from '../types/content';
 
 export default function ADHD() {
-  const [adhdData, setAdhdData] = useState<any[]>([]);
+  const { data, isLoading, error } = usePageData('adhd');
 
-  useEffect(() => {
-    // Simulate fetching data
-    const fetchData = async () => {
-      const data = [
-        {
-          heading: 'מהי הפרעת קשב ופעלתנות יתר?',
-          subheading:
-            'ההפרעה (ADHD) היא הפרעה נוירולוגית המשפיעה על קשב, ריכוז ופעילות גופנית.',
-          body: [
-            {
-              title: 'קשיי קשב וריכוז',
-              description:
-                'קושי להתרכז במשימות לאורך זמן, נטייה להתפזר ולשכוח.',
-              image: 'http://localhost:5173/assets/images/icon.png',
-            },
-            {
-              title: 'פעלתנות יתר',
-              description: 'קושי לשבת במקום, תחושת תזזיתיות תמידית.',
-              image: 'http://localhost:5173/assets/images/icon.png',
-            },
-            {
-              title: 'אימפולסיביות',
-              description:
-                'נטייה לפעול ללא מחשבה, להתפרץ לשיחות ולהתקשות להמתין לתור.',
-              image: 'http://localhost:5173/assets/images/icon.png',
-            },
-          ],
-        },
-      ];
-      setAdhdData(data);
-    };
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!data.length) return null;
 
-    fetchData();
-  }, []);
-
-  if (!adhdData.length) return <div>Loading...</div>;
+  const pageData = data[0];
 
   return (
-    <div>
-      <div className="relative h-[100px] mt-16">
-        <div className="text-center py-16 inset-0 bg-gradient-to-b from-transparent bg-green-800 mx-auto px-8 h-full flex flex-col justify-center to-black/80">
-          <div className="container py-0 font-bold">
-            <h1 className="text-5xl text-white mx-4">{adhdData[0].heading}</h1>
+    <PageLayout title={pageData.heading}>
+      {/* Two column grid section */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+        {/* Left Column: Main Description */}
+        <div className="text-right space-y-6">
+          <h2 className="text-2xl md:text-3xl font-semibold text-green-800">
+            הבנת ADHD
+          </h2>
+          <p className="text-gray-900 text-lg leading-relaxed">
+            {pageData.subheading}
+          </p>
+        </div>
+
+        {/* Right Column: Symptoms */}
+        <div className="space-y-8">
+          {pageData.body.map((service, index) => (
+            <div
+              key={index}
+              className="flex flex-auto bg-white rounded-lg shadow-lg px-8 py-2"
+            >
+              {page.image && (
+                <img
+                  src={service.image}
+                  alt={service.title}
+                  className="w-24 h-24 object-cover ml-6"
+                />
+              )}
+              <div className="flex-grow text-right">
+                <h3 className="text-xl   md:text-2xl font-semibold text-green-800 mb-2">
+                  {service.title}
+                </h3>
+                <p className="text-gray-900 text-md md:text-xl">
+                  {service.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="space-y-6">
+          <h2 className="text-2xl md:text-3xl font-semibold text-green-800 text-right">
+            התסמינים העיקריים
+          </h2>
+          <div className="space-y-2">
+            {pageData.additional?.map((item, index) => (
+              <div
+                key={index}
+                className="bg-orange-50 rounded-lg p-4 shadow-sm"
+              >
+                <h3 className="text-xl font-semibold text-green-800 mb-2 text-right">
+                  {item.title}
+                </h3>
+                <p className="text-gray-700 text-right leading-relaxed">
+                  {item.description}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      <div className="bg-white py-16 px-4">
-        <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="text-center md:text-right">
-            <h3 className="text-2xl font-bold mb-4">
-              {adhdData[0].subheading}
+      {/* Additional Information */}
+      <div className="mt-16 space-y-8">
+        {pageData.body.map((item, index) => (
+          <div
+            key={index}
+            className="bg-white rounded-lg p-8 shadow-sm border border-gray-100"
+          >
+            <h3 className="text-xl md:text-2xl font-semibold text-green-800 mb-4 text-right">
+              {item.title}
             </h3>
+            <p className="text-gray-700 text-right leading-relaxed whitespace-pre-line">
+              {item.description}
+            </p>
           </div>
-          <div>
-            <h2 className="text-2xl font-bold mb-4">
-              המאפיינים העיקריים של ADHD הם:
-            </h2>
-            <ul className="grid grid-cols-1 gap-4">
-              {adhdData[0].body.map((item, index) => (
-                <li
-                  key={index}
-                  className="bg-orange-400/40 rounded-lg shadow-md p-4"
-                >
-                  <div className="flex items-start">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-16 h-16 object-cover mx-4"
-                    />
-                    <div>
-                      <h3 className="text-xl font-semibold">{item.title}</h3>
-                      <p className="text-gray-600">{item.description}</p>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        ))}
       </div>
-    </div>
+    </PageLayout>
   );
 }

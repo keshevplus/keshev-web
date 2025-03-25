@@ -9,7 +9,7 @@ export default function Navbar() {
   const isActive = (path: string) => location.pathname === path;
 
   const navItems = [
-    { path: '/', text: 'בית' },
+    { path: '/', text: 'בית', mobileOnly: true },
     { path: '/about', text: 'אודותינו' },
     { path: '/services', text: 'שירותינו' },
     { path: '/adhd', text: 'מהי ADHD?' },
@@ -20,8 +20,8 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm">
-      <div className="container mx-auto pt-0 px-4">
-        <div className="flex items-center justify-center h-full">
+      <div className="container mx-auto px-4 max-w-6xl">
+        <div className="flex items-center justify-end h-full">
           {/* Logo */}
           <Link to="/" className="flex items-start">
             <img
@@ -32,29 +32,34 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex space-x-4">
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`text-black hover:bg-green-800 border- hover:text-white hover:animate-pulse transition-colors px-3 py-2 text-lg ${
-                  isActive(item.path) ? 'text-[green]' : ''
-                }`}
-              >
-                {item.text}
-              </Link>
-            ))}
+          <div className="hidden lg:flex text-nowrap">
+            {navItems
+              .filter((item) => !item.mobileOnly)
+              .map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`text-xl mx-1 px-4 py-2 rounded-lg transition-all duration-200 ${
+                    isActive(item.path)
+                      ? 'bg-green-800 text-white'
+                      : 'text-black hover:bg-green-800/90 hover:text-white'
+                  }`}
+                >
+                  {item.text}
+                </Link>
+              ))}
           </div>
-          <Link
-            to="tel:0544777469"
-            className="bg-[green] text-white max-w-20 hover:bg-[darkgreen] transition-colors px-4 py-2 rounded-lg text-lg"
-          >
-            התקשרו עכשיו 054-4777469
-          </Link>
+          <div className="navbar-item">
+            <img
+              src="/assets/images/green-phone.svg"
+              alt="Call Now"
+              className="green-phone-icon w-16 mx-10"
+            />
+          </div>
 
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden text-black p-2"
+            className="lg:hidden text-black p-8"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <IoClose size={24} /> : <IoMenu size={24} />}
@@ -63,26 +68,31 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Navigation */}
-      {isMenuOpen && (
-        <div className="lg:hidden bg-green-900/95 absolute top-20 my-10 left-0 right-0">
-          <div className="container mx-auto p-5">
-            <div className="flex-auto flex flex-col items-center space-y-3">
-              {navItems.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`text-white text-6xl font-bold hover:text-[#FF4D4D] transition-colors px-3 py-2 ${
-                    isActive(item.path) ? 'text-[orange-400]' : ''
-                  }`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.text}
-                </Link>
-              ))}
-            </div>
+      <div
+        className={`lg:hidden fixed left-0 right-0 top-[160px] z-50 transition-all duration-300 ease-in-out transform 
+        bg-green-800/95 ${
+          isMenuOpen
+            ? 'translate-y-0 opacity-100'
+            : 'translate-y-full opacity-0 pointer-events-none'
+        }`}
+      >
+        <div className="container mx-auto p-5">
+          <div className="flex flex-col items-center space-y-8">
+            {navItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`text-black text-4xl font-bold hover:text-orange-400 transition-colors px-3 py-2 ${
+                  isActive(item.path) ? 'text-[orange-400]' : ''
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item.text}
+              </Link>
+            ))}
           </div>
         </div>
-      )}
+      </div>
     </nav>
   );
 }

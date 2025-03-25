@@ -8,17 +8,16 @@ export function usePageData(page: string) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    async function fetchData() {
       try {
-        const pageData = await contentService.getPageContent(page);
-        setData(pageData);
+        const response = await contentService.getPageContent(page);
+        setData(response);
         setIsLoading(false);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
         setIsLoading(false);
       }
-    };
-
+    }
     fetchData();
   }, [page]);
 
