@@ -1,80 +1,50 @@
-import { useState, useEffect } from 'react';
+import { usePageData } from '../hooks/usePageData';
+import { PageContent } from '../types/content';
+import PageTitle from '../components/PageTitle';
 
 export default function Services() {
-  const [servicesData, setServicesData] = useState<any[]>([]);
+  const { data, isLoading, error } = usePageData('services');
 
-  useEffect(() => {
-    // Simulate fetching data
-    const fetchData = async () => {
-      const data = [
-        {
-          heading: 'שירותינו במרפאה',
-          subheading:
-            'אנו מציעים מגוון רחב של שירותים מקצועיים בתחום אבחון וטיפול בהפרעות קשב.',
-          body: [
-            {
-              title: 'אבחון מקיף של הפרעות קשב ופעלתנות יתר',
-              description:
-                'הליך האבחון במרפאה מתבצע ביסודיות ומותאם באופן אישי לכל מטופל/ת.',
-              image: 'http://localhost:5173/assets/images/icon.png',
-            },
-            {
-              title: 'התאמת טיפול תרופתי אישי',
-              description:
-                'על בסיס האבחון, אנו מתאימים תוכנית טיפול תרופתי ייחודית.',
-              image: 'http://localhost:5173/assets/images/icon.png',
-            },
-            // ...other services
-          ],
-        },
-      ];
-      setServicesData(data);
-    };
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!data.length) return null;
 
-    fetchData();
-  }, []);
-
-  if (!servicesData.length) return <div>Loading...</div>;
+  const pageData: PageContent = data[0];
 
   return (
-    <div>
-      <div className="relative h-[100px] mt-16">
-        <div className="text-center py-16 inset-0 bg-gradient-to-b from-transparent bg-green-800 mx-auto px-8 h-full flex flex-col justify-center to-black/80">
-          <div className="container py-0 font-bold">
-            <h1 className="text-5xl text-white mx-4">
-              {servicesData[0].heading}
-            </h1>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-white py-16 px-4">
-        <div className="container mx-auto">
-          <h3 className="text-2xl font-bold mb-4 text-center">
-            {servicesData[0].subheading}
+    <>
+      <PageTitle title={pageData.heading} />
+      <div className="bg-white py-16">
+        <div className="container mx-auto px-4 md:max-w-[75%]">
+          <h3 className="text-xl md:text-3xl font-semibold text-black text-center mb-8 ">
+            {pageData.subheading}
           </h3>
-          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {servicesData[0].body.map((service, index) => (
-              <li
+          <div className="space-y-8">
+            {pageData.body.map((service, index) => (
+              <div
                 key={index}
-                className="bg-white rounded-lg shadow-lg min-w-px-100 p-2"
+                className="flex flex-auto bg-white rounded-lg shadow-lg px-8 py-2"
               >
-                <div className="flex items-start">
+                {service.image && (
                   <img
                     src={service.image}
                     alt={service.title}
-                    className="w-16 h-16 object-cover mx-4"
+                    className="w-24 h-24 object-cover ml-6"
                   />
-                  <div>
-                    <h3 className="text-xl font-semibold">{service.title}</h3>
-                    <p className="text-gray-600">{service.description}</p>
-                  </div>
+                )}
+                <div className="flex-grow text-right">
+                  <h3 className="text-xl   md:text-2xl font-semibold text-green-800 mb-2">
+                    {service.title}
+                  </h3>
+                  <p className="text-gray-900 text-md md:text-xl">
+                    {service.description}
+                  </p>
                 </div>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
