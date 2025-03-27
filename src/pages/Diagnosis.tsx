@@ -1,19 +1,17 @@
-import { usePageData } from '../hooks/usePageData';
-import { PageContent } from '../types/content';
+import diagnosisData from '../data/diagnosis';
 import PageTitle from '../components/PageTitle';
 
 export default function Diagnosis() {
-  const { data, isLoading, error } = usePageData('diagnosis');
+  // Use the static data from diagnosis.ts
+  const pageData = diagnosisData[0];
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!data.length || !data[0].body.length) return null;
+  if (!pageData) return null;
 
-  const pageData = data[0];
   const mainContent = pageData.body[0]; // Main content is mandatory
 
   return (
     <div>
+      <PageTitle title={pageData.heading} />
       <div className="bg-white py-16 px-4">
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="text-center md:text-right">
