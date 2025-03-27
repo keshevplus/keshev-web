@@ -14,52 +14,45 @@ export default function About() {
 
   return (
     <>
-      <div className="relative h-[100px] mt-12">
-        <PageTitle title={pageData.heading} />
-      </div>
+      <PageTitle title={pageData.heading} />
 
       <div className="bg-white py-12 px-8">
-        <div className="container mx-auto md:max-w-[70%]">
+        <div className="container mx-auto md:max-w-[80%]">
+          <h2 className="sm:text-4xl md:text-4xl font-bold text-green-850 text-center mb-0">
+            {mainContent.title}
+          </h2>
+
           {/* Main content section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start mb-12">
-            {mainContent.image && (
-              <div className="order-first md:order-last flex justify-center">
-                <figure className="flex flex-col items-center">
-                  <img
-                    src={mainContent.image}
-                    alt={mainContent.title}
-                    className="max-w-xs mb-4 md:max-w-sm h-auto rounded-full"
-                  />
-                  <figcaption className="md:text-xl text-green-800 text-center">
-                    {mainContent.title}
-                  </figcaption>
-                </figure>
-              </div>
-            )}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start mb-0 md:mb-0">
             <div
-              className={`text-center ${
-                mainContent.image ? 'md:text-right' : ''
+              className={`text-right ${
+                mainContent.image ? 'order-2 md:order-1 md:text-right' : ''
               }`}
             >
-              <h3 className="text-xl md:text-4xl font-semibold text-green-800">
-                {mainContent.title}
-              </h3>
-              <p className="text-gray-900 text-md md:text-xl mt-4">
-                {mainContent.description}
-              </p>
-
+              <h2 className="text-2xl md:text-2xl text-green text-bold">
+                {pageData.body[1].title}
+              </h2>
               {/* Additional content */}
               {pageData.body.slice(1).map((item, index) => (
-                <div key={index} className="mt-8">
-                  <h3 className="text-xl md:text-3xl font-semibold text-green-800">
-                    {item.title}
-                  </h3>
+                <div key={index} className="mt-0 md:mt-2">
                   <p className="text-gray-900 text-md md:text-xl mt-4">
+                    <span className="block md:hidden text-green-800 font-semibold text-lg mb-2"></span>
                     {item.description}
                   </p>
                 </div>
               ))}
             </div>
+            {mainContent.image && (
+              <div className="order-1 md:order-2 flex justify-center">
+                <figure className="flex flex-col items-center">
+                  <img
+                    src={mainContent.image}
+                    alt={mainContent.title}
+                    className="max-w-xs mb-0 md:max-w-sm h-auto rounded-full"
+                  />
+                </figure>
+              </div>
+            )}
           </div>
         </div>
       </div>

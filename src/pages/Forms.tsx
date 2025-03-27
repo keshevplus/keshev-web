@@ -1,75 +1,80 @@
-import { useState, useEffect } from 'react';
+import { usePageData } from '../hooks/usePageData';
+import { PageContent } from '../types/content';
+import PageTitle from '../components/PageTitle';
 
 export default function Forms() {
-  const [formsData, setFormsData] = useState<any[]>([]);
+  const { data, isLoading, error } = usePageData('forms');
 
-  useEffect(() => {
-    // Simulate fetching data
-    const fetchData = async () => {
-      const data = [
-        {
-          heading: 'שאלונים',
-          subheading: 'מגוון שאלונים לאבחון ותמיכה.',
-          body: [
-            {
-              title: 'שאלון NICHQ Vanderbilt',
-              description: 'שאלון להערכת קשב וריכוז.',
-              image: 'http://localhost:5173/assets/images/icon.png',
-            },
-            {
-              title: 'שאלון התנהגותי',
-              description: 'שאלון להערכת התנהגות הילד.',
-              image: 'http://localhost:5173/assets/images/icon.png',
-            },
-          ],
-        },
-      ];
-      setFormsData(data);
-    };
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!data.length) return null;
 
-    fetchData();
-  }, []);
-
-  if (!formsData.length) return <div>Loading...</div>;
+  const pageData: PageContent = data[0];
 
   return (
-    <div>
-      <div className="relative h-[100px] mt-16">
-        <div className="text-center py-16 inset-0 bg-gradient-to-b from-transparent bg-green-800 mx-auto px-8 h-full flex flex-col justify-center to-black/80">
-          <div className="container py-0 font-bold">
-            <h1 className="text-5xl text-white mx-4">{formsData[0].heading}</h1>
-          </div>
-        </div>
-      </div>
-
+    <>
+      <PageTitle title={pageData.heading} />
       <div className="bg-white py-16 px-4">
-        <div className="container mx-auto md:max-w-[70%]">
-          <h3 className="text-xl md:text-4xl font-semibold text-black text-center mb-8">
-            {formsData[0].subheading}
+        <div className="container mx-auto md:max-w-[80%]">
+          <h3 className="text-xl md:text-4xl font-bold text-black text-center mb-8 transform transition-transform duration-300 ease-in-out hover:scale-120">
+            {pageData.subheading}
           </h3>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {formsData[0].body.map((form, index) => (
-              <li key={index} className="bg-white rounded-lg shadow-lg p-6">
+            {pageData.body.map((form, index) => (
+              <li
+                key={index}
+                className="bg-orange-400/35 hover:bg-orange-400/100 rounded-2xl shadow-xl rounded-lg shadow-lg p-6"
+              >
                 <div className="flex flex-row items-start">
+                  {form.image && (
+                    <img
+                      src={form.image}
+                      alt={form.title}
+                      className="w-16 h-16 object-cover mx-4"
+                    />
+                  )}
                   <div className="flex-grow text-right">
-                    <h3 className="text-xl md:text-2xl font-semibold text-green-800">
+                    <h3 className="text-2xl md:text-2xl font-bold text-black mb-2">
                       {form.title}
                     </h3>
-                    <p className="text-gray-900 text-md md:text-xl">
+                    <h4 className="text-md md:text-md font-semibold text-black mb-2">
+                      {form.subtitle}
+                    </h4>
+                    <p className="text-gray-900 text-md md:text-md">
                       {form.description}
                     </p>
                   </div>
-                  <img
-                    src={form.image}
-                    alt={form.title}
-                    className="w-16 h-16 object-cover mr-4"
-                  />
+                  <div className="flex flex-col items-center ml-4">
+                    <a
+                      href={`${form.files}.docx`}
+                      download
+                      className="hover:opacity-80 hover:scale-110 transition-opacity transform transition-transform duration-300 ease-in-out"
+                    >
+                      <img
+                        src="/assets/images/wordicon.svg"
+                        alt="Download Word document"
+                        className="w-8 h-8 object-cover m-2"
+                      />
+                    </a>
+                    <a
+                      href={`${form.files}.pdf`}
+                      download
+                      className="hover:opacity-80 hover:scale-110 transition-opacity transform transition-transform duration-300 ease-in-out"
+                    >
+                      <img
+                        src="/assets/images/pdficon.svg"
+                        alt="Download PDF document"
+                        className="w-8 h-8 object-cover m-2"
+                      />
+                    </a>
+                    <p className="font-bold text-green-800 mt-2">להורדה</p>
+                  </div>
                 </div>
               </li>
             ))}
           </ul>
         </div>
       </div>
-    </div>
+    </>
   );
 }
