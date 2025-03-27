@@ -65,3 +65,15 @@ export default function Diagnosis() {
     </div>
   );
 }
+
+// or wherever your phone icon is being used
+// ...existing code...
+<svg
+  // ...existing attributes...
+  fill="#166534" // Change to green-800
+  // or use Tailwind classes:
+  className="text-green-800 fill-current"
+>
+  {/* ...existing code... */}
+</svg>;
+// ...existing code...

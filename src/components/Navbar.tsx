@@ -19,7 +19,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm">
+    <nav className="sticky top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm">
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="flex items-center justify-end h-full">
           {/* Logo */}
@@ -27,7 +27,7 @@ export default function Navbar() {
             <img
               src="\assets\images\logo.png"
               alt="קשב"
-              className="left-0 right-0 h-40 w-auto scale-75"
+              className="left-0 right-0 h-40 w-auto scale-75 hover:opacity-80 hover:scale-90 transform transition-transform duration-300 ease-in-out"
             />
           </Link>
 
@@ -53,7 +53,7 @@ export default function Navbar() {
             <img
               src="/assets/images/green-phone.svg"
               alt="Call Now"
-              className="green-phone-icon w-16 mx-10"
+              className="green-phone-icon w-16 mx-10 hover:opacity-80 hover:scale-130 transform transition-transform duration-300 "
             />
           </div>
 

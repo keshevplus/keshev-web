@@ -1,6 +1,6 @@
 import { usePageData } from '../hooks/usePageData';
-import PageLayout from '../components/PageLayout';
 import { PageContent } from '../types/content';
+import PageTitle from '../components/PageTitle';
 
 export default function ADHD() {
   const { data, isLoading, error } = usePageData('adhd');
@@ -9,85 +9,83 @@ export default function ADHD() {
   if (error) return <div>Error: {error}</div>;
   if (!data.length) return null;
 
-  const pageData = data[0];
+  const pageData: PageContent = data[0];
 
   return (
-    <PageLayout title={pageData.heading}>
-      {/* Two column grid section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
-        {/* Left Column: Main Description */}
-        <div className="text-right space-y-6">
-          <h2 className="text-2xl md:text-3xl font-semibold text-green-800">
-            הבנת ADHD
-          </h2>
-          <p className="text-gray-900 text-lg leading-relaxed">
+    <>
+      <PageTitle title={pageData.heading} />
+      <div className="bg-white py-8 px-8">
+        <div className="container mx-auto max-w-full md:max-w-[100%]">
+          <h3 className="text-lg md:text-2xl text-gray-700 text-center mb-0 md:mb-0">
             {pageData.subheading}
-          </p>
+          </h3>
         </div>
-
-        {/* Right Column: Symptoms */}
-        <div className="space-y-8">
-          {pageData.body.map((service, index) => (
-            <div
-              key={index}
-              className="flex flex-auto bg-white rounded-lg shadow-lg px-8 py-2"
-            >
-              {page.image && (
-                <img
-                  src={service.image}
-                  alt={service.title}
-                  className="w-24 h-24 object-cover ml-6"
-                />
-              )}
-              <div className="flex-grow text-right">
-                <h3 className="text-xl   md:text-2xl font-semibold text-green-800 mb-2">
-                  {service.title}
-                </h3>
-                <p className="text-gray-900 text-md md:text-xl">
-                  {service.description}
-                </p>
-              </div>
+      </div>
+      <div className="bg-white">
+        <div className="container mx-auto max-w-full md:max-w-[80%]">
+          {/* Main content grid */}
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-12 mb-0 md:mb-0">
+            {/* Left Column: Main description content */}
+            <div className="md:col-span-3 space-y-2">
+              {pageData.body.paragraphs.map((item, index) => (
+                <div
+                  key={index}
+                  className="flex flex-auto bg-white rounded-lg shadow-lg px-8 py-2"
+                >
+                  {item.image && (
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-12 h-12 object-cover my-0 mx-4"
+                    />
+                  )}
+                  <div className="flex-grow text-right">
+                    <h3 className="text-xl md:text-2xl font-semibold text-green-800 mb-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-gray-900 text-md md:text-xl">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        <div className="space-y-6">
-          <h2 className="text-2xl md:text-3xl font-semibold text-green-800 text-right">
-            התסמינים העיקריים
-          </h2>
-          <div className="space-y-2">
-            {pageData.additional?.map((item, index) => (
-              <div
-                key={index}
-                className="bg-orange-50 rounded-lg p-4 shadow-sm"
-              >
-                <h3 className="text-xl font-semibold text-green-800 mb-2 text-right">
-                  {item.title}
-                </h3>
-                <p className="text-gray-700 text-right leading-relaxed">
-                  {item.description}
-                </p>
-              </div>
-            ))}
+            {/* Right Column: Additional information section */}
+            {pageData.additional &&
+              pageData.additional.heading &&
+              pageData.additional.body &&
+              pageData.additional.body.length > 0 && (
+                <div className="md:col-span-2 mt-0 md:mt-0">
+                  <h2 className="text-2xl md:text-3xl font-semibold text-green-800 text mb-2">
+                    {pageData.additional.heading}
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
+                    {pageData.additional.body.map((item, index) => (
+                      <div
+                        key={index}
+                        className="flex flex-col bg-orange-400/20 rounded-lg shadow-lg p-1 md:p-4"
+                      >
+                        <div className="flex flex-row items-center justify-start pr-4 py-0">
+                          <img
+                            src={item.image || ''}
+                            alt={item.title}
+                            className="w-12 h-12 object-contain"
+                          />
+                          <h4 className="text-xl md:text-2xl font-semibold text-black text-center px-8">
+                            {item.title}
+                          </h4>
+                        </div>
+                        <p className="text-gray-700 text-right text-md md:text-md pr-24 pb-4">
+                          {item.description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
           </div>
         </div>
       </div>
-
-      {/* Additional Information */}
-      <div className="mt-16 space-y-8">
-        {pageData.body.map((item, index) => (
-          <div
-            key={index}
-            className="bg-white rounded-lg p-8 shadow-sm border border-gray-100"
-          >
-            <h3 className="text-xl md:text-2xl font-semibold text-green-800 mb-4 text-right">
-              {item.title}
-            </h3>
-            <p className="text-gray-700 text-right leading-relaxed whitespace-pre-line">
-              {item.description}
-            </p>
-          </div>
-        ))}
-      </div>
-    </PageLayout>
+    </>
   );
 }

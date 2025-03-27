@@ -2,18 +2,23 @@ export interface ContentItem {
   title: string;
   description: string;
   image?: string | null;
+  file?: string;  // Base path for the file, extensions (.pdf, .docx) will be added in the component
 }
 
-export interface PageContent {
+export interface LocalPageContent {
   heading: string;
   subheading: string;
   body: ContentItem[];
   additional?: ContentItem[];
+  additionalInfo?: {
+    heading: string;
+    description: string;
+  };
 }
 
 import { PageContent } from '../types/content';
 
-export const adhdPageData: PageContent = {
+export const adhdPageData: LocalPageContent = {
   heading: 'ADHD Information',
   subheading: 'Learn more about ADHD',
   body: [
@@ -31,7 +36,7 @@ import { formsPageData } from '../data/formsPage';
 import { contactPageData } from '../data/contactPage';
 
 export const contentService = {
-  async getPageContent(page: string): Promise<PageContent[]> {
+  async getPageContent(page: string): Promise<LocalPageContent[]> {
     // This could be replaced with real API calls later
     switch (page) {
       case 'about':
@@ -52,7 +57,7 @@ export const contentService = {
   },
 };
 
-export async function getPageContent(page: string): Promise<PageContent[]> {
+export async function getPageContent(page: string): Promise<LocalPageContent[]> {
   switch (page) {
     case 'about':
       return [aboutPageData];
