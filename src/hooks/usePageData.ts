@@ -1,25 +1,28 @@
 import { useState, useEffect } from 'react';
 import { PageContent } from '../types/content';
-import { contentService } from '../services/contentService';
 
-export function usePageData(page: string) {
+export function usePageData(pageName: string) {
   const [data, setData] = useState<PageContent[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       try {
-        const response = await contentService.getPageContent(page);
-        setData(response);
+        setIsLoading(true);
+        // Import dynamically from the data directory
+        const module = await import(`../data/${pageName}.ts`);
+        setData(module.default);
         setIsLoading(false);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
+        console.error('Error loading page data:', err);
+        setError('Failed to load page content');
         setIsLoading(false);
       }
-    }
+    };
+
     fetchData();
-  }, [page]);
+  }, [pageName]);
 
   return { data, isLoading, error };
 }
