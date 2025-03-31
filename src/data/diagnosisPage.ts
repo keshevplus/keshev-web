@@ -1,6 +1,6 @@
-import { PageContent } from '../types/content';
+import { LocalPageContent } from '../types/content';
 
-export const diagnosisPageData: PageContent = {
+const diagnosisPageData: LocalPageContent = {
   heading: 'תהליך האבחון',
   subheading: 'תהליך אבחון מקיף ומקצועי',
   body: [
@@ -30,3 +30,5 @@ export const diagnosisPageData: PageContent = {
     description: 'לאחר האבחון, נציע תוכנית טיפול אישית שתתאים לצרכים הייחודיים של ילדכם. התוכנית עשויה לכלול: ייעוץ והדרכה להורים, טיפול תרופתי (במידת הצורך), טיפול התנהגותי וקוגניטיבי, ותמיכה חינוכית.',
   },
 };
+
+export default diagnosisPageData;

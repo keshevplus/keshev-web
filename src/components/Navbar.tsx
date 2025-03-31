@@ -5,6 +5,7 @@ import { IoMenu, IoClose } from 'react-icons/io5';
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -19,17 +20,27 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm">
+    <nav
+      className={`sticky top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm ${
+        isHomePage ? 'pt-4' : ''
+      }`}
+    >
       <div className="container mx-auto px-4 max-w-6xl">
-        <div className="flex items-center justify-end h-full">
-          {/* Logo */}
-          <Link to="/" className="flex items-start">
-            <img
-              src="\assets\images\logo.png"
-              alt="קשב"
-              className="left-0 right-0 h-40 w-auto scale-75 hover:opacity-80 hover:scale-90 transform transition-transform duration-300 ease-in-out"
-            />
-          </Link>
+        <div
+          className={`flex items-center ${
+            isHomePage ? 'justify-center' : 'justify-end'
+          } h-full`}
+        >
+          {/* Logo - hidden on home page */}
+          {!isHomePage && (
+            <Link to="/" className="flex items-start">
+              <img
+                src="\assets\images\logo.png"
+                alt="קשב"
+                className="left-0 right-0 h-40 w-auto scale-75 hover:opacity-80 hover:scale-90 transform transition-transform duration-300 ease-in-out"
+              />
+            </Link>
+          )}
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex text-nowrap">
@@ -49,13 +60,17 @@ export default function Navbar() {
                 </Link>
               ))}
           </div>
-          <div className="navbar-item">
-            <img
-              src="/assets/images/green-phone.svg"
-              alt="Call Now"
-              className="green-phone-icon w-16 mx-10 hover:opacity-80 hover:scale-130 transform transition-transform duration-300 "
-            />
-          </div>
+
+          {/* Only show phone icon if not on home page */}
+          {!isHomePage && (
+            <div className="navbar-item">
+              <img
+                src="/assets/images/green-phone.svg"
+                alt="Call Now"
+                className="green-phone-icon w-16 mx-10 hover:opacity-80 hover:scale-130 transform transition-transform duration-300"
+              />
+            </div>
+          )}
 
           {/* Mobile Menu Button */}
           <button
@@ -69,7 +84,9 @@ export default function Navbar() {
 
       {/* Mobile Navigation */}
       <div
-        className={`lg:hidden fixed left-0 right-0 top-[160px] z-50 transition-all duration-300 ease-in-out transform 
+        className={`lg:hidden fixed left-0 right-0 ${
+          isHomePage ? 'top-[80px]' : 'top-[160px]'
+        } z-50 transition-all duration-300 ease-in-out transform 
         bg-green-800/95 ${
           isMenuOpen
             ? 'translate-y-0 opacity-100'
@@ -82,7 +99,7 @@ export default function Navbar() {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`text-black text-4xl font-bold hover:text-orange-400 transition-colors px-3 py-2 ${
+                className={`text-white text-4xl font-bold hover:text-orange-400 transition-colors px-3 py-2 ${
                   isActive(item.path) ? 'text-[orange-400]' : ''
                 }`}
                 onClick={() => setIsMenuOpen(false)}

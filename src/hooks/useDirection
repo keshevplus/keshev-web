@@ -1,0 +1,17 @@
+import { useState, useEffect } from 'react';
+
+const useDirection = () => {
+  const [direction, setDirection] = useState('rtl'); // Default to 'rtl'
+
+  useEffect(() => {
+    document.documentElement.dir = direction; // Set the direction on the root element
+  }, [direction]);
+
+  const toggleDirection = () => {
+    setDirection((prevDirection) => (prevDirection === 'rtl' ? 'ltr' : 'rtl'));
+  };
+
+  return { direction, toggleDirection };
+};
+
+export default useDirection;

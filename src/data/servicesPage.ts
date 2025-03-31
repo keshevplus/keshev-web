@@ -1,8 +1,9 @@
-import { PageContent } from '../types/content';
+import { LocalPageContent } from '../types/content';
 
-export const servicesPageData: PageContent = {
+const servicesPageData: LocalPageContent = {
   heading: 'שירותינו במרפאה',
   subheading: 'אנו מציעים מגוון רחב של שירותים מקצועיים בתחום אבחון וטיפול בהפרעות קשב.',
+  image: '/assets/images/icon.png',
   body: [
     {
       title: 'אבחון מקיף של הפרעות קשב ופעלתנות יתר',
@@ -13,31 +14,33 @@ export const servicesPageData: PageContent = {
       title: 'התאמת טיפול תרופתי אישי',
       description:
         'על בסיס האבחון, אנו מתאימים תוכנית טיפול תרופתי ייחודית שמתאימה לצרכיו של כל מטופל. הליווי שלנו כולל התאמות מתמשכות עד למציאת הטיפול האופטימלי, תוך שימת דגש על בטיחות ויעילות.',
-      image: 'http://localhost:5173/assets/images/icon.png',
+      image: '/assets/images/icon.png',
     },
     {
       title: 'מתן ייעוץ ומעקב אחר מטופלים מאובחנים',
       description:
-        'מטופלינו זוכים לליווי רציף שמאפשר מעקב אחרי השפעת הטיפול, שיפור תפקודים והתאמות נדרשות לאורך הדרך. אנחנו כאן כדי לוודא שכל מטופל ימצא את הדרך הנכונה להצלחה אישית ומקצועית.',
-      image: 'http://localhost:5173/assets/images/icon.png',
+        'מטופלינו זוכים לליווי מקצועי מתמשך הכולל מעקב אחר התקדמות הטיפול, התאמות נדרשות והדרכה מקיפה.',
+      image: '/assets/images/icon.png',
     },
     {
       title: 'סדנאות הדרכת הורים',
       description:
         'סדנאות הדרכת ההורים שלנו מיועדות להקנות כלים פרקטיים ומעשיים להתמודדות עם אתגרי הפרעת קשב וריכוז במשפחה. באמצעות הדרכה מקצועית, ההורים מקבלים תמיכה ולומדים כיצד לנהל שגרה בריאה ומותאמת.',
-      image: 'http://localhost:5173/assets/images/icon.png',
+      image: '/assets/images/icon.png',
     },
     {
       title: 'הפניות לטיפולים משלימים',
       description:
         'במידת הצורך, אנו מפנים את המטופלים שלנו לטיפולים משלימים כגון ריפוי בעיסוק, טיפול רגשי או פסיכולוגי, וטיפולים נוספים שיכולים לתרום לשיפור איכות החיים.',
-      image: 'http://localhost:5173/assets/images/icon.png',
+      image: '/assets/images/icon.png',
     },
     {
       title: 'חוות דעת רפואיות למוסדות שונים',
       description:
         'המרפאה מספקת חוות דעת רפואיות מקצועיות ומפורטות עבור מוסדות חינוך, ביטוח לאומי, צבא ועוד. אנו מקפידים על הכנת מסמכים מדויקים שמספקים תמונה ברורה ואמינה של מצבו של המטופל.',
-      image: 'http://localhost:5173/assets/images/icon.png',
+      image: '/assets/images/icon.png',
     },
   ],
 };
+
+export default servicesPageData;
