@@ -1,5 +1,5 @@
 import { usePageData } from '../hooks/usePageData';
-import { PageContent } from '../types/content';
+import { LocalPageContent } from '../types/content';
 import PageTitle from '../components/PageTitle';
 
 export default function Services() {
@@ -9,36 +9,38 @@ export default function Services() {
   if (error) return <div>Error: {error}</div>;
   if (!data.length) return null;
 
-  const pageData: PageContent = data[0];
+  const pageData: LocalPageContent = data[0];
 
   return (
     <>
       <PageTitle title={pageData.heading} />
-      <div className="bg-white py-8">
-        <div className="container mx-auto max-w-full md:max-w-[75%]">
-          {/* Main content grid */}
-          <h3 className="text-xl md:text-2xl font-semibold text-black text-right mb-8 ">
+      <div
+        className="bg-white flex items-center justify-end h0.12455555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555
+      68-full"
+      >
+        <div className="container mx-auto md:max-w-[70%]">
+          <h3 className="md:text-nowrap  text-xl md:text-4xl font-bold text-black text-center mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
             {pageData.subheading}
           </h3>
           {/* Left Column: Main description content */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mx-2">
             {pageData.body.map((service, index) => (
-              <div className="space-y-4 flex flex-wrap">
-                <div
-                  key={index}
-                  className="flex flex-row bg-orange-400/20 rounded-lg shadow-lg p-1 md:p-4"
-                >
-                  {service.image && (
-                    <img
-                      src={service.image}
-                      alt={service.title}
-                      className="w-12 h-12 object-cover my-0 mx-4"
-                    />
-                  )}
+              <div key={index} className="space-y-8 flex flex-auto">
+                <div className="bg-orange-400/35 hover:bg-orange-400/60 rounded-2xl shadow-xl px-4 transition-all duration-300">
                   <div className="flex-auto text-right m-2">
-                    <h3 className="text-lg md:text-xl font-bold text-green-800 mb-2">
-                      {service.title}
-                    </h3>
+                    {service.image && (
+                      <div className="flex items-center">
+                        <img
+                          src={service.image}
+                          alt={service.title}
+                          className="w-12 h-12 object-cover rounded-full me-4"
+                        />
+                        <h3 className="md:text-nowrap text-xl md:text-xl font-bold text-black-800 mb-2">
+                          {service.title}
+                        </h3>
+                      </div>
+                    )}
+
                     <p className="text-gray-900 text-sm md:text-lg">
                       {service.description}
                     </p>

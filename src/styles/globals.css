@@ -6,3 +6,90 @@
 .phone-icon {
   fill: var(--logo-green);
 }
+
+/* RTL Support */
+.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+/* For RTL layouts, flip flex row to match RTL direction */
+.rtl .flex-row-reverse {
+  flex-direction: row-reverse;
+}
+
+/* Use logical properties for RTL support */
+.ms-4 {
+  margin-inline-start: 1rem;
+}
+
+/* Consistent container width */
+.container {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+/* Standardized content containers */
+.page-container {
+  max-width: 1280px;
+  width: 100%;
+  margin-inline: auto;
+  padding: 2rem 1rem;
+}
+
+.content-container {
+  width: 100%;
+  margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  .content-container {
+    max-width: 70%;
+  }
+}
+
+/* Loading and error states */
+.loading,
+.error {
+  min-height: 30vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.loading .animate-pulse {
+  color: var(--logo-green);
+  opacity: 0.7;
+}
+
+/* Animated gradients */
+.bg-gradient-radial {
+  background-image: radial-gradient(circle, var(--tw-gradient-stops));
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient-slow {
+  background-size: 200% 200%;
+  animation: gradient-animation 15s ease infinite;
+}
+
+/* Common page container */
+.page-container {
+  max-width: 1280px;
+  width: 100%;
+  margin-inline: auto;
+  padding: 2rem 1rem;
+}

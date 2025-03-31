@@ -1,7 +1,7 @@
-import { ContentItem } from '../types/content';
+import { LocalPageContent } from '../types/content';
 
 interface ContentSectionProps {
-  items: ContentItem[];
+  items: LocalPageContent[];
   layout?: 'grid' | 'list';
   columns?: number;
 }

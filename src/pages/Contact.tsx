@@ -1,70 +1,50 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import PageTitle from '../components/PageTitle';
+import { usePageData } from '../hooks/usePageData';
+import { LocalPageContent } from '../types/content';
 
 export default function Contact() {
-  const [contactData, setContactData] = useState<any[]>([]);
+  const { data, isLoading, error } = usePageData('contact');
 
+  // Set RTL direction for the document
   useEffect(() => {
-    // Simulate fetching data
-    const fetchData = async () => {
-      const data = [
-        {
-          heading: 'יצירת קשר',
-          subheading: 'צוות המומחים שלנו ישמח לעמוד לרשותכם ולסייע בכל שאלה.',
-          body: [
-            {
-              title: 'כתובת',
-              description: 'רמת גן, ישראל',
-              icon: '📍',
-            },
-            {
-              title: 'טלפון',
-              description: '054-4777469',
-              icon: '📞',
-            },
-            {
-              title: 'אימייל',
-              description: 'dr@keshevplus.co.il',
-              icon: '✉️',
-            },
-          ],
-        },
-      ];
-      setContactData(data);
-    };
-
-    fetchData();
+    document.documentElement.dir = 'rtl';
   }, []);
 
-  if (!contactData.length) return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <div>
+        <div className="container mx-auto max-w-full md:max-w-[75%] py-8 loading"></div>
+        <div className="animate-pulse">Loading...</div>
+      </div>
+    );
+  }
+
+  if (error) return <div>Error: {error}</div>;
+  if (!data.length) return null;
+
+  const contactData: LocalPageContent = data[0];
 
   return (
-    <div>
-      <div className="relative h-[100px] mt-16">
-        <div className="text-center py-16 inset-0 bg-gradient-to-b from-transparent bg-green-800 mx-auto px-8 h-full flex flex-col justify-center to-black/80">
-          <div className="container py-0 font-bold">
-            <h1 className="text-5xl text-white mx-4">
-              {contactData[0].heading}
-            </h1>
-          </div>
-        </div>
-      </div>
+    <div className="rtl">
+      <PageTitle title={contactData.heading} />
 
-      <div className="bg-white py-16 px-4">
+      <div className="bg-white flex items-center justify-end h-full">
         <div className="container mx-auto md:max-w-[70%]">
-          <h3 className="text-xl md:text-4xl font-semibold text-black text-center mb-8">
-            {contactData[0].subheading}
+          <h3 className="text-xl md:text-4xl font-bold text-black text-center mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
+            {contactData.subheading}
           </h3>
           <ul className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {contactData[0].body.map((item: ContactBodyItem, index: number) => (
+            {contactData.body.map((item, index) => (
               <li
                 key={index}
-                className="bg-white rounded-lg shadow-lg p-6 text-center"
+                className="bg-white rounded-2xl shadow-xl p-6 text-center transition-all duration-300 hover:shadow-2xl hover:bg-green-50/40"
               >
                 <div className="text-4xl mb-4 text-green-800">{item.icon}</div>
-                <h3 className="text-xl md:text-2xl font-semibold text-green-800 mb-2">
+                <h3 className="text-xl md:text-2xl font-bold text-green-800 mb-2">
                   {item.title}
                 </h3>
-                <p className="text-gray-900 text-md md:text-xl">
+                <p className="text-gray-700 text-md md:text-lg">
                   {item.description}
                 </p>
               </li>

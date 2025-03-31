@@ -18,4 +18,3 @@ export default function useScrollShrink(threshold = 100) {
 
   return { ref, shrink };
 }
-

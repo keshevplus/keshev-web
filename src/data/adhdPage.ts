@@ -1,60 +1,62 @@
-import { PageContent } from '../types/content';
+import { LocalPageContent } from '../types/content';
 
-export const adhdPageData: PageContent = {
+export const adhdPageData: LocalPageContent = {
   heading: 'מהי הפרעת קשב ופעלתנות יתר?',
-  body: {
-    paragraphs: [
+  subheading: 'Attention Deficit Hyperactivity Disorder',
+  body: [
     {
-      title: 'Attention Deficit Hyperactivity Disorder',
+      title: 'הפרעת קשב ופעלתנות יתר (ADHD)',
       description: 'הפרעת קשב ופעלתנות יתר היא מצב נוירולוגי המשפיע על יכולת הריכוז, השליטה העצמית וההתנהגות. היא נפוצה בקרב ילדים ומבוגרים כאחד, ויכולה להשפיע על תחומי חיים רבים, כולל למידה, עבודה ומערכות יחסים.',
-      image: '',
+      image: '/assets/images/icon.png',
+      imagePosition: 'right',
+    },
+    {
+      title: 'מה זה ADHD?',
+      description: 'הפרעת קשב ופעלתנות יתר היא מצב נוירולוגי המשפיע על יכולת הריכוז, השליטה העצמית וההתנהגות. היא נפוצה בקרב ילדים ומבוגרים כאחד, ויכולה להשפיע על תחומי חיים רבים, כולל למידה, עבודה ומערכות יחסים.',
+      image: '/assets/images/icon.png',
+      imagePosition: 'right',
+    },
+    {
+      title: 'התסמינים של ADHD',
+      description: 'הפרעת קשב ופעלתנות יתר מתאפיינת בשלושה סוגי תסמינים עיקריים:',
+      image: '/assets/images/icon.png',
+      imagePosition: 'right',
     },
     {
       title: 'האם יש טיפול להפרעת קשב ופעלתנות יתר?',
       description: 'טיפול בהפרעת קשב ופעלתנות יתר כולל תרופות, טיפול תקשורתי, טיפול תזונתי וטיפול פסיכולוגי. כל טיפול יכול להיות יעיל בהתאם לצרכי המטופל.',
-      image: '',
+      image: '/assets/images/icon.png',
     },
-    
     {
       title: 'חשוב להבין',
-      description: 'ADHD אינו מעיד על חוסר אינטיליגנציה או יכולת. להפך, רבים מהאנשים עם ADHD מגלים יצירתיות, חשיבה ייחודית ואנרגיה גבוהה.',
-      image: '',
-    }
-    ,
+      description: `
+      ADHD אינה מעידה על חוסר אינטיליגנציה או יכולת. להפך, רבים מהאנשים עם ADHD מגלים יצירתיות, חשיבה ייחודית ואנרגיה גבוהה.
+      `,
+      image: '/assets/images/icon.png',
+    },
     {
       title: 'זיהוי מוקדם',
-      description: 'אבחון מוקדם של ADHD יכול לסייע במתן כלים ותמיכה מתאימים להתמודדות עם האתגרים היומיומיים. טיפול מותאם יכול לשפר את איכות החיים של ילדים ומבוגרים עם ההפרעה, ולמנוע קשיים נוספים בעתיד.',
-      image: '',
-    }
-  ]
-},
-  additional: {
-
-    heading: 'התסמינים העיקריים',
-    subheading: 'ADHD : Attention Deficit Hyperactivity Disorder',
-    body: [
-    {
-      title: 'חוסר קשב',
-      description: 'קושי להתרכז, לשים לב לפרטים, לעקוב אחר הוראות ולסיים משימות.',
+      description: 'אבחון מוקדם של ADHD יכול לסייע בהתמודדות טובה יותר עם האתגרים ובמציאת דרכים מתאימות להצלחה בלימודים ובחיים.',
       image: '/assets/images/icon.png',
+    }
+  ],
+  additional:[
+    {
+      title: 'קשיי קשב וריכוז',
+      description: `קושי להתמקד במשימות לאורך זמן, נטייה לשכוח פרטים או לדלג על שלבים במשימות,  קלות בהיסח הדעת מגירויים חיצוניים.`,
+      image: '/assets/images/icon.png'
     },
     {
       title: 'היפראקטיביות',
-      description: 'תנועתיות יתר, קושי לשבת בשקט, דיבור מופרז.',
+      description: `תנועתיות מוגברת (כגון תזוזה בלתי פוסקת של רגליים או ידיי, תחושת חוסר שקט מתמדת, קושי לשבת במקום זמן ממושך, במיוחד במצבים "רשמיים" כמו בכיתה או בעבודה)`,
       image: '/assets/images/icon.png',
     },
     {
-      title: 'אימפולסיביות',
-      description: 'פעולה ללא מחשבה מוקדמת, קושי להמתין בתור, התפרצות בשיחה.',
+      title: "אימפולסיביות",
+      description: `קבלת החלטות מהירה מבלי לשקול את ההשלכות, נטייה להתפרץ לדבריהם של אחרים או להפריע, קושי בהמתנה לתור או בסבלנות במצבים יומיומיים`,
       image: '/assets/images/icon.png',
     }
   ]
-}
 };
 
-// Define or import the getPageContent function
-function getPageContent(page: string): void {
-  console.log(`Fetching content for page: ${page}`);
-}
-
-export default getPageContent('adhd');
+export default adhdPageData;

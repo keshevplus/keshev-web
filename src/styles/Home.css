@@ -1,0 +1,135 @@
+/* Enhanced infinite scrolling background */
+.bg-scroll-animation {
+  background-image: url('/assets/images/logosbg.png');
+  background-repeat: repeat;
+  background-size: cover;
+  animation: scroll 20s linear infinite;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  filter: contrast(1.1) brightness(0.9);
+}
+
+/* Particle overlay */
+.particles-overlay {
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 1px,
+    transparent 1px
+  );
+  background-size: 20px 20px;
+  animation: particle-float 15s linear infinite;
+  opacity: 0.5;
+  z-index: 2;
+}
+
+/* Logo container animations */
+.logo-container {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: all 0.5s ease-in-out;
+}
+
+/* Glow effect for the logo */
+.logo-glow {
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+  transition: filter 1s ease-in-out;
+}
+
+.final-state .logo-glow {
+  filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.8));
+}
+
+/* Rotation animation */
+.rotate-animation {
+  animation: logo-rotate 2s ease-in-out;
+}
+
+/* Flip animation */
+.flip-animation {
+  animation: logo-flip 2s ease-in-out forwards;
+}
+
+/* Final state adds scale pulse */
+.final-state {
+  animation: logo-pulse 3s ease-in-out infinite;
+}
+
+/* Scrolling animation */
+@keyframes scroll {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -100% -100%;
+  }
+}
+
+/* Particle float animation */
+@keyframes particle-float {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 100px 100px;
+  }
+}
+
+/* Logo rotation animation */
+@keyframes logo-rotate {
+  0% {
+    transform: rotate(0deg) scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Logo flip animation */
+@keyframes logo-flip {
+  0% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(180deg) scale(0.9);
+  }
+  100% {
+    transform: rotateY(360deg) scale(1.05);
+  }
+}
+
+/* Pulsing animation for final state */
+@keyframes logo-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Fade-in animation for the final logo */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 3s ease-in-out forwards;
+}
