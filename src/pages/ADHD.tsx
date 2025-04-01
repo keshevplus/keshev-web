@@ -2,6 +2,15 @@ import { usePageData } from '../hooks/usePageData';
 import PageTitle from '../components/PageTitle';
 import { useEffect } from 'react';
 
+// Define the type for the additional items
+interface AdditionalItem {
+  title: string;
+  subtite?: string;
+  description: string;
+  image?: string;
+  icon?: string;
+}
+
 export default function ADHD() {
   const { data, isLoading, error } = usePageData('adhd');
 
@@ -24,7 +33,12 @@ export default function ADHD() {
     );
   if (!data || !data.length) return null;
 
-  const pageData = data[0];
+  const pageData = data[0] as {
+    heading: string;
+    subheading: string;
+    body: { title: string; description: string }[];
+    additional?: AdditionalItem[];
+  };
 
   return (
     <div className="rtl">

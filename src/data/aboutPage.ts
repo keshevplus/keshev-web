@@ -1,6 +1,6 @@
-import { LocalPageContent } from '../types/content';
+import { ContentItem } from '../types/content';
 
-const aboutPageData: LocalPageContent = {
+const aboutPageData: ContentItem = {
     heading: 'אודותינו',
     subheading: 'קשב פלוס, נעים להכיר',
     body: [
@@ -12,15 +12,11 @@ const aboutPageData: LocalPageContent = {
         },
         {
             title: "דר' איירין כוכב-רייפמן",
-            subtitle: "מומחית לאבחון וטיפול בהפרעות קשב ופעלתנות יתר",
-            description: `רופאה מומחית לאבחון וטיפול בהפרעות קשב ופעלתנות יתר בילדים, נוער ומבוגרים.
-בעלת ניסיון רב בתחום תוך שימוש בגישות טיפוליות מגוונות ומתקדמות.
-`,
+            description: `רופאה מומחית לאבחון וטיפול בהפרעות קשב ופעלתנות יתר בילדים, נוער ומבוגרים. בעלת ניסיון רב בתחום תוך שימוש בגישות טיפוליות מגוונות ומתקדמות.`,
             image: '',
         },
         {
             title: "קצת על עצמי",
-            subtitle: "",
             description: "מומחית ברפואת משפחה, בעלת הסמכה לאבחון וטיפול בהפרעות קשב ופעלתנות יתר של משרד הבריאות.",
             image: '',
         }

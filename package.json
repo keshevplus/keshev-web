@@ -21,6 +21,7 @@
     "react-router-dom": "^6.30.0"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.4",
     "@types/expo": "^32.0.13",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",

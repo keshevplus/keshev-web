@@ -1,6 +1,6 @@
-import { LocalPageContent } from '../types/content';
+import { ContentItem } from '../types/content';
 
-const diagnosisPageData: LocalPageContent = {
+const diagnosisPageData: ContentItem = {
   heading: 'תהליך האבחון',
   subheading: 'תהליך אבחון מקיף ומקצועי',
   body: [
@@ -25,10 +25,15 @@ const diagnosisPageData: LocalPageContent = {
       image: '/assets/images/icon.png',
     },
   ],
-  additionalInfo: {
-    heading: 'מידע נוסף על האבחון',
-    description: 'לאחר האבחון, נציע תוכנית טיפול אישית שתתאים לצרכים הייחודיים של ילדכם. התוכנית עשויה לכלול: ייעוץ והדרכה להורים, טיפול תרופתי (במידת הצורך), טיפול התנהגותי וקוגניטיבי, ותמיכה חינוכית.',
-  },
+  additional: [
+    {
+      title: 'מידע נוסף על האבחון',
+      description: 'לאחר האבחון, נציע תוכנית טיפול אישית שתתאים לצרכים הייחודיים של ילדכם. התוכנית עשויה לכלול: ייעוץ והדרכה להורים, טיפול תרופתי (במידת הצורך), טיפול התנהגותי וקוגניטיבי, ותמיכה חינוכית.',
+      image: '/assets/images/icon.png',
+    },
+  ],
+  title: '',
+  description: ''
 };
 
 export default diagnosisPageData;

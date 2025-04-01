@@ -1,6 +1,6 @@
-import { LocalPageContent } from '../types/content';
+import { HomePageContent } from '../types/content';
 
-const homePageData: LocalPageContent = {
+const homePageData: HomePageContent = {
   heading: 'מרפאה לאבחון וטיפול בהפרעות קשב ופעלתנות יתר',
   subheading: 'בילדים, בני נוער ומבוגרים',
   image: '/assets/images/hero-image.jpg',
