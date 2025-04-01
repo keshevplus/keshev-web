@@ -1,6 +1,6 @@
-import { LocalPageContent } from '../types/content';
+import { ContentItem } from '../types/content';
 
-export const contactPageData: LocalPageContent = {
+const contactPageData: ContentItem = {
   heading: 'יצירת קשר',
   subheading: 'צוות המומחים שלנו ישמח לעמוד לרשותכם ולסייע בכל שאלה.',
   body: [
@@ -8,7 +8,7 @@ export const contactPageData: LocalPageContent = {
       title: 'כתובת',
       description: 'רמת גן, ישראל',
       image: '/assets/images/icon.png',
-      icon: '📍',
+      icon: '🏠',
     },
     {
       title: 'טלפון',
@@ -25,5 +25,4 @@ export const contactPageData: LocalPageContent = {
   ]
 };
 
-// Add default export to match pattern used by usePageData hook
 export default contactPageData;

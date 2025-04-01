@@ -1,6 +1,6 @@
-import { LocalPageContent } from '../types/content';
+import { ContentItem } from '../types/content';
 
-export const adhdPageData: LocalPageContent = {
+export const adhdPageData: ContentItem = {
   heading: 'מהי הפרעת קשב ופעלתנות יתר?',
   subheading: 'Attention Deficit Hyperactivity Disorder',
   body: [
@@ -8,19 +8,16 @@ export const adhdPageData: LocalPageContent = {
       title: 'הפרעת קשב ופעלתנות יתר (ADHD)',
       description: 'הפרעת קשב ופעלתנות יתר היא מצב נוירולוגי המשפיע על יכולת הריכוז, השליטה העצמית וההתנהגות. היא נפוצה בקרב ילדים ומבוגרים כאחד, ויכולה להשפיע על תחומי חיים רבים, כולל למידה, עבודה ומערכות יחסים.',
       image: '/assets/images/icon.png',
-      imagePosition: 'right',
     },
     {
       title: 'מה זה ADHD?',
       description: 'הפרעת קשב ופעלתנות יתר היא מצב נוירולוגי המשפיע על יכולת הריכוז, השליטה העצמית וההתנהגות. היא נפוצה בקרב ילדים ומבוגרים כאחד, ויכולה להשפיע על תחומי חיים רבים, כולל למידה, עבודה ומערכות יחסים.',
       image: '/assets/images/icon.png',
-      imagePosition: 'right',
     },
     {
       title: 'התסמינים של ADHD',
       description: 'הפרעת קשב ופעלתנות יתר מתאפיינת בשלושה סוגי תסמינים עיקריים:',
       image: '/assets/images/icon.png',
-      imagePosition: 'right',
     },
     {
       title: 'האם יש טיפול להפרעת קשב ופעלתנות יתר?',

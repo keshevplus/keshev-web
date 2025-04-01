@@ -1,6 +1,6 @@
-import { LocalPageContent } from '../types/content';
+import { ContentItem } from '../types/content';
 
-const formsPageData: LocalPageContent = {
+const formsPageData: ContentItem = {
   heading: 'שאלונים',
   subheading: 'טפסים ושאלוני הערכה',
   body: [

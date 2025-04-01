@@ -58,7 +58,7 @@ export default function Home() {
             </p>
             <Link
               to="/contact"
-              className="bg-green-800 text-white px-8 md:px-12 py-4 md:py-5 rounded-full text-lg md:text-xl font-medium hover:bg-[#FF3333] transition-all hover:scale-105 hover:shadow-xl"
+              className="bg-green-800 text-white px-8 md:px-12 py-4 md:py-5 rounded-full text-lg md:text-xl  hover:bg-orange-400 hover:text-black font-bold transition-all hover:scale-105 hover:shadow-xl"
             >
               {pageData.ctaButtonText || 'צור קשר'}
             </Link>
