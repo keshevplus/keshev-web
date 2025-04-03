@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { PageLayout } from '../components/PageLayout';
+import PageLayout from '../components/PageLayout';
 import { usePageData } from '../hooks/usePageData';
 import { ContentItem } from '../types/content';
 import { useFormContext } from '../contexts/FormContext';
