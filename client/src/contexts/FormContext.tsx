@@ -1,4 +1,4 @@
-import React, {
+import {
   createContext,
   useContext,
   useState,
@@ -65,6 +65,18 @@ export function FormProvider({ children }: { children: ReactNode }) {
       {children}
     </FormContext.Provider>
   );
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      clearContactFormValues();
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
 }
 
 export function useFormContext() {

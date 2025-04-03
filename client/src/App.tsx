@@ -17,9 +17,7 @@ function App() {
         {/* Don't show navbar on admin pages */}
         {!isAdminPage && <Navbar />}
 
-        <BodyContent>
-          <AppRoutes />
-        </BodyContent>
+        <AppRoutes />
 
         {/* Don't show footer on admin pages */}
         {!isAdminPage && <Footer />}

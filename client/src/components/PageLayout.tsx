@@ -10,7 +10,7 @@ interface PageLayoutProps {
 export default function PageLayout({
   title,
   children,
-  maxWidth = 'md:max-w-[75%]',
+  maxWidth = 'md:max-w-[75%] lg:max-w-[90%]',
 }: PageLayoutProps) {
   return (
     <>
@@ -21,7 +21,7 @@ export default function PageLayout({
           animation: 'fadeInUp 0.8s ease-out',
         }}
       >
-        <div className={`container mx-auto px-4 ${maxWidth}`}>{children}</div>
+        <div className={`container mx-auto px-8 ${maxWidth}`}>{children}</div>
       </div>
     </>
   );

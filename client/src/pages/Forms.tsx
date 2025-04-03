@@ -31,7 +31,7 @@ export default function Forms() {
   return (
     <div className="rtl">
       <PageTitle title={pageData.heading} />
-      <BodyContent>
+      <>
         <div className="bg-white flex flex-auto items-center justify-end h-full">
           <div className="container mx-auto max-w-[95%] lg:max-w-[90%]">
             <h3 className="text-xl md:text-4xl font-bold text-black text-center mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
@@ -101,7 +101,7 @@ export default function Forms() {
             </ul>
           </div>
         </div>
-      </BodyContent>
+      </>
     </div>
   );
 }
