@@ -36,74 +36,70 @@ export default function Diagnosis() {
   return (
     <div className="rtl">
       <PageTitle title={pageData.heading} />
-      <BodyContent>
-        <div className="bg-white flex  items-center justify-end h-full">
-          <div className="container mx-auto md:max-w-[80%]">
-            {/* start content */}
+      <div className="bg-white flex  items-center justify-end h-full">
+        <div className="container mx-auto md:max-w-[80%]">
+          {/* start content */}
 
-            <div className="text-center md:text-right ">
-              <h3 className="text-2xl font-bold mb-4 ">
-                {pageData.subheading}
-              </h3>
-              <ul className="list-none space-y-0gap-4 md:gap-8">
-                {pageData.body?.map((item, index) => (
-                  <li
-                    key={index}
-                    className="bg-orange-400/40 rounded-lg shadow-md transition-all duration-300 hover:bg-orange-400/60"
-                  >
-                    <div className="flex flex-auto items-start justify-start py-2 px-2">
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-12 h-12 object-cover mx-2 rounded-full"
-                      />
-                      <div className="text-right">
-                        <p className="text-lg md:text-xl font-semibold text-green-800">
-                          {item.title}
-                        </p>
-                        <p className="text-gray-900 text-md md:text-lg">
-                          {item.description}
-                        </p>
-                      </div>
+          <div className="text-center md:text-right ">
+            <h3 className="text-2xl font-bold mb-4 ">{pageData.subheading}</h3>
+            <ul className="list-none space-y-0gap-4 md:gap-8">
+              {pageData.body?.map((item, index) => (
+                <li
+                  key={index}
+                  className="bg-orange-400/40 rounded-lg shadow-md transition-all duration-300 hover:bg-orange-400/60"
+                >
+                  <div className="flex flex-auto items-start justify-start py-2 px-2">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-12 h-12 object-cover mx-2 rounded-full"
+                    />
+                    <div className="text-right">
+                      <p className="text-lg md:text-xl font-semibold text-green-800">
+                        {item.title}
+                      </p>
+                      <p className="text-gray-900 text-md md:text-lg">
+                        {item.description}
+                      </p>
                     </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="text-center md:text-right ">
-              <p className="text-2xl  md:text-xl font-bold my-4 md:my-4">
-                {additionalData?.title}
-                {additionalData?.subtitle}
-              </p>
-              <ul className="list-none space-y-0 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-                {additionalData?.body?.map((item, index) => (
-                  <li
-                    key={index}
-                    className="bg-orange-400/40 rounded-lg shadow-md transition-all duration-300 hover:bg-orange-400/60"
-                  >
-                    <div className="flex flex-auto items-start justify-start py-2 px-2">
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-12 h-12 object-cover mx-2 rounded-full"
-                      />
-                      <div className="text-right">
-                        <p className="text-lg md:text-xl font-semibold text-green-800">
-                          {item.title}
-                        </p>
-                        <p className="text-gray-900 text-md md:text-lg">
-                          {item.description}
-                        </p>
-                      </div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            {/* end content */}
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
+          <div className="text-center md:text-right ">
+            <p className="text-2xl  md:text-xl font-bold my-4 md:my-4">
+              {additionalData?.title}
+              {additionalData?.subtitle}
+            </p>
+            <ul className="list-none space-y-0 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+              {additionalData?.body?.map((item, index) => (
+                <li
+                  key={index}
+                  className="bg-orange-400/40 rounded-lg shadow-md transition-all duration-300 hover:bg-orange-400/60"
+                >
+                  <div className="flex flex-auto items-start justify-start py-2 px-2">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-12 h-12 object-cover mx-2 rounded-full"
+                    />
+                    <div className="text-right">
+                      <p className="text-lg md:text-xl font-semibold text-green-800">
+                        {item.title}
+                      </p>
+                      <p className="text-gray-900 text-md md:text-lg">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+          {/* end content */}
         </div>
-      </BodyContent>
+      </div>
     </div>
   );
 }

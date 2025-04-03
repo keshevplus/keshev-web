@@ -22,13 +22,13 @@ export default function ADHD() {
 
   if (isLoading)
     return (
-      <div className="container mx-auto max-w-full md:max-w-[75%] py-8 loading">
+      <div className="container mx-auto max-w-full md:max-w-[85%] py-8 loading">
         <div className="animate-pulse">Loading...</div>
       </div>
     );
   if (error)
     return (
-      <div className="container mx-auto max-w-full md:max-w-[75%] py-8 error">
+      <div className="container mx-auto max-w-full md:max-w-[85%] py-8 error">
         <div className="text-red-600">Error: {error}</div>
       </div>
     );
@@ -44,9 +44,9 @@ export default function ADHD() {
   return (
     <div className="rtl">
       <PageLayout title={pageData.heading} children={undefined} />
-      <BodyContent>
-        <div className="bg-white flex items-center justify-end h-full">
-          <div className="container mx-auto px-4 sm:px-6 md:max-w-[80%] lg:max-w-[90%]">
+      <>
+        <div className="bg-white flex flex-col items-center justify-end h-full">
+          <div className="container mx-auto px-4 sm:px-6 max-w-full md:max-w-[85%] lg:max-w-[90%]">
             <div className="flex flex-col items-center justify-center">
               <div className="text-right items-start ">
                 <h2 className="md:whitespace-nowrap text-2xl md:text-3xl font-bold text-black text-center mb-2">
@@ -67,10 +67,10 @@ export default function ADHD() {
                 </p>
               </div>
               {/* Symptoms Grid Container */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full mb-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 w-full mb-4">
                 {pageData.additional?.map((item, index) => (
                   <div key={index} className="md:space-y-8 flex flex-auto">
-                    <div className="bg-orange-400/35 hover:bg-orange-400/60 rounded-2xl shadow-xl md:px-4 transition-all duration-300">
+                    <div className="bg-orange-400/35 hover:bg-orange-400/60 rounded-2xl shadow-xl px-4 py-4 sm:px-6 sm:py-6 transition-all duration-300">
                       <div className="col-span-1">
                         {/* Content for left column */}
                         <div className="p-0 text-right">
@@ -114,7 +114,7 @@ export default function ADHD() {
             </div>
           </div>
         </div>
-      </BodyContent>
+      </>
     </div>
   );
 }
