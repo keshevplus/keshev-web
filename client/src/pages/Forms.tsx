@@ -2,7 +2,6 @@ import { usePageData } from '../hooks/usePageData';
 import { ContentItem } from '../types/content';
 import PageTitle from '../components/PageTitle';
 import { useEffect } from 'react';
-import BodyContent from '../components/BodyContent';
 
 export default function Forms() {
   const { data, isLoading, error } = usePageData('forms');
