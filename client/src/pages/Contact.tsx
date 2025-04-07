@@ -15,6 +15,20 @@ export default function Contact() {
     document.documentElement.dir = 'rtl';
   }, []);
 
+  useEffect(() => {
+    // Handle dynamic import errors
+    const handleDynamicImportError = (event: Event) => {
+      console.error('Dynamic import error:', event);
+      alert('Failed to load some resources. Please try again later.');
+    };
+
+    window.addEventListener('error', handleDynamicImportError);
+
+    return () => {
+      window.removeEventListener('error', handleDynamicImportError);
+    };
+  }, []);
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -120,7 +134,11 @@ export default function Contact() {
     }
   };
 
-  if (error) return <div>Error: {error}</div>;
+  if (error) {
+    console.error('Error loading page data:', error);
+    return <div>Error loading page data. Please try again later.</div>;
+  }
+
   if (!data.length) return null;
 
   const pageData: ContentItem = data[0];
@@ -167,11 +185,13 @@ export default function Contact() {
                     required={field === 'name' || field === 'phone'}
                     className="p-4 border rounded-lg w-full peer placeholder-transparent"
                     value={
-                      contactFormValues[field as keyof typeof contactFormValues]
+                      contactFormValues?.[
+                        field as keyof typeof contactFormValues
+                      ] || ''
                     }
                     onChange={(e) =>
                       dispatch(
-                        updateContactForm({
+                        updateContactFormValues({
                           [field]: e.target.value,
                         })
                       )
@@ -185,9 +205,7 @@ export default function Contact() {
                   <label
                     htmlFor={field}
                     className={`absolute right-0 pr-4 text-green-950 text-xl transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-[-27px] peer-focus:text-green-950 peer-focus:text-xl ${
-                      reduxState.contactForm[
-                        field as keyof typeof reduxState.contactForm
-                      ]
+                      contactFormValues[field as keyof typeof contactFormValues]
                         ? 'top-[-27px] text-green-950 text-xl'
                         : 'top-4'
                     }`}
