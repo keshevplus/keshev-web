@@ -35,8 +35,26 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Serve static files from the client directory
-app.use(express.static(path.join(__dirname, "../client/dist")));
-app.use(express.static(path.join(__dirname, "../client/dist")));
+app.use(
+  express.static(path.join(__dirname, "../client/dist"), {
+    setHeaders: (res, path) => {
+      if (path.endsWith(".js")) {
+        res.setHeader("Content-Type", "application/javascript");
+      } else if (path.endsWith(".css")) {
+        res.setHeader("Content-Type", "text/css");
+      }
+    },
+  })
+);
+
+// Handle 404 for static files
+app.use((req, res, next) => {
+  if (req.path.endsWith(".js") || req.path.endsWith(".css")) {
+    console.error(`Static file not found: ${req.path}`);
+    return res.status(404).send("File not found");
+  }
+  next();
+});
 
 // Routes
 app.use("/api/auth", authRoutes);
@@ -47,9 +65,13 @@ app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "ok" });
 });
 
-// Catch-all route to serve the main index.html
+// Catch-all route to serve the main index.html for non-static file requests
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/index.html"));
+  if (req.accepts("html")) {
+    res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+  } else {
+    res.status(404).send("Not found");
+  }
 });
 
 // Error handling middleware
