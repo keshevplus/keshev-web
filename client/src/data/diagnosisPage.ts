@@ -1,9 +1,14 @@
 import { ContentItem } from '../types/content';
 
 const diagnosisPageData: ContentItem = {
-  heading: 'איך מתבצע האבחון במרפאה שלנו?',	
+  heading: 'תהליך האבחון',	
   subheading: 'במרפאתנו אנו מקפידים על תהליך אבחון יסודי ומעמיק, שכולל:',
   body: [
+    {
+      title: 'איך מתבצע האבחון במרפאה שלנו?',
+      description: 'במרפאתנו אנו מקפידים על תהליך אבחון יסודי ומעמיק, שכולל:',
+      image: '/assets/images/icon.png',
+    },
     {
       title: 'שיחה ראשונית',
       description: 'מפגש אישי עם ההורים והילד להבנת ההיסטוריה ההתפתחותית והתנהגותו.',
@@ -14,11 +19,7 @@ const diagnosisPageData: ContentItem = {
       description: 'שימוש בכלים אבחוניים בינלאומיים, כמו סולם הערכה ע"ש NICHQ Vanderbilt.',
       image: '/assets/images/icon.png',
     },
-    {
-      title: 'תצפיות ובדיקות נוספות',
-      description: 'בהתאם לצורך, אנו מבצעים תצפיות והערכות נוספות.',
-      image: '/assets/images/icon.png',
-    },
+
     {
       title: 'דו"ח אבחון מקצועי',
       description: 'תוצאות מפורטות לצד המלצות מותאמות אישית להמשך הדרך.',
@@ -45,12 +46,7 @@ additional: [
         title: 'טיפול התנהגותי',
         description: 'סיוע לילד לרכוש כלים להתמודדות יומיומית',
         image: '/assets/images/icon.png',
-      },
-      {
-        title: 'תמיכה חינוכית',
-        description: 'שיתוף פעולה עם צוותי חינוך להתאמות במסגרת הבית-ספרית.',
-        image: '/assets/images/icon.png',
-      },
+      }
     ],
   },
 ]

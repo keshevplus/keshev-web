@@ -45,8 +45,8 @@ export default function ADHD() {
     <div className="rtl">
       <PageLayout title={pageData.heading} children={undefined} />
       <>
-        <div className="bg-white flex flex-col items-center justify-end h-full">
-          <div className="container mx-auto px-4 sm:px-6 max-w-full md:max-w-[85%] lg:max-w-[90%]">
+        <div className="bg-white flex flex-auto items-center justify-center h-full">
+          <div className="container mx-auto px-4 sm:px-6 max-w-full md:max-w-[75%] lg:max-w-[70%]">
             <div className="flex flex-col items-center justify-center">
               <div className="text-right items-start ">
                 <h2 className="md:whitespace-nowrap text-2xl md:text-3xl font-bold text-black text-center mb-2">
@@ -57,13 +57,14 @@ export default function ADHD() {
                   {pageData.body[0].description}
                 </p>
               </div>
+
               {/* Symptoms Title */}
-              <div className="w-full text-right">
-                <h2 className="text-xl md:text-3xl font-bold text-black ">
-                  {pageData.body[2].title}
+              <div className="w-full text-center mb-4">
+                <h2 className="text-2xl md:text-3xl font-bold text-black  ">
+                  {pageData.body[1].title}
                 </h2>
                 <p className="text-gray-700 text-xl md:text-xl mb-2">
-                  {pageData.body[2].description}
+                  {pageData.body[1].description}
                 </p>
               </div>
               {/* Symptoms Grid Container */}
@@ -84,9 +85,9 @@ export default function ADHD() {
                             )}
 
                             {/* Title and description */}
-                            <h3 className="text-2xl md:text-2xl font-bold mx-4">
+                            <h4 className="text-3xl md:text-2xl font-bold mx-4">
                               {item.title}
-                            </h3>
+                            </h4>
                           </div>
                           <p className="text-xl md:text-lg px-2 md:px-0">
                             {item.description}
@@ -99,17 +100,31 @@ export default function ADHD() {
               </div>
               {/* Grid End */}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 text-right">
-                <h2 className="text-xl md:text-3xl font-bold text-black ">
-                  {' '}
-                  ddd
-                </h2>
-                <p className="text-gray-700 text-xl md:text-xl mb-2">
-                  {pageData.body[3].description}
-                </p>
-                <p className="text-gray-700 text-xl md:text-xl mb-2">
-                  {pageData.body[4].description}
-                </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 text-right gap-4 ">
+                {pageData.body.slice(3).map((item, index) => (
+                  <div
+                    key={index}
+                    className="bg-green-800 col-span-1  px-4 py-4 rounded-3xl  shadow-xl sm:px-6 sm:py-6 transition-all duration-300"
+                  >
+                    <div className="flex flex-row items-center">
+                      {item.image && (
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="w-12 h-12 object-cover rounded-full mx-4"
+                        />
+                      )}
+
+                      <h4 className="text-3xl md:text-4xl font-bold text-white ">
+                        {item.title}
+                      </h4>
+                    </div>
+
+                    <p className=" text-white text-xl md:text-xl mx-2">
+                      {item.description}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

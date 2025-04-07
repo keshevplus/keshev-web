@@ -2,7 +2,6 @@ import PageLayout from '../components/PageLayout';
 import { usePageData } from '../hooks/usePageData';
 import { ContentItem } from '../types/content';
 import { useEffect } from 'react';
-import BodyContent from '../components/BodyContent'; // Adjust the path as needed
 
 export default function About() {
   const { data, isLoading, error } = usePageData('about'); // Use the hook to fetch content
@@ -32,14 +31,14 @@ export default function About() {
   const pageData: ContentItem = data[0];
 
   return (
-    <div className="rtl sticky top-0">
+    <div className="rtl">
       {/* Animated background gradient */}
-      <div className="absolute inset-0 bg-gradient-radial from-green-900/80 via-green-800/70 to-green-950/90 animate-gradient-slow"></div>
+      <div className="absolute inset-0 z-[-1] bg-gradient-radial from-green-900/80 via-green-800/70 to-green-950/90 animate-gradient-slow"></div>
       {/* Background video */}
 
       <PageLayout title={pageData.heading} children={undefined} />
       <div className="bg-white flex items-center justify-end h-full">
-        <div className="container mx-auto max-w-full md:max-w-[70%] ">
+        <div className="container mx-auto max-w-full md:max-w-[70%]">
           <h2 className="text-xl md:text-4xl font-bold text-black text-center mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
             {pageData.body?.[0]?.title ?? 'No title available'}
           </h2>

@@ -1,19 +1,15 @@
 import { ContentItem } from '../types/content';
 
 export const adhdPageData: ContentItem = {
-  heading: 'מהי הפרעת קשב ופעלתנות יתר?',
+  heading: 'מהי ADHD?',
   subheading: 'Attention Deficit Hyperactivity Disorder',
   body: [
     {
-      title: 'הפרעת קשב ופעלתנות יתר (ADHD)',
+      title: 'מהי הפרעת קשב ופעלתנות יתר (ADHD)',
       description: 'הפרעת קשב ופעלתנות יתר היא מצב נוירולוגי המשפיע על יכולת הריכוז, השליטה העצמית וההתנהגות. היא נפוצה בקרב ילדים ומבוגרים כאחד, ויכולה להשפיע על תחומי חיים רבים, כולל למידה, עבודה ומערכות יחסים.',
       image: '/assets/images/icon.png',
     },
-    {
-      title: 'מה זה ADHD?',
-      description: 'הפרעת קשב ופעלתנות יתר היא מצב נוירולוגי המשפיע על יכולת הריכוז, השליטה העצמית וההתנהגות. היא נפוצה בקרב ילדים ומבוגרים כאחד, ויכולה להשפיע על תחומי חיים רבים, כולל למידה, עבודה ומערכות יחסים.',
-      image: '/assets/images/icon.png',
-    },
+
     {
       title: 'התסמינים של ADHD',
       description: 'הפרעת קשב ופעלתנות יתר מתאפיינת בשלושה סוגי תסמינים עיקריים:',
@@ -26,15 +22,13 @@ export const adhdPageData: ContentItem = {
     },
     {
       title: 'חשוב להבין',
-      description: `
-      ADHD אינה מעידה על חוסר אינטיליגנציה או יכולת. להפך, רבים מהאנשים עם ADHD מגלים יצירתיות, חשיבה ייחודית ואנרגיה גבוהה.
-      `,
-      image: '/assets/images/icon.png',
+      description: `ADHD אינה מעידה על חוסר אינטיליגנציה או יכולת. להפך, רבים מהאנשים עם ADHD מגלים יצירתיות, חשיבה ייחודית ואנרגיה גבוהה.`,
+      image: '/assets/images/plus.png',
     },
     {
       title: 'זיהוי מוקדם',
       description: 'אבחון מוקדם של ADHD יכול לסייע בהתמודדות טובה יותר עם האתגרים ובמציאת דרכים מתאימות להצלחה בלימודים ובחיים.',
-      image: '/assets/images/icon.png',
+      image: '/assets/images/plus.png',
     }
   ],
   additional:[
@@ -45,7 +39,7 @@ export const adhdPageData: ContentItem = {
     },
     {
       title: 'היפראקטיביות',
-      description: `תנועתיות מוגברת (כגון תזוזה בלתי פוסקת של רגליים או ידיי, תחושת חוסר שקט מתמדת, קושי לשבת במקום זמן ממושך, במיוחד במצבים "רשמיים" כמו בכיתה או בעבודה)`,
+      description: `תנועתיות מוגברת, כגון תזוזה בלתי פוסקת של רגליים או ידיים, תחושת חוסר שקט מתמדת, קושי לשבת במקום זמן ממושך, במיוחד במצבים "רשמיים" כמו בכיתה או בעבודה`,
       image: '/assets/images/icon.png',
     },
     {

@@ -2,7 +2,7 @@ import { ContentItem } from '../types/content';
 
 const servicesPageData: ContentItem = {
   heading: 'שירותינו במרפאה',
-  subheading: 'אנו מציעים מגוון רחב של שירותים מקצועיים בתחום אבחון וטיפול בהפרעות קשב.',
+  subheading: 'אנו מציעים מגוון רחב של שירותים מקצועיים בתחום אבחון וטיפול בהפרעות קשב',
   title: '',
   description: '',
   
