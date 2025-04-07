@@ -2,7 +2,7 @@ import { ContentItem } from '../types/content';
 
 const contactPageData: ContentItem = {
   heading: 'יצירת קשר',
-  subheading: 'השאירו את פרטיכם ונציגנו יחזור אליך בהקדם',
+  subheading: 'השאירו פרטים ואחד מנציגנו יחזור אליכם בהקדם',
   body: [
     {
       title: 'כתובת',

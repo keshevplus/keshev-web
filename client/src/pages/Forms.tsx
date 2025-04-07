@@ -32,11 +32,11 @@ export default function Forms() {
       <PageTitle title={pageData.heading} />
       <>
         <div className="bg-white flex flex-auto items-center justify-end h-full">
-          <div className="container mx-auto max-w-[95%] lg:max-w-[90%]">
+          <div className="container mx-auto max-w-[95%] lg:max-w-[80%]">
             <h3 className="text-xl md:text-4xl font-bold text-black text-center mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
               {pageData.subheading}
             </h3>
-            <ul className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 s-3 gap-4">
+            <ul className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 s-3 gap-8 items-start mb-2 md:mb-16">
               {(pageData.body ?? []).map((form, index) => (
                 <li
                   key={index}
@@ -47,15 +47,15 @@ export default function Forms() {
                       <img
                         src={form.image}
                         alt={form.title}
-                        className="w-16 h-16 object-cover ms-4"
+                        className="w-16 h-16 object-cover ms-2"
                       />
                     )}
                     <div className="flex-grow text-right">
-                      <h3 className="text-2xl md:text-xl font-bold text-black m-2">
+                      <h3 className="text-3xl md:text-2xl font-bold text-black m-2">
                         {form.title}
                       </h3>
                       {form.subtitle && (
-                        <h4 className="text-md font-semibold text-black mb-2">
+                        <h4 className="text-lg md:text-2xl font-semibold text-black mb-2">
                           {form.subtitle}
                         </h4>
                       )}

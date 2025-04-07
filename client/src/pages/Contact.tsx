@@ -127,7 +127,9 @@ export default function Contact() {
 
   return (
     <div className="rtl">
-      <PageLayout title={pageData.heading} />
+      <PageLayout title={pageData.heading} children={undefined}>
+        {/* Add meaningful content here or leave it empty if no children are needed */}
+      </PageLayout>
       <div className="bg-white flex items-center justify-end h-full">
         <div className="container mx-auto md:max-w-[80%]">
           <h3 className="text-2xl md:text-xl font-bold text-green-800 text-right mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
@@ -167,9 +169,9 @@ export default function Contact() {
                   />
                   <label
                     htmlFor={field}
-                    className={`absolute right-0 pr-4 text-green-950 text-sm transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-[-27px] peer-focus:text-green-800 peer-focus:text-sm ${
+                    className={`absolute right-0 pr-4 text-green-950 text-xl transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-[-27px] peer-focus:text-green-950 peer-focus:text-xl ${
                       contactFormValues[field as keyof typeof contactFormValues]
-                        ? 'top-[-27px] text-green-800 text-sm'
+                        ? 'top-[-27px] text-green-950 text-xl'
                         : 'top-4'
                     }`}
                   >
@@ -181,6 +183,13 @@ export default function Contact() {
                       ? 'מספר טלפון'
                       : 'הנושא'}
                   </label>
+                  <script>
+                    {`
+                      window.addEventListener('beforeunload', () => {
+                      localStorage.removeItem('contactFormValues');
+                      });
+                    `}
+                  </script>
                 </div>
               ))}
             </div>
@@ -197,7 +206,7 @@ export default function Contact() {
               ></textarea>
               <label
                 htmlFor="message"
-                className={`absolute right-0 pr-4 text-green-950 text-sm transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-[-27px] peer-focus:text-green-800 peer-focus:text-sm ${
+                className={`absolute right-0 pr-4 text-green-950 text-xl transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-[-27px] peer-focus:text-green-800 peer-focus:text-xl ${
                   contactFormValues.message
                     ? 'top-[-27px] text-green-800 text-sm'
                     : 'top-4'
@@ -223,6 +232,12 @@ export default function Contact() {
                 </button>
               </div>
             </div>
+            <h4
+              id="form-error-message"
+              className="text-red-600 text-lg mt-4 hidden"
+            >
+              אירעה שגיאה בעת שליחת הטופס. אנא נסה שוב.
+            </h4>
           </form>
 
           <ul className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
