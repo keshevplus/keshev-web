@@ -30,13 +30,13 @@ export default function PageTitle({ title }: { title: string }) {
     <div className="my-auto text-center lg:text-nowrap py-2 lg:py-4">
       <h1
         id="page-title"
-        className={`font-bold md:text-4xl text-3xl transition-all duration-1000 ease-in-out z-[10] ${
+        className={`${
           animate
             ? isScrolled
               ? 'bg-gradient-to-b from-green-800 to-green-950 text-white opacity-100 py-1'
               : 'text-green-800 bg-white opacity-50'
             : 'bg-gradient-to-b from-green-800 to-green-950 text-white opacity-100 py-1'
-        } ${isScrolled ? 'text-white ' : 'text-green-800 '} ${
+        } ${isScrolled ? 'text-white' : 'text-green-800'} ${
           isSticky ? 'fixed top-[90px] w-full px-4' : 'md:text-lg'
         }`}
       >
