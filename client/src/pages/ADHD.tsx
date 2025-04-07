@@ -37,7 +37,11 @@ export default function ADHD() {
   const pageData = data[0] as {
     heading: string;
     subheading: string;
-    body: { title: string; description: string }[];
+    body: {
+      image: any;
+      title: string;
+      description: string;
+    }[];
     additional?: AdditionalItem[];
   };
 

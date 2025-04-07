@@ -125,6 +125,15 @@ export default function Contact() {
 
   const pageData: ContentItem = data[0];
 
+  function dispatch(action: any): void {
+    if (typeof action === 'function') {
+      action();
+    } else if (typeof action === 'object' && action !== null) {
+      updateContactFormValues(action);
+    } else {
+      console.error('Invalid action dispatched:', action);
+    }
+  }
   return (
     <div className="rtl">
       <PageLayout title={pageData.heading} children={undefined}>
@@ -160,7 +169,13 @@ export default function Contact() {
                     value={
                       contactFormValues[field as keyof typeof contactFormValues]
                     }
-                    onChange={handleInputChange}
+                    onChange={(e) =>
+                      dispatch(
+                        updateContactForm({
+                          [field]: e.target.value,
+                        })
+                      )
+                    }
                     data-has-value={
                       contactFormValues[field as keyof typeof contactFormValues]
                         ? 'true'
@@ -170,7 +185,9 @@ export default function Contact() {
                   <label
                     htmlFor={field}
                     className={`absolute right-0 pr-4 text-green-950 text-xl transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-[-27px] peer-focus:text-green-950 peer-focus:text-xl ${
-                      contactFormValues[field as keyof typeof contactFormValues]
+                      reduxState.contactForm[
+                        field as keyof typeof reduxState.contactForm
+                      ]
                         ? 'top-[-27px] text-green-950 text-xl'
                         : 'top-4'
                     }`}
@@ -185,10 +202,10 @@ export default function Contact() {
                   </label>
                   <script>
                     {`
-                      window.addEventListener('beforeunload', () => {
-                      localStorage.removeItem('contactFormValues');
-                      });
-                    `}
+                    window.addEventListener('beforeunload', () => {
+                    localStorage.removeItem('contactFormValues');
+                    });
+                  `}
                   </script>
                 </div>
               ))}
