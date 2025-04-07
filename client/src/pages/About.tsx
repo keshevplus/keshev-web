@@ -44,7 +44,7 @@ export default function About() {
           </h2>
 
           {/* Main content section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start mb-0 md:mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start mb-0 md:mb-8">
             {pageData.body?.[0]?.image && (
               <div className="order-2 md:order-2 flex justify-center">
                 <figure className="flex flex-col items-center">
@@ -57,9 +57,6 @@ export default function About() {
               </div>
             )}
             <div className="order-1 md:order-1 text-right">
-              <h2 className="text-2xl md:text-4xl font-bold text-green-800 mb-6">
-                {pageData.body?.[1]?.title ?? 'No title available'}
-              </h2>
               {/* Additional content */}
               {pageData.body?.slice(1)?.map(
                 (
