@@ -25,6 +25,22 @@ const diagnosisPageData: ContentItem = {
       description: 'תוצאות מפורטות לצד המלצות מותאמות אישית להמשך הדרך.',
       image: '/assets/images/icon.png',
     },
+    {
+      title: 'שיחה ראשונית',
+      description: 'מפגש אישי עם ההורים והילד להבנת ההיסטוריה ההתפתחותית והתנהגותו.',
+      image: '/assets/images/plus.png',
+    },
+    {
+      title: 'שאלונים מובנים',
+      description: 'שימוש בכלים אבחוניים בינלאומיים, כמו סולם הערכה ע"ש NICHQ Vanderbilt.',
+      image: '/assets/images/plus.png',
+    },
+
+    {
+      title: 'דו"ח אבחון מקצועי',
+      description: 'תוצאות מפורטות לצד המלצות מותאמות אישית להמשך הדרך.',
+      image: '/assets/images/plus.png',
+    },
   ],
 additional: [
   {

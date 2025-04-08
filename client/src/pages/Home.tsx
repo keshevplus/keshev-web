@@ -36,29 +36,29 @@ export default function Home() {
             <source src="/assets/images/bgvideo.mp4" type="video/mp4" />
             {/* <source src="/assets/images/formulas.mp4" type="video/mp4" /> */}
           </video>
-          <div className="absolute inset-0 bg-orange-400 opacity-10 z-[2]"></div>
+          <div className="absolute inset-0 bg-white opacity-50 z-[2]"></div>
         </div>
 
         {/* Content */}
 
         <div className="relative z-10">
-          <div className="container mx-auto px-4 h-screen flex flex-col justify-center items-center text-center">
+          <div className="container mx-auto px-4 h-screen flex flex-col justify-start items-center text-center mb-0">
             <Link
               to="/"
-              className="flex items-center mb-8 hover:scale-105 transition-transform duration-300"
+              className="flex items-center mb-8 hover:scale-105 transition-transform duration-300 py-6"
             >
               <img
                 src="/assets/images/logo.png"
                 alt="קשב פלוס"
-                className="h-80 w-auto"
+                className="h-60 w-auto "
               />
             </Link>
-            <p className="text-3xl md:text-5xl text-black mb-12 max-w-2xl">
+            <p className="text-3xl md:text-5xl text-black  max-w-2xl">
               {pageData.heroText}
             </p>
             <Link
               to="/contact"
-              className="bg-green-800 text-white px-8 md:px-12 py-4 md:py-5 rounded-full text-lg md:text-xl  hover:bg-orange-400 hover:text-black font-bold transition-all hover:scale-105 hover:shadow-xl"
+              className="bg-green-800 text-white px-8 md:px-12 py-4 md:py-5 my-16 rounded-full text-lg md:text-xl  hover:bg-orange-400 hover:text-black font-bold transition-all hover:scale-105 hover:shadow-xl"
             >
               {pageData.ctaButtonText || 'צור קשר'}
             </Link>
