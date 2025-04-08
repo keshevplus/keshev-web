@@ -10,11 +10,9 @@ export default function PageTitle({ title }: { title: string }) {
   useEffect(() => {
     const timeout = setTimeout(() => setAnimate(true), 500); // Start animation after 500ms
     const handleScroll = () => {
-      if (window.scrollY > 300) {
-        setAnimate(true);
+      if (window.scrollY > 0) {
         setIsSticky(true);
       } else {
-        setAnimate(false);
         setIsSticky(false);
       }
     };
@@ -27,18 +25,12 @@ export default function PageTitle({ title }: { title: string }) {
   }, []);
 
   return (
-    <div className="my-auto text-center lg:text-nowrap py-2 lg:py-4">
+    <div className="my-auto text-center lg:text-nowrap font-bold mb-8">
       <h1
         id="page-title"
-        className={`${
-          animate
-            ? isScrolled
-              ? 'bg-gradient-to-b from-green-800 to-green-950 text-white opacity-100 py-1'
-              : 'text-green-800 bg-white opacity-50'
-            : 'bg-gradient-to-b from-green-800 to-green-950 text-white opacity-100 py-1'
-        } ${isScrolled ? 'text-white' : 'text-green-800'} ${
-          isSticky ? 'fixed top-[90px] w-full px-4' : 'md:text-lg'
-        }`}
+        className={`md:text-3xl lg:text-4xl bg-gradient-to-b from-green-800 to-green-950 text-white opacity-100 transition-all duration-500 ${
+          animate ? (isScrolled ? 'py-1' : 'py-8') : 'py-1'
+        } ${isSticky ? 'fixed top-[70px] w-full px-4' : 'md:text-lg'}`}
       >
         {title}
       </h1>

@@ -1,7 +1,7 @@
 import { usePageData } from '../hooks/usePageData';
 import PageLayout from '../components/PageLayout';
 import { useEffect } from 'react';
-import BodyContent from '../components/BodyContent'; // Adjust the path as needed
+import Card from '../components/Card'; // Adjusted the path to match the correct location
 
 // Define the type for the additional items
 interface AdditionalItem {
@@ -64,9 +64,9 @@ export default function ADHD() {
 
               {/* Symptoms Title */}
               <div className="w-full text-center mb-4">
-                <h2 className="text-2xl md:text-3xl font-bold text-black  ">
+                <h4 className="text-4xl md:text-3xl font-bold text-black  ">
                   {pageData.body[1].title}
-                </h2>
+                </h4>
                 <p className="text-gray-700 text-xl md:text-xl mb-2">
                   {pageData.body[1].description}
                 </p>
@@ -74,60 +74,30 @@ export default function ADHD() {
               {/* Symptoms Grid Container */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 w-full mb-4">
                 {pageData.additional?.map((item, index) => (
-                  <div key={index} className="md:space-y-8 flex flex-auto">
-                    <div className="bg-orange-400/35 hover:bg-orange-400/60 rounded-2xl shadow-xl px-4 py-4 sm:px-6 sm:py-6 transition-all duration-300">
-                      <div className="col-span-1">
-                        {/* Content for left column */}
-                        <div className="p-0 text-right">
-                          <div className="flex flex-row items-center">
-                            {item.image && (
-                              <img
-                                src={item.image}
-                                alt={item.title}
-                                className="w-12 h-12 object-cover rounded-full"
-                              />
-                            )}
-
-                            {/* Title and description */}
-                            <h4 className="text-3xl md:text-2xl font-bold mx-4">
-                              {item.title}
-                            </h4>
-                          </div>
-                          <p className="text-xl md:text-lg px-2 md:px-0">
-                            {item.description}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <Card
+                    key={index}
+                    bgcolor="bg-orange-400/35 hover:bg-orange-400/60"
+                    textColor="text-black font-bold"
+                    textSize="text-3xl md:text-3xl"
+                    title={item.title}
+                    description={item.description}
+                    image={item.image}
+                  />
                 ))}
               </div>
               {/* Grid End */}
 
               <div className="grid grid-cols-1 md:grid-cols-2 text-right gap-4 ">
                 {pageData.body.slice(3).map((item, index) => (
-                  <div
+                  <Card
                     key={index}
-                    className="bg-green-800 col-span-1  px-4 py-4 rounded-3xl  shadow-xl sm:px-6 sm:py-6 transition-all duration-300"
-                  >
-                    <div className="flex flex-row items-center">
-                      {item.image && (
-                        <img
-                          src={item.image}
-                          alt={item.title}
-                          className="w-12 h-12 object-cover rounded-full mx-4"
-                        />
-                      )}
-
-                      <h4 className="text-3xl md:text-4xl font-bold text-white ">
-                        {item.title}
-                      </h4>
-                    </div>
-
-                    <p className=" text-white text-xl md:text-xl mx-2">
-                      {item.description}
-                    </p>
-                  </div>
+                    bgcolor="bg-green-800"
+                    textColor="text-white"
+                    textSize="text-xl md:text-3xl"
+                    title={item.title}
+                    description={item.description}
+                    image={item.image}
+                  />
                 ))}
               </div>
             </div>

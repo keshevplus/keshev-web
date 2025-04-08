@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import Card from './Card'; // Import the Card component
 
 export default function Footer() {
   return (
@@ -13,6 +14,14 @@ export default function Footer() {
               רופאה מומחית לאבחון וטיפול בהפרעות קשב ופעלתנות יתר (ADHD/ADD)
               בילדים, בנוער ובמבוגרים. בעלת ניסיון רב בתחום והסמכה לאבחון וטיפול
               בהפרעות קשב ופעלתנות יתר של משרד הבריאות
+            </p>
+            <p className="mt-4">
+              <Link
+                to="/admin"
+                className="text-black hover:text-green-800 text-sm md:text-base"
+              >
+                Admin CMS Login
+              </Link>
             </p>
           </div>
           <div className="mt-4 sm:mt-0">
@@ -49,30 +58,22 @@ export default function Footer() {
             </ul>
           </div>
           <div className="mt-4 sm:mt-0">
-            <h4 className="text-md md:text-lg font-semibold mb-3 md:mb-4">
-              Services
-            </h4>
-            <ul className="space-y-1 md:space-y-2 text-sm md:text-base">
-              <li>
-                <Link to="/adhd" className="text-black  hover:text-green-800">
-                  מהי ADHD?
-                </Link>
-              </li>
-              <li className="text-black ">Maintenance</li>
-              <li className="text-black ">Detailing</li>
-              <li className="text-black ">Diagnostics</li>
-            </ul>
+            <Card
+              bgcolor="bg-orange-400/35"
+              textColor="text-black"
+              textSize="text-md md:text-lg"
+              title="Services"
+              description="Maintenance, Detailing, Diagnostics"
+            />
           </div>
           <div className="mt-4 sm:mt-0">
-            <h4 className="text-md md:text-lg font-semibold mb-3 md:mb-4">
-              Contact
-            </h4>
-            <ul className="space-y-1 md:space-y-2 text-sm md:text-base text-black ">
-              <li>רמת גן</li>
-              <li>ישראל</li>
-              <li>054-4777469</li>
-              <li>dr@keshevplus.co.il</li>
-            </ul>
+            <Card
+              bgcolor="bg-orange-400/35"
+              textColor="text-black"
+              textSize="text-md md:text-lg"
+              title="Contact"
+              description="Ramat Gan, Israel, 054-4777469, dr@keshevplus.co.il"
+            />
           </div>
         </div>
         <div className="border-t border-gray-800 mt-6 md:mt-8 pt-6 md:pt-8 text-center text-black ">

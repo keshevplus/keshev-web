@@ -1,4 +1,5 @@
 import PageLayout from '../components/PageLayout';
+import VideoBG from '../components/VideoBG';
 import { usePageData } from '../hooks/usePageData';
 import { ContentItem } from '../types/content';
 import { useEffect } from 'react';
@@ -34,7 +35,6 @@ export default function About() {
     <div className="rtl">
       {/* Animated background gradient */}
       <div className="absolute inset-0 z-[-1] bg-gradient-radial from-green-900/80 via-green-800/70 to-green-950/90 animate-gradient-slow"></div>
-      {/* Background video */}
 
       <PageLayout title={pageData.heading} children={undefined} />
       <div className="bg-white flex items-center justify-end h-full">
@@ -71,12 +71,12 @@ export default function About() {
                   index: number
                 ) => (
                   <div key={index} className="mt-4">
-                    <p className="text-gray-700 text-xl md:text-2xl leading-relaxed">
-                      <span className="block md:hidden text-green-800 font-semibold text-lg mb-2">
-                        {item.title ?? 'Untitled'}
+                    <h3 className="text-gray-700 text-xl md:text-2xl leading-relaxed">
+                      <span className="block text-green-800 font-semibold mb-2">
+                        {item.title}
                       </span>
-                      {item.description ?? 'No description available'}
-                    </p>
+                      {item.description}
+                    </h3>
                   </div>
                 )
               ) ?? null}

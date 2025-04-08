@@ -2,6 +2,7 @@ import { usePageData } from '../hooks/usePageData';
 import PageTitle from '../components/PageTitle';
 
 import { useEffect } from 'react';
+import Card from '../components/Card';
 
 // Define the ContentItem type
 type ContentItem = {
@@ -45,7 +46,7 @@ export default function Diagnosis() {
     <div className="rtl">
       <PageTitle title={pageData.heading} />
       <div className="items-center justify-center h-full ">
-        <div className="container mx-auto md:max-w-[80%] lg:max-w-[70%] px-4 sm:px-6">
+        <div className="container mx-auto md:max-w-[90%] lg:max-w-[70%] px-4 sm:px-6">
           {/* start content */}
           <div className="text-center md:text-center ">
             <h3 className="md:text-3xl font-bold mb-4 ">
@@ -60,7 +61,7 @@ export default function Diagnosis() {
                 <h4 className="md:text-2xl text-2xl">מבוגרים</h4>
 
                 <ul className="list-none space-y-4">
-                  {pageData.body?.slice(1)?.map((item, index) => (
+                  {pageData.body?.slice(1, 4)?.map((item, index) => (
                     <li
                       key={index}
                       className="bg-orange-400/40 rounded-lg shadow-md transition-all duration-300 hover:bg-orange-400/60"
@@ -81,6 +82,43 @@ export default function Diagnosis() {
                         </div>
                       </div>
                     </li>
+                  ))}
+                </ul>
+                {/* מבוגרים */}
+
+                <ul className="list-none space-y-4">
+                  {pageData.body?.slice(4, 7)?.map((item, index) => (
+                    <Card
+                      bgcolor={'bg-green-800'}
+                      textColor={'text-white'}
+                      textSize={'text-xl md:text-2xl'}
+                      title={item.title}
+                      description={item.description}
+                      key={index}
+                      // image={item.image}
+                      image={item.image}
+                    >
+                      <li
+                        key={index}
+                        className="bg-orange-400/40 rounded-lg shadow-md transition-all duration-300 hover:bg-orange-400/60"
+                      >
+                        <div className="flex flex-auto items-start justify-start py-2 px-2">
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            className="w-12 h-12 object-cover mx-2 rounded-full"
+                          />
+                          <div className="text-right">
+                            <p className="text-lg md:text-xl font-semibold text-green-800 mt-1">
+                              {item.image}
+                            </p>
+                            <p className="text-gray-900 text-md md:text-lg">
+                              {item.description}
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    </Card>
                   ))}
                 </ul>
               </div>

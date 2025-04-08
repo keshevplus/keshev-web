@@ -40,41 +40,40 @@ export default function Navbar() {
   return (
     <nav
       className={`sticky top-0 left-0 z-[50] bg-white/80 backdrop-blur-sm transition-all duration-300 ${
-        isHomePage ? 'py-0' : 'py-0'
-      }${isScrolled ? 'mt-1 py-0 shadow-md' : ' mt-8'}${
-        isScrolled && isHomePage ? 'bg-white/80' : ''
-      }`}
+        isScrolled ? 'mt-2 py-0 shadow-md' : ' mt-6'
+      }
+`}
     >
       <div className="container mx-auto px-4 max-w-3xl">
         <div
           className={`flex flex-auto items-center ${
             isHomePage ? 'justify-between' : 'justify-end'
-          } ${isScrolled ? 'mt-4' : 'mt-8'}`}
+          } ${isScrolled ? 'mt-6' : 'mt-2'}`}
         >
           {/* Logo - visible on all pages */}
-          <Link to="/" className="flex items-center">
+          <Link to="/" className="flex items-center flex-auto justify-self-end">
             <img
               src="\assets\images\logo.png"
               alt="קשב"
-              className={`z-50 left-0 right-0 ml-48 ${
-                isHomePage && isScrolled
-                  ? 'w-40 scale-80'
-                  : isHomePage && !isScrolled
-                  ? 'w-0 scale-80'
-                  : 'w-40 scale-80'
-              } hover:opacity-80 hover:scale-120 transform transition-transform duration-300 ease-in-out`}
+              className={`z-50 left-0 right-0 py-2 ${
+                isScrolled && !isHomePage
+                  ? 'w-40 scale-100'
+                  : !isScrolled && isHomePage
+                  ? 'w-0 scale-100'
+                  : 'w-60 scale-95'
+              } hover:opacity-80 hover:scale-105 transform transition-transform duration-300 ease-in-out`}
             />
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex text-nowrap ">
+          <div className="hidden lg:flex text-nowrap justify-center items-center w-full">
             {navItems
               .filter((item) => !item.mobileOnly)
               .map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`text-xl mx-1 px-4 py-2 rounded-lg mb-2 transition-all duration-200 ${
+                  className={`text-xl mx-1 px-4 py-1 rounded-lg transition-all duration-200 ${
                     isActive(item.path)
                       ? 'bg-green-800 text-white'
                       : 'text-black hover:bg-green-800/90 hover:text-white'
