@@ -1,7 +1,7 @@
 import { usePageData } from '../hooks/usePageData';
 import PageLayout from '../components/PageLayout';
 import { useEffect } from 'react';
-import Card from '../components/Card'; // Adjusted the path to match the correct location
+import Card from '../components/ui/Card'; // Adjusted the path to match the correct location
 
 // Define the type for the additional items
 interface AdditionalItem {

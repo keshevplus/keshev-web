@@ -4,7 +4,7 @@ import Footer from './components/Footer';
 // import BodyContent from './components/BodyContent';
 import { AuthProvider } from './contexts/AuthContext';
 import { useLocation } from 'react-router-dom';
-import ScrollToTop from './components/ScrollToTop';
+import ScrollToTop from './components/ui/ScrollToTop';
 import { Provider } from 'react-redux';
 import store from './store/store';
 

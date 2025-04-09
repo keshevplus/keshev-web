@@ -1,5 +1,5 @@
 import { usePageData } from '../hooks/usePageData';
-import PageTitle from '../components/PageTitle';
+import PageTitle from '../components/ui/PageTitle';
 import { useEffect } from 'react';
 
 export default function Services() {

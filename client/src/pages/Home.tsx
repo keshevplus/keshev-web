@@ -99,17 +99,17 @@ export default function Home() {
       </div>
 
       {/* Contact CTA */}
-      <div className="py-16 md:py-24 bg-green-800">
+      <div className="py-4 md:py-24 bg-green-800">
         <div className="container mx-auto px-4 text-center md:max-w-[70%]">
           <h2 className="text-4xl font-bold text-white mb-6">
             {pageData.ctaHeading}
           </h2>
-          <p className="text-xl text-white/90 mb-12 max-w-2xl mx-auto">
+          <p className="text-lg text-white/90 mb-12 max-w-2xl mx-auto">
             {pageData.ctaSubheading}
           </p>
           <Link
             to="/contact"
-            className="inline-block bg-white text-green-800 px-12 py-5 rounded-full text-xl font-medium hover:bg-gray-100 transition-all duration-300 hover:scale-105 hover:shadow-xl"
+            className="inline-block bg-white text-green-800 px-12 md:py-0 rounded-full text-xl font-medium hover:bg-gray-100 transition-all duration-300 hover:scale-105 hover:shadow-xl"
           >
             {pageData.ctaButtonText || 'צור קשר'}
           </Link>

@@ -17,8 +17,8 @@ const homePageData: HomePageContent = {
       icon: '🔍',
     },
     {
-      title: 'טיפול פסיכולוגי',
-      description: 'טיפול פסיכולוגי פרטני ומשפחתי',
+      title: 'טיפול מותאם',
+      description: 'טיפול תרופתי מותאם למטופל, יחד עם שיתוף עפ פסיכולוגי פרטני ומשפחתי',
       icon: '💭',
     },
     {

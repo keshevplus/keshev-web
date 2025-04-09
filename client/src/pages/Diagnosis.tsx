@@ -1,8 +1,8 @@
 import { usePageData } from '../hooks/usePageData';
-import PageTitle from '../components/PageTitle';
+import PageTitle from '../components/ui/PageTitle';
 
 import { useEffect } from 'react';
-import Card from '../components/Card';
+import Card from '../components/ui/Card';
 
 // Define the ContentItem type
 type ContentItem = {

@@ -1,6 +1,6 @@
 import { usePageData } from '../hooks/usePageData';
 import { ContentItem } from '../types/content';
-import PageTitle from '../components/PageTitle';
+import PageTitle from '../components/ui/PageTitle';
 import { useEffect } from 'react';
 
 export default function Forms() {
