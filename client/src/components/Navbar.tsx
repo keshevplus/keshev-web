@@ -105,9 +105,10 @@ export default function Navbar() {
 
       {/* Mobile Navigation */}
       <div
-        className={`lg:hidden fixed left-0 right-0 ${
-          isHomePage ? 'top-[0px]' : 'top-[95px]'
-        } z-3 transition-all duration-300 ease-in-out transform 
+        className={`lg:hidden fixed left-0 right-0  ${
+          isHomePage ? 'top-[0px]' : 'top-[0px]'
+        }
+         z-3 transition-all duration-300 ease-in-out transform 
       bg-green-800/95 ${
         isMenuOpen
           ? 'translate-y-0 opacity-100 relative'
