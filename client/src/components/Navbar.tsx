@@ -59,8 +59,8 @@ export default function Navbar() {
                 isScrolled && !isHomePage
                   ? 'w-40 scale-100'
                   : !isScrolled && isHomePage
-                  ? 'w-0 scale-100'
-                  : 'w-60 scale-95'
+                  ? 'w-40 invisible scale-100'
+                  : 'w-40 scale-95'
               } hover:opacity-80 hover:scale-105 transform transition-transform duration-300 ease-in-out`}
             />
           </Link>
@@ -106,11 +106,11 @@ export default function Navbar() {
       {/* Mobile Navigation */}
       <div
         className={`lg:hidden fixed left-0 right-0 ${
-          isHomePage ? 'top-[80px]' : 'top-[95px]'
+          isHomePage ? 'top-[0px]' : 'top-[95px]'
         } z-3 transition-all duration-300 ease-in-out transform 
       bg-green-800/95 ${
         isMenuOpen
-          ? 'translate-y-0 opacity-100 fixed top-0'
+          ? 'translate-y-0 opacity-100 relative'
           : 'translate-y-full opacity-0 pointer-events-none'
       }`}
       >

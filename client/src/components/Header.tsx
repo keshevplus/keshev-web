@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { PhoneIcon } from './PhoneIcon';
+import { PhoneIcon } from './ui/PhoneIcon';
 
 export default function Header() {
   const location = useLocation();

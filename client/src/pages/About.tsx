@@ -1,5 +1,5 @@
 import PageLayout from '../components/PageLayout';
-import VideoBG from '../components/VideoBG';
+import VideoBG from '../components/ui/VideoBG';
 import { usePageData } from '../hooks/usePageData';
 import { ContentItem } from '../types/content';
 import { useEffect } from 'react';

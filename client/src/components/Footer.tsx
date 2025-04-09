@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Card from './Card'; // Import the Card component
+import Card from './ui/Card'; // Import the Card component
 
 export default function Footer() {
   return (
