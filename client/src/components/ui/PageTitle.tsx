@@ -29,8 +29,12 @@ export default function PageTitle({ title }: { title: string }) {
       <h1
         id="page-title"
         className={`md:text-3xl lg:text-4xl bg-gradient-to-b from-green-800 to-green-950 text-white opacity-100 transition-all duration-500 ${
-          animate ? (isScrolled ? 'py-1' : 'py-8') : 'py-1'
-        } ${isSticky ? 'fixed top-[70px] w-full px-4' : 'md:text-lg'}`}
+          animate ? (isScrolled ? 'py-1' : 'py-12') : 'py-1'
+        } ${
+          isSticky
+            ? 'fixed md:top-[90px] top-[107px] w-full px-4'
+            : 'md:text-lg'
+        }`}
       >
         {title}
       </h1>
