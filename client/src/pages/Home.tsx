@@ -24,10 +24,10 @@ export default function Home() {
         {/* Animated background gradient */}
         <div className="absolute inset-0 bg-gradient-radial from-green-900/80 via-green-800/70 to-green-950/90 animate-gradient-slow"></div>
 
-        {/* Background video */}
+        {/* START  Background video */}
         <div className="w-full h-full z-10">
           <video
-            className="absolute inset-0 w-full h-full object-cover z-[1] opacity-70"
+            className="absolute inset-0 w-full h-full object-cover z-[1] opacity-100"
             autoPlay
             loop
             muted
@@ -36,8 +36,9 @@ export default function Home() {
             <source src="/assets/images/bgvideo.mp4" type="video/mp4" />
             {/* <source src="/assets/images/formulas.mp4" type="video/mp4" /> */}
           </video>
-          <div className="absolute inset-0 bg-white opacity-50 z-[2]"></div>
+          <div className="absolute inset-0 bg-white opacity-40 z-[2]"></div>
         </div>
+        {/* END  Background video */}
 
         {/* Content */}
 

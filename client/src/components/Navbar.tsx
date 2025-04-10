@@ -8,6 +8,7 @@ import {
   setIsHomePage,
 } from '../store/sharedStateSlice';
 import { useEffect } from 'react';
+import VideoBG from './ui/VideoBG';
 
 export default function Navbar() {
   const dispatch = useDispatch();
@@ -40,10 +41,11 @@ export default function Navbar() {
   return (
     <nav
       className={`sticky top-0 left-0 z-[50] bg-white/80 backdrop-blur-sm transition-all duration-300 ${
-        isScrolled ? 'mt-2 py-0 shadow-md' : ' mt-6'
+        isScrolled ? 'mt-2 py-0 shadow-md' : ' pt-6'
       }
 `}
     >
+      {!isHomePage ? <VideoBG /> : ''}
       <div className="container mx-auto px-4 max-w-3xl">
         <div
           className={`flex flex-auto items-center ${
@@ -56,12 +58,16 @@ export default function Navbar() {
               src="\assets\images\logo.png"
               alt="קשב"
               className={`z-50 left-0 right-0 py-2 ${
-                isScrolled && !isHomePage
-                  ? 'w-40 scale-100'
-                  : !isScrolled && isHomePage
-                  ? 'w-40 invisible scale-100'
-                  : 'w-40 scale-95'
-              } hover:opacity-80 hover:scale-105 transform transition-transform duration-300 ease-in-out`}
+                isHomePage && isMenuOpen && !isScrolled
+                  ? 'visible w-40 scale-100'
+                  : isHomePage && isScrolled
+                  ? 'visible w-40 scale-100'
+                  : isHomePage && !isScrolled
+                  ? 'w-40 invisible md:scale-110'
+                  : !isHomePage && !isScrolled
+                  ? 'visible w-40 scale-125'
+                  : 'w-40 visible scale-110'
+              } hover:opacity-80 hover:scale-125 transform transition-transform duration-300 ease-in-out`}
             />
           </Link>
 
@@ -102,7 +108,6 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-
       {/* Mobile Navigation */}
       <div
         className={`lg:hidden fixed left-0 right-0  ${
