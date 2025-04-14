@@ -1,33 +1,37 @@
-import { Link, useLocation } from 'react-router-dom';
-import { IoMenu, IoClose } from 'react-icons/io5';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store/store';
+// Importing necessary libraries and components
+import { Link, useLocation } from 'react-router-dom'; // For navigation and location tracking
+import { IoMenu, IoClose } from 'react-icons/io5'; // Icons for menu toggle
+import { useDispatch, useSelector } from 'react-redux'; // Redux hooks for state management
+import { RootState } from '../store/store'; // Root state type for Redux
 import {
   setIsMenuOpen,
   setIsScrolled,
   setIsHomePage,
-} from '../store/sharedStateSlice';
-import { useEffect } from 'react';
-import VideoBG from './ui/VideoBG';
+} from '../store/sharedStateSlice'; // Redux actions for shared state
+import { useEffect } from 'react'; // React hook for side effects
+import VideoBG from './ui/VideoBG'; // Background video component
 
 export default function Navbar() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); // Dispatch function for Redux actions
   const { isHomePage, isScrolled, isMenuOpen } = useSelector(
-    (state: RootState) => state.sharedState
+    (state: RootState) => state.sharedState // Selecting shared state from Redux store
   );
-  const location = useLocation();
+  const location = useLocation(); // Current location object from React Router
 
+  // Effect to update state based on scroll position and current route
   useEffect(() => {
-    dispatch(setIsHomePage(location.pathname === '/'));
+    dispatch(setIsHomePage(location.pathname === '/')); // Check if the current page is the homepage
     const handleScroll = () => {
-      dispatch(setIsScrolled(window.scrollY > 200));
+      dispatch(setIsScrolled(window.scrollY > 200)); // Update scroll state if scrolled more than 200px
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll); // Add scroll event listener
+    return () => window.removeEventListener('scroll', handleScroll); // Cleanup on unmount
   }, [location.pathname, dispatch]);
 
+  // Function to check if a navigation item is active
   const isActive = (path: string) => location.pathname === path;
 
+  // Navigation items for the navbar
   const navItems = [
     { path: '/', text: 'בית', mobileOnly: true },
     { path: '/about', text: 'אודותינו' },
@@ -42,9 +46,9 @@ export default function Navbar() {
     <nav
       className={`sticky top-0 left-0 z-[50] bg-white/80 backdrop-blur-sm transition-all duration-300 ${
         isScrolled ? 'mt-2 py-0 shadow-md' : ' pt-6'
-      }
-`}
+      }`}
     >
+      {/* Conditionally render background video for non-home pages */}
       {!isHomePage ? <VideoBG /> : ''}
       <div className="container mx-auto px-4 max-w-3xl">
         <div
@@ -74,15 +78,15 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex text-nowrap justify-center items-center w-full">
             {navItems
-              .filter((item) => !item.mobileOnly)
+              .filter((item) => !item.mobileOnly) // Exclude mobile-only items
               .map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`text-xl mx-1 px-4 py-1 rounded-lg transition-all duration-200 ${
+                  className={`text-xl mx-1 px-4 py-1 rounded-lg transition-all duration-200 font-semibold ${
                     isActive(item.path)
                       ? 'bg-green-800 text-white'
-                      : 'text-black hover:bg-green-800/90 hover:text-white'
+                      : 'text-green-600 hover:bg-green-800/90 hover:text-white'
                   }`}
                 >
                   {item.text}
@@ -102,18 +106,18 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <button
             className="lg:hidden text-black p-8"
-            onClick={() => dispatch(setIsMenuOpen(!isMenuOpen))}
+            onClick={() => dispatch(setIsMenuOpen(!isMenuOpen))} // Toggle menu state
           >
             {isMenuOpen ? <IoClose size={24} /> : <IoMenu size={24} />}
           </button>
         </div>
       </div>
+
       {/* Mobile Navigation */}
       <div
-        className={`lg:hidden fixed left-0 right-0  ${
+        className={`lg:hidden fixed left-0 right-0 ${
           isHomePage ? 'top-[0px]' : 'top-[0px]'
-        }
-         z-3 transition-all duration-300 ease-in-out transform 
+        } z-3 transition-all duration-300 ease-in-out transform 
       bg-green-800/95 ${
         isMenuOpen
           ? 'translate-y-0 opacity-100 relative'
@@ -129,7 +133,7 @@ export default function Navbar() {
                 className={`text-white text-4xl font-bold hover:text-orange-400 transition-colors px-3 py-2 ${
                   isActive(item.path) ? 'text-[orange-400]' : ''
                 }`}
-                onClick={() => dispatch(setIsMenuOpen(false))}
+                onClick={() => dispatch(setIsMenuOpen(false))} // Close menu on navigation
               >
                 {item.text}
               </Link>
