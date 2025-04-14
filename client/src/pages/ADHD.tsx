@@ -49,7 +49,7 @@ export default function ADHD() {
     <div className="rtl">
       <PageLayout title={pageData.heading} children={undefined} />
       <>
-        <div className="bg-white flex flex-auto items-center justify-center h-full">
+        <div className="bg-white flex flex-auto items-start justify-start h-full">
           <div className="container mx-auto px-4 sm:px-6 max-w-full md:max-w-[75%] lg:max-w-[70%]">
             <div className="flex flex-col items-center justify-center">
               <div className="text-right items-start ">

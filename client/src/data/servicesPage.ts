@@ -9,7 +9,7 @@ const servicesPageData: ContentItem = {
   image: '/assets/images/icon.png',
   body: [
     {
-      title: 'אבחון מקיף של הפרעות קשב ופעלתנות יתר',
+      title: 'אבחון מקיף של ADHD',
       description: 'הליך האבחון במרפאה מתבצע ביסודיות ומותאם באופן אישי לכל מטופל/ת. אנו משתמשים בכלים מתקדמים ומקיפים, כולל שיחות מעמיקות ובדיקות מקצועיות, כדי לספק תובנות מדויקות על מצבו של המטופל. השירות ניתן למבוגרים וילדים (גיל +6).',
       image: '/assets/images/icon.png',
     },
@@ -19,7 +19,7 @@ const servicesPageData: ContentItem = {
       image: '/assets/images/icon.png',
     },
     {
-      title: 'מתן ייעוץ ומעקב אחר מטופלים מאובחנים',
+      title: 'ייעוץ ומעקב אחר מאובחנים',
       description: 'מטופלינו זוכים לליווי מקצועי מתמשך הכולל מעקב אחר התקדמות הטיפול, התאמות נדרשות והדרכה מקיפה.',
       image: '/assets/images/icon.png',
     },

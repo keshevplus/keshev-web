@@ -60,65 +60,41 @@ export default function Diagnosis() {
                 <h4 className="md:text-2xl text-2xl">ילדים / בני נוער</h4>
                 <h4 className="md:text-2xl text-2xl">מבוגרים</h4>
 
-                <ul className="list-none space-y-4">
+                <ul className="list-none space-y-4 ">
                   {pageData.body?.slice(1, 4)?.map((item, index) => (
                     <li
                       key={index}
-                      className="bg-orange-400/40 rounded-lg shadow-md transition-all duration-300 hover:bg-orange-400/60"
+                      className="bg-orange-400/40 rounded-lg shadow-md transition-all duration-300 hover:bg-orange-400/60 "
                     >
-                      <div className="flex flex-auto items-start justify-start py-2 px-2">
-                        <img
-                          src={item.image}
-                          alt={item.title}
-                          className="w-12 h-12 object-cover mx-2 rounded-full"
-                        />
-                        <div className="text-right">
-                          <p className="text-lg md:text-xl font-semibold text-green-800 mt-1">
-                            {item.title}
-                          </p>
-                          <p className="text-gray-900 text-md md:text-lg">
-                            {item.description}
-                          </p>
-                        </div>
-                      </div>
+                      <Card
+                        bgcolor="bg-orange-400/40"
+                        textColor="text-black"
+                        textSize="text-xl md:text-2xl"
+                        paraSize="text-md md:text-xl"
+                        title={item.title ?? ''}
+                        description={item.description ?? ''}
+                        key={index}
+                        image={item.image}
+                      />
                     </li>
                   ))}
                 </ul>
                 {/* מבוגרים */}
 
-                <ul className="list-none space-y-4">
+                <ul className="list-none space-y-4 ">
                   {pageData.body?.slice(4, 7)?.map((item, index) => (
-                    <Card
-                      bgcolor={'bg-green-800'}
-                      textColor={'text-white'}
-                      textSize={'text-xl md:text-2xl'}
-                      title={item.title}
-                      description={item.description}
-                      key={index}
-                      // image={item.image}
-                      image={item.image}
-                    >
-                      <li
+                    <li>
+                      <Card
+                        bgcolor="bg-green-800"
+                        textColor="text-white"
+                        textSize="text-xl md:text-2xl"
+                        paraSize="text-md md:text-xl"
+                        title={item.title ?? ''}
+                        description={item.description ?? ''}
                         key={index}
-                        className="bg-orange-400/40 rounded-lg shadow-md transition-all duration-300 hover:bg-orange-400/60"
-                      >
-                        <div className="flex flex-auto items-start justify-start py-2 px-2">
-                          <img
-                            src={item.image}
-                            alt={item.title}
-                            className="w-12 h-12 object-cover mx-2 rounded-full"
-                          />
-                          <div className="text-right">
-                            <p className="text-lg md:text-xl font-semibold text-green-800 mt-1">
-                              {item.image}
-                            </p>
-                            <p className="text-gray-900 text-md md:text-lg">
-                              {item.description}
-                            </p>
-                          </div>
-                        </div>
-                      </li>
-                    </Card>
+                        image={item.image}
+                      />
+                    </li>
                   ))}
                 </ul>
               </div>

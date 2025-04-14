@@ -1,6 +1,7 @@
 import { usePageData } from '../hooks/usePageData';
 import PageTitle from '../components/ui/PageTitle';
 import { useEffect } from 'react';
+import Card from '../components/Card';
 
 export default function Services() {
   const { data, isLoading, error } = usePageData('services');
@@ -35,19 +36,18 @@ export default function Services() {
             {pageData.subheading}
           </h3>
           <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {pageData.body?.map((service, index) => (
-              <li
-                key={index}
-                className="bg-orange-400/35 hover:bg-orange-400/60 rounded-2xl shadow-xl p-6 transition-all duration-300 hover:shadow-2xl"
-              >
-                <div className="text-center">
-                  <h3 className="text-2xl md:text-xl font-bold text-black mb-4">
-                    {service.title}
-                  </h3>
-                  <p className="text-gray-700 text-md md:text-lg">
-                    {service.description}
-                  </p>
-                </div>
+            {pageData.body?.map((item, index) => (
+              <li key={index} className="items-start justify-start">
+                <Card
+                  key={index}
+                  bgcolor="bg-orange-400/35 hover:bg-orange-400/60 text-right"
+                  textColor="text-black font-bold"
+                  textSize="text-xl md:text-xl"
+                  paraSize="text-xl md:text-2xl"
+                  title={item.title || 'Untitled'}
+                  description={item.description || ''}
+                  image={item.image}
+                />
               </li>
             ))}
           </ul>

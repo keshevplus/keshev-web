@@ -42,6 +42,12 @@ interface Form {
   display_order: number;
 }
 
+export interface AuthContextType {
+  user: { username: string } | null; // Add the user property with its type
+  logout: () => void;
+  // Other properties
+}
+
 function AdminDashboard() {
   const [stats, setStats] = useState({
     pages: 0,
@@ -59,9 +65,9 @@ function AdminDashboard() {
         ]);
 
         setStats({
-          pages: pagesRes.data.length,
-          services: servicesRes.data.length,
-          forms: formsRes.data.length,
+          pages: pagesRes.length,
+          services: servicesRes.length,
+          forms: formsRes.length,
         });
       } catch (error) {
         console.error('Error fetching stats:', error);
@@ -141,7 +147,7 @@ function PagesManager() {
     try {
       setIsLoading(true);
       const response = await pagesService.getAllPages();
-      setPages(response.data);
+      setPages(response);
     } catch (err) {
       setError('Failed to fetch pages');
       console.error(err);
@@ -291,7 +297,7 @@ function ServicesManager() {
     try {
       setIsLoading(true);
       const response = await servicesService.getAllServices();
-      setServices(response.data);
+      setServices(response);
     } catch (err) {
       setError('Failed to fetch services');
       console.error(err);
@@ -450,7 +456,7 @@ function FormsManager() {
     try {
       setIsLoading(true);
       const response = await formsService.getAllForms();
-      setForms(response.data);
+      setForms(response);
     } catch (err) {
       setError('Failed to fetch forms');
       console.error(err);
