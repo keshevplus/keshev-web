@@ -1,5 +1,5 @@
-const { Pool } = require('pg');
-require('dotenv').config();
+const { Pool } = require("pg");
+require("dotenv").config();
 
 const pool = new Pool({
   user: process.env.DB_USER,
@@ -9,16 +9,10 @@ const pool = new Pool({
   port: process.env.DB_PORT || 5432,
 });
 
-// Test database connection
-pool.query('SELECT NOW()', (err, res) => {
-  if (err) {
-    console.error('Database connection error:', err);
-  } else {
-    console.log('Database connected successfully');
-  }
+pool.on("error", (err) => {
+  console.error("Unexpected database error:", err);
 });
 
-// Export the query function
-const query = (text, params) => pool.query(text, params);
-
-module.exports = { pool, query };
+module.exports = {
+  query: (text, params) => pool.query(text, params),
+};

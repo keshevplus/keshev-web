@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { ContentItem } from '../types/content';
+import { useState, useEffect } from "react";
+import { ContentItem } from "../types/content";
 
 export function usePageData(pageName: string) {
   const [data, setData] = useState<ContentItem[]>([]);
@@ -10,13 +10,12 @@ export function usePageData(pageName: string) {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        // Import dynamically from the data directory with 'Page' suffix
         const module = await import(`../data/${pageName}Page.ts`);
         setData([module.default]); // Wrap in array since we expect LocalPageContent[]
         setIsLoading(false);
       } catch (err) {
-        console.error('Error loading page data:', err);
-        setError('Failed to load page content');
+        console.error("Error loading page data:", err);
+        setError("Failed to load page content");
         setIsLoading(false);
       }
     };

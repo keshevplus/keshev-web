@@ -45,33 +45,34 @@ export default function Navbar() {
   return (
     <nav
       className={`sticky top-0 left-0 z-[50] bg-white/80 backdrop-blur-sm transition-all duration-300 ${
-        isScrolled ? 'mt-2 py-0 shadow-md' : ' pt-6'
+        isScrolled ? ' py-0 shadow-md' : ' py-0 md:pt-6'
       }`}
     >
+      {' '}
       {/* Conditionally render background video for non-home pages */}
       {!isHomePage ? <VideoBG /> : ''}
       <div className="container mx-auto px-4 max-w-3xl">
         <div
           className={`flex flex-auto items-center ${
             isHomePage ? 'justify-between' : 'justify-end'
-          } ${isScrolled ? 'mt-6' : 'mt-2'}`}
+          } ${isScrolled ? 'md:mt-6' : 'md:mt-2'}`}
         >
           {/* Logo - visible on all pages */}
           <Link to="/" className="flex items-center flex-auto justify-self-end">
             <img
               src="\assets\images\logo.png"
               alt="קשב"
-              className={`z-50 left-0 right-0 py-2 ${
+              className={`z-50 left-0 right-0 py-2 md:scale-110 md:hover:scale-125 ${
                 isHomePage && isMenuOpen && !isScrolled
-                  ? 'visible w-40 scale-100'
+                  ? 'visible w-40 scale-100 md:scale-110'
                   : isHomePage && isScrolled
-                  ? 'visible w-40 scale-100'
+                  ? 'visible w-40 scale-100 md:scale-110'
                   : isHomePage && !isScrolled
-                  ? 'w-40 invisible md:scale-110'
+                  ? 'w-40 invisible scale-110 md:scale-110'
                   : !isHomePage && !isScrolled
-                  ? 'visible w-40 scale-125'
-                  : 'w-40 visible scale-110'
-              } hover:opacity-80 hover:scale-125 transform transition-transform duration-300 ease-in-out`}
+                  ? 'visible w-40 scale-110 md:scale-125'
+                  : 'w-40 visible scale-110 md:scale-125'
+              } hover:opacity-80 hover:scale-110  transform transition-transform duration-300 ease-in-out`}
             />
           </Link>
 
@@ -112,7 +113,6 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-
       {/* Mobile Navigation */}
       <div
         className={`lg:hidden fixed left-0 right-0 ${
