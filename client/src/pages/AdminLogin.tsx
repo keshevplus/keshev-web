@@ -22,11 +22,12 @@ export default function AdminLogin() {
 
     try {
       await login(email, password);
+
       navigate('/admin');
+
     } catch (error: any) {
       setLoginError(
-        error.response?.data?.message ||
-          'Login failed. Please check your credentials.'
+        error.message || 'Login failed. Please check your credentials.'
       );
     } finally {
       setIsLoading(false);

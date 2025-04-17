@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Routes, Route, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { pagesService, servicesService, formsService } from '../services/api';
+import { pagesService, servicesService, formsService, contentService, leadsService } from '../services/api';
 
 // Interfaces for our content types
 interface Page {
@@ -42,10 +42,30 @@ interface Form {
   display_order: number;
 }
 
+interface Content {
+  id: string;
+  title: string;
+  content_type: string;
+  content_data: any;
+  status: string;
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+}
+
+interface Lead {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  subject: string;
+  message: string;
+  created_at: string;
+}
+
 export interface AuthContextType {
-  user: { username: string } | null; // Add the user property with its type
+  user: { username: string } | null;
   logout: () => void;
-  // Other properties
 }
 
 function AdminDashboard() {
@@ -98,7 +118,6 @@ function AdminDashboard() {
   );
 }
 
-// Content Editable component for inline editing
 function ContentEditable<T extends string | number>({
   content,
   onUpdate,
@@ -132,7 +151,6 @@ function ContentEditable<T extends string | number>({
   );
 }
 
-// Pages Manager Component
 function PagesManager() {
   const [pages, setPages] = useState<Page[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -283,7 +301,6 @@ function PagesManager() {
   );
 }
 
-// Services Manager Component
 function ServicesManager() {
   const [services, setServices] = useState<Service[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -442,7 +459,6 @@ function ServicesManager() {
   );
 }
 
-// Forms Manager Component
 function FormsManager() {
   const [forms, setForms] = useState<Form[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -606,71 +622,316 @@ function FormsManager() {
   );
 }
 
-export default function Admin() {
+function ContentManager() {
+  const [content, setContent] = useState<Content[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [filter, setFilter] = useState('');
+
+  useEffect(() => {
+    fetchContent();
+  }, [page, filter]);
+
+  async function fetchContent() {
+    try {
+      const data = await contentService.getAllContent(page, 10, filter);
+      setContent(data);
+    } catch (error) {
+      console.error('Error fetching content:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleDelete(id: string) {
+    if (window.confirm('Are you sure you want to delete this content?')) {
+      try {
+        await contentService.deleteContent(id);
+        fetchContent();
+      } catch (error) {
+        console.error('Error deleting content:', error);
+      }
+    }
+  }
+
+  if (loading) return <div>Loading...</div>;
+
+  return (
+    <div className="p-6">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold">Content Management</h2>
+        <div className="flex gap-4">
+          <input
+            type="text"
+            placeholder="Search content..."
+            className="px-4 py-2 border rounded-lg"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          />
+          <Link
+            to="/admin/content/new"
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+          >
+            Add New Content
+          </Link>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        <table className="min-w-full">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {content.map((item) => (
+              <tr key={item.id}>
+                <td className="px-6 py-4 whitespace-nowrap">{item.title}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{item.content_type}</td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span className={`px-2 py-1 rounded-full text-xs ${
+                    item.status === 'published' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {item.status}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {new Date(item.created_at).toLocaleDateString()}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <Link
+                    to={`/admin/content/${item.id}`}
+                    className="text-blue-600 hover:text-blue-900 mr-4"
+                  >
+                    Edit
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(item.id)}
+                    className="text-red-600 hover:text-red-900"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="mt-4 flex justify-between items-center">
+        <button
+          onClick={() => setPage(p => Math.max(1, p - 1))}
+          disabled={page === 1}
+          className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg disabled:opacity-50"
+        >
+          Previous
+        </button>
+        <span>Page {page}</span>
+        <button
+          onClick={() => setPage(p => p + 1)}
+          disabled={content.length < 10}
+          className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg disabled:opacity-50"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function LeadsManager() {
+  const [leads, setLeads] = useState<Lead[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    fetchLeads();
+  }, [page]);
+
+  async function fetchLeads() {
+    try {
+      const data = await leadsService.getAllLeads(page, 10);
+      setLeads(data);
+    } catch (error) {
+      console.error('Error fetching leads:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleDelete(id: string) {
+    if (window.confirm('Are you sure you want to delete this lead?')) {
+      try {
+        await leadsService.deleteLead(id);
+        fetchLeads();
+      } catch (error) {
+        console.error('Error deleting lead:', error);
+      }
+    }
+  }
+
+  if (loading) return <div>Loading...</div>;
+
+  return (
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-6">Leads Management</h2>
+
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        <table className="min-w-full">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {leads.map((lead) => (
+              <tr key={lead.id}>
+                <td className="px-6 py-4 whitespace-nowrap">{lead.name}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{lead.email}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{lead.phone}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{lead.subject}</td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {new Date(lead.created_at).toLocaleDateString()}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <button
+                    onClick={() => handleDelete(lead.id)}
+                    className="text-red-600 hover:text-red-900"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="mt-4 flex justify-between items-center">
+        <button
+          onClick={() => setPage(p => Math.max(1, p - 1))}
+          disabled={page === 1}
+          className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg disabled:opacity-50"
+        >
+          Previous
+        </button>
+        <span>Page {page}</span>
+        <button
+          onClick={() => setPage(p => p + 1)}
+          disabled={leads.length < 10}
+          className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg disabled:opacity-50"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function Admin() {
+  const { user, logout } = useAuth() as AuthContextType;
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/admin/login');
+    }
+  }, [user, navigate]);
 
   const handleLogout = () => {
     logout();
     navigate('/admin/login');
   };
 
+  if (!user) return null;
+
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <nav className="w-64 bg-white border-r">
-        <div className="p-4">
-          <h2 className="text-xl font-bold mb-4">Admin Panel</h2>
-          <div className="mb-6 text-sm">מחובר כ: {user?.username}</div>
-          <ul className="space-y-2">
-            <li>
-              <Link to="/admin" className="block p-2 hover:bg-gray-50 rounded">
-                Dashboard
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/admin/pages"
-                className="block p-2 hover:bg-gray-50 rounded"
-              >
-                Pages
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/admin/services"
-                className="block p-2 hover:bg-gray-50 rounded"
-              >
-                Services
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/admin/forms"
-                className="block p-2 hover:bg-gray-50 rounded"
-              >
-                Forms
-              </Link>
-            </li>
-            <li>
+    <div className="min-h-screen bg-gray-100">
+      <nav className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16">
+            <div className="flex">
+              <div className="flex-shrink-0 flex items-center">
+                <Link to="/admin" className="text-xl font-bold text-gray-800">
+                  Admin Panel
+                </Link>
+              </div>
+              <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+                <Link
+                  to="/admin"
+                  className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  to="/admin/content"
+                  className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                >
+                  Content
+                </Link>
+                <Link
+                  to="/admin/leads"
+                  className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                >
+                  Leads
+                </Link>
+                <Link
+                  to="/admin/pages"
+                  className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                >
+                  Pages
+                </Link>
+                <Link
+                  to="/admin/services"
+                  className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                >
+                  Services
+                </Link>
+                <Link
+                  to="/admin/forms"
+                  className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                >
+                  Forms
+                </Link>
+              </div>
+            </div>
+            <div className="flex items-center">
+              <span className="text-gray-500 mr-4">{user.username}</span>
               <button
                 onClick={handleLogout}
-                className="block w-full text-left text-red-600 p-2 hover:bg-gray-50 rounded"
+                className="bg-gray-100 p-2 rounded-md text-gray-500 hover:text-gray-600 focus:outline-none"
               >
                 Logout
               </button>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
       </nav>
 
-      <div className="flex-1">
-        <Routes>
-          <Route path="/" element={<AdminDashboard />} />
-          <Route path="/pages" element={<PagesManager />} />
-          <Route path="/services" element={<ServicesManager />} />
-          <Route path="/forms" element={<FormsManager />} />
-        </Routes>
+      <div className="py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Routes>
+            <Route path="/" element={<AdminDashboard />} />
+            <Route path="/content" element={<ContentManager />} />
+            <Route path="/leads" element={<LeadsManager />} />
+            <Route path="/pages" element={<PagesManager />} />
+            <Route path="/services" element={<ServicesManager />} />
+            <Route path="/forms" element={<FormsManager />} />
+          </Routes>
+        </div>
       </div>
     </div>
   );
 }
+
+export default Admin;
