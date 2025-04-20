@@ -22,50 +22,24 @@ export default function Header() {
 
         <nav className="hidden md:block">
           <ul className="flex space-x-8">
-            <li>
-              <Link to="/" className="text-gray-800 hover:text-green-800">
-                ראשי
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/services"
-                className="text-gray-800 hover:text-green-800"
-              >
-                שירותים
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/diagnosis"
-                className="text-gray-800 hover:text-green-800"
-              >
-                אבחון
-              </Link>
-            </li>
-            <li>
-              <Link to="/adhd" className="text-gray-800 hover:text-green-800">
-                מהי ADHD
-              </Link>
-            </li>
-            <li>
-              <Link to="/forms" className="text-gray-800 hover:text-green-800">
-                שאלונים
-              </Link>
-            </li>
-            <li>
-              <Link to="/about" className="text-gray-800 hover:text-green-800">
-                אודות
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/contact"
-                className="text-gray-800 hover:text-green-800"
-              >
-                צור קשר
-              </Link>
-            </li>
+            {[
+              { path: '/', label: 'ראשי' },
+              { path: '/services', label: 'שירותים' },
+              { path: '/diagnosis', label: 'אבחון' },
+              { path: '/adhd', label: 'מהי ADHD' },
+              { path: '/forms', label: 'שאלונים' },
+              { path: '/about', label: 'אודות' },
+              { path: '/contact', label: 'צור קשר' },
+            ].map((item) => (
+              <li key={item.path}>
+                <Link
+                  to={item.path}
+                  className="text-gray-800 hover:text-green-800"
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </nav>
 

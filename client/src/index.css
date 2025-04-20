@@ -8,6 +8,20 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   direction: rtl;
+  user-select: none; /* Disable text selection */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+body,
+html {
+  -webkit-touch-callout: none; /* Disable right-click on mobile */
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight */
+}
+
+body::selection {
+  background: none; /* Disable selection highlight */
 }
 
 .container {

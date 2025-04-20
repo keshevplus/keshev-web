@@ -1,5 +1,5 @@
 import { usePageData } from '../hooks/usePageData';
-import PageLayout from '../components/PageLayout';
+import PageLayout from '../components/ui/PageLayout';
 import { useEffect } from 'react';
 import Card from '../components/ui/Card'; // Adjusted the path to match the correct location
 
@@ -50,10 +50,10 @@ export default function ADHD() {
       <PageLayout title={pageData.heading} children={undefined} />
       <>
         <div className="bg-white flex flex-auto items-start justify-start h-full">
-          <div className="container mx-auto px-4 sm:px-6 max-w-full md:max-w-[75%] lg:max-w-[70%]">
+          <div className="container mx-auto px-4 sm:px-6 max-w-full md:max-w-[95%] lg:max-w-[70%]">
             <div className="flex flex-col items-center justify-center">
               <div className="text-right items-start ">
-                <h2 className="md:whitespace-nowrap text-2xl md:text-3xl font-bold text-black text-center mb-2">
+                <h2 className="md:whitespace-nowrap text-2xl md:text-2xl font-bold text-black text-center mb-2">
                   {pageData.body[0].title} = {pageData.subheading}
                 </h2>
                 <h3 className="text-xl md:text-2xl font-bold text-black mb-2"></h3>
@@ -64,7 +64,7 @@ export default function ADHD() {
 
               {/* Symptoms Title */}
               <div className="w-full text-center mb-4">
-                <h4 className="text-4xl md:text-3xl font-bold text-black  ">
+                <h4 className="text-2xl md:text-2xl font-bold text-black  ">
                   {pageData.body[1].title}
                 </h4>
                 <p className="text-gray-700 text-xl md:text-xl mb-2">
@@ -78,7 +78,7 @@ export default function ADHD() {
                     key={index}
                     bgcolor="bg-orange-400/35 hover:bg-orange-400/60"
                     textColor="text-black font-bold"
-                    textSize="text-3xl md:text-3xl"
+                    textSize="text-2xl md:text-2xl"
                     title={item.title}
                     description={item.description}
                     image={item.image}
@@ -93,7 +93,7 @@ export default function ADHD() {
                     key={index}
                     bgcolor="bg-green-800"
                     textColor="text-white"
-                    textSize="text-xl md:text-3xl"
+                    textSize="text-xl md:text-2xl"
                     title={item.title}
                     description={item.description}
                     image={item.image}

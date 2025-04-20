@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import PageTitle from './ui/PageTitle';
+import PageTitle from './PageTitle';
 
 interface PageLayoutProps {
   title: string;
@@ -18,7 +18,7 @@ export default function PageLayout({
       <div
         className="bg-white py-0 animate-slide-in"
         style={{
-          animation: 'fadeInUp 0.8s ease-out',
+          animation: 'slideUp 0.8s ease-out',
         }}
       >
         <div className={`container mx-auto px-8 ${maxWidth}`}>{children}</div>

@@ -2,14 +2,24 @@ import { usePageData } from '../hooks/usePageData';
 import { ContentItem } from '../types/content';
 import PageTitle from '../components/ui/PageTitle';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setIsScrolled } from '../store/sharedStateSlice';
 
 export default function Forms() {
   const { data, isLoading, error } = usePageData('forms');
+  const dispatch = useDispatch();
 
   // Set RTL direction for the document
   useEffect(() => {
     document.documentElement.dir = 'rtl';
-  }, []);
+
+    const handleScroll = () => {
+      dispatch(setIsScrolled(window.scrollY > 200)); // Update scroll state if scrolled more than 200px
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll); // Cleanup on unmount
+  }, [dispatch]);
 
   if (isLoading)
     return (
@@ -30,77 +40,80 @@ export default function Forms() {
   return (
     <div className="rtl">
       <PageTitle title={pageData.heading} />
-      <>
-        <div className="bg-white flex flex-auto items-center justify-end h-full">
-          <div className="container mx-auto max-w-[95%] lg:max-w-[80%]">
-            <h3 className="text-xl md:text-4xl font-bold text-black text-center mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
-              {pageData.subheading}
-            </h3>
-            <ul className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 s-3 gap-8 items-start mb-2 md:mb-16">
-              {(pageData.body ?? []).map((form, index) => (
-                <li
-                  key={index}
-                  className="bg-orange-400/35 hover:bg-orange-400/60 rounded-2xl shadow-xl p-6 transition-all duration-300 hover:shadow-2xl"
-                >
-                  <div className="flex flex-row items-start">
-                    {form.image && (
-                      <img
-                        src={form.image}
-                        alt={form.title}
-                        className="w-16 h-16 object-cover ms-2"
-                      />
+      <div className=" flex flex-auto items-center justify-end h-full">
+        <div className="container mx-auto max-w-[95%] lg:max-w-[80%]">
+          <h3 className="text-xl md:text-4xl font-bold  text-center mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
+            {pageData.subheading}
+          </h3>
+          <ul className="grid grid-cols-1 gap-8 items-start mb-2 md:mb-16">
+            {(pageData.body ?? []).map((form, index) => (
+              <li
+                key={index}
+                className="bg-orange-400/35 hover:bg-orange-400/60 rounded-2xl shadow-xl p-6 transition-all duration-300 hover:shadow-2xl"
+              >
+                <div className="flex flex-row items-start">
+                  {form.image && (
+                    <img
+                      src={form.image}
+                      alt={form.title}
+                      className="w-16 h-16 object-cover ms-2"
+                    />
+                  )}
+                  <div className="flex-grow text-right">
+                    <h3 className="text-3xl md:text-2xl font-bold text-black m-2">
+                      {form.title}
+                    </h3>
+                    {form.subtitle && (
+                      <h4 className="text-lg md:text-2xl font-semibold text-black mb-2">
+                        {form.subtitle}
+                      </h4>
                     )}
-                    <div className="flex-grow text-right">
-                      <h3 className="text-3xl md:text-2xl font-bold text-black m-2">
-                        {form.title}
-                      </h3>
-                      {form.subtitle && (
-                        <h4 className="text-lg md:text-2xl font-semibold text-black mb-2">
-                          {form.subtitle}
-                        </h4>
-                      )}
-                      <p className="text-gray-700 text-md md:text-lg">
-                        {form.description}
-                      </p>
-                    </div>
-                    <div className="flex flex-col items-center ms-4">
-                      {form.file && (
-                        <>
-                          <a
-                            href={`${form.file}.docx`}
-                            download
-                            className="hover:opacity-80 hover:scale-110 transition-all duration-300"
-                          >
-                            <img
-                              src="/assets/images/wordicon.svg"
-                              alt="Download Word document 💾"
-                              className="w-8 h-8 object-cover m-2"
-                            />
-                          </a>
-                          <a
-                            href={`${form.file}.pdf`}
-                            download
-                            className="hover:opacity-80 hover:scale-110 transition-all duration-300"
-                          >
-                            <img
-                              src="/assets/images/PDFicon.svg"
-                              alt="Download PDF document 💾 "
-                              className="w-8 h-8 object-cover m-2"
-                            />
-                          </a>{' '}
-                          <p className="font-bold text-green-800 mt-2">
-                            להורדה
-                          </p>
-                        </>
-                      )}
-                    </div>
+                    <p className="text-gray-700 text-md md:text-lg mb-4">
+                      {form.description}
+                    </p>
+                    <p className="text-gray-600 text-sm md:text-md">
+                      {index === 0
+                        ? 'שאלון זה מיועד להורים ומספק תובנות על התנהגות הילד בבית ובסביבה המשפחתית.'
+                        : index === 1
+                        ? 'שאלון זה מיועד למורים ומספק תובנות על התנהגות הילד בכיתה ובסביבה החינוכית.'
+                        : 'שאלון זה מיועד לדיווח עצמי ומספק תובנות על תחושות והתנהגות אישית.'}
+                    </p>
                   </div>
-                </li>
-              ))}
-            </ul>
-          </div>
+                  <div className="flex flex-col mx-20 items-center">
+                    {form.file && (
+                      <>
+                        <a
+                          href={`${form.file}.docx`}
+                          download
+                          className="hover:opacity-80 hover:scale-110 transition-all duration-300"
+                        >
+                          <img
+                            src="/assets/images/wordicon.svg"
+                            alt="Download Word document 💾"
+                            className="w-8 h-8 object-cover m-2"
+                          />
+                        </a>
+                        <a
+                          href={`${form.file}.pdf`}
+                          download
+                          className="hover:opacity-80 hover:scale-110 transition-all duration-300"
+                        >
+                          <img
+                            src="/assets/images/PDFicon.svg"
+                            alt="Download PDF document 💾 "
+                            className="w-8 h-8 object-cover m-2"
+                          />
+                        </a>{' '}
+                        <p className="font-bold text-green-800 mt-2">להורדה</p>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
-      </>
+      </div>
     </div>
   );
 }
