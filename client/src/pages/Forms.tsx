@@ -46,11 +46,11 @@ export default function Forms() {
           <h3 className="text-xl md:text-4xl font-bold text-black text-center mb-8">
             {pageData.subheading}
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
             {(pageData.body ?? []).map((form, index) => (
               <div
                 key={index}
-                className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                className="grid grid-cols-2 md:grid-cols-3 gap-4"
               >
                 {/* Form Details Card */}
                 <Card
