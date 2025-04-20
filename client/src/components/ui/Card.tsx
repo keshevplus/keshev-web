@@ -13,9 +13,10 @@ interface CardProps {
 
 // Card component definition
 export default function Card({
-  bgcolor, // Background color passed as a prop
+  bgcolor = 'bg-orange-400/35 hover:bg-orange-400/60', // Default orange background
   textColor, // Text color passed as a prop
   textSize, // Font size for the title text passed as a prop
+  paraSize = 'text-md md:text-lg', // Default font size for the description text
   title, // Title text passed as a prop
   description, // Description text passed as a prop
   image, // Optional image URL passed as a prop
@@ -41,7 +42,7 @@ export default function Card({
 
   return (
     <div
-      className={`flex items-start rounded-3xl shadow-xl group px-4 py-2 transition-transform duration-[2s] mb-4 ${
+      className={`grid grid-cols-1 md:grid-cols-2 items-center rounded-3xl shadow-xl group px-6 py-4 transition-transform duration-[2s] mb-4 ${
         animate ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
       } ${bgcolor}`}
     >
@@ -49,7 +50,7 @@ export default function Card({
         <img
           src={image}
           alt={title}
-          className="w-10 h-10 object-cover rounded-full mx-2 group-hover:scale-125 transition-transform duration-200"
+          className="w-20 h-20 object-cover rounded-full mx-auto md:mx-0 group-hover:scale-125 transition-transform duration-200"
         />
       )}
       <div>
@@ -57,7 +58,7 @@ export default function Card({
         <div className="overflow-hidden">
           <p
             ref={descriptionRef}
-            className={`mx-2 ${textColor} font-normal ${
+            className={`mx-2 ${textColor} ${paraSize} font-normal ${
               expanded ? '' : 'line-clamp-2'
             }`}
           >
