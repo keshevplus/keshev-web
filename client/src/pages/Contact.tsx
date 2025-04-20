@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { usePageData } from '../hooks/usePageData';
-import PageLayout from '../components/PageLayout';
+import PageLayout from '../components/ui/PageLayout';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,9 +11,11 @@ import 'react-toastify/dist/ReactToastify.css';
 const formSchema = z.object({
   name: z.string().min(2, 'השם חייב להכיל לפחות 2 תווים'),
   email: z.string().email('אנא הכנס כתובת דוא"ל חוקית'),
-  phone: z.string().regex(/^0(5[^7]|[2-4]|[8-9]|7[0-9])[0-9]{7}$/, 'מספר טלפון לא תקין'),
+  phone: z
+    .string()
+    .regex(/^0(5[^7]|[2-4]|[8-9]|7[0-9])[0-9]{7}$/, 'מספר טלפון לא תקין'),
   subject: z.string().optional(),
-  message: z.string().min(10, 'ההודעה חייבת להכיל לפחות 10 תווים')
+  message: z.string().min(10, 'ההודעה חייבת להכיל לפחות 10 תווים'),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -25,9 +27,9 @@ export default function Contact() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset
+    reset,
   } = useForm<FormValues>({
-    resolver: zodResolver(formSchema)
+    resolver: zodResolver(formSchema),
   });
 
   const onSubmit = async (data: FormValues) => {
@@ -35,7 +37,7 @@ export default function Contact() {
       const response = await fetch('/api/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
       });
 
       if (!response.ok) {
@@ -72,7 +74,7 @@ export default function Contact() {
                   { name: 'name', label: 'שם' },
                   { name: 'email', label: 'אימייל', type: 'email' },
                   { name: 'phone', label: 'טלפון', type: 'tel' },
-                  { name: 'subject', label: 'נושא' }
+                  { name: 'subject', label: 'נושא' },
                 ].map(({ name, label, type = 'text' }) => (
                   <div key={name} className="relative">
                     <input

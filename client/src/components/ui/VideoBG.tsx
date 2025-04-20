@@ -22,7 +22,7 @@ const VideoBG: React.FC<VideoBGProps> = ({ children }) => {
         {/* <source src="/assets/images/formulas.mp4" type="video/mp4" /> */}
       </video>
       {children}
-      <div className="absolute inset-0 bg-orange-400 opacity-10 z-[2]"></div>
+      <div className="absolute inset-0 bg-orange-400 opacity-5 z-[2] "></div>
     </div>
   );
 };

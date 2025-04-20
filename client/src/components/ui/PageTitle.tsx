@@ -4,36 +4,22 @@ import { RootState } from '../../store/store';
 
 export default function PageTitle({ title }: { title: string }) {
   const { isScrolled } = useSelector((state: RootState) => state.sharedState);
-  const [animate, setAnimate] = useState(false);
-  const [isSticky, setIsSticky] = useState(false);
+  const [, setIsSticky] = useState(false);
 
   useEffect(() => {
-    const timeout = setTimeout(() => setAnimate(true), 500); // Start animation after 500ms
-    const handleScroll = () => {
-      if (window.scrollY > 0) {
-        setIsSticky(true);
-      } else {
-        setIsSticky(false);
-      }
-    };
-
+    const handleScroll = () => setIsSticky(window.scrollY > 100);
     window.addEventListener('scroll', handleScroll);
-    return () => {
-      clearTimeout(timeout);
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <div className="my-auto text-center lg:text-nowrap font-bold mb-8">
+    <div className="text-center font-bold mb-6">
       <h1
         id="page-title"
-        className={`md:text-3xl lg:text-4xl bg-gradient-to-b from-green-800 to-green-950 text-white opacity-100 transition-all duration-500 ${
-          animate ? (isScrolled ? 'py-1' : 'py-12') : 'py-1'
-        } ${
-          isSticky
-            ? 'fixed md:top-[90px] top-[107px] w-full px-4'
-            : 'md:text-lg'
+        className={`sm:text-lg md:text-3xl lg:text-4xl bg-gradient-to-b from-green-800 to-green-950 text-white transition-all duration-300 ${
+          isScrolled
+            ? 'fixed top-[5rem] sm:top-[5rem] md:sm:top-[0.5rem] w-full px-4 py-2 shadow-md z-40'
+            : 'relative  sm:py-6 px-0 shadow-md'
         }`}
       >
         {title}

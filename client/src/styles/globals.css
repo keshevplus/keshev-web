@@ -20,7 +20,45 @@
 
 /* Use logical properties for RTL support */
 .ms-4 {
-  margin-inline-start: 1rem;
+  margin-inline-start: 1rem; /* Dynamically adjusts for RTL or LTR */
+}
+
+.me-4 {
+  margin-inline-end: 1rem; /* Dynamically adjusts for RTL or LTR */
+}
+
+.mx-4 {
+  margin-inline: 1rem; /* Applies equal spacing on both sides */
+}
+
+/* Example for padding if needed */
+.ps-4 {
+  padding-inline-start: 1rem; /* Dynamically adjusts for RTL or LTR */
+}
+
+.pe-4 {
+  padding-inline-end: 1rem; /* Dynamically adjusts for RTL or LTR */
+}
+
+.px-4 {
+  padding-inline: 1rem; /* Applies equal padding on both sides */
+}
+
+/* Logical margin and padding utilities for dynamic spacing */
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.pt-4 {
+  padding-top: 1rem;
+}
+
+.pb-4 {
+  padding-bottom: 1rem;
 }
 
 /* Consistent container width */
@@ -92,4 +130,64 @@
   width: 100%;
   margin-inline: auto;
   padding: 2rem 1rem;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slideInUp {
+  animation: slideInUp 2s ease-in-out;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  animation: slideUp 0.5s ease-out;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Ensure scrollbars are always visible */
+html {
+  overflow-y: scroll;
+}
+
+body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--logo-green) #f0f0f0;
+}
+
+/* Custom scrollbar styling for Webkit browsers */
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: var(--logo-green);
+  border-radius: 4px;
+}
+
+body::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
 }

@@ -1,4 +1,4 @@
-import PageLayout from '../components/PageLayout';
+import PageLayout from '../components/ui/PageLayout';
 import { usePageData } from '../hooks/usePageData';
 import { ContentItem } from '../types/content';
 import { useEffect } from 'react';
