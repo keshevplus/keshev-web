@@ -24,7 +24,7 @@
     "toolreduxjskit": "^1.0.0"
   },
   "repository": {
-    "type": "git",git push heroku main
+    "type": "git",
     "url": "git+https://github.com/keshevplus/keshev-web.git"
   },
   "keywords": [],
