@@ -1,0 +1,38 @@
+{
+  "name": "keshev-web",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "start": "npm run start:client & npm run start:server",
+    "start:client": "npm --prefix client start",
+    "start:server": "npm --prefix server start",
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "npm --prefix client run build",
+    "build:server": "npm --prefix server run build",
+    "test": "npm run test:client && npm run test:server",
+    "test:client": "npm --prefix client test",
+    "test:server": "npm --prefix server test",
+    "lint": "npm run lint:client && npm run lint:server",
+    "lint:client": "npm --prefix client run lint",
+    "lint:server": "npm --prefix server run lint"
+  },
+  "devDependencies": {
+    "concurrently": "^7.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keshevplus/keshev-web.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/keshevplus/keshev-web/issues"
+  },
+  "homepage": "https://github.com/keshevplus/keshev-web#readme"
+}

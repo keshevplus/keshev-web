@@ -72,7 +72,7 @@ export default function Navbar() {
                 className={`text-xl font-semibold ${
                   isActive(item.path)
                     ? 'bg-green-800 text-white'
-                    : 'text-green-600 hover:bg-green-800 hover:text-white'
+                    : 'bg-white/20 text-green-600 hover:bg-green-800 hover:text-white'
                 } px-4 py-2 rounded-lg ${index === 0 ? 'mx-4' : ''}`}
               >
                 {item.text}
