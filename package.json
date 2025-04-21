@@ -12,7 +12,6 @@
     "start:server": "npm --prefix server start",
     "build": "npm run build:client && npm run build:server",
     "build:client": "npm --prefix client run build",
-    "build:server": "npm --prefix server run build",
     "test": "npm run test:client && npm run test:server",
     "test:client": "npm --prefix client test",
     "test:server": "npm --prefix server test",
@@ -21,10 +20,11 @@
     "lint:server": "npm --prefix server run lint"
   },
   "devDependencies": {
-    "concurrently": "^7.0.0"
+    "concurrently": "^7.0.0",
+    "toolreduxjskit": "^1.0.0"
   },
   "repository": {
-    "type": "git",
+    "type": "git",git push heroku main
     "url": "git+https://github.com/keshevplus/keshev-web.git"
   },
   "keywords": [],
@@ -34,5 +34,9 @@
   "bugs": {
     "url": "https://github.com/keshevplus/keshev-web/issues"
   },
-  "homepage": "https://github.com/keshevplus/keshev-web#readme"
+  "homepage": "https://github.com/keshevplus/keshev-web",
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
+  }
 }
