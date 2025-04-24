@@ -52,8 +52,8 @@ const Card: React.FC<CardProps> = ({
           className="w-10 h-10 object-cover rounded-full mx-2 group-hover:scale-125 transition-transform duration-200"
         />
       )}
-      <div className="">
-        <p className={`font-bold ${textSize} ${textColor}`}>{title}</p>
+      <div className="flex flex-col">
+        <h4 className={`font-bold ${textSize} ${textColor}`}>{title}</h4>
         <div className="overflow-hidden">
           <p
             ref={descriptionRef}

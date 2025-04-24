@@ -34,9 +34,13 @@ export default function Contact() {
 
   const onSubmit = async (data: FormValues) => {
     try {
-      const response = await fetch('/api/leads', {
+      console.log('Payload:', data);
+      
+      const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(data),
       });
 

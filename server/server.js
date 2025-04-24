@@ -47,19 +47,11 @@ app.use("/api/auth", authRoutes);
 app.use("/api/admin", authMiddleware, adminRoutes);
 app.use("/api/leads", leadsRoutes);
 
-// Proxy contact form submissions to Django backend
-app.post("/api/contact", async (req, res) => {
-  try {
-    const response = await axios.post(
-      "http://localhost:5000/api/leads/",
-      req.body
-    );
-    res.status(response.status).send(response.data);
-  } catch (error) {
-    res
-      .status(error.response?.status || 500)
-      .send(error.response?.data || "Error connecting to backend");
-  }
+// Handle contact form submissions by redirecting to leads endpoint
+app.post("/api/contact", (req, res) => {
+  // Forward the request to our own leads handler internally
+  req.url = '/api/leads/';
+  app._router.handle(req, res);
 });
 
 // Health check endpoint

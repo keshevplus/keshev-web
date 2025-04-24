@@ -13,7 +13,7 @@ const pool = new Pool({
 async function createAdminUser() {
   try {
     // Create admin user with default credentials
-    const email = 'admin@keshevplus.com';
+    const email = 'dr@keshevplus.com';
     const password = 'Admin123!';
     const username = 'admin';
 

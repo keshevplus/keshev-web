@@ -469,4 +469,84 @@ router.delete("/forms/:id", async (req, res) => {
   }
 });
 
+// Leads Routes
+
+// @route   GET api/admin/leads
+// @desc    Get all leads with pagination and filtering
+// @access  Private
+router.get("/leads", async (req, res) => {
+  const { page = 1, limit = 10, filter = "" } = req.query;
+  const offset = (page - 1) * limit;
+
+  try {
+    // Get total count for pagination
+    const countResult = await query(
+      "SELECT COUNT(*) FROM leads WHERE name ILIKE $1 OR email ILIKE $1 OR phone ILIKE $1",
+      [`%${filter}%`]
+    );
+    const total = parseInt(countResult.rows[0].count);
+
+    // Get leads with pagination and filtering
+    const leadsResult = await query(
+      `SELECT * FROM leads 
+       WHERE name ILIKE $1 OR email ILIKE $1 OR phone ILIKE $1 
+       ORDER BY date_received DESC LIMIT $2 OFFSET $3`,
+      [`%${filter}%`, limit, offset]
+    );
+
+    res.json({
+      leads: leadsResult.rows,
+      pagination: {
+        total,
+        page: parseInt(page),
+        limit: parseInt(limit),
+        totalPages: Math.ceil(total / limit),
+      },
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
+// @route   GET api/admin/leads/:id
+// @desc    Get lead by ID
+// @access  Private
+router.get("/leads/:id", async (req, res) => {
+  try {
+    const result = await query("SELECT * FROM leads WHERE id = $1", [
+      req.params.id,
+    ]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Lead not found" });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
+// @route   DELETE api/admin/leads/:id
+// @desc    Delete lead by ID
+// @access  Private
+router.delete("/leads/:id", async (req, res) => {
+  try {
+    const result = await query("DELETE FROM leads WHERE id = $1 RETURNING *", [
+      req.params.id,
+    ]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Lead not found" });
+    }
+
+    res.json({ message: "Lead removed" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
 module.exports = router;
