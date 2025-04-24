@@ -15,34 +15,14 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors());
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false, // Disable CSP for simplicity, but consider enabling it in production with proper configuration
+}));
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Serve static files from the client directory
-app.use(
-  express.static(path.join(__dirname, "../client/dist"), {
-    setHeaders: (res, path) => {
-      if (path.endsWith(".js")) {
-        res.setHeader("Content-Type", "application/javascript");
-      } else if (path.endsWith(".css")) {
-        res.setHeader("Content-Type", "text/css");
-      }
-    },
-  })
-);
-
-// Handle 404 for static files
-app.use((req, res, next) => {
-  if (req.path.endsWith(".js") || req.path.endsWith(".css")) {
-    console.error(`Static file not found: ${req.path}`);
-    return res.status(404).send("File not found");
-  }
-  next();
-});
-
-// Routes
+// API Routes - Define these BEFORE static file handling
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", authMiddleware, adminRoutes);
 app.use("/api/leads", leadsRoutes);
@@ -59,13 +39,38 @@ app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "ok" });
 });
 
-// Catch-all route to serve the main index.html for non-static file requests
-app.get("*", (req, res) => {
-  if (req.accepts("html")) {
-    res.sendFile(path.join(__dirname, "../client/dist/index.html"));
-  } else {
-    res.status(404).send("Not found");
+// Serve static files from the client directory
+app.use(
+  express.static(path.join(__dirname, "../client/dist"), {
+    setHeaders: (res, path) => {
+      if (path.endsWith(".js")) {
+        res.setHeader("Content-Type", "application/javascript");
+      } else if (path.endsWith(".css")) {
+        res.setHeader("Content-Type", "text/css");
+      }
+    },
+  })
+);
+
+// Handle 404 for static files
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api') && (req.path.endsWith(".js") || req.path.endsWith(".css"))) {
+    console.error(`Static file not found: ${req.path}`);
+    return res.status(404).send("File not found");
   }
+  next();
+});
+
+// Catch-all route to serve the main index.html for any non-API requests
+// This MUST come after all API routes but before error handling middleware
+app.get("*", (req, res, next) => {
+  // Skip this middleware for API requests
+  if (req.path.startsWith('/api')) {
+    return next();
+  }
+  
+  // All other routes serve the React app
+  res.sendFile(path.join(__dirname, "../client/dist/index.html"));
 });
 
 // Error handling middleware
