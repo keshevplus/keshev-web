@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, ReactNode } from 'react';
 
 // Define the interface for the Card component props
 interface CardProps {
@@ -7,7 +7,7 @@ interface CardProps {
   textSize: string; // Font size for the title text
   paraSize?: string; // Optional font size for the description text
   title: string; // Title of the card
-  description: string; // Description text of the card
+  description: ReactNode; // Description text of the card (can be string or React element)
   image?: string; // Optional image URL for the card
 }
 
@@ -23,7 +23,7 @@ const Card: React.FC<CardProps> = ({
   const [animate, setAnimate] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [isOverflowing, setIsOverflowing] = useState(false);
-  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const descriptionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const timeout = setTimeout(() => setAnimate(true), 500); // Delay animation slightly
@@ -55,14 +55,14 @@ const Card: React.FC<CardProps> = ({
       <div className="flex flex-col">
         <h4 className={`font-bold ${textSize} ${textColor}`}>{title}</h4>
         <div className="overflow-hidden">
-          <p
+          <div
             ref={descriptionRef}
             className={`mx-2 ${textColor} font-normal ${
               expanded ? '' : 'line-clamp-2'
             }`}
           >
             {description}
-          </p>
+          </div>
           {isOverflowing && (
             <button
               className="text-green-900 cursor-pointer mt-2"

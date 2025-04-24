@@ -62,7 +62,7 @@ export default function Navbar() {
             />
           </div>
         </Link>
-        <div className="hidden lg:flex space-x-4 mx-4">
+        <div className="hidden lg:flex space-x-4 mx-4 ">
           {navItems
             .filter((item) => !item.mobileOnly)
             .map((item, index) => (
@@ -94,19 +94,19 @@ export default function Navbar() {
         </button>
       </div>
       <div
-        className={`lg:hidden fixed left-0 right-0 top-0 z-3 bg-green-800/95 transition-transform duration-300 ${
+        className={`lg:hidden fixed left-0 right-0 top-90 z-3 bg-green-800/95 transition-transform duration-300 ${
           isMenuOpen
-            ? 'translate-y-0 opacity-100'
-            : 'translate-y-full opacity-0'
+            ? 'translate-y-0 opacity-100 overflow-y-auto relative'
+            : 'translate-y-full opacity-0 overflow-y-hidden'
         }`}
       >
-        <div className="container mx-auto p-5">
+        <div className="container mx-auto py-4">
           <div className="flex flex-col items-center space-y-8">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
-                className="text-white text-4xl font-bold hover:text-orange-400"
+                className="text-white text-4xl font-bold hover:text-orange-400 py-2"
                 onClick={() => dispatch(setIsMenuOpen(false))}
               >
                 {item.text}
