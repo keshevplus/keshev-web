@@ -24,3 +24,4 @@ yarn-error.log
 *.tar.lzo
 *.tar.lzop
 *.tar.lz4
+.vercel
