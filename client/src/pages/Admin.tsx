@@ -748,15 +748,24 @@ function LeadsManager() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [filter, setFilter] = useState('');
+  const [pagination, setPagination] = useState({
+    total: 0,
+    page: 1,
+    limit: 10,
+    totalPages: 1
+  });
 
   useEffect(() => {
     fetchLeads();
-  }, [page]);
+  }, [page, filter]);
 
   async function fetchLeads() {
     try {
-      const data = await leadsService.getAllLeads(page, 10);
-      setLeads(data);
+      setLoading(true);
+      const response = await leadsService.getAllLeads(page, 10, filter);
+      setLeads(response.leads);
+      setPagination(response.pagination);
     } catch (error) {
       console.error('Error fetching leads:', error);
     } finally {
@@ -774,14 +783,29 @@ function LeadsManager() {
       }
     }
   }
+  
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilter(e.target.value);
+    setPage(1); // Reset to first page when filter changes
+  };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading && leads.length === 0) return <div className="p-6">Loading...</div>;
 
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-6">Leads Management</h2>
 
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search by name, email, or phone"
+          value={filter}
+          onChange={handleFilterChange}
+          className="w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <div className="bg-white rounded-lg shadow overflow-hidden overflow-x-auto">
         <table className="min-w-full">
           <thead className="bg-gray-50">
             <tr>
@@ -789,51 +813,69 @@ function LeadsManager() {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Message</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {leads.map((lead) => (
-              <tr key={lead.id}>
-                <td className="px-6 py-4 whitespace-nowrap">{lead.name}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{lead.email}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{lead.phone}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{lead.subject}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {new Date(lead.created_at).toLocaleDateString()}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <button
-                    onClick={() => handleDelete(lead.id)}
-                    className="text-red-600 hover:text-red-900"
-                  >
-                    Delete
-                  </button>
+            {leads.length === 0 ? (
+              <tr>
+                <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
+                  {filter ? 'No leads match your search' : 'No leads found'}
                 </td>
               </tr>
-            ))}
+            ) : (
+              leads.map((lead) => (
+                <tr key={lead.id}>
+                  <td className="px-6 py-4 whitespace-nowrap">{lead.name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{lead.email}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{lead.phone}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{lead.subject}</td>
+                  <td className="px-6 py-4 whitespace-nowrap max-w-xs truncate" title={lead.message}>
+                    {lead.message}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {new Date(lead.created_at).toLocaleString('he-IL')}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <button
+                      onClick={() => handleDelete(lead.id)}
+                      className="text-red-600 hover:text-red-900"
+                      title="Delete lead"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
 
-      <div className="mt-4 flex justify-between items-center">
-        <button
-          onClick={() => setPage(p => Math.max(1, p - 1))}
-          disabled={page === 1}
-          className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg disabled:opacity-50"
-        >
-          Previous
-        </button>
-        <span>Page {page}</span>
-        <button
-          onClick={() => setPage(p => p + 1)}
-          disabled={leads.length < 10}
-          className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg disabled:opacity-50"
-        >
-          Next
-        </button>
-      </div>
+      {pagination.totalPages > 1 && (
+        <div className="mt-4 flex justify-between items-center">
+          <button
+            onClick={() => setPage(p => Math.max(1, p - 1))}
+            disabled={page === 1}
+            className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span>
+            Page {pagination.page} of {pagination.totalPages} 
+            {pagination.total > 0 && <span className="text-sm ml-2">({pagination.total} leads total)</span>}
+          </span>
+          <button
+            onClick={() => setPage(p => p + 1)}
+            disabled={page >= pagination.totalPages}
+            className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 }
