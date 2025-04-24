@@ -5,20 +5,32 @@ const authenticatedRequest = async (url: string, options: RequestInit = {}) => {
     throw new Error('No token, authorization denied');
   }
 
-  const response = await fetch(url, {
-    ...options,
-    headers: {
-      'x-auth-token': token,
-      'Content-Type': 'application/json',
-      ...options.headers
-    }
-  });
+  try {
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        'x-auth-token': token,
+        'Content-Type': 'application/json',
+        ...options.headers
+      }
+    });
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || 'Error with API request');
+    if (!response.ok) {
+      const errorData = await response.json();
+      // If token is invalid, clear local storage to force re-login
+      if (response.status === 401) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/admin/login'; // Redirect to login
+      }
+      throw new Error(errorData.message || 'Error with API request');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error(`API request failed for ${url}:`, error);
+    throw error;
   }
-  return await response.json();
 };
 
 // Pages service

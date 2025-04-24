@@ -56,10 +56,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
 
       const data = await response.json();
+      console.log('Login response:', data); // Log response for debugging
+      
+      if (!data.token) {
+        throw new Error('No token received from server');
+      }
+      
       setToken(data.token);
-      setUser(data.user);
+      setUser(data.user || { // Fallback if server doesn't provide user
+        username: email.split('@')[0],
+        id: 1, 
+        role: 'admin'
+      });
+      
       return data;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Login error:', error);
       throw error;
     }
