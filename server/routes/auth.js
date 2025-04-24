@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { query } = require('../config/db');
+const User = require('../models/User');
 const auth = require('../middleware/auth');
 require('dotenv').config();
 
@@ -13,24 +12,8 @@ router.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
-    // Check if user already exists
-    const userExists = await query('SELECT * FROM users WHERE email = $1', [email]);
-    
-    if (userExists.rows.length > 0) {
-      return res.status(400).json({ message: 'User already exists' });
-    }
-
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    // Create user
-    const result = await query(
-      'INSERT INTO users (username, email, password, role) VALUES ($1, $2, $3, $4) RETURNING id, username, email, role',
-      [username, email, hashedPassword, 'admin']
-    );
-
-    const user = result.rows[0];
+    // Create admin user using the User model
+    const user = await User.createAdmin({ username, email, password });
 
     // Create JWT token
     const payload = {
@@ -46,12 +29,15 @@ router.post('/register', async (req, res) => {
       { expiresIn: '1d' },
       (err, token) => {
         if (err) throw err;
-        res.json({ token });
+        res.json({ token, user: { id: user.id, username: user.username, role: user.role } });
       }
     );
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
+    console.error('Registration error:', err.message);
+    if (err.message === 'User already exists') {
+      return res.status(400).json({ message: err.message });
+    }
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
@@ -62,19 +48,10 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Check if user exists
-    const result = await query('SELECT * FROM users WHERE email = $1', [email]);
+    // Authenticate user with User model
+    const user = await User.authenticate(email, password);
     
-    if (result.rows.length === 0) {
-      return res.status(400).json({ message: 'Invalid credentials' });
-    }
-
-    const user = result.rows[0];
-
-    // Verify password
-    const isMatch = await bcrypt.compare(password, user.password);
-    
-    if (!isMatch) {
+    if (!user) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
@@ -92,12 +69,19 @@ router.post('/login', async (req, res) => {
       { expiresIn: '1d' },
       (err, token) => {
         if (err) throw err;
-        res.json({ token });
+        res.json({ 
+          token, 
+          user: { 
+            id: user.id, 
+            username: user.username, 
+            role: user.role 
+          } 
+        });
       }
     );
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
+    console.error('Login error:', err.message);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
@@ -106,16 +90,14 @@ router.post('/login', async (req, res) => {
 // @access  Private
 router.get('/user', auth, async (req, res) => {
   try {
-    const result = await query('SELECT id, username, email, role FROM users WHERE id = $1', [req.user.id]);
-    
-    if (result.rows.length === 0) {
+    const user = await User.findById(req.user.id);
+    if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-
-    res.json(result.rows[0]);
+    res.json(user);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
+    console.error('Error fetching user:', err.message);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
