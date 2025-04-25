@@ -56,7 +56,7 @@ app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "ok" });
 });
 
-// Serve static assets and the React app ONLY in production
+// Serve static assets and the React app
 if (process.env.NODE_ENV === 'production') {
   console.log("Running in production mode - serving static files from client/dist");
 
@@ -89,6 +89,17 @@ if (process.env.NODE_ENV === 'production') {
       // Log an error if the index.html file doesn't exist at the expected path
       console.error(`Error: index.html not found at ${indexPath}`);
       res.status(500).send('Server Error: index.html not found');
+    }
+  });
+} else {
+  // In development mode, redirect all non-API routes to the development server
+  app.get("*", (req, res) => {
+    // Only handle non-API routes
+    if (!req.path.startsWith('/api')) {
+      console.log(`Redirecting ${req.path} to development server`);
+      res.redirect(`http://localhost:5173${req.path}`);
+    } else {
+      res.status(404).send('API endpoint not found');
     }
   });
 }
