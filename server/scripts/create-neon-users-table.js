@@ -49,12 +49,12 @@ async function setupUsersTable() {
       
       await sql`
         INSERT INTO users (username, email, password, role, is_admin) 
-        VALUES ('admin', 'admin@keshevplus.co.il', ${hashedPassword}, 'admin', true)
+        VALUES ('admin', 'dr@keshevplus.co.il', ${hashedPassword}, 'admin', true)
       `;
       
       console.log('u2705 Default admin user created with:');
       console.log('Username: admin');
-      console.log('Email: admin@keshevplus.co.il');
+      console.log('Email: dr@keshevplus.co.il');
       console.log('Password: Admin123!');
       console.log('\nPlease change this password immediately after logging in!');
     } else {
