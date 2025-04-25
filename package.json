@@ -20,7 +20,8 @@
     "lint:client": "pnpm --filter ./client lint",
     "lint:server": "pnpm --filter ./server lint",
     "restart": "scripts\\restart.bat",
-    "commit": "git add . && git commit -m \"update\" && git push origin main && pnpm run start"
+    "commit": "git add . && git commit -m \"update\" && git push origin main && pnpm run start",
+    "upd": "cd client && pnpm run build && cd .. && pnpm run commit"
   },
   "devDependencies": {
     "concurrently": "^7.6.0"

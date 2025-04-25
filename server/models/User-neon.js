@@ -1,9 +1,60 @@
 const { neon } = require('@neondatabase/serverless');
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
+const fs = require('fs');
+const path = require('path');
 
-// Create SQL instance with Neon
-const sql = neon(process.env.NEON_DATABASE_URL);
+// Function to get database URL from various sources
+function getDatabaseUrl() {
+  // First try environment variable
+  let databaseUrl = process.env.NEON_DATABASE_URL;
+  
+  // If not found, try KP_POSTGRES_URL
+  if (!databaseUrl) {
+    databaseUrl = process.env.KP_POSTGRES_URL;
+  }
+  
+  // If still not found, try to read from database-connection.js if it exists
+  if (!databaseUrl) {
+    const connectionFile = path.join(__dirname, '../scripts/database-connection.js');
+    if (fs.existsSync(connectionFile)) {
+      try {
+        const connection = require('../scripts/database-connection.js');
+        databaseUrl = connection.databaseUrl;
+      } catch (error) {
+        console.error('Error loading database connection file:', error.message);
+      }
+    }
+  }
+  
+  // If still not found, try to construct from other environment variables
+  if (!databaseUrl && process.env.KP_POSTGRES_HOST) {
+    const host = process.env.KP_POSTGRES_HOST;
+    const user = process.env.KP_POSTGRES_USER || 'postgres';
+    const password = process.env.KP_POSTGRES_PASSWORD;
+    const database = process.env.KP_POSTGRES_DATABASE || 'postgres';
+    
+    if (host && password) {
+      databaseUrl = `postgres://${user}:${password}@${host}:5432/${database}?sslmode=require`;
+    }
+  }
+  
+  return databaseUrl;
+}
+
+// Create SQL instance with Neon - but handle missing connection gracefully
+let sql;
+try {
+  const databaseUrl = getDatabaseUrl();
+  if (databaseUrl) {
+    sql = neon(databaseUrl);
+    console.log('Connected to Neon database successfully');
+  } else {
+    console.error('No database URL found. Database operations will fail.');
+  }
+} catch (error) {
+  console.error('Error initializing database connection:', error.message);
+}
 
 class User {
   /**
@@ -13,8 +64,12 @@ class User {
    */
   static async findById(id) {
     try {
+      if (!sql) {
+        throw new Error('Database connection not initialized');
+      }
+      
       const result = await sql`
-        SELECT id, username, email, role, created_at 
+        SELECT id, username, email, is_admin, created_at 
         FROM users WHERE id = ${id}
       `;
       return result[0] || null;
@@ -31,6 +86,10 @@ class User {
    */
   static async findByEmail(email) {
     try {
+      if (!sql) {
+        throw new Error('Database connection not initialized');
+      }
+      
       const result = await sql`
         SELECT * FROM users WHERE email = ${email}
       `;
@@ -47,11 +106,15 @@ class User {
    * @param {string} userData.username - Username
    * @param {string} userData.email - Email
    * @param {string} userData.password - Password (will be hashed)
-   * @param {string} [userData.role='user'] - Role (defaults to 'user')
+   * @param {boolean} [userData.is_admin=false] - Is admin user
    * @returns {Promise<Object>} Created user object (without password)
    */
   static async create(userData) {
     try {
+      if (!sql) {
+        throw new Error('Database connection not initialized');
+      }
+      
       // Check if user exists
       const existingUser = await this.findByEmail(userData.email);
       if (existingUser) {
@@ -61,13 +124,13 @@ class User {
       // Hash password
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(userData.password, salt);
-      const role = userData.role || 'user';
+      const is_admin = userData.is_admin || false;
 
       // Insert user
       const result = await sql`
-        INSERT INTO users (username, email, password, role) 
-        VALUES (${userData.username}, ${userData.email}, ${hashedPassword}, ${role}) 
-        RETURNING id, username, email, role, created_at
+        INSERT INTO users (username, email, password, is_admin) 
+        VALUES (${userData.username}, ${userData.email}, ${hashedPassword}, ${is_admin}) 
+        RETURNING id, username, email, is_admin, created_at
       `;
 
       return result[0];
@@ -78,6 +141,18 @@ class User {
   }
 
   /**
+   * Create an admin user
+   * @param {Object} userData - User data
+   * @returns {Promise<Object>} Created admin user object
+   */
+  static async createAdmin(userData) {
+    return this.create({
+      ...userData,
+      is_admin: true
+    });
+  }
+
+  /**
    * Authenticate a user
    * @param {string} email - User email
    * @param {string} password - User password
@@ -85,6 +160,10 @@ class User {
    */
   static async authenticate(email, password) {
     try {
+      if (!sql) {
+        throw new Error('Database connection not initialized');
+      }
+      
       // Find user
       const user = await this.findByEmail(email);
       if (!user) {
@@ -109,48 +188,43 @@ class User {
   /**
    * Update a user
    * @param {number} id - User ID
-   * @param {Object} userData - User data to update
+   * @param {Object} updateData - Data to update
    * @returns {Promise<Object>} Updated user object
    */
-  static async update(id, userData) {
+  static async update(id, updateData) {
     try {
-      let updateFields = {};
+      if (!sql) {
+        throw new Error('Database connection not initialized');
+      }
       
-      // Add updatable fields
-      if (userData.username) updateFields.username = userData.username;
-      if (userData.email) updateFields.email = userData.email;
-      if (userData.role) updateFields.role = userData.role;
-      
-      // Handle password separately for hashing
-      let hashedPassword;
-      if (userData.password) {
+      // If password is being updated, hash it
+      if (updateData.password) {
         const salt = await bcrypt.genSalt(10);
-        hashedPassword = await bcrypt.hash(userData.password, salt);
+        updateData.password = await bcrypt.hash(updateData.password, salt);
       }
 
-      // If no fields to update
-      if (Object.keys(updateFields).length === 0 && !hashedPassword) {
-        return await this.findById(id);
-      }
+      // Build the update query dynamically
+      let updateFields = [];
+      let updateValues = [];
+      
+      Object.entries(updateData).forEach(([key, value]) => {
+        if (key !== 'id') { // Skip the ID field
+          updateFields.push(`${key} = ?`);
+          updateValues.push(value);
+        }
+      });
+      
+      // Add the ID as the last parameter
+      updateValues.push(id);
+      
+      const updateQuery = `
+        UPDATE users 
+        SET ${updateFields.join(', ')}, updated_at = CURRENT_TIMESTAMP 
+        WHERE id = ? 
+        RETURNING id, username, email, is_admin, created_at, updated_at
+      `;
 
-      // Create dynamic query with only fields that need updating
-      let result;
-      if (hashedPassword) {
-        result = await sql`
-          UPDATE users 
-          SET ${sql(updateFields)}, password = ${hashedPassword}, updated_at = CURRENT_TIMESTAMP 
-          WHERE id = ${id} 
-          RETURNING id, username, email, role, created_at
-        `;
-      } else {
-        result = await sql`
-          UPDATE users 
-          SET ${sql(updateFields)}, updated_at = CURRENT_TIMESTAMP 
-          WHERE id = ${id} 
-          RETURNING id, username, email, role, created_at
-        `;
-      }
-
+      const result = await sql(updateQuery, updateValues);
       return result[0];
     } catch (error) {
       console.error('Error updating user:', error);
@@ -161,10 +235,14 @@ class User {
   /**
    * Delete a user
    * @param {number} id - User ID
-   * @returns {Promise<boolean>} True if deleted, false otherwise
+   * @returns {Promise<boolean>} True if deleted, false if not found
    */
   static async delete(id) {
     try {
+      if (!sql) {
+        throw new Error('Database connection not initialized');
+      }
+      
       const result = await sql`
         DELETE FROM users WHERE id = ${id} RETURNING id
       `;
@@ -173,18 +251,6 @@ class User {
       console.error('Error deleting user:', error);
       throw error;
     }
-  }
-
-  /**
-   * Create an admin user
-   * @returns {Promise<Object>} Created admin user
-   */
-  static async createAdmin(adminData) {
-    // Override role to ensure it's admin
-    return this.create({
-      ...adminData,
-      role: 'admin'
-    });
   }
 }
 
