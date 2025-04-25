@@ -21,6 +21,21 @@ import store from './store/store';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ErrorBoundary from './components/ErrorBoundary';
+import LanguageSwitcher from './components/LanguageSwitcher';
+import Accessibility from './components/Accessibility';
+
+// Styles for the fixed corner container
+const cornerContainerStyle: React.CSSProperties = {
+  position: 'fixed',
+  bottom: '1rem', // Adjust as needed
+  right: '1rem', // Adjust as needed
+  zIndex: 1000, // Ensure it's above other content
+  backgroundColor: 'rgba(255, 255, 255, 0.8)', // Optional: light background for visibility
+  padding: '0.5rem',
+  borderRadius: '5px',
+  display: 'flex',
+  alignItems: 'center'
+};
 
 function App() {
   return (
@@ -30,6 +45,12 @@ function App() {
         <ToastContainer position="top-center" />
         <ErrorBoundary>
           <div className="flex flex-col min-h-screen  scrollbar overflow">
+            {/* Fixed corner container for flags and icon */}
+            <div style={cornerContainerStyle}>
+              <LanguageSwitcher />
+              <Accessibility />
+            </div>
+
             <Routes>
               {/* Admin routes */}
               <Route path="/admin/*" element={<Admin />} />

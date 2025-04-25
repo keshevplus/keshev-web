@@ -1,0 +1,947 @@
+[
+  {
+    "statementIndex": 0,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- PostgreSQL database dump\n--\n\n-- Dumped from database version 17.2\n-- Dumped by pg_dump version..."
+  },
+  {
+    "statementIndex": 1,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "SET lock_timeout = 0;"
+  },
+  {
+    "statementIndex": 2,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "SET idle_in_transaction_session_timeout = 0;"
+  },
+  {
+    "statementIndex": 3,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "SET transaction_timeout = 0;"
+  },
+  {
+    "statementIndex": 4,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "SET client_encoding = 'UTF8';"
+  },
+  {
+    "statementIndex": 5,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "SET standard_conforming_strings = on;"
+  },
+  {
+    "statementIndex": 6,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "SELECT pg_catalog.set_config('search_path', '', false);"
+  },
+  {
+    "statementIndex": 7,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "SET check_function_bodies = false;"
+  },
+  {
+    "statementIndex": 8,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "SET xmloption = content;"
+  },
+  {
+    "statementIndex": 9,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "SET client_min_messages = warning;"
+  },
+  {
+    "statementIndex": 10,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "SET row_security = off;"
+  },
+  {
+    "statementIndex": 11,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: pgcrypto;"
+  },
+  {
+    "statementIndex": 12,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: EXTENSION;"
+  },
+  {
+    "statementIndex": 13,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: -;"
+  },
+  {
+    "statementIndex": 14,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: -\n--\n\nCREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;"
+  },
+  {
+    "statementIndex": 15,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: EXTENSION pgcrypto;"
+  },
+  {
+    "statementIndex": 16,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: COMMENT;"
+  },
+  {
+    "statementIndex": 17,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: -;"
+  },
+  {
+    "statementIndex": 18,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: \n--\n\nCOMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';"
+  },
+  {
+    "statementIndex": 19,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: update_updated_at_column();"
+  },
+  {
+    "statementIndex": 20,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: FUNCTION;"
+  },
+  {
+    "statementIndex": 21,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 22,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCREATE FUNCTION public.update_updated_at_column() RETURNS trigger\n    LANGUAGE p..."
+  },
+  {
+    "statementIndex": 23,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "RETURN NEW;"
+  },
+  {
+    "statementIndex": 24,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "END;"
+  },
+  {
+    "statementIndex": 25,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "$$;"
+  },
+  {
+    "statementIndex": 26,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "ALTER FUNCTION public.update_updated_at_column() OWNER TO postgres;"
+  },
+  {
+    "statementIndex": 27,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "SET default_tablespace = '';"
+  },
+  {
+    "statementIndex": 28,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "SET default_table_access_method = heap;"
+  },
+  {
+    "statementIndex": 29,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: hero_content;"
+  },
+  {
+    "statementIndex": 30,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: TABLE;"
+  },
+  {
+    "statementIndex": 31,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 32,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCREATE TABLE public.hero_content (\n    id uuid DEFAULT gen_random_uuid() NOT NUL..."
+  },
+  {
+    "statementIndex": 33,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "ALTER TABLE public.hero_content OWNER TO postgres;"
+  },
+  {
+    "statementIndex": 34,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: leads;"
+  },
+  {
+    "statementIndex": 35,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: TABLE;"
+  },
+  {
+    "statementIndex": 36,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 37,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCREATE TABLE public.leads (\n    id uuid DEFAULT gen_random_uuid() NOT NULL,\n    ..."
+  },
+  {
+    "statementIndex": 38,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "ALTER TABLE public.leads OWNER TO postgres;"
+  },
+  {
+    "statementIndex": 39,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: services;"
+  },
+  {
+    "statementIndex": 40,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: TABLE;"
+  },
+  {
+    "statementIndex": 41,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 42,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCREATE TABLE public.services (\n    id uuid DEFAULT gen_random_uuid() NOT NULL,\n ..."
+  },
+  {
+    "statementIndex": 43,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "ALTER TABLE public.services OWNER TO postgres;"
+  },
+  {
+    "statementIndex": 44,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: team_members;"
+  },
+  {
+    "statementIndex": 45,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: TABLE;"
+  },
+  {
+    "statementIndex": 46,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 47,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCREATE TABLE public.team_members (\n    id uuid DEFAULT gen_random_uuid() NOT NUL..."
+  },
+  {
+    "statementIndex": 48,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "ALTER TABLE public.team_members OWNER TO postgres;"
+  },
+  {
+    "statementIndex": 49,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: testimonials;"
+  },
+  {
+    "statementIndex": 50,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: TABLE;"
+  },
+  {
+    "statementIndex": 51,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 52,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCREATE TABLE public.testimonials (\n    id uuid DEFAULT gen_random_uuid() NOT NUL..."
+  },
+  {
+    "statementIndex": 53,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "ALTER TABLE public.testimonials OWNER TO postgres;"
+  },
+  {
+    "statementIndex": 54,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: users;"
+  },
+  {
+    "statementIndex": 55,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: TABLE;"
+  },
+  {
+    "statementIndex": 56,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 57,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCREATE TABLE public.users (\n    id integer NOT NULL,\n    username character vary..."
+  },
+  {
+    "statementIndex": 58,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "ALTER TABLE public.users OWNER TO postgres;"
+  },
+  {
+    "statementIndex": 59,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: users_id_seq;"
+  },
+  {
+    "statementIndex": 60,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: SEQUENCE;"
+  },
+  {
+    "statementIndex": 61,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 62,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCREATE SEQUENCE public.users_id_seq\n    AS integer\n    START WITH 1\n    INCREMEN..."
+  },
+  {
+    "statementIndex": 63,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "ALTER SEQUENCE public.users_id_seq OWNER TO postgres;"
+  },
+  {
+    "statementIndex": 64,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: users_id_seq;"
+  },
+  {
+    "statementIndex": 65,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: SEQUENCE OWNED BY;"
+  },
+  {
+    "statementIndex": 66,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 67,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;"
+  },
+  {
+    "statementIndex": 68,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: users id;"
+  },
+  {
+    "statementIndex": 69,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: DEFAULT;"
+  },
+  {
+    "statementIndex": 70,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 71,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_..."
+  },
+  {
+    "statementIndex": 72,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Data for Name: hero_content;"
+  },
+  {
+    "statementIndex": 73,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: TABLE DATA;"
+  },
+  {
+    "statementIndex": 74,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 75,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCOPY public.hero_content (id, title, subtitle, image_url, created_at, updated_at..."
+  },
+  {
+    "statementIndex": 76,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "\\.\n\n\n--\n-- Data for Name: leads;"
+  },
+  {
+    "statementIndex": 77,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: TABLE DATA;"
+  },
+  {
+    "statementIndex": 78,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 79,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCOPY public.leads (id, name, email, phone, subject, message, date_received) FROM..."
+  },
+  {
+    "statementIndex": 80,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "05909241-edac-4a07-ab40-cb0dd7e10e28\tIrine Kochav Raifman\tpluskeshev@gmail.com\t0545884645\t\\N\tPower u..."
+  },
+  {
+    "statementIndex": 81,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: TABLE DATA;"
+  },
+  {
+    "statementIndex": 82,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 83,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCOPY public.services (id, title, description, icon, price, image_url, created_at..."
+  },
+  {
+    "statementIndex": 84,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "\\.\n\n\n--\n-- Data for Name: team_members;"
+  },
+  {
+    "statementIndex": 85,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: TABLE DATA;"
+  },
+  {
+    "statementIndex": 86,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 87,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCOPY public.team_members (id, name, role, bio, image_url, created_at, updated_at..."
+  },
+  {
+    "statementIndex": 88,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "\\.\n\n\n--\n-- Data for Name: testimonials;"
+  },
+  {
+    "statementIndex": 89,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: TABLE DATA;"
+  },
+  {
+    "statementIndex": 90,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 91,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCOPY public.testimonials (id, name, role, content, image_url, created_at, update..."
+  },
+  {
+    "statementIndex": 92,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "\\.\n\n\n--\n-- Data for Name: users;"
+  },
+  {
+    "statementIndex": 93,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: TABLE DATA;"
+  },
+  {
+    "statementIndex": 94,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 95,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCOPY public.users (id, username, password, email, created_at, is_admin) FROM std..."
+  },
+  {
+    "statementIndex": 96,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "6\tadmin\t$2a$06$YYK44Iwkc/.O2ZcZ/oHuteUtrrIfIm.x77FQXBOb93SSSnwq0hie6\tdr@keshevplus.co.il\t2025-04-24 ..."
+  },
+  {
+    "statementIndex": 97,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: SEQUENCE SET;"
+  },
+  {
+    "statementIndex": 98,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 99,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nSELECT pg_catalog.setval('public.users_id_seq', 6, true);"
+  },
+  {
+    "statementIndex": 100,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: hero_content hero_content_pkey;"
+  },
+  {
+    "statementIndex": 101,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: CONSTRAINT;"
+  },
+  {
+    "statementIndex": 102,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 103,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nALTER TABLE ONLY public.hero_content\n    ADD CONSTRAINT hero_content_pkey PRIMAR..."
+  },
+  {
+    "statementIndex": 104,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: leads leads_pkey;"
+  },
+  {
+    "statementIndex": 105,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: CONSTRAINT;"
+  },
+  {
+    "statementIndex": 106,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 107,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nALTER TABLE ONLY public.leads\n    ADD CONSTRAINT leads_pkey PRIMARY KEY (id);"
+  },
+  {
+    "statementIndex": 108,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: services services_pkey;"
+  },
+  {
+    "statementIndex": 109,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: CONSTRAINT;"
+  },
+  {
+    "statementIndex": 110,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 111,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nALTER TABLE ONLY public.services\n    ADD CONSTRAINT services_pkey PRIMARY KEY (i..."
+  },
+  {
+    "statementIndex": 112,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: team_members team_members_pkey;"
+  },
+  {
+    "statementIndex": 113,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: CONSTRAINT;"
+  },
+  {
+    "statementIndex": 114,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 115,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nALTER TABLE ONLY public.team_members\n    ADD CONSTRAINT team_members_pkey PRIMAR..."
+  },
+  {
+    "statementIndex": 116,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: testimonials testimonials_pkey;"
+  },
+  {
+    "statementIndex": 117,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: CONSTRAINT;"
+  },
+  {
+    "statementIndex": 118,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 119,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nALTER TABLE ONLY public.testimonials\n    ADD CONSTRAINT testimonials_pkey PRIMAR..."
+  },
+  {
+    "statementIndex": 120,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: users users_email_key;"
+  },
+  {
+    "statementIndex": 121,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: CONSTRAINT;"
+  },
+  {
+    "statementIndex": 122,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 123,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nALTER TABLE ONLY public.users\n    ADD CONSTRAINT users_email_key UNIQUE (email);"
+  },
+  {
+    "statementIndex": 124,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: users users_pkey;"
+  },
+  {
+    "statementIndex": 125,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: CONSTRAINT;"
+  },
+  {
+    "statementIndex": 126,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 127,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nALTER TABLE ONLY public.users\n    ADD CONSTRAINT users_pkey PRIMARY KEY (id);"
+  },
+  {
+    "statementIndex": 128,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: users users_username_key;"
+  },
+  {
+    "statementIndex": 129,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: CONSTRAINT;"
+  },
+  {
+    "statementIndex": 130,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 131,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nALTER TABLE ONLY public.users\n    ADD CONSTRAINT users_username_key UNIQUE (user..."
+  },
+  {
+    "statementIndex": 132,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: hero_content update_hero_content_updated_at;"
+  },
+  {
+    "statementIndex": 133,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: TRIGGER;"
+  },
+  {
+    "statementIndex": 134,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 135,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCREATE TRIGGER update_hero_content_updated_at BEFORE UPDATE ON public.hero_conte..."
+  },
+  {
+    "statementIndex": 136,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: services update_services_updated_at;"
+  },
+  {
+    "statementIndex": 137,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: TRIGGER;"
+  },
+  {
+    "statementIndex": 138,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 139,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCREATE TRIGGER update_services_updated_at BEFORE UPDATE ON public.services FOR E..."
+  },
+  {
+    "statementIndex": 140,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: team_members update_team_members_updated_at;"
+  },
+  {
+    "statementIndex": 141,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: TRIGGER;"
+  },
+  {
+    "statementIndex": 142,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 143,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCREATE TRIGGER update_team_members_updated_at BEFORE UPDATE ON public.team_membe..."
+  },
+  {
+    "statementIndex": 144,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: testimonials update_testimonials_updated_at;"
+  },
+  {
+    "statementIndex": 145,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: TRIGGER;"
+  },
+  {
+    "statementIndex": 146,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 147,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCREATE TRIGGER update_testimonials_updated_at BEFORE UPDATE ON public.testimonia..."
+  },
+  {
+    "statementIndex": 148,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: leads Allow authenticated users to read leads;"
+  },
+  {
+    "statementIndex": 149,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: POLICY;"
+  },
+  {
+    "statementIndex": 150,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 151,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCREATE POLICY \"Allow authenticated users to read leads\" ON public.leads FOR SELE..."
+  },
+  {
+    "statementIndex": 152,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: hero_content Allow public read access to hero_content;"
+  },
+  {
+    "statementIndex": 153,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: POLICY;"
+  },
+  {
+    "statementIndex": 154,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 155,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCREATE POLICY \"Allow public read access to hero_content\" ON public.hero_content ..."
+  },
+  {
+    "statementIndex": 156,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: services Allow public read access to services;"
+  },
+  {
+    "statementIndex": 157,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: POLICY;"
+  },
+  {
+    "statementIndex": 158,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 159,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCREATE POLICY \"Allow public read access to services\" ON public.services FOR SELE..."
+  },
+  {
+    "statementIndex": 160,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: team_members Allow public read access to team_members;"
+  },
+  {
+    "statementIndex": 161,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: POLICY;"
+  },
+  {
+    "statementIndex": 162,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 163,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCREATE POLICY \"Allow public read access to team_members\" ON public.team_members ..."
+  },
+  {
+    "statementIndex": 164,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: testimonials Allow public read access to testimonials;"
+  },
+  {
+    "statementIndex": 165,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: POLICY;"
+  },
+  {
+    "statementIndex": 166,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 167,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nCREATE POLICY \"Allow public read access to testimonials\" ON public.testimonials ..."
+  },
+  {
+    "statementIndex": 168,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: hero_content;"
+  },
+  {
+    "statementIndex": 169,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: ROW SECURITY;"
+  },
+  {
+    "statementIndex": 170,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 171,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nALTER TABLE public.hero_content ENABLE ROW LEVEL SECURITY;"
+  },
+  {
+    "statementIndex": 172,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: leads;"
+  },
+  {
+    "statementIndex": 173,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: ROW SECURITY;"
+  },
+  {
+    "statementIndex": 174,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 175,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nALTER TABLE public.leads ENABLE ROW LEVEL SECURITY;"
+  },
+  {
+    "statementIndex": 176,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: services;"
+  },
+  {
+    "statementIndex": 177,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: ROW SECURITY;"
+  },
+  {
+    "statementIndex": 178,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 179,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nALTER TABLE public.services ENABLE ROW LEVEL SECURITY;"
+  },
+  {
+    "statementIndex": 180,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: team_members;"
+  },
+  {
+    "statementIndex": 181,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: ROW SECURITY;"
+  },
+  {
+    "statementIndex": 182,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 183,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nALTER TABLE public.team_members ENABLE ROW LEVEL SECURITY;"
+  },
+  {
+    "statementIndex": 184,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- Name: testimonials;"
+  },
+  {
+    "statementIndex": 185,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Type: ROW SECURITY;"
+  },
+  {
+    "statementIndex": 186,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Schema: public;"
+  },
+  {
+    "statementIndex": 187,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "Owner: postgres\n--\n\nALTER TABLE public.testimonials ENABLE ROW LEVEL SECURITY;"
+  },
+  {
+    "statementIndex": 188,
+    "error": "This function can now be called only as a tagged-template function: sql`SELECT ${value}`, not sql(\"SELECT $1\", [value], options). For a conventional function call with value placeholders ($1, $2, etc.), use sql.query(\"SELECT $1\", [value], options).",
+    "statementPreview": "--\n-- PostgreSQL database dump complete\n--"
+  }
+]

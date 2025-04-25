@@ -45,15 +45,15 @@ export default function Forms() {
       <h3 className="text-xl md:text-4xl font-bold text-black text-center mb-8">
         {pageData.subheading}
       </h3>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {(pageData.body ?? []).map((form, index) => (
           <div
             key={index}
-            className="grid grid-cols-2 md:grid-cols-3 gap-4"
+            className="bg-white rounded-lg shadow-md p-4 flex flex-col"
           >
             {/* Form Details Card */}
             <Card
-              bgcolor="bg-orange-400/35 hover:bg-orange-400/60 col-span-2"
+              bgcolor="bg-orange-400/35 hover:bg-orange-400/60 w-full"
               textColor="text-black font-bold"
               textSize="text-xl md:text-2xl"
               paraSize="text-md md:text-lg"
@@ -69,7 +69,7 @@ export default function Forms() {
             />
             {/* File Downloads Card */}
             <Card
-              bgcolor="bg-green-800 hover:bg-green-900 col-span-1"
+              bgcolor="bg-green-800 hover:bg-green-900 w-full mt-4"
               textColor="text-white font-bold"
               textSize="text-lg md:text-xl"
               paraSize="text-md md:text-lg"
