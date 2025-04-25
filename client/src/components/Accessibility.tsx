@@ -97,7 +97,7 @@ const Accessibility: React.FC = () => {
         aria-label={t('accessibilityMenu')}
       >
         <div className="accessibility-menu-header">
-          <h2>{t('accessibilityTitle')}</h2>
+          <h2>{t('title')}</h2>
           <button 
             onClick={toggleMenu} 
             aria-label={t('closeMenu')}
