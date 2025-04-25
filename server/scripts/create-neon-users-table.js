@@ -19,7 +19,7 @@ async function setupUsersTable() {
     `;
     
     if (tableCheck[0].exists) {
-      console.log('u2705 Users table already exists');
+      console.log('✅ Users table already exists');
     } else {
       console.log('Creating users table...');
       await sql`
@@ -34,7 +34,7 @@ async function setupUsersTable() {
           is_admin BOOLEAN DEFAULT false
         )
       `;
-      console.log('u2705 Users table created successfully');
+      console.log('✅ Users table created successfully');
     }
     
     // Create default admin user if no users exist
@@ -52,13 +52,39 @@ async function setupUsersTable() {
         VALUES ('admin', 'dr@keshevplus.co.il', ${hashedPassword}, 'admin', true)
       `;
       
-      console.log('u2705 Default admin user created with:');
+      console.log('✅ Default admin user created with:');
       console.log('Username: admin');
       console.log('Email: dr@keshevplus.co.il');
       console.log('Password: Admin123!');
       console.log('\nPlease change this password immediately after logging in!');
     } else {
       console.log(`There are already ${usersCount[0].count} user(s) in the database.`);
+      
+      // Check if the specific admin user already exists
+      const adminExists = await sql`
+        SELECT COUNT(*) as count FROM users WHERE username = 'admin'
+      `;
+      
+      if (adminExists[0].count === '0') {
+        console.log('Creating admin user...');
+        
+        // Hash password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash('Admin123!', salt);
+        
+        await sql`
+          INSERT INTO users (username, email, password, role, is_admin) 
+          VALUES ('admin', 'dr@keshevplus.co.il', ${hashedPassword}, 'admin', true)
+        `;
+        
+        console.log('✅ Admin user created with:');
+        console.log('Username: admin');
+        console.log('Email: dr@keshevplus.co.il');
+        console.log('Password: Admin123!');
+        console.log('\nPlease change this password immediately after logging in!');
+      } else {
+        console.log('Admin user already exists.');
+      }
     }
     
     console.log('\nUsers setup complete!');

@@ -106,7 +106,7 @@ COPY public.leads (id, name, email, phone, subject, message, date_received) FROM
 --
 
 COPY public.users (id, username, password, email, created_at, updated_at, role, is_admin) FROM stdin;
-1	admin	$2b$10$/NWSA7wwH4oAHuC2ndlHXO/wP6m3RWOfuIEpGD3vSpLOjfu0WmBwm	admin@keshevplus.co.il	2025-04-24 23:07:49.00668	2025-04-24 23:07:49.00668	admin	t
+1	admin	$2b$10$/NWSA7wwH4oAHuC2ndlHXO/wP6m3RWOfuIEpGD3vSpLOjfu0WmBwm	dr@keshevplus.co.il	2025-04-24 23:07:49.00668	2025-04-24 23:07:49.00668	admin	t
 \.
 
 
