@@ -155,14 +155,17 @@
   padding-top: 10px;
 }
 
-/* High contrast mode */
+/* High contrast mode - Israeli Accessibility Standard */
 body.high-contrast {
   background: #000 !important;
   color: #fff !important;
 }
 
-body.high-contrast a {
+body.high-contrast a,
+body.high-contrast .btn-link,
+body.high-contrast .nav-link {
   color: #ffff00 !important;
+  text-decoration: underline !important;
 }
 
 body.high-contrast button,
@@ -174,8 +177,42 @@ body.high-contrast textarea {
   border: 1px solid #fff !important;
 }
 
+body.high-contrast .btn-primary,
+body.high-contrast .btn-success,
+body.high-contrast .btn-info,
+body.high-contrast .btn-warning,
+body.high-contrast .btn-danger {
+  background: #000 !important;
+  color: #ffff00 !important;
+  border: 2px solid #ffff00 !important;
+}
+
 body.high-contrast img {
   filter: grayscale(100%);
+}
+
+body.high-contrast header,
+body.high-contrast nav,
+body.high-contrast footer,
+body.high-contrast aside,
+body.high-contrast section,
+body.high-contrast main,
+body.high-contrast .card,
+body.high-contrast .container,
+body.high-contrast .navbar {
+  background: #000 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+
+body.high-contrast .form-control:focus {
+  border-color: #ffff00 !important;
+  box-shadow: 0 0 0 0.25rem rgba(255, 255, 0, 0.5) !important;
+}
+
+body.high-contrast ::placeholder {
+  color: #cccccc !important;
+  opacity: 1;
 }
 
 /* RTL support */

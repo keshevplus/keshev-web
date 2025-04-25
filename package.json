@@ -19,7 +19,8 @@
     "lint": "pnpm --recursive run lint",
     "lint:client": "pnpm --filter ./client lint",
     "lint:server": "pnpm --filter ./server lint",
-    "restart": "scripts\\restart.bat"
+    "restart": "scripts\\restart.bat",
+    "commit": "git commit -am \"insert update message\"; git push origin main; pnpm run start"
   },
   "devDependencies": {
     "concurrently": "^7.6.0"
