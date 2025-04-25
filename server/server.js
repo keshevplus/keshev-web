@@ -13,7 +13,7 @@ const neonLeadsRoutes = require("./routes/neon-leads");
 const authMiddleware = require("./middleware/auth");
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // Middleware
 app.use(cors());
@@ -35,7 +35,7 @@ app.post("/api/contact", (req, res) => {
   // Create a new request to the neon leads endpoint
   axios({
     method: 'post',
-    url: `http://localhost:${PORT}/api/neon/leads`,
+    url: `http://localhost:${process.env.PORT || 5001}/api/neon/leads`,
     data: req.body,
     headers: req.headers
   })
