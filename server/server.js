@@ -32,9 +32,23 @@ app.use("/api/neon/leads", neonLeadsRoutes);
 
 // Handle contact form submissions by redirecting to leads endpoint
 app.post("/api/contact", (req, res) => {
-  // Forward the request to our Neon leads handler without trailing slash
-  req.url = '/api/neon/leads';
-  app._router.handle(req, res);
+  // Create a new request to the neon leads endpoint
+  axios({
+    method: 'post',
+    url: `http://localhost:${PORT}/api/neon/leads`,
+    data: req.body,
+    headers: req.headers
+  })
+  .then(response => {
+    res.status(response.status).json(response.data);
+  })
+  .catch(error => {
+    console.error('Error forwarding contact request:', error);
+    res.status(error.response?.status || 500).json({
+      message: 'Error processing contact form',
+      error: error.message
+    });
+  });
 });
 
 // Health check endpoint
