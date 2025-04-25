@@ -7,21 +7,22 @@
     "server"
   ],
   "scripts": {
-    "start": "npm run start:client & npm run start:server",
-    "start:client": "npm --prefix client start",
-    "start:server": "npm --prefix server start",
-    "build": "npm run build:client && npm run build:server",
-    "build:client": "npm --prefix client run build",
-    "test": "npm run test:client && npm run test:server",
-    "test:client": "npm --prefix client test",
-    "test:server": "npm --prefix server test",
-    "lint": "npm run lint:client && npm run lint:server",
-    "lint:client": "npm --prefix client run lint",
-    "lint:server": "npm --prefix server run lint"
+    "start": "npx concurrently --kill-others --names CLIENT,SERVER \"pnpm --filter ./client start\" \"pnpm --filter ./server start\"",
+    "start:client": "pnpm --filter ./client start",
+    "start:server": "pnpm --filter ./server start",
+    "build": "pnpm --recursive run build",
+    "build:client": "pnpm --filter ./client build",
+    "build:server": "pnpm --filter ./server build",
+    "test": "pnpm --recursive run test",
+    "test:client": "pnpm --filter ./client test",
+    "test:server": "pnpm --filter ./server test",
+    "lint": "pnpm --recursive run lint",
+    "lint:client": "pnpm --filter ./client lint",
+    "lint:server": "pnpm --filter ./server lint",
+    "restart": "scripts\\restart.bat"
   },
   "devDependencies": {
-    "concurrently": "^7.0.0",
-    "toolreduxjskit": "^1.0.0"
+    "concurrently": "^7.6.0"
   },
   "repository": {
     "type": "git",

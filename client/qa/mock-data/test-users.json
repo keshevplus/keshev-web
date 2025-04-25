@@ -1,0 +1,26 @@
+[
+  {
+    "id": "user-1",
+    "username": "admin",
+    "email": "admin@keshevplus.co.il",
+    "password": "Test@12345",
+    "role": "admin",
+    "notes": "Main administrator account for testing admin functionality"
+  },
+  {
+    "id": "user-2",
+    "username": "staff",
+    "email": "staff@keshevplus.co.il",
+    "password": "Test@67890",
+    "role": "staff",
+    "notes": "Staff account with limited permissions"
+  },
+  {
+    "id": "user-3",
+    "username": "readonly",
+    "email": "readonly@keshevplus.co.il",
+    "password": "Test@54321",
+    "role": "readonly",
+    "notes": "Read-only account for testing permission restrictions"
+  }
+]

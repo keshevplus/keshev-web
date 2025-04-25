@@ -2,7 +2,7 @@
 import React, { ReactNode } from 'react';
 
 interface VideoBGProps {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 const VideoBG: React.FC<VideoBGProps> = ({ children }) => {

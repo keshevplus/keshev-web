@@ -5,9 +5,11 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const path = require("path");
 const axios = require("axios");
+const fs = require("fs"); // Add this line to import the fs module
 const authRoutes = require("./routes/auth");
 const adminRoutes = require("./routes/admin");
 const leadsRoutes = require("./routes/leads");
+const neonLeadsRoutes = require("./routes/neon-leads");
 const authMiddleware = require("./middleware/auth");
 
 const app = express();
@@ -26,11 +28,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", authMiddleware, adminRoutes);
 app.use("/api/leads", leadsRoutes);
+app.use("/api/neon/leads", neonLeadsRoutes);
 
 // Handle contact form submissions by redirecting to leads endpoint
 app.post("/api/contact", (req, res) => {
-  // Forward the request to our own leads handler internally
-  req.url = '/api/leads/';
+  // Forward the request to our Neon leads handler without trailing slash
+  req.url = '/api/neon/leads';
   app._router.handle(req, res);
 });
 
@@ -39,9 +42,12 @@ app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "ok" });
 });
 
-// Serve static files from the client directory
-app.use(
-  express.static(path.join(__dirname, "../client/dist"), {
+// Serve static assets and the React app ONLY in production
+if (process.env.NODE_ENV === 'production') {
+  console.log("Running in production mode - serving static files from client/dist");
+
+  // Serve static assets from the React build directory
+  app.use(express.static(path.join(__dirname, "../client/dist"), {
     setHeaders: (res, path) => {
       if (path.endsWith(".js")) {
         res.setHeader("Content-Type", "application/javascript");
@@ -49,29 +55,29 @@ app.use(
         res.setHeader("Content-Type", "text/css");
       }
     },
-  })
-);
+  }));
 
-// Handle 404 for static files
-app.use((req, res, next) => {
-  if (req.path.startsWith('/api') && (req.path.endsWith(".js") || req.path.endsWith(".css"))) {
-    console.error(`Static file not found: ${req.path}`);
-    return res.status(404).send("File not found");
-  }
-  next();
-});
-
-// Catch-all route to serve the main index.html for any non-API requests
-// This MUST come after all API routes but before error handling middleware
-app.get("*", (req, res, next) => {
-  // Skip this middleware for API requests
-  if (req.path.startsWith('/api')) {
-    return next();
-  }
-  
-  // All other routes serve the React app
-  res.sendFile(path.join(__dirname, "../client/dist/index.html"));
-});
+  // THIS IS CRITICAL: The catch-all route that serves the React app
+  app.get("*", (req, res) => {
+    // Explicitly resolve the absolute path to index.html
+    const indexPath = path.resolve(__dirname, "../client/dist/index.html");
+    
+    // Check if the file exists
+    if (fs.existsSync(indexPath)) {
+      // Set no-cache headers to ensure fresh content on refresh
+      res.set({
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      });
+      res.sendFile(indexPath);
+    } else {
+      // Log an error if the index.html file doesn't exist at the expected path
+      console.error(`Error: index.html not found at ${indexPath}`);
+      res.status(500).send('Server Error: index.html not found');
+    }
+  });
+}
 
 // Error handling middleware
 app.use((err, req, res, next) => {

@@ -8,6 +8,9 @@ import App from './App'; // Main application component
 import './index.css'; // Global CSS styles
 import { FormProvider } from './contexts/FormContext'; // Context for managing form state
 
+// Import i18n configuration
+import './i18n';
+
 // Rendering the root React component into the DOM
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

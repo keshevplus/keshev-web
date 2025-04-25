@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const User = require('../models/User-neon'); 
 const auth = require('../middleware/auth');
 require('dotenv').config();
 
@@ -33,7 +33,7 @@ router.post('/register', async (req, res) => {
       }
     );
   } catch (err) {
-    console.error('Registration error:', err.message);
+    console.error('Registration error:', err.message || err);
     if (err.message === 'User already exists') {
       return res.status(400).json({ message: err.message });
     }
@@ -76,7 +76,7 @@ router.post('/login', async (req, res) => {
       }
     );
   } catch (err) {
-    console.error('Login error:', err.message);
+    console.error('Login error:', err.message || err);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -92,7 +92,7 @@ router.get('/user', auth, async (req, res) => {
     }
     res.json(user);
   } catch (err) {
-    console.error('Error fetching user:', err.message);
+    console.error('Error fetching user:', err.message || err);
     res.status(500).json({ message: 'Server error' });
   }
 });
