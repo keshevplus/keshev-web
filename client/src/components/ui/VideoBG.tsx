@@ -7,16 +7,16 @@ interface VideoBGProps {
 
 const VideoBG: React.FC<VideoBGProps> = ({ children }) => {
   return (
-    <div className="relative">
+    <div className="absolute inset-0 overflow-hidden z-[-1]">
       <video
-        className="absolute inset-0 object-cover z-[-50] opacity-70 pointer-events-none"
+        className="absolute inset-0 object-cover w-full h-full opacity-70 pointer-events-none"
         autoPlay
         loop
         muted
       >
-        {/* <source src="/assets/images/formulas.mp4" type="video/mp4" /> */}
+        <source src="/assets/images/bgvideo.mp4" type="video/mp4" />
       </video>
-      <div className="absolute inset-0 bg-orange-400 opacity-40 z-[2]"></div>
+      <div className="absolute inset-0 bg-orange-400 opacity-10"></div>
       {children}
     </div>
   );

@@ -42,56 +42,58 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`sticky top-0 z-[50] bg-white/80 backdrop-blur-sm transition-shadow duration-300 rtl ${
+      className={`sticky top-0 z-[50] transition-shadow duration-300 rtl ${
         isScrolled ? 'shadow-md' : ''
       }`}
     >
-      {!isHomePage && <VideoBG />}
-      <div className="container px-4 max-w-3xl flex items-center justify-between">
-        <Link
-          to="/"
-          className={`flex items-center transition-opacity duration-300 ${
-            isHomePage && !isScrolled ? 'opacity-0' : 'opacity-100'
-          }`}
-        >
-          <div className="flex items-center ">
+      <div className="relative">
+        {!isHomePage && <VideoBG />}
+        <div className="container px-4 max-w-3xl flex items-center justify-between relative bg-transparent backdrop-blur-sm">
+          <Link
+            to="/"
+            className={`flex items-center transition-opacity duration-300 ${
+              isHomePage && !isScrolled ? 'opacity-0' : 'opacity-100'
+            }`}
+          >
+            <div className="flex items-center ">
+              <img
+                src="/assets/images/logo.png"
+                alt="קשב"
+                className="object-contain w-40 transition-transform duration-300 hover:opacity-80"
+              />
+            </div>
+          </Link>
+          <div className="hidden lg:flex space-x-4 mx-4 ">
+            {navItems
+              .filter((item) => !item.mobileOnly)
+              .map((item, index) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`text-xl font-semibold ${
+                    isActive(item.path)
+                      ? 'bg-green-800 text-white'
+                      : 'bg-white/20 text-green-600 hover:bg-green-800 hover:text-white'
+                  } px-4 py-2 rounded-lg ${index === 0 ? 'mx-4' : ''}`}
+                >
+                  {item.text}
+                </Link>
+              ))}
+          </div>
+          <div className="navbar-item">
             <img
-              src="/assets/images/logo.png"
-              alt="קשב"
-              className="object-contain w-40 transition-transform duration-300 hover:opacity-80"
+              src="/assets/images/green-phone.svg"
+              alt="Call Now"
+              className="w-16 hover:opacity-80 transition-transform duration-300"
             />
           </div>
-        </Link>
-        <div className="hidden lg:flex space-x-4 mx-4 ">
-          {navItems
-            .filter((item) => !item.mobileOnly)
-            .map((item, index) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`text-xl font-semibold ${
-                  isActive(item.path)
-                    ? 'bg-green-800 text-white'
-                    : 'bg-white/20 text-green-600 hover:bg-green-800 hover:text-white'
-                } px-4 py-2 rounded-lg ${index === 0 ? 'mx-4' : ''}`}
-              >
-                {item.text}
-              </Link>
-            ))}
+          <button
+            className="lg:hidden text-black"
+            onClick={() => dispatch(setIsMenuOpen(!isMenuOpen))}
+          >
+            {isMenuOpen ? <IoClose size={24} /> : <IoMenu size={24} />}
+          </button>
         </div>
-        <div className="navbar-item">
-          <img
-            src="/assets/images/green-phone.svg"
-            alt="Call Now"
-            className="w-16 hover:opacity-80 transition-transform duration-300"
-          />
-        </div>
-        <button
-          className="lg:hidden text-black"
-          onClick={() => dispatch(setIsMenuOpen(!isMenuOpen))}
-        >
-          {isMenuOpen ? <IoClose size={24} /> : <IoMenu size={24} />}
-        </button>
       </div>
       <div
         className={`lg:hidden fixed left-0 right-0 top-90 z-3 bg-green-800/95 transition-transform duration-300 ${
@@ -100,19 +102,21 @@ export default function Navbar() {
             : 'translate-y-full opacity-0 overflow-y-hidden'
         }`}
       >
-        <div className="container mx-auto py-4">
-          <div className="flex flex-col items-center space-y-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className="text-white text-4xl font-bold hover:text-orange-400 py-2"
-                onClick={() => dispatch(setIsMenuOpen(false))}
-              >
-                {item.text}
-              </Link>
-            ))}
-          </div>
+        <div className="container mx-auto py-4 px-4">
+          {navItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`block text-xl font-semibold py-2 px-4 my-2 rounded-lg ${
+                isActive(item.path)
+                  ? 'bg-white text-green-800'
+                  : 'text-white hover:bg-white/10'
+              }`}
+              onClick={() => dispatch(setIsMenuOpen(false))}
+            >
+              {item.text}
+            </Link>
+          ))}
         </div>
       </div>
     </nav>

@@ -61,6 +61,7 @@ interface Lead {
   subject: string;
   message: string;
   created_at: string;
+  date_received: string;
 }
 
 export interface AuthContextType {
@@ -792,7 +793,7 @@ function LeadsManager() {
   if (loading && leads.length === 0) return <div className="p-6">Loading...</div>;
 
   return (
-    <div className="p-6">
+    <div className="p-6" style={{ direction: 'ltr' }}>
       <h2 className="text-2xl font-bold mb-6">Leads Management</h2>
 
       <div className="mb-4">
@@ -805,17 +806,17 @@ function LeadsManager() {
         />
       </div>
 
-      <div className="bg-white rounded-lg shadow overflow-hidden overflow-x-auto">
-        <table className="min-w-full">
-          <thead className="bg-gray-50">
+      <div className="bg-white rounded-lg shadow overflow-hidden overflow-x-auto" style={{ maxWidth: '100%', width: '100%' }}>
+        <table className="w-full table-fixed">
+          <thead className="bg-gray-50 table-header">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Message</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              <th className="table-header">Name</th>
+              <th className="table-header">Email</th>
+              <th className="table-header">Phone</th>
+              <th className="table-header">Subject</th>
+              <th className="table-header w-2/6">Message</th>
+              <th className="table-header">Created At</th>
+              <th className="table-header w-1/12">Actions</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -828,17 +829,15 @@ function LeadsManager() {
             ) : (
               leads.map((lead) => (
                 <tr key={lead.id}>
-                  <td className="px-6 py-4 whitespace-nowrap">{lead.name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{lead.email}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{lead.phone}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{lead.subject}</td>
-                  <td className="px-6 py-4 whitespace-nowrap max-w-xs truncate" title={lead.message}>
-                    {lead.message}
+                  <td className="table-cell">{lead.name}</td>
+                  <td className="table-cell">{lead.email}</td>
+                  <td className="table-cell">{lead.phone}</td>
+                  <td className="table-cell">{lead.subject}</td>
+                  <td className="table-cell break-words">{lead.message}</td>
+                  <td className="table-cell">
+                    {lead.date_received ? new Date(lead.date_received).toLocaleString('en-US') : 'N/A'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {new Date(lead.created_at).toLocaleString('he-IL')}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="table-cell">
                     <button
                       onClick={() => handleDelete(lead.id)}
                       className="text-red-600 hover:text-red-900"
@@ -898,8 +897,8 @@ function Admin() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <nav className="bg-white shadow-sm">
+    <div className="min-h-screen bg-gray-100" style={{ direction: 'ltr' }}>
+      <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex">
@@ -958,7 +957,7 @@ function Admin() {
             </div>
           </div>
         </div>
-      </nav>
+      </div>
 
       <div className="py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

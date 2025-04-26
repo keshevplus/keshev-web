@@ -46,12 +46,15 @@ const Accessibility: React.FC = () => {
   // Apply all accessibility settings to the document
   const applyAccessibilitySettings = (currentSettings: AccessibilityState) => {
     const docElement = document.documentElement;
+    const bodyElement = document.body;
     
     // High contrast
     if (currentSettings.highContrast) {
       docElement.classList.add('high-contrast');
+      bodyElement.classList.add('high-contrast');
     } else {
       docElement.classList.remove('high-contrast');
+      bodyElement.classList.remove('high-contrast');
     }
     
     // Large text

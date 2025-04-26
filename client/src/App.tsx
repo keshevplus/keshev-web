@@ -22,7 +22,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ErrorBoundary from './components/ErrorBoundary';
 import LanguageSwitcher from './components/LanguageSwitcher';
-import Accessibility from './components/Accessibility';
 
 // Styles for the fixed corner container
 const cornerContainerStyle: React.CSSProperties = {
@@ -44,11 +43,10 @@ function App() {
         <ScrollToTop />
         <ToastContainer position="top-center" />
         <ErrorBoundary>
-          <div className="flex flex-col min-h-screen  scrollbar overflow">
-            {/* Fixed corner container for flags and icon */}
+          <div id="main-container" className="flex flex-col min-h-screen scrollbar overflow">
+            {/* Fixed corner container for language switcher only */}
             <div style={cornerContainerStyle}>
               <LanguageSwitcher />
-              <Accessibility />
             </div>
 
             <Routes>

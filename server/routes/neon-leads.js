@@ -1,11 +1,18 @@
+require('dotenv').config({ path: require('path').resolve(__dirname, '../../.env') });
 const express = require("express");
 const router = express.Router();
 const { neon } = require('@neondatabase/serverless');
 const { body, validationResult } = require("express-validator");
-require('dotenv').config();
 
-// Create SQL instance with Neon
-const sql = neon(process.env.NEON_DATABASE_URL);
+// Create SQL instance with Neon, with fallback options
+const databaseUrl = process.env.NEON_DATABASE_URL || process.env.DATABASE_URL;
+if (!databaseUrl) {
+  console.error('No database URL found in environment variables. Please check your .env file.');
+}
+const sql = neon(databaseUrl);
+
+// Log database connection status
+console.log('Connected to Neon database successfully');
 
 // @route   POST /api/leads
 // @desc    Save lead data to Neon database
