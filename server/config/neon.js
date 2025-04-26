@@ -11,7 +11,7 @@ if (missingEnvVars.length > 0) {
 }
 
 // Create SQL query function using neon
-const sql = neon(process.env.NEON_DATABASE_URL);
+const sql = neon(process.env.NEON_DATABASE_URL + '?sslmode=require');
 
 // Wrapper function to execute queries with error handling
 async function query(text, params = []) {
