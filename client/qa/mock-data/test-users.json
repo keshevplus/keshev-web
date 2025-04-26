@@ -2,7 +2,7 @@
   {
     "id": "user-1",
     "username": "admin",
-    "email": "admin@keshevplus.co.il",
+    "email": "dr@keshevplus.co.il",
     "password": "Test@12345",
     "role": "admin",
     "notes": "Main administrator account for testing admin functionality"
