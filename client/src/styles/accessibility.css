@@ -156,7 +156,12 @@
 }
 
 /* High contrast mode - Israeli Accessibility Standard */
-body.high-contrast {
+body.high-contrast,
+body.high-contrast #main-container,
+body.high-contrast .flex-col,
+body.high-contrast main,
+body.high-contrast .flex-grow,
+body.high-contrast .min-h-screen {
   background: #000 !important;
   color: #fff !important;
 }
@@ -196,7 +201,6 @@ body.high-contrast nav,
 body.high-contrast footer,
 body.high-contrast aside,
 body.high-contrast section,
-body.high-contrast main,
 body.high-contrast .card,
 body.high-contrast .container,
 body.high-contrast .navbar {

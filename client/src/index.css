@@ -90,3 +90,43 @@ main {
   color: var(--logo-green);
   opacity: 0.7;
 }
+
+/* Admin table styles */
+.table-header {
+  padding: 0.75rem 1.5rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #6b7280;
+  letter-spacing: 0.05em;
+}
+
+.table-cell {
+  padding: 1rem 1.5rem;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+/* Override RTL for admin panel */
+[style*="direction: ltr"] {
+  text-align: left;
+  font-family: 'Arial', sans-serif;
+  user-select: text !important; /* Enable text selection in admin */
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+}
+
+[style*="direction: ltr"] * {
+  font-family: 'Arial', sans-serif;
+  user-select: text !important; /* Enable text selection in admin */
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+}
+
+/* Enable context menu in admin */
+[style*="direction: ltr"] *:not(input):not(textarea) {
+  -webkit-touch-callout: default !important;
+}
