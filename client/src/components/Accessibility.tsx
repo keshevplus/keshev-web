@@ -249,7 +249,35 @@ const Accessibility: React.FC = () => {
 
         /* Accessibility styles that get applied to the document */
         .high-contrast {
-          filter: contrast(1.5);
+          background-color: #000 !important;
+          color: #fff !important;
+        }
+        
+        .high-contrast a {
+          color: #00ffff !important;
+        }
+        
+        .high-contrast button, 
+        .high-contrast input, 
+        .high-contrast select, 
+        .high-contrast textarea {
+          background-color: #000 !important;
+          color: #fff !important;
+          border-color: #fff !important;
+        }
+        
+        .high-contrast img, 
+        .high-contrast video {
+          filter: brightness(0.8) contrast(1.2);
+        }
+        
+        .high-contrast h1, 
+        .high-contrast h2, 
+        .high-contrast h3, 
+        .high-contrast h4, 
+        .high-contrast h5, 
+        .high-contrast h6 {
+          color: #fff !important;
         }
 
         .large-text {

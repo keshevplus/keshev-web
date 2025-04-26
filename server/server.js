@@ -35,7 +35,7 @@ app.post("/api/contact", (req, res) => {
   // Create a new request to the neon leads endpoint
   axios({
     method: 'post',
-    url: `http://localhost:${process.env.PORT || 5001}/api/neon/leads`,
+    url: `http://localhost:${PORT}/api/neon/leads`,
     data: req.body,
     headers: req.headers
   })
