@@ -838,7 +838,7 @@ function LeadsManager() {
                     {lead.date_received ? new Date(lead.date_received).toLocaleString('en-US') : 'N/A'}
                   </td>
                   <td className="table-cell">
-                    <button
+                  <button
                       onClick={() => handleDelete(lead.id)}
                       className="text-red-600 hover:text-red-900"
                       title="Delete lead"
