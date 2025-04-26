@@ -9,7 +9,7 @@ const databaseUrl = process.env.NEON_DATABASE_URL || process.env.DATABASE_URL;
 if (!databaseUrl) {
   console.error('No database URL found in environment variables. Please check your .env file.');
 }
-const sql = neon(databaseUrl);
+const sql = neon(databaseUrl + '?sslmode=require');
 
 // Log database connection status
 console.log('Connected to Neon database successfully');
