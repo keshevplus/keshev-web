@@ -17,6 +17,9 @@ importers:
       '@supabase/supabase-js':
         specifier: ^2.49.3
         version: 2.49.4
+      accessibility:
+        specifier: ^6.0.7
+        version: 6.0.7
       date-fns:
         specifier: ^3.6.0
         version: 3.6.0
@@ -80,7 +83,7 @@ importers:
         version: 3.4.17
       toolreduxjskit:
         specifier: link:/toolreduxjskit
-        version: link:../../../toolreduxjskit
+        version: link:../../toolreduxjskit
       typescript:
         specifier: ^5.8.2
         version: 5.8.2
@@ -578,6 +581,9 @@ packages:
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.2.0 || ^5.0.0 || ^6.0.0
+
+  accessibility@6.0.7:
+    resolution: {integrity: sha512-JFOrgGw53RpOtXlwj75Kx6o2RFP5tld0USPtEPBZ0rdCAhAFfHlbhIIw24eDGqsd1tFVD1cOsbahjQDBPs+yow==}
 
   ansi-regex@5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
@@ -1914,6 +1920,10 @@ snapshots:
       vite: 6.2.5(@types/node@22.14.0)(jiti@1.21.7)(yaml@2.7.1)
     transitivePeerDependencies:
       - supports-color
+
+  accessibility@6.0.7:
+    dependencies:
+      regenerator-runtime: 0.14.1
 
   ansi-regex@5.0.1: {}
 
