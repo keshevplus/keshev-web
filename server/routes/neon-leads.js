@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const { neon } = require('@neondatabase/serverless');
 const { body, validationResult } = require("express-validator");
+const { sendLeadNotification, sendLeadAcknowledgment } = require('../utils/mailer');
 
 // Create SQL instance with Neon, with fallback options
 const databaseUrl = process.env.NEON_DATABASE_URL || process.env.DATABASE_URL;
@@ -82,7 +83,7 @@ router.post(
             ${sanitizedData.message}, 
             CURRENT_TIMESTAMP
           ) 
-          RETURNING id
+          RETURNING id, name, email, phone, subject, message, date_received
         `;
         
         // Also save to localStorage for easy retrieval
@@ -94,6 +95,33 @@ router.post(
         // Log for debugging
         console.log(`Successfully saved submission with ID: ${result[0].id}`);        
         console.log(`Total submissions in database: ${existingSubmissions.length}`);
+
+        // Send email notifications
+        if (result && result[0]) {
+          // Send notification to admin
+          sendLeadNotification(result[0])
+            .then(sent => {
+              if (sent) {
+                console.log(`Admin notification email sent for lead ID: ${result[0].id}`);
+              }
+            })
+            .catch(err => {
+              console.error('Error sending admin notification:', err);
+            });
+          
+          // Send acknowledgment to the lead if they provided an email
+          if (result[0].email) {
+            sendLeadAcknowledgment(result[0])
+              .then(sent => {
+                if (sent) {
+                  console.log(`Acknowledgment email sent to ${result[0].email}`);
+                }
+              })
+              .catch(err => {
+                console.error('Error sending acknowledgment email:', err);
+              });
+          }
+        }
       } catch (dbError) {
         console.error("Database error during lead insertion:", {
           error: dbError.stack || dbError.message,
