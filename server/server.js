@@ -1,11 +1,11 @@
 require("dotenv").config();
+const path = require("path");
 // Load email configuration
 require("dotenv").config({ path: path.resolve(__dirname, '.env.email') });
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
-const path = require("path");
 const axios = require("axios");
 const fs = require("fs"); // Add this line to import the fs module
 const authRoutes = require("./routes/auth");
