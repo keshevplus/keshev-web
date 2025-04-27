@@ -10,6 +10,7 @@ const ICONS = {
   readableFont: 'Fa',
   links: '🔗',
   close: '✕',
+  reset: '↺',
 };
 
 interface AccessibilityState {
@@ -41,6 +42,24 @@ const Accessibility: React.FC = () => {
 
     // Apply the setting to the document
     applyAccessibilitySettings({ ...settings, [setting]: !settings[setting] });
+  };
+
+  // Reset all accessibility settings
+  const resetSettings = () => {
+    const defaultSettings = {
+      highContrast: false,
+      largeText: false,
+      readableFont: false,
+      highlightLinks: false,
+    };
+    
+    setSettings(defaultSettings);
+    applyAccessibilitySettings(defaultSettings);
+  };
+
+  // Check if any settings are active
+  const hasActiveSettings = () => {
+    return Object.values(settings).some(value => value === true);
   };
 
   // Apply all accessibility settings to the document
@@ -150,6 +169,16 @@ const Accessibility: React.FC = () => {
             <span className="icon">{ICONS.links}</span>
             <span className="label">{t('highlightLinks')}</span>
           </button>
+
+          {/* Reset */}
+          <button
+            onClick={resetSettings}
+            className={`option-button reset-button ${!hasActiveSettings() ? 'disabled' : ''}`}
+            aria-disabled={!hasActiveSettings()}
+          >
+            <span className="icon">{ICONS.reset}</span>
+            <span className="label">{t('reset')}</span>
+          </button>
         </div>
       </div>
 
@@ -248,6 +277,18 @@ const Accessibility: React.FC = () => {
         .option-button .icon {
           margin-right: 0.75rem;
           font-size: 1.25rem;
+        }
+
+        /* Reset button styles */
+        .reset-button {
+          margin-top: 1rem;
+          border-top: 1px solid #eee;
+          padding-top: 1rem;
+        }
+
+        .reset-button.disabled {
+          opacity: 0.5;
+          cursor: default;
         }
 
         /* Accessibility styles that get applied to the document */

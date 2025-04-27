@@ -22,6 +22,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ErrorBoundary from './components/ErrorBoundary';
 import LanguageSwitcher from './components/LanguageSwitcher';
+import Accessibility from './components/Accessibility';
 
 // Styles for the fixed corner container
 const cornerContainerStyle: React.CSSProperties = {
@@ -33,7 +34,8 @@ const cornerContainerStyle: React.CSSProperties = {
   padding: '0.5rem',
   borderRadius: '5px',
   display: 'flex',
-  alignItems: 'center'
+  alignItems: 'center',
+  gap: '0.5rem' // Add spacing between components
 };
 
 function App() {

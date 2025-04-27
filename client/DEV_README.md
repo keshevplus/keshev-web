@@ -37,7 +37,7 @@ Development tasks are tracked in the `TASKS.md` file. Update task status as you 
 
 ## Development Conventions
 
-- Use TypeScript for all new components
+- Use TypeScript for all new components 
 - Follow the existing code style and component patterns
 - Prefer functional components with hooks
 - Use pnpm as the package manager
