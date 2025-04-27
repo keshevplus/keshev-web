@@ -13,6 +13,7 @@
     "decreaseText": "Default Text",
     "readableFont": "Readable Font",
     "highlightLinks": "Highlight Links",
+    "reset": "Reset All Settings",
     "resetSettings": "Reset settings",
     "hotkeys": {
       "title": "Hotkeys",
