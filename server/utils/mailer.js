@@ -1,13 +1,18 @@
-const nodemailer = require('nodemailer');
+const newLocal = 'nodemailer';
+const nodemailer = require(newLocal);
 require('dotenv').config();
 
 // Check for required environment variables
-const requiredEnvVars = ['EMAIL_HOST', 'EMAIL_PORT', 'EMAIL_USER', 'EMAIL_PASS', 'EMAIL_FROM', 'EMAIL_TO'];
+const requiredEnvVars = ['EMAIL_HOST', 'EMAIL_PORT', 'EMAIL_USER', 'EMAIL_PASS'];
 const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
 
 if (missingEnvVars.length > 0) {
   console.warn(`Missing email configuration variables: ${missingEnvVars.join(', ')}. Email notifications will be disabled.`);
 }
+
+// Set default email addresses
+const EMAIL_FROM = process.env.EMAIL_FROM || 'dr@keshevplus.co.il';
+const EMAIL_TO = process.env.EMAIL_TO || 'pluskeshev@gmail.com';
 
 // Create reusable transporter object using SMTP transport
 let transporter = null;
@@ -48,8 +53,8 @@ async function sendLeadNotification(lead) {
 
     // Create the email content with both Hebrew and English
     const mailOptions = {
-      from: process.env.EMAIL_FROM,
-      to: process.env.EMAIL_TO,
+      from: `"Keshev Plus" <${EMAIL_FROM}>`,
+      to: EMAIL_TO,
       subject: `פנייה חדשה באתר קשב פלוס - ${lead.name} | New Contact Form Submission - ${lead.name}`,
       html: `
         <div dir="rtl" style="font-family: Arial, sans-serif; line-height: 1.6;">
@@ -100,7 +105,7 @@ async function sendLeadAcknowledgment(lead) {
   try {
     // Create the email content with both Hebrew and English
     const mailOptions = {
-      from: process.env.EMAIL_FROM,
+      from: `"Keshev Plus" <${EMAIL_FROM}>`,
       to: lead.email,
       subject: `תודה על פנייתך לקשב פלוס | Thank you for contacting Keshev Plus`,
       html: `

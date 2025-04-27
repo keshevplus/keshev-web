@@ -1,4 +1,6 @@
 require("dotenv").config();
+// Load email configuration
+require("dotenv").config({ path: path.resolve(__dirname, '.env.email') });
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");

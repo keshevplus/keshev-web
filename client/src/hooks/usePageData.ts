@@ -10,6 +10,8 @@ export function usePageData(pageName: string) {
     const fetchData = async () => {
       try {
         setIsLoading(true);
+
+
         const module = await import(`../data/${pageName}Page.ts`);
         setData([module.default]); // Wrap in array since we expect LocalPageContent[]
         setIsLoading(false);
@@ -25,3 +27,8 @@ export function usePageData(pageName: string) {
 
   return { data, isLoading, error };
 }
+
+// NOTE: This hook is a fallback to using the data folder in client/src,
+// which is only used when the NEON_DB_URL environment variable is not set.
+// In production, we should use the NEON_DB_URL to fetch content from the
+// Neon database.
