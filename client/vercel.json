@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "buildCommand": "pnpm install && pnpm --filter ./client... build",
+  "outputDirectory": "client/dist",
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
+}
