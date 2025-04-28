@@ -13,15 +13,15 @@
     "build": "pnpm --recursive run build",
     "build:client": "pnpm --filter ./client build",
     "build:server": "pnpm --filter ./server build",
-    "test": "pnpm --recursive run test",
     "test:client": "pnpm --filter ./client test",
     "test:server": "pnpm --filter ./server test",
     "lint": "pnpm --recursive run lint",
     "lint:client": "pnpm --filter ./client lint",
     "lint:server": "pnpm --filter ./server lint",
-    "restart": "scripts\\restart.bat",
-    "commit": "git add . && git commit -m \"update\" && git push origin main && pnpm run start",
-    "upd": "cd client ; pnpm run build ; cd .. ; pnpm run commit"
+    "commit": "git pull; cd client ; pnpm run build ; cd .. ;  git add . ; git commit -am \"$1\" ; git push origin main ; vercel deploy --prod",
+    "deploy": "concurrently \"pnpm run deploy:client\" \"pnpm run deploy:server\"",
+    "deploy:client": "cd client && vercel --prod --yes",
+    "deploy:server": "cd server && vercel --prod --yes"
   },
   "devDependencies": {
     "concurrently": "^7.6.0"
@@ -33,13 +33,13 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/keshevplus/keshev-web/issues"
   },
   "homepage": "https://github.com/keshevplus/keshev-web",
   "engines": {
     "node": "18.x",
-    "npm": "9.x"
+    "npm": "9.x",
+    "pnpm": ">=8"
   }
 }
