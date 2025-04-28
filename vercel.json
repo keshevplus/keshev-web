@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "buildCommand": "pnpm install && cd client && pnpm install && pnpm build",
+  "buildCommand": "pnpm install && pnpm --filter ./client... build",
   "outputDirectory": "client/dist",
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/(.*)", "destination": "/client/dist/index.html" }
   ],
   "functions": {
     "api/**/*.js": {
