@@ -9,7 +9,7 @@ import { defineConfig, loadEnv } from 'vite';
         root: './',
         plugins: [react()],
         build: {
-            outDir: 'client\src\dist',
+            outDir: '/dist',
             sourcemap: true,
             chunkSizeWarningLimit: 1500, // Adjust the warning limit if needed
           },
