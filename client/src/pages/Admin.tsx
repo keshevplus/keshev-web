@@ -1,4 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+// Admin.tsx
+
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Routes, Route, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -70,13 +72,13 @@ export interface AuthContextType {
 }
 
 function AdminDashboard() {
-  const [stats, setStats] = useState({
+  const [stats, setStats] = React.useState({
     pages: 0,
     services: 0,
     forms: 0,
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     async function fetchStats() {
       try {
         const [pagesRes, servicesRes, formsRes] = await Promise.all([
@@ -128,7 +130,7 @@ function ContentEditable<T extends string | number>({
   onUpdate: (value: string) => void;
   className?: string;
 }) {
-  const element = useRef<HTMLDivElement>(null);
+  const element = React.useRef<HTMLDivElement>(null);
 
   const handleBlur = () => {
     if (element.current) {
@@ -153,12 +155,12 @@ function ContentEditable<T extends string | number>({
 }
 
 function PagesManager() {
-  const [pages, setPages] = useState<Page[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [newPage, setNewPage] = useState({ slug: '', title: '' });
+  const [pages, setPages] = React.useState<Page[]>([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const [newPage, setNewPage] = React.useState({ slug: '', title: '' });
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetchPages();
   }, []);
 
@@ -303,11 +305,11 @@ function PagesManager() {
 }
 
 function ServicesManager() {
-  const [services, setServices] = useState<Service[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [services, setServices] = React.useState<Service[]>([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetchServices();
   }, []);
 
@@ -461,11 +463,11 @@ function ServicesManager() {
 }
 
 function FormsManager() {
-  const [forms, setForms] = useState<Form[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [forms, setForms] = React.useState<Form[]>([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetchForms();
   }, []);
 
@@ -624,12 +626,12 @@ function FormsManager() {
 }
 
 function ContentManager() {
-  const [content, setContent] = useState<Content[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const [filter, setFilter] = useState('');
+  const [content, setContent] = React.useState<Content[]>([]);
+  const [loading, setLoading] = React.useState(true);
+  const [page, setPage] = React.useState(1);
+  const [filter, setFilter] = React.useState('');
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetchContent();
   }, [page, filter]);
 
@@ -746,18 +748,19 @@ function ContentManager() {
 }
 
 function LeadsManager() {
-  const [leads, setLeads] = useState<Lead[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const [filter, setFilter] = useState('');
-  const [pagination, setPagination] = useState({
+  const [leads, setLeads] = React.useState<Lead[]>([]);
+  const [loading, setLoading] = React.useState(true);
+  const [page, setPage] = React.useState(1);
+  const [filter, setFilter] = React.useState('');
+  const [pagination, setPagination] = React.useState({
     total: 0,
     page: 1,
     limit: 10,
     totalPages: 1
   });
+  const [expandedRowId, setExpandedRowId] = React.useState<string | null>(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetchLeads();
   }, [page, filter]);
 
@@ -828,25 +831,52 @@ function LeadsManager() {
               </tr>
             ) : (
               leads.map((lead) => (
-                <tr key={lead.id}>
-                  <td className="table-cell">{lead.name}</td>
-                  <td className="table-cell">{lead.email}</td>
-                  <td className="table-cell">{lead.phone}</td>
-                  <td className="table-cell">{lead.subject}</td>
-                  <td className="table-cell break-words">{lead.message}</td>
-                  <td className="table-cell">
-                    {lead.date_received ? new Date(lead.date_received).toLocaleString('en-US') : 'N/A'}
-                  </td>
-                  <td className="table-cell">
-                  <button
-                      onClick={() => handleDelete(lead.id)}
-                      className="text-red-600 hover:text-red-900"
-                      title="Delete lead"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
+                <React.Fragment key={lead.id}>
+                  <tr>
+                    <td className="table-cell">{lead.name}</td>
+                    <td className="table-cell">{lead.email}</td>
+                    <td className="table-cell">{lead.phone}</td>
+                    <td className="table-cell">{lead.subject}</td>
+                    <td className="table-cell break-words">{lead.message}</td>
+                    <td className="table-cell">
+                      {lead.date_received ? new Date(lead.date_received).toLocaleString('en-US') : 'N/A'}
+                    </td>
+                    <td className="table-cell">
+                      <button
+                        className="text-blue-600 underline"
+                        onClick={() => setExpandedRowId(lead.id)}
+                      >
+                        Read more
+                      </button>
+                      <button
+                        onClick={() => handleDelete(lead.id)}
+                        className="text-red-600 hover:text-red-900"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                  {expandedRowId === lead.id && (
+                    <tr>
+                      <td colSpan={8} className="bg-gray-50 p-4">
+                        <div className="flex flex-col md:flex-row gap-4">
+                          <div><strong>Name:</strong> {lead.name}</div>
+                          <div><strong>Email:</strong> {lead.email}</div>
+                          <div><strong>Phone:</strong> {lead.phone}</div>
+                          <div><strong>Subject:</strong> {lead.subject}</div>
+                          <div><strong>Message:</strong> {lead.message}</div>
+                          <div><strong>Received:</strong> {lead.date_received ? new Date(lead.date_received).toLocaleString('en-US') : 'N/A'}</div>
+                        </div>
+                        <button
+                          className="mt-2 text-blue-600 underline"
+                          onClick={() => setExpandedRowId(null)}
+                        >
+                          Show less
+                        </button>
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
               ))
             )}
           </tbody>
@@ -883,7 +913,7 @@ function Admin() {
   const { user, logout } = useAuth() as AuthContextType;
   const navigate = useNavigate();
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!user) {
       navigate('/admin/login');
     }
