@@ -22,14 +22,14 @@ export default function Header() {
 
         <nav className="hidden md:block">
           <ul className="flex space-x-8">
-            {[
-              { path: '/', label: 'ראשי' },
-              { path: '/services', label: 'שירותים' },
-              { path: '/diagnosis', label: 'אבחון' },
+            [
+              { path: '/', label: 'בית' },
+              { path: '/about', label: 'אודותנו' },
+              { path: '/services', label: 'שירותינו' },
+              { path: '/diagnosis', label: 'תהליך אבחון' },
               { path: '/adhd', label: 'מהי ADHD' },
               { path: '/forms', label: 'שאלונים' },
-              { path: '/about', label: 'אודות' },
-              { path: '/contact', label: 'צור קשר' },
+              { path: '/contact', label: 'יצירת קשר' },
             ].map((item) => (
               <li key={item.path}>
                 <Link
@@ -44,9 +44,9 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center">
-          <a href="tel:054-4777469" className="flex items-center">
-            <PhoneIcon className="w-5 h-5 phone-icon ms-2" />
-            <span className="text-gray-800">054-4777469</span>
+          <a href="tel:055-2739927" className="flex items-center">
+            <PhoneIcon className="w-4 h-4 phone-icon ms-2 bg-green-800 " /> 055-27-399-27
+            <span className="text-gray-800">055-27-399-27</span>
           </a>
         </div>
       </div>
