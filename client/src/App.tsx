@@ -24,7 +24,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ErrorBoundary from './components/ErrorBoundary';
 import LanguageSwitcher from './components/LanguageSwitcher';
-import Accessibility from './components/Accessibility';
 
 // Styles for the fixed corner container
 const cornerContainerStyle: React.CSSProperties = {
