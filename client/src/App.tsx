@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+
 // pages routes
 import Home from './pages/Home';
 import About from './pages/About';
@@ -10,6 +11,7 @@ import Diagnosis from './pages/Diagnosis';
 import Forms from './pages/Forms';
 import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
+
 // admin routes
 import Admin from './pages/Admin';
 import AdminLogin from './pages/AdminLogin';
