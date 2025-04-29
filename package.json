@@ -18,11 +18,7 @@
     "lint": "pnpm --recursive run lint",
     "lint:client": "pnpm --filter ./client lint",
     "lint:server": "pnpm --filter ./server lint",
-    "commit": "git pull; cd client ; pnpm run build ; cd .. ;  git add . ; git commit -am \"$1\" ; git push origin main ; vercel deploy --prod",
-    "vercel:deploy": "vercel deploy --prod --yes",
-    "deploy": "concurrently \"pnpm run deploy:client\" \"pnpm run deploy:server\"",
-    "deploy:client": "cd client ; vercel --prod --yes",
-    "deploy:server": "cd server ; vercel --prod --y"
+    "deploy": "cd client ;  pnpm run build  ;  cd ..  ;  git add .  ;  git commit -am \"$1\"  ;  git push origin main  ;  vercel deploy --prod"
   },
   "devDependencies": {
     "concurrently": "^7.6.0"
