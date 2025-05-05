@@ -7,6 +7,8 @@
     "server"
   ],
   "scripts": {
+    "postinstall": "node -e \"try { require('fs').writeFileSync('./.nvmrc', require('./package.json').engines.node.replace(/[^0-9.]/g, ''));}catch(e){console.error(e);}\"",
+    "nvm:use": "nvm use",
     "start": "npx concurrently --kill-others --names CLIENT,SERVER \"pnpm --filter ./client start\" \"pnpm --filter ./server start\"",
     "start:client": "pnpm --filter ./client start",
     "start:server": "pnpm --filter ./server start",
@@ -35,7 +37,7 @@
   },
   "homepage": "https://github.com/keshevplus/keshev-web",
   "engines": {
-    "node": "18.x",
+    "node": "18.19.1",
     "npm": "9.x",
     "pnpm": ">=8"
   }
