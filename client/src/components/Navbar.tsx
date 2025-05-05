@@ -82,7 +82,7 @@ export default function Navbar() {
           </div>
           <div className="navbar-item">
             <img
-              src="/assets/images/green-phone.svg"
+              src="/assets/images/greenphone.svg"
               alt="Call Now"
               className="w-16 hover:opacity-80 transition-transform duration-300"
             />
