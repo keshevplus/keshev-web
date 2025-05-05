@@ -37,9 +37,10 @@ app.post("/api/contact", (req, res) => {
   // Create a new request to the neon leads endpoint
   axios({
     method: 'post',
-    url: `http://localhost:${PORT}/api/neon/leads`,
+    url: '/api/neon/leads', // Use relative URL instead of localhost
     data: req.body,
-    headers: req.headers
+    headers: req.headers,
+    baseURL: `http://${req.headers.host}` // Use the host from the request headers
   })
   .then(response => {
     res.status(response.status).json(response.data);
