@@ -1,49 +1,68 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-// Basic styling for flags and container - consider moving to CSS file
-const flagStyle: React.CSSProperties = {
-  fontSize: '1.5rem', // Adjust size as needed
-  cursor: 'pointer',
-  margin: '0 0.5rem',
-  display: 'inline-block',
+const switcherStyle: React.CSSProperties = {
+  display: 'flex',
+  gap: '1rem',
+  fontSize: '0.9rem',
+  position: 'fixed',
+  bottom: '20px',
+  zIndex: 50,
 };
 
-const activeFlagStyle: React.CSSProperties = {
-  ...flagStyle,
-  opacity: 0.5, // Dim the non-active flag slightly
+const languageButtonStyle: React.CSSProperties = {
+  padding: '0.5rem 1rem',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  background: 'rgba(255, 255, 255, 0.7)',
+  border: '1px solid #ccc',
+  transition: 'all 0.2s ease',
+};
+
+const activeButtonStyle: React.CSSProperties = {
+  ...languageButtonStyle,
+  background: 'rgba(200, 200, 200, 0.7)',
   cursor: 'default',
+  fontWeight: 'bold',
 };
 
 const LanguageSwitcher: React.FC = () => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
+  const isRTL = i18n.language === 'he';
 
   const changeLanguage = (lng: string) => {
     if (i18n.language !== lng) { // Only change if different
+      console.log(`Language changed from ${i18n.language} to ${lng}`);
       i18n.changeLanguage(lng);
+      // Set document direction based on language
+      document.documentElement.dir = lng === 'he' ? 'rtl' : 'ltr';
     }
   };
 
+  const containerStyle: React.CSSProperties = {
+    ...switcherStyle,
+    left: isRTL ? '20px' : 'auto',
+    right: isRTL ? 'auto' : '20px',
+  };
+
   return (
-    <div>
-      <span
-        style={i18n.language === 'en' ? activeFlagStyle : flagStyle}
+    <div style={containerStyle}>
+      <button
+        style={i18n.language === 'en' ? activeButtonStyle : languageButtonStyle}
         onClick={() => changeLanguage('en')}
-        role="button" // Semantics for clickability
         aria-label="Switch to English"
-        aria-pressed={i18n.language === 'en'} // Indicate active state
+        aria-pressed={i18n.language === 'en'}
       >
-        🇬🇧
-      </span>
-      <span
-        style={i18n.language === 'he' ? activeFlagStyle : flagStyle}
+        {t('language.english')}
+      </button>
+      <button
+        style={i18n.language === 'he' ? activeButtonStyle : languageButtonStyle}
         onClick={() => changeLanguage('he')}
-        role="button"
         aria-label="Switch to Hebrew"
         aria-pressed={i18n.language === 'he'}
       >
-        🇮🇱
-      </span>
+        {t('language.hebrew')}
+      </button>
     </div>
   );
 };
