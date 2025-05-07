@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../styles/accessibility.css';
 
@@ -17,6 +17,11 @@ const AccessibilityIcon: React.FC = () => {
     contrast: 100, // 100% is normal
     lineHeight: 1.5, // 1.5 is normal
   });
+
+  // Apply RTL/LTR direction to the document on language change
+  useEffect(() => {
+    document.documentElement.setAttribute('dir', isRTL ? 'rtl' : 'ltr');
+  }, [isRTL]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -52,15 +57,8 @@ const AccessibilityIcon: React.FC = () => {
     document.documentElement.style.setProperty('--accessibility-line-height', '1.5');
   };
 
-  const containerStyle: React.CSSProperties = {
-    position: 'fixed',
-    bottom: '20px',
-    [isRTL ? 'right' : 'left']: '20px',
-    zIndex: 1000,
-  };
-
   return (
-    <div style={containerStyle} className="accessibility-widget">
+    <div className="accessibility-widget">
       <button 
         onClick={toggleMenu} 
         className="accessibility-toggle" 
@@ -112,12 +110,9 @@ const AccessibilityIcon: React.FC = () => {
               </button>
             </div>
 
-            <div className="accessibility-section">
-              <button onClick={resetSettings} aria-label="Reset accessibility settings">
-                <span className="accessibility-icon">↺</span>
-                <span>{isRTL ? 'אפס הגדרות' : 'Reset Settings'}</span>
-              </button>
-            </div>
+            <button onClick={resetSettings} className="accessibility-reset">
+              {isRTL ? 'איפוס הגדרות' : 'Reset Settings'}
+            </button>
           </div>
         </div>
       )}

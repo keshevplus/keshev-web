@@ -6,6 +6,7 @@ import PageLayout from '../components/ui/PageLayout';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
+import ContactForm from '../components/ui/ContactForm'
 
 const formSchema = z.object({
   name: z.string().min(2, 'השם חייב להכיל לפחות 2 תווים'),
@@ -114,12 +115,13 @@ export default function Contact() {
       <h3 className="text-2xl md:text-xl font-bold text-green-800 text-right mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
         {pageData[0]?.subheading}
       </h3>
-
+      <ContactForm />
       <form
         className="bg-orange-400/65 p-8 rounded-lg shadow-lg w-full"
         onSubmit={handleSubmit(onSubmit)}
         noValidate
       >
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-7 mb-2 pb-8">
           {[
             { name: 'name', label: 'שם' },
