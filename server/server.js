@@ -26,6 +26,16 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Set the base URL for API requests
+const getBaseUrl = (req) => {
+  // In production (Vercel), use https
+  if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
+    return `https://${req.headers.host}`;
+  }
+  // In development, use the protocol from request or default to http
+  return `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers.host}`;
+};
+
 // API Routes - Define these BEFORE static file handling
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", authMiddleware, adminRoutes);
@@ -64,10 +74,10 @@ app.all("/api/contact", (req, res) => {
       });
     }
     
-    // Forward to the neon leads endpoint directly (no relative URL)
+    // Forward to the neon leads endpoint directly using proper protocol
     axios({
       method: 'post',
-      url: `http://${req.headers.host}/api/neon/leads`,
+      url: `${getBaseUrl(req)}/api/neon/leads`,
       data: req.body,
       headers: {
         'Content-Type': 'application/json'
@@ -172,7 +182,14 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// In local development, start server on port
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+} else {
+  console.log('Server configured for serverless environment');
+}
+
+// Export the Express app for serverless environments (Vercel)
+module.exports = app;

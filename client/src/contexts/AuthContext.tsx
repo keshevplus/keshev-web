@@ -42,6 +42,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (email: string, password: string) => {
     try {
+      console.log('Making API request to /api/auth/login');
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
@@ -50,12 +51,30 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         body: JSON.stringify({ email, password }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Login failed');
+      // Safely try to parse the response
+      let errorData = { message: 'Unknown error occurred' };
+      let responseText;
+      
+      try {
+        responseText = await response.text();
+        if (responseText) {
+          try {
+            errorData = JSON.parse(responseText);
+          } catch (parseError) {
+            console.error('Failed to parse response as JSON:', responseText);
+            errorData.message = 'Server returned invalid JSON response';
+          }
+        }
+      } catch (textError) {
+        console.error('Failed to read response text:', textError);
       }
 
-      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(errorData.message || `Login failed with status ${response.status}`);
+      }
+
+      // If we got here, we have a valid JSON response
+      const data = responseText ? JSON.parse(responseText) : {};
       console.log('Login response:', data); // Log response for debugging
       
       if (!data.token) {
