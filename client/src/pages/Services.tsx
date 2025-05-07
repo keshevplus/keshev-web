@@ -37,7 +37,7 @@ export default function Services() {
     <div className="rtl">
       <PageTitle title={pageData.heading || 'Services'} />
       <div className="bg-white flex flex-auto items-center justify-center h-full">
-        <div className="container mx-auto max-w-[95%] lg:max-w-[80%]">
+        <div className="container mx-auto max-w-[95%] lg:max-w-[80%] pb-16">
           <h3 className="text-xl md:text-4xl font-bold text-black text-center mb-8">
             {pageData.subheading || 'Our Services'}
           </h3>

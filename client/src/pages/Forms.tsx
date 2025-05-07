@@ -75,7 +75,7 @@ export default function Forms() {
               paraSize="text-md md:text-lg"
               title="קבצים להורדה"
               description={
-                <div className="flex flex-col items-center">
+                <div className="flex flex-row justify-center items-center space-x-4 rtl:space-x-reverse">
                   {form.file && (
                     <>
                       <a
@@ -86,7 +86,7 @@ export default function Forms() {
                         <img
                           src="/assets/images/wordicon.svg"
                           alt="Download Word document 💾"
-                          className="w-8 h-8 object-cover m-2"
+                          className="w-8 h-8 object-cover"
                         />
                       </a>
                       <a
@@ -97,7 +97,7 @@ export default function Forms() {
                         <img
                           src="/assets/images/PDFicon.svg"
                           alt="Download PDF document 💾"
-                          className="w-8 h-8 object-cover m-2"
+                          className="w-8 h-8 object-cover"
                         />
                       </a>
                     </>

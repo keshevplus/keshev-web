@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { neon } = require('@neondatabase/serverless');
-const { sendLeadNotification, sendLeadAcknowledgment } = require('../server/utils/mailer');
+const { sendLeadNotification, sendLeadAcknowledgment } = require('../../server/utils/mailer');
 
 module.exports = async (req, res) => {
   // Set CORS headers

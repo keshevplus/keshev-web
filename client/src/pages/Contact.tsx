@@ -52,8 +52,9 @@ export default function Contact() {
         position: 'top-center',
       });
 
+      // Using EmailJS exclusively - no fallback to API
       try {
-        // Try sending via EmailJS - this works regardless of domain
+        console.log('Sending form via EmailJS');
         const result = await emailjs.send(
           EMAILJS_SERVICE_ID,
           EMAILJS_TEMPLATE_ID,
@@ -78,53 +79,24 @@ export default function Contact() {
         }
       } catch (err) {
         console.error('Error sending via EmailJS:', err);
-      }
-
-      // Fallback to API attempt if EmailJS failed
-      try {
-        // Get current domain for proper API routing
-        const isProduction = window.location.hostname === 'www.keshevplus.co.il' || 
-                            window.location.hostname === 'keshevplus.co.il';
-        const baseUrl = isProduction ? 'https://www.keshevplus.co.il' : '';
-        const endpoint = `${baseUrl}/api/contact`;
+        // Handle specific EmailJS errors
+        let errorMessage = 'שגיאה בשליחת הטופס. אנא נסה שוב מאוחר יותר.';
         
-        console.log(`Using ${isProduction ? 'production' : 'development'} endpoint: ${endpoint}`);
-        
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          console.log('Successful form submission via API:', result);
-          toast.dismiss(loadingToastId);
-          toast.success('הטופס נשלח בהצלחה!');
-          reset();
-          setTimeout(() => navigate('/'), 1500);
-          return;
+        if (err.message) {
+          console.log('EmailJS error message:', err.message);
+          if (err.message.includes('Network Error')) {
+            errorMessage = 'בעיית תקשורת. אנא בדוק את החיבור לאינטרנט שלך ונסה שוב.';
+          }
         }
         
-        console.warn(`API returned status ${response.status}`);
-        
-        // Try to parse the error response
-        try {
-          const errorText = await response.text();
-          console.log('Error response:', errorText);
-        } catch (parseErr) {
-          console.log('Could not read error response');
-        }
-      } catch (apiErr) {
-        console.error('Error with API submission:', apiErr);
+        toast.dismiss(loadingToastId);
+        toast.error(errorMessage);
+        return;
       }
 
-      // If we get here, all attempts failed
+      // If we get here, EmailJS didn't throw but also didn't return a successful status
       toast.dismiss(loadingToastId);
-      console.error('All submission attempts failed');
-      toast.error('שגיאה בשליחת הטופס, אנא נסה שוב או צור קשר בטלפון');
+      toast.error('שגיאה בשליחת הטופס. אנא נסה שוב או צור קשר בטלפון');
     } catch (error) {
       console.error('Unhandled error in form submission:', error);
       toast.error('שגיאה בשליחת הטופס, אנא נסה שוב');
