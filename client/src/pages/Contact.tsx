@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -53,7 +53,7 @@ export default function Contact() {
       });
 
       try {
-        // Try sending via EmailJS
+        // Try sending via EmailJS - this works regardless of domain
         const result = await emailjs.send(
           EMAILJS_SERVICE_ID,
           EMAILJS_TEMPLATE_ID,
@@ -63,6 +63,7 @@ export default function Contact() {
             phone: data.phone,
             subject: data.subject || 'פנייה חדשה מהאתר',
             message: data.message,
+            site_url: window.location.hostname,
           }
         );
 
@@ -81,8 +82,13 @@ export default function Contact() {
 
       // Fallback to API attempt if EmailJS failed
       try {
-        const endpoint = '/api/contact';
-        console.log('Trying API endpoint:', endpoint);
+        // Get current domain for proper API routing
+        const isProduction = window.location.hostname === 'www.keshevplus.co.il' || 
+                            window.location.hostname === 'keshevplus.co.il';
+        const baseUrl = isProduction ? 'https://www.keshevplus.co.il' : '';
+        const endpoint = `${baseUrl}/api/contact`;
+        
+        console.log(`Using ${isProduction ? 'production' : 'development'} endpoint: ${endpoint}`);
         
         const response = await fetch(endpoint, {
           method: 'POST',
@@ -103,6 +109,14 @@ export default function Contact() {
         }
         
         console.warn(`API returned status ${response.status}`);
+        
+        // Try to parse the error response
+        try {
+          const errorText = await response.text();
+          console.log('Error response:', errorText);
+        } catch (parseErr) {
+          console.log('Could not read error response');
+        }
       } catch (apiErr) {
         console.error('Error with API submission:', apiErr);
       }
