@@ -24,7 +24,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ErrorBoundary from './components/ErrorBoundary';
 import LanguageSwitcher from './components/LanguageSwitcher';
-import AccessibilityIcon from './components/AccessibilityIcon';
+import AccessibilityWidget from './components/AccessibilityWidget';
 
 // Styles for the fixed corner container
 const cornerContainerStyle: React.CSSProperties = {
@@ -53,8 +53,8 @@ function App() {
               <LanguageSwitcher />
             </div>
             
-            {/* Accessibility Icon - positioned by its own CSS */}
-            <AccessibilityIcon />
+            {/* Accessibility Widget - positioned by its own CSS */}
+            <AccessibilityWidget />
 
             <Routes>
               {/* Admin routes */}
