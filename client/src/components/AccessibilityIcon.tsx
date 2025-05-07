@@ -1,3 +1,7 @@
+// This component has been replaced by AccessibilityWidget.tsx
+// Keeping this file for reference
+
+/*
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../styles/accessibility.css';
@@ -121,3 +125,4 @@ const AccessibilityIcon: React.FC = () => {
 };
 
 export default AccessibilityIcon;
+*/
