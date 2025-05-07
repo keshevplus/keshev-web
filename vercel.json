@@ -1,10 +1,31 @@
 {
   "version": 2,
-  "framework": "vite",
-  "buildCommand": "cd client && pnpm install && pnpm build",
-  "outputDirectory": "client/dist",
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/(.*)", "destination": "/index.html" }
+  "builds": [
+    { 
+      "src": "client/package.json", 
+      "use": "@vercel/static-build",
+      "config": { 
+        "distDir": "dist" 
+      }
+    },
+    { 
+      "src": "server/**/*.js", 
+      "use": "@vercel/node" 
+    }
+  ],
+  "routes": [
+    { 
+      "src": "/api/(.*)", 
+      "dest": "server/server.js" 
+    },
+    { 
+      "src": "/(.*)", 
+      "dest": "client/dist/$1" 
+    },
+    { 
+      "src": "/(.*)", 
+      "dest": "client/dist/index.html",
+      "status": 200
+    }
   ]
 }
