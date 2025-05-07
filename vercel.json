@@ -1,24 +1,10 @@
 {
-  "version": 2,
-  "buildCommand": "cd client && pnpm install --no-frozen-lockfile && pnpm build",
+  "framework": "vite",
+  "buildCommand": "cd client && npx pnpm install --no-frozen-lockfile && npx pnpm build",
   "outputDirectory": "client/dist",
-  "installCommand": "npm install -g pnpm && pnpm -v",
-  "routes": [
-    { 
-      "src": "/api/(.*)", 
-      "dest": "/server/server.js" 
-    },
-    { 
-      "src": "/(.*\\.(js|css|svg|png|jpg|jpeg|gif|ico|json|woff|woff2|ttf|eot))", 
-      "dest": "/client/dist/$1" 
-    },
-    { 
-      "src": "/(.*)", 
-      "dest": "/client/dist/index.html"
-    }
-  ],
-  "env": {
-    "NODE_ENV": "production",
-    "VERCEL": "true"
-  }
+  "installCommand": "npm install -g pnpm",
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }
