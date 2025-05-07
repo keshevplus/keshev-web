@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "builds": [
+    { 
+      "src": "client/package.json", 
+      "use": "@vercel/static-build",
+      "config": { 
+        "distDir": "client/dist",
+        "buildCommand": "cd client && pnpm install && pnpm build"
+      }
+    },
+    { 
+      "src": "server/server.js", 
+      "use": "@vercel/node" 
+    }
+  ],
+  "routes": [
+    { 
+      "src": "/api/(.*)", 
+      "dest": "server/server.js" 
+    },
+    { 
+      "src": "/(.*\\.(js|css|svg|png|jpg|jpeg|gif|ico|json|woff|woff2|ttf|eot))", 
+      "dest": "/client/dist/$1" 
+    },
+    { 
+      "src": "/(.*)", 
+      "dest": "/client/dist/index.html"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "VERCEL": "true"
+  }
+}
