@@ -33,7 +33,7 @@ export default function Home() {
             muted
             playsInline
           >
-            <source src="/assets/images/bgvideo.mp4" type="video/mp4" />
+            <source src="./assets/images/bgvideo.mp4" type="video/mp4" />
             {/* <source src="/assets/images/formulas.mp4" type="video/mp4" /> */}
           </video>
           <div className="absolute inset-0 bg-white opacity-40 z-[2]"></div>
