@@ -15,6 +15,10 @@ body {
   bottom: 20px;
   z-index: 9999;
   font-family: Arial, sans-serif;
+  /* Added visibility to ensure it's not hidden */
+  visibility: visible;
+  display: block;
+  opacity: 1;
 }
 
 /* Skip link for keyboard navigation */
@@ -72,18 +76,37 @@ body {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   width: 300px;
   overflow: hidden;
-  text-align: right;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.accessibility-menu.open {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* RTL support */
+html[dir="rtl"] .accessibility-widget {
+  right: 20px;
+  left: auto;
+}
+
+html[dir="ltr"] .accessibility-widget {
+  left: 20px;
+  right: auto;
+}
+
 html[dir="rtl"] .accessibility-menu {
   text-align: right;
   right: 0;
+  left: auto;
 }
 
 html[dir="ltr"] .accessibility-menu {
   text-align: left;
   left: 0;
+  right: auto;
 }
 
 .accessibility-header {
