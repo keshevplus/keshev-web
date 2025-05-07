@@ -33,28 +33,79 @@ export default function Contact() {
 
   const onSubmit = async (data: FormValues) => {
     try {
-      console.log('Payload:', data);
+      console.log('Contact page - Submitting form data:', data);
       
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+      // Try multiple endpoints with detailed error logging
+      let response;
+      let endpoint = '';
+      let error = null;
+      
+      // First attempt - Try contact endpoint
+      try {
+        endpoint = '/api/contact';
+        response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        
+        // If response is ok, we have a successful submission
+        if (response.ok) {
+          const result = await response.json();
+          console.log('Successful form submission via /api/contact:', result);
+          toast.success('הטופס נשלח בהצלחה!');
+          console.log(result);
+          reset();
+          setTimeout(() => navigate('/'), 1500);
+          return; // Exit early on success
+        }
+        
+        console.warn(`${endpoint} returned status ${response.status}`);
+      } catch (err) {
+        console.error(`Error with ${endpoint}:`, err);
+        error = err;
+        console.log(error);
 
-      if (!response.ok) {
-        throw new Error('שגיאה בשליחת הטופס');
       }
-
-      toast.success('הטופס נשלח בהצלחה!');
-      reset();
-      setTimeout(() => {
-        navigate('/');
-      }, 1500); // Wait for 1.5 seconds so the user can see the success message
+      
+      // Second attempt - Try neon/leads endpoint directly
+      try {
+        endpoint = '/api/neon/leads';
+        console.log('Trying fallback endpoint:', endpoint);
+        response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          console.log('Successful form submission via fallback:', result);
+          toast.success('הטופס נשלח בהצלחה!');
+          reset();
+          setTimeout(() => navigate('/'), 1500);
+          return; // Exit early on success
+        }
+        
+        console.warn(`${endpoint} returned status ${response.status}`);
+      } catch (err) {
+        console.error(`Error with ${endpoint}:`, err);
+        error = err;
+        console.log(error);
+      }
+      
+      // If we get here, both attempts failed
+      console.error('All submission attempts failed');
+      toast.error('שגיאה בשליחת הטופס, אנא נסה שוב או צור קשר בטלפון');
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Unhandled error in form submission:', error);
       toast.error('שגיאה בשליחת הטופס, אנא נסה שוב');
+      console.log(error);
+   
     }
   };
 

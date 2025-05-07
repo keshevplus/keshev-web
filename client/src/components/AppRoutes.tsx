@@ -8,6 +8,7 @@ import ADHD from '../pages/ADHD';
 import Diagnosis from '../pages/Diagnosis';
 import Forms from '../pages/Forms';
 import Admin from '../pages/Admin';
+import NotFound from '../pages/NotFound';
 
 function AppRoutes() {
   return (
@@ -21,6 +22,8 @@ function AppRoutes() {
         <Route path="/forms" element={<Forms />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/admin/*" element={<Admin />} />
+        {/* Catch-all route for any undefined paths */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </FormProvider>
   );

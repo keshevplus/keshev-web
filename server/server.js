@@ -32,26 +32,75 @@ app.use("/api/admin", authMiddleware, adminRoutes);
 app.use("/api/leads", leadsRoutes);
 app.use("/api/neon/leads", neonLeadsRoutes);
 
-// Handle contact form submissions by redirecting to leads endpoint
-app.post("/api/contact", (req, res) => {
-  // Create a new request to the neon leads endpoint
-  axios({
-    method: 'post',
-    url: '/api/neon/leads', // Use relative URL instead of localhost
-    data: req.body,
-    headers: req.headers,
-    baseURL: `http://${req.headers.host}` // Use the host from the request headers
-  })
-  .then(response => {
-    res.status(response.status).json(response.data);
-  })
-  .catch(error => {
-    console.error('Error forwarding contact request:', error);
-    res.status(error.response?.status || 500).json({
-      message: 'Error processing contact form',
-      error: error.message
+// Modified API endpoint handling for contact forms
+app.all("/api/contact", (req, res) => {
+  console.log(`[${new Date().toISOString()}] Received ${req.method} request to /api/contact`);
+  
+  // For OPTIONS request (CORS preflight)
+  if (req.method === 'OPTIONS') {
+    return res.status(200).header('Access-Control-Allow-Methods', 'GET, POST').send();
+  }
+  
+  // For GET requests (health check)
+  if (req.method === 'GET') {
+    return res.status(200).json({ message: 'Contact API is available', success: true });
+  }
+  
+  // For POST requests (form submissions)
+  if (req.method === 'POST') {
+    // Log form data for debugging
+    console.log('Contact form data received:', req.body);
+    
+    // Check for required fields
+    if (!req.body.name || !req.body.email || !req.body.message) {
+      return res.status(400).json({
+        success: false,
+        message: 'Missing required fields',
+        errors: [
+          { field: 'name', message: !req.body.name ? 'Name is required' : '' },
+          { field: 'email', message: !req.body.email ? 'Email is required' : '' },
+          { field: 'message', message: !req.body.message ? 'Message is required' : '' }
+        ].filter(e => e.message)
+      });
+    }
+    
+    // Forward to the neon leads endpoint directly (no relative URL)
+    axios({
+      method: 'post',
+      url: `http://${req.headers.host}/api/neon/leads`,
+      data: req.body,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      console.log('Successfully forwarded to neon leads endpoint');
+      res.status(200).json({
+        success: true,
+        message: 'Form submitted successfully',
+        data: response.data
+      });
+    })
+    .catch(error => {
+      console.error('Error forwarding to neon leads:', error.message);
+      
+      // Provide detailed error information
+      res.status(500).json({
+        success: false,
+        message: 'Error processing form submission',
+        error: error.message,
+        // Only include stack trace in development
+        ...(process.env.NODE_ENV !== 'production' && { stack: error.stack })
+      });
     });
-  });
+  } else {
+    // For other methods (PUT, DELETE, etc.)
+    res.status(405).json({
+      success: false,
+      message: 'Method not allowed',
+      allowedMethods: ['GET', 'POST', 'OPTIONS']
+    });
+  }
 });
 
 // Health check endpoint
