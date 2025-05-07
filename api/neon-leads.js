@@ -1,0 +1,161 @@
+require('dotenv').config();
+const { neon } = require('@neondatabase/serverless');
+const { sendLeadNotification, sendLeadAcknowledgment } = require('../server/utils/mailer');
+
+module.exports = async (req, res) => {
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+
+  // Handle preflight requests (OPTIONS)
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
+  // For GET requests (admin only)
+  if (req.method === 'GET') {
+    try {
+      // Create SQL instance with Neon, with fallback options
+      const databaseUrl = process.env.NEON_DATABASE_URL || process.env.DATABASE_URL;
+      if (!databaseUrl) {
+        return res.status(500).json({ 
+          message: 'Database configuration error', 
+          status: 'error' 
+        });
+      }
+      
+      const sql = neon(databaseUrl + '?sslmode=require');
+      const leads = await sql`SELECT * FROM leads ORDER BY date_received DESC`;
+      
+      return res.status(200).json({
+        status: "success",
+        count: leads.length,
+        data: leads
+      });
+    } catch (error) {
+      console.error("Error retrieving leads:", error);
+      return res.status(500).json({
+        status: "error",
+        message: "Failed to retrieve leads"
+      });
+    }
+  }
+
+  // Handle POST requests
+  if (req.method === 'POST') {
+    try {
+      // Create SQL instance with Neon, with fallback options
+      const databaseUrl = process.env.NEON_DATABASE_URL || process.env.DATABASE_URL;
+      if (!databaseUrl) {
+        console.error('No database URL found in environment variables');
+        return res.status(500).json({ 
+          message: 'Database configuration error', 
+          status: 'error' 
+        });
+      }
+      
+      const sql = neon(databaseUrl + '?sslmode=require');
+      
+      // Validate required fields
+      const { name, email, phone, subject, message } = req.body;
+      
+      if (!name || !message) {
+        return res.status(400).json({
+          status: "error",
+          message: "Validation failed",
+          errors: [
+            { field: 'name', message: !name ? 'Name is required' : '' },
+            { field: 'message', message: !message ? 'Message is required' : '' }
+          ].filter(err => err.message)
+        });
+      }
+      
+      // Input Sanitization
+      const sanitizedData = {
+        name: name.trim(),
+        email: email ? email.trim().toLowerCase() : null,
+        phone: phone ? phone.trim() : null,
+        subject: subject ? subject.trim() : null,
+        message: message.trim()
+      };
+      
+      // Database Operation using Neon's tagged template literals
+      const result = await sql`
+        INSERT INTO leads (name, email, phone, subject, message, date_received) 
+        VALUES (
+          ${sanitizedData.name}, 
+          ${sanitizedData.email}, 
+          ${sanitizedData.phone}, 
+          ${sanitizedData.subject}, 
+          ${sanitizedData.message}, 
+          CURRENT_TIMESTAMP
+        ) 
+        RETURNING id, name, email, phone, subject, message, date_received
+      `;
+      
+      // Log submission
+      console.log(`Successfully saved submission with ID: ${result[0].id}`);
+      
+      // Send email notifications
+      if (result && result[0]) {
+        try {
+          // Send notification to admin
+          sendLeadNotification(result[0])
+            .then(sent => {
+              if (sent) {
+                console.log(`Admin notification email sent for lead ID: ${result[0].id}`);
+              }
+            })
+            .catch(err => {
+              console.error('Error sending admin notification:', err);
+            });
+          
+          // Send acknowledgment to the lead if they provided an email
+          if (result[0].email) {
+            sendLeadAcknowledgment(result[0])
+              .then(sent => {
+                if (sent) {
+                  console.log(`Acknowledgment email sent to ${result[0].email}`);
+                }
+              })
+              .catch(err => {
+                console.error('Error sending acknowledgment email:', err);
+              });
+          }
+        } catch (emailErr) {
+          console.error('Email notification error:', emailErr);
+          // Continue even if email sending fails
+        }
+      }
+      
+      // Success Response
+      return res.status(201).json({
+        status: "success",
+        message: "Lead saved successfully",
+        data: {
+          leadId: result?.[0]?.id
+        }
+      });
+      
+    } catch (error) {
+      // Global Error Handler
+      console.error("Unexpected error in lead submission:", {
+        error: error.stack || error.message,
+        requestBody: req.body,
+        timestamp: new Date().toISOString()
+      });
+
+      return res.status(500).json({
+        status: "error",
+        message: "An unexpected error occurred while processing your request",
+        errorId: new Date().getTime()
+      });
+    }
+  }
+
+  // If it's not a GET, OPTIONS, or POST request
+  return res.status(405).json({ error: 'Method not allowed' });
+};
