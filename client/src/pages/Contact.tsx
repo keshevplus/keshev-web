@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -6,7 +7,7 @@ import PageLayout from '../components/ui/PageLayout';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
-import ContactForm from '../components/ui/ContactForm'
+import emailjs from '@emailjs/browser';
 
 const formSchema = z.object({
   name: z.string().min(2, 'השם חייב להכיל לפחות 2 תווים'),
@@ -20,6 +21,11 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
+// Initialize EmailJS
+const EMAILJS_SERVICE_ID = 'keshev_service';
+const EMAILJS_TEMPLATE_ID = 'keshev_contact';
+const EMAILJS_PUBLIC_KEY = 'pYsMwQqlsNLh7j6L-'; // This is safe to include as it's a public key
+
 export default function Contact() {
   const { data: pageData } = usePageData('contact');
   const navigate = useNavigate();
@@ -32,81 +38,82 @@ export default function Contact() {
     resolver: zodResolver(formSchema),
   });
 
+  // Initialize EmailJS
+  useEffect(() => {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+  }, []);
+
   const onSubmit = async (data: FormValues) => {
     try {
       console.log('Contact page - Submitting form data:', data);
-      
-      // Try multiple endpoints with detailed error logging
-      let response;
-      let endpoint = '';
-      let error = null;
-      
-      // First attempt - Try contact endpoint
-      try {
-        endpoint = '/api/contact';
-        response = await fetch(endpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        });
-        
-        // If response is ok, we have a successful submission
-        if (response.ok) {
-          const result = await response.json();
-          console.log('Successful form submission via /api/contact:', result);
-          toast.success('הטופס נשלח בהצלחה!');
-          console.log(result);
-          reset();
-          setTimeout(() => navigate('/'), 1500);
-          return; // Exit early on success
-        }
-        
-        console.warn(`${endpoint} returned status ${response.status}`);
-      } catch (err) {
-        console.error(`Error with ${endpoint}:`, err);
-        error = err;
-        console.log(error);
 
-      }
-      
-      // Second attempt - Try neon/leads endpoint directly
+      // Add a loading toast that will be dismissed when we get a response
+      const loadingToastId = toast.loading('שולח את הטופס...', {
+        position: 'top-center',
+      });
+
       try {
-        endpoint = '/api/neon/leads';
-        console.log('Trying fallback endpoint:', endpoint);
-        response = await fetch(endpoint, {
+        // Try sending via EmailJS
+        const result = await emailjs.send(
+          EMAILJS_SERVICE_ID,
+          EMAILJS_TEMPLATE_ID,
+          {
+            from_name: data.name,
+            reply_to: data.email,
+            phone: data.phone,
+            subject: data.subject || 'פנייה חדשה מהאתר',
+            message: data.message,
+          }
+        );
+
+        console.log('EmailJS result:', result);
+        
+        if (result.status === 200) {
+          toast.dismiss(loadingToastId);
+          toast.success('הטופס נשלח בהצלחה!');
+          reset();
+          setTimeout(() => navigate('/'), 1500);
+          return;
+        }
+      } catch (err) {
+        console.error('Error sending via EmailJS:', err);
+      }
+
+      // Fallback to API attempt if EmailJS failed
+      try {
+        const endpoint = '/api/contact';
+        console.log('Trying API endpoint:', endpoint);
+        
+        const response = await fetch(endpoint, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(data),
         });
-        
+
         if (response.ok) {
           const result = await response.json();
-          console.log('Successful form submission via fallback:', result);
+          console.log('Successful form submission via API:', result);
+          toast.dismiss(loadingToastId);
           toast.success('הטופס נשלח בהצלחה!');
           reset();
           setTimeout(() => navigate('/'), 1500);
-          return; // Exit early on success
+          return;
         }
         
-        console.warn(`${endpoint} returned status ${response.status}`);
-      } catch (err) {
-        console.error(`Error with ${endpoint}:`, err);
-        error = err;
-        console.log(error);
+        console.warn(`API returned status ${response.status}`);
+      } catch (apiErr) {
+        console.error('Error with API submission:', apiErr);
       }
-      
-      // If we get here, both attempts failed
+
+      // If we get here, all attempts failed
+      toast.dismiss(loadingToastId);
       console.error('All submission attempts failed');
       toast.error('שגיאה בשליחת הטופס, אנא נסה שוב או צור קשר בטלפון');
     } catch (error) {
       console.error('Unhandled error in form submission:', error);
       toast.error('שגיאה בשליחת הטופס, אנא נסה שוב');
-      console.log(error);
-   
     }
   };
 
@@ -115,13 +122,12 @@ export default function Contact() {
       <h3 className="text-2xl md:text-xl font-bold text-green-800 text-right mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
         {pageData[0]?.subheading}
       </h3>
-      <ContactForm />
+
       <form
         className="bg-orange-400/65 p-8 rounded-lg shadow-lg w-full"
         onSubmit={handleSubmit(onSubmit)}
         noValidate
       >
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-7 mb-2 pb-8">
           {[
             { name: 'name', label: 'שם' },
@@ -152,8 +158,8 @@ export default function Contact() {
         <div className="relative mb-6">
           <textarea
             {...register('message')}
-            placeholder="הודעה"
             rows={4}
+            placeholder="הודעה"
             className={`w-full p-3 rounded-lg border text-right ${
               errors.message
                 ? 'border-red-700 border-2'
@@ -167,20 +173,13 @@ export default function Contact() {
           )}
         </div>
 
-        <div className="flex gap-4 mt-4">
+        <div className="flex justify-center">
           <button
             type="submit"
             disabled={isSubmitting}
-            className="flex-1 bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-400"
+            className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition-colors duration-300 disabled:bg-gray-400"
           >
-            {isSubmitting ? 'שולח...' : 'שלח טופס'}
-          </button>
-          <button
-            type="button"
-            onClick={() => reset()}
-            className="bg-gray-500 text-white py-3 px-6 rounded-lg hover:bg-gray-600 transition-colors"
-          >
-            נקה טופס
+            {isSubmitting ? 'שולח...' : 'שלח הודעה'}
           </button>
         </div>
       </form>
