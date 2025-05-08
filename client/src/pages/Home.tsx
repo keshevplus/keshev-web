@@ -33,7 +33,7 @@ export default function Home() {
                 alt="קשב פלוס" 
                 className="w-32 md:w-40 mb-6"
               />
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#005BAA] mb-4 md:mb-6">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-green-800 mb-4 md:mb-6">
                 {t('home.hero.title', 'קבל בהירות. קח שליטה. אבחן ADHD היום.')}
               </h1>
               <p className="text-lg md:text-xl mb-8 text-gray-700">
@@ -50,7 +50,7 @@ export default function Home() {
             {/* Hero Image Section */}
             <div className="w-full md:w-1/2 order-1 md:order-2">
               <img 
-                src="/assets/images/doctor-hero.jpg" 
+                src="/assets/images/doctor-hero.png" 
                 alt="רופא מקצועי" 
                 className="w-full h-auto rounded-lg shadow-xl"
               />
