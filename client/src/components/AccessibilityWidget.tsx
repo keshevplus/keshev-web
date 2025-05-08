@@ -242,8 +242,8 @@ const AccessibilityWidget: React.FC = () => {
         aria-expanded={menuOpen}
       >
         <img 
-          src="/assets/images/accessibility-icon.svg" 
-          alt="u05e1u05deu05dc u05e0u05d2u05d9u05e9u05d5u05ea" 
+          src="/assets/images/wheelchair-icon.svg" 
+          alt="סמל נגישות" 
           className="accessibility-icon" 
         />
       </button>

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import './LanguageSwitcher.css';
 
 const LanguageSwitcher: React.FC = () => {
-  const { i18n, t } = useTranslation();
+  const { i18n } = useTranslation();
   
   // Initialize language on component mount
   useEffect(() => {
