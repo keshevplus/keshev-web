@@ -20,45 +20,8 @@ export default function Home() {
     );
   }
 
-  
+  return (
     <div className="rtl">
-      {/* Hero Section - New Layout */}
-<div className="bg-[#F5F5F5]">
-  <div className="container mx-auto px-4 py-12 md:py-16">
-    <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
-      {/* Hero Text Section */}
-      <div className="w-full md:w-1/2 order-2 md:order-1">
-        <img 
-          src="/assets/images/logo.png" 
-          alt="קשב פלוס" 
-          className="w-32 md:w-40 mb-6"
-        />
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-green-800 mb-4 md:mb-6">
-          {t('home.hero.title', 'קבל בהירות. שלוט בעתיד שלך. אבחן הפרעת קשב כבר עכשיו.')}
-        </h1>
-        <p className="text-lg md:text-xl mb-8 text-gray-700">
-          {t('home.hero.subtitle', 'אבחון מקצועי, מהיר ודיסקרטי להפרעת קשב וריכוז. לכל הגילאים – מהילדות ועד הבגרות.')}
-        </p>
-        <Link
-          to="/contact"
-          className="inline-block bg-[#F7941D] text-white px-8 py-4 rounded-md text-lg font-medium hover:bg-[#e78200] transition-colors duration-300 shadow-md hover:shadow-lg"
-        >
-          {t('home.hero.cta', 'התחילו את האבחון שלכם עכשיו')}
-        </Link>
-      </div>
-
-      {/* Hero Image Section */}
-      <div className="w-full md:w-1/2 order-1 md:order-2">
-        <img 
-          src="/assets/images/doctor-hero.png" 
-          alt="רופא מקצועי" 
-          className="w-full h-auto rounded-lg shadow-xl"
-        />
-      </div>
-    </div>
-  </div>
-</div>
-
       {/* Hero Section - New Layout */}
       <div className="bg-[#F5F5F5]">
         <div className="container mx-auto px-4 py-12 md:py-16">
@@ -71,16 +34,16 @@ export default function Home() {
                 className="w-32 md:w-40 mb-6"
               />
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-green-800 mb-4 md:mb-6">
-                {t('home.hero.title', 'קבל בהירות. קח שליטה. אבחן ADHD היום.')}
+                {t('home.hero.title', 'רוצה להבין מה עובר עליך? בוא לבדוק אם זו הפרעת קשב.')}
               </h1>
               <p className="text-lg md:text-xl mb-8 text-gray-700">
-                {t('home.hero.subtitle', 'אבחונים מקצועיים, מהירים וחסויים של ADHD לכל הגילאים. הזמן את ההערכה המקוונת שלך עכשיו.')}
+                {t('home.hero.subtitle', 'בדיקה מקצועית, מהירה ודיסקרטית ל-ADHD – לילדים, בני נוער ומבוגרים. בלי לצאת מהבית, בלי סיבוך.')}
               </p>
               <Link
                 to="/contact"
                 className="inline-block bg-[#F7941D] text-white px-8 py-4 rounded-md text-lg font-medium hover:bg-[#e78200] transition-colors duration-300 shadow-md hover:shadow-lg"
               >
-                {t('home.hero.cta', 'התחל את האבחון שלי')}
+                {t('home.hero.cta', 'התחילו את האבחון שלכם עכשיו')}
               </Link>
             </div>
 
@@ -96,7 +59,6 @@ export default function Home() {
         </div>
       </div>
 
-   
       {/* CTA Section */}
       <div className="py-16 md:py-20 bg-[#005BAA] text-white">
         <div className="container mx-auto px-4 text-center">
