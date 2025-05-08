@@ -36,6 +36,8 @@ const getBaseUrl = (req) => {
   return `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers.host}`;
 };
 
+app.use('/api', apiRouter); // <-- Your API routes
+
 // API Routes - Define these BEFORE static file handling
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", authMiddleware, adminRoutes);
@@ -132,6 +134,11 @@ if (process.env.NODE_ENV === 'production') {
       }
     },
   }));
+
+  // Fallback: serve index.html for any route not handled above
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+});
 
   // THIS IS CRITICAL: The catch-all route that serves the React app
   app.get("*", (req, res) => {

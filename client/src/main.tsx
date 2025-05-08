@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 // Importing HashRouter for routing and FormProvider for context management
-import { HashRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App'; // Main application component
 import './index.css'; // Global CSS styles
 import { FormProvider } from './contexts/FormContext'; // Context for managing form state
@@ -15,12 +15,12 @@ import './i18n';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     {/* Using HashRouter instead of BrowserRouter to avoid refresh issues */}
-    <HashRouter>
+    <BrowserRouter>
       {/* Wrapping the application with FormProvider to provide form context */}
       <FormProvider>
         {/* Main application component */}
         <App />
       </FormProvider>
-    </HashRouter>
+    </BrowserRouter>
   </React.StrictMode>
 );
