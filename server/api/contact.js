@@ -1,77 +1,59 @@
-import { Client } from '@neondatabase/serverless';
-
-// Get database connection string from environment variable
-const connectionString = process.env.NEON_DATABASE_URL;
-
-async function saveContactToDatabase(contactData) {
-  if (!connectionString) {
-    throw new Error('Database connection string not found in environment variables');
-  }
-
-  const client = new Client(connectionString);
-  
-  try {
-    await client.connect();
-    
-    // Insert the contact form data into the leads table
-    const query = `
-      INSERT INTO leads (name, email, phone, subject, message, created_at)
-      VALUES ($1, $2, $3, $4, $5, $6)
-      RETURNING id
-    `;
-    
-    const values = [
-      contactData.name,
-      contactData.email,
-      contactData.phone,
-      contactData.subject,
-      contactData.message,
-      new Date()
-    ];
-    
-    const result = await client.query(query, values);
-    return result.rows[0];
-  } catch (error) {
-    console.error('Database error:', error);
-    throw error;
-  } finally {
-    await client.end();
-  }
-}
+import axios from 'axios';
+import express from 'express';
 
 export default async function handler(req, res) {
-  // Set CORS headers to allow requests from any origin
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  
-  // Handle preflight requests
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+
   if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+    res.status(200).end();
+    return;
   }
-  
+
+  if (req.method === 'GET') {
+    return res.status(200).json({ message: 'Contact API is available', success: true });
+  }
+
   if (req.method === 'POST') {
+    console.log('Contact form data received:', req.body);
+    if (!req.body.name || !req.body.email || !req.body.message) {
+      return res.status(400).json({
+        success: false,
+        message: 'Missing required fields',
+        errors: [
+          { field: 'name', message: !req.body.name ? 'Name is required' : '' },
+          { field: 'email', message: !req.body.email ? 'Email is required' : '' },
+          { field: 'message', message: !req.body.message ? 'Message is required' : '' },
+        ].filter(e => e.message),
+      });
+    }
     try {
-      const data = req.body;
-      
-      // Validate required fields
-      if (!data.name || !data.email || !data.message) {
-        return res.status(400).json({ error: 'Missing required fields' });
-      }
-      
-      // Save contact form data to database
-      const result = await saveContactToDatabase(data);
-      
-      // Return success response
-      res.status(200).json({
-        message: 'Contact form received and saved to database!',
-        id: result.id
+      const protocol = process.env.VERCEL_ENV === 'development' ? 'http://' : 'https://';
+      const baseUrl = process.env.VERCEL_URL ? `${protocol}${process.env.VERCEL_URL}` : 'http://localhost:3000';
+      const response = await axios({
+        method: 'post',
+        url: `${baseUrl}/api/neon/leads`,
+        data: req.body,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return res.status(200).json({
+        success: true,
+        message: 'Form submitted successfully',
+        data: response.data,
       });
     } catch (error) {
-      console.error('Error processing contact form:', error);
-      res.status(500).json({ error: 'Failed to process contact form' });
+      console.error('Error forwarding to neon leads:', error.message);
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to submit form',
+      });
     }
-  } else {
-    res.status(405).json({ error: 'Method not allowed' });
   }
+
+  res.setHeader('Allow', ['GET', 'POST', 'OPTIONS']);
+  res.status(405).end(`Method ${req.method} Not Allowed`);
 }

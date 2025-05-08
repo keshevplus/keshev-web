@@ -1,8 +1,8 @@
 import { neon } from '@neondatabase/serverless';
 import { sendLeadNotification, sendLeadAcknowledgment } from '../utils/mailer';
-import type { Request, Response } from 'express';
+import express from 'express';
 
-export default async function handler(req: Request, res: Response) {
+export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
@@ -22,7 +22,7 @@ export default async function handler(req: Request, res: Response) {
       const sql = neon(databaseUrl + '?sslmode=require');
       const leads = await sql`SELECT * FROM leads ORDER BY date_received DESC`;
       return res.status(200).json({ status: 'success', count: leads.length, data: leads });
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error retrieving leads:', error);
       return res.status(500).json({ status: 'error', message: 'Failed to retrieve leads' });
     }
@@ -38,7 +38,7 @@ export default async function handler(req: Request, res: Response) {
       const sql = neon(databaseUrl + '?sslmode=require');
       // ... (rest of your logic for inserting a lead, sending notifications, etc.)
       res.status(200).json({ status: 'success', message: 'Lead saved successfully' });
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error saving lead:', error);
       res.status(500).json({ status: 'error', message: 'Failed to save lead' });
     }

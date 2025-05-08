@@ -1,7 +1,7 @@
 import axios from 'axios';
-import type { Request, Response } from 'express';
+import express from 'express';
 
-export default async function handler(req: Request, res: Response) {
+export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
@@ -45,7 +45,7 @@ export default async function handler(req: Request, res: Response) {
         message: 'Form submitted successfully',
         data: response.data,
       });
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error forwarding to neon leads:', error.message);
       return res.status(500).json({
         success: false,
