@@ -36,17 +36,17 @@ const getBaseUrl = (req) => {
   return `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers.host}`;
 };
 
-app.get('/admin', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/dist/admin.html'));
-});
 
-app.use('/api', apiRouter); // <-- Your API routes
 
 // API Routes - Define these BEFORE static file handling
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", authMiddleware, adminRoutes);
 app.use("/api/leads", leadsRoutes);
 app.use("/api/neon/leads", neonLeadsRoutes);
+
+app.use('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+});
 
 // Modified API endpoint handling for contact forms
 app.all("/api/contact", (req, res) => {

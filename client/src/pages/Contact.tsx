@@ -22,9 +22,10 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 // Define EmailJS constants - Use your actual values here
-const EMAILJS_SERVICE_ID = 'service_o7i1xg9';
-const EMAILJS_TEMPLATE_ID = 'template_85gv1zm';
-const EMAILJS_PUBLIC_KEY = 'BRyv-hQs8PSYU-vKq';
+const EMAILJS_SERVICE_ID = 'service_9owftgo';
+const EMAILJS_ADMIN_TEMPLATE_ID = 'template_admin_notify'; // set this in EmailJS
+const EMAILJS_USER_TEMPLATE_ID = 'template_user_thankyou'; // set this in EmailJS
+const EMAILJS_PUBLIC_KEY = 'BRyv-hQs8PSYU-vKq'; // use your EmailJS public key
 
 export default function Contact() {
   const { data: pageData } = usePageData('contact');
@@ -48,113 +49,49 @@ export default function Contact() {
 
   const onSubmit = async (data: FormValues, event: any) => {
     try {
-      // Prevent default form submission
       event?.preventDefault?.();
-      
-      console.log('Contact page - Submitting form data:', data);
-
-      // Add a loading toast that will be dismissed when we get a response
-      const loadingToastId = toast.loading('שולח את הטופס...', {
-        position: 'top-center',
-      });
-
-      // Using EmailJS to send email notifications
+      const loadingToastId = toast.loading('שולח את הטופס...', { position: 'top-center' });
+      // --- Send notification to admin (you) ---
       try {
-        console.log('Sending form via EmailJS');
-        
-        // Create form parameters
-        const emailParams = {
-          from_name: data.name,
-          to_email: 'dr@keshevplus.co.il', // Main recipient
-          reply_to: data.email,
-          phone: data.phone,
-          subject: data.subject || 'פנייה חדשה מהאתר',
-          message: data.message,
-          site_url: window.location.hostname,
-        };
-        
-        // Send email with detailed try/catch to handle failures
+        await emailjs.send(
+          EMAILJS_SERVICE_ID,
+          EMAILJS_ADMIN_TEMPLATE_ID,
+          {
+            ...data,
+            to_email: 'dr@keshevplus.co.il',
+            site_url: window.location.hostname,
+          },
+          EMAILJS_PUBLIC_KEY
+        );
+      } catch (adminErr) {
+        console.error('Error sending admin notification:', adminErr);
+      }
+
+      // --- Send thank you note to sender ---
+      if (data.email) {
         try {
-          console.log('Attempting to send email with params:', JSON.stringify(emailParams));
-          const emailResult = await emailjs.send(
+          await emailjs.send(
             EMAILJS_SERVICE_ID,
-            EMAILJS_TEMPLATE_ID,
-            emailParams
-          );
-          
-          // Log the result for debugging
-          console.log('Email sent successfully:', emailResult);
-        } catch (emailError) {
-          console.error('EmailJS send error:', emailError);
-          // Continue execution despite error
-        }
-        
-        // Send confirmation email to the user if we have their email
-        if (data.email) {
-          try {
-            const confirmationParams = {
+            EMAILJS_USER_TEMPLATE_ID,
+            {
+              ...data,
               to_email: data.email,
               to_name: data.name,
-              subject: 'תודה על הפנייה לקשב פלוס',
-              message: 'תודה רבה על הפנייה. נציגנו יחזור אליך בהקדם.',
-            };
-            
-            await emailjs.send(
-              EMAILJS_SERVICE_ID,
-              'template_user_confirm',
-              confirmationParams
-            );
-          } catch (confirmError) {
-            console.warn('Failed to send confirmation email', confirmError);
-            // Don't fail the whole submission if just the confirmation email fails
-          }
-        }
-
-        // Always try to save to the database even if EmailJS partially fails
-        try {
-          const dbData = {
-            name: data.name,
-            email: data.email,
-            phone: data.phone,
-            subject: data.subject || 'פנייה חדשה מהאתר',
-            message: data.message,
-            createdAt: new Date().toISOString(),
-          };
-          
-          console.log('Saving form data to database:', JSON.stringify(dbData));
-          
-          const saveToDbResponse = await fetch('/api/contact-save', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
             },
-            body: JSON.stringify(dbData),
-          });
-
-          if (!saveToDbResponse.ok) {
-            console.error('Error saving to database:', await saveToDbResponse.text());
-          } else {
-            console.log('Successfully saved form data to database');
-          }
-        } catch (dbError) {
-          console.error('Failed to save to database:', dbError);
+            EMAILJS_PUBLIC_KEY
+          );
+        } catch (userErr) {
+          console.warn('Error sending thank you email to user:', userErr);
         }
-
-        // Show success message and redirect
-        toast.dismiss(loadingToastId);
-        toast.success('הטופס נשלח בהצלחה!');
-        reset();
-        setTimeout(() => navigate('/'), 1500);
-        
-      } catch (err) {
-        // This handles the overall EmailJS failures
-        console.error('Error in contact form submission process:', err);
-        toast.dismiss(loadingToastId);
-        toast.error('שגיאה בשליחת הטופס. אנא נסה שוב מאוחר יותר.');
       }
-    } catch (error) {
-      console.error('Unhandled error in form submission:', error);
-      toast.error('שגיאה בשליחת הטופס, אנא נסה שוב');
+
+      toast.dismiss(loadingToastId);
+      toast.success('הטופס נשלח בהצלחה!');
+      reset();
+      setTimeout(() => navigate('/'), 1500);
+    } catch (err) {
+      toast.error('אירעה שגיאה בשליחת הטופס.');
+      console.error('Contact form error:', err);
     }
   };
 
