@@ -9,12 +9,6 @@
     { "source": "/assets/:path*", "destination": "/client/dist/assets/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/assets/(.*)", "dest": "/assets/$1" },
-    { "handle": "filesystem" },
-    { "src": "/.*", "dest": "/index.html" }
-  ],
   "headers": [
     {
       "source": "/assets/images/(.*)",
