@@ -13,8 +13,8 @@ import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
 
 // admin routes
-import Admin from './pages/Admin';
-import AdminLogin from './pages/AdminLogin';
+import Admin from './pages/admin/Admin';
+import Login from './pages/admin/Login';
 
 import { AuthProvider } from './contexts/AuthContext';
 import ScrollToTop from './components/ui/ScrollToTop';
@@ -52,7 +52,7 @@ function App() {
 
             <Routes>
               {/* Admin routes */}
-              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/login" element={<Login />} />
               <Route path="/admin/*" element={<Admin />} />
               {/* Public routes */}
               <Route

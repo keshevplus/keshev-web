@@ -36,7 +36,7 @@ const getBaseUrl = (req) => {
   return `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers.host}`;
 };
 
-app.get('/Admin', (req, res) => {
+app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/admin.html'));
 });
 

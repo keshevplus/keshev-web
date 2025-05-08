@@ -7,7 +7,7 @@ import Contact from '../pages/Contact';
 import ADHD from '../pages/ADHD';
 import Diagnosis from '../pages/Diagnosis';
 import Forms from '../pages/Forms';
-import Admin from '../pages/Admin';
+import Admin from '../pages/admin/Admin';
 import NotFound from '../pages/NotFound';
 
 function AppRoutes() {
