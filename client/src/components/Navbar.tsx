@@ -44,7 +44,7 @@ export default function Navbar() {
   return (
     <nav
       className={`sticky top-0 z-[50] transition-shadow duration-300 rtl ${
-        isScrolled ? 'shadow-md' : ''
+        isScrolled ? 'shadow-md bg-white/95 backdrop-blur-lg' : 'bg-white/70 backdrop-blur-sm'
       }`}
     >
       <div className="relative">
