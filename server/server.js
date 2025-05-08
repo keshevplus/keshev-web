@@ -36,6 +36,10 @@ const getBaseUrl = (req) => {
   return `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers.host}`;
 };
 
+app.get('/Admin', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist/admin.html'));
+});
+
 app.use('/api', apiRouter); // <-- Your API routes
 
 // API Routes - Define these BEFORE static file handling
