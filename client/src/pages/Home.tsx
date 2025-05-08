@@ -27,11 +27,11 @@ export default function Home() {
         <div className="container mx-auto px-4 py-12 md:py-16">
           <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
             {/* Hero Text Section */}
-            <div className="w-full md:w-1/2 order-2 md:order-1">
+            <div className="w-full md:w-1/2 order-1 md:order-1">
               <img 
                 src="/assets/images/logo.png" 
                 alt="קשב פלוס" 
-                className="w-40 md:w-56 mb-8 mx-auto drop-shadow-lg"
+                className="w-40 md:w-96 xs:w-0 sm:w-0 mb-8 mx-auto drop-shadow-lg"
               />
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-green-800 mb-4 md:mb-6">
                 {t('home.hero.title', 'רוצה להבין מה עובר עליך? בוא לבדוק אם זו הפרעת קשב.')}
@@ -48,7 +48,7 @@ export default function Home() {
             </div>
 
             {/* Hero Image Section */}
-            <div className="px-6 w-full md:w-1/2 order-1 md:order-2 flex justify-center items-center">
+            <div className="px-3 w-full md:w-1/2 order-2 md:order-2 flex justify-center items-center">
               <img 
                 src="/assets/images/doctor-hero.png" 
                 alt="רופא מקצועי" 
@@ -70,7 +70,7 @@ export default function Home() {
           </p>
           <Link
             to="/contact"
-            className="inline-block bg-[#F7941D] text-white px-8 py-4 rounded-md text-lg font-bold hover:bg-white hover:text-[#005BAA] transition-colors duration-300 shadow-lg hover:shadow-xl"
+            className="inline-block bg-[#F7941D] text-black px-8 py-4 rounded-md text-lg font-bold hover:bg-white hover:text-[#005BAA] transition-colors duration-300 shadow-lg hover:shadow-xl"
           >
             {t('home.cta.button', 'צור קשר עכשיו')}
           </Link>

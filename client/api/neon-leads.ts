@@ -1,8 +1,8 @@
 import { neon } from '@neondatabase/serverless';
 import { sendLeadNotification, sendLeadAcknowledgment } from '../../server/utils/mailer';
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { Request, Response } from 'express';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: Request, res: Response) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
