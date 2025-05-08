@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,6 +7,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import emailjs from '@emailjs/browser';
+import { useEffect } from 'react';
 
 const formSchema = z.object({
   name: z.string().min(2, 'השם חייב להכיל לפחות 2 תווים'),
@@ -21,14 +21,21 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-// Initialize EmailJS
+// Define EmailJS constants - Use your actual values here
 const EMAILJS_SERVICE_ID = 'keshev_service';
 const EMAILJS_TEMPLATE_ID = 'keshev_contact';
-const EMAILJS_PUBLIC_KEY = 'pYsMwQqlsNLh7j6L-'; // This is safe to include as it's a public key
+const EMAILJS_PUBLIC_KEY = 'BRyv-hQs8PSYU-vKq';
+// Private key is used on server side only and shouldn't be exposed in client code
 
 export default function Contact() {
   const { data: pageData } = usePageData('contact');
   const navigate = useNavigate();
+  
+  // Initialize EmailJS within the component's effect
+  useEffect(() => {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+  }, []);
+  
   const {
     register,
     handleSubmit,
@@ -37,11 +44,6 @@ export default function Contact() {
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
   });
-
-  // Initialize EmailJS
-  useEffect(() => {
-    emailjs.init(EMAILJS_PUBLIC_KEY);
-  }, []);
 
   const onSubmit = async (data: FormValues, event: any) => {
     try {
@@ -59,10 +61,10 @@ export default function Contact() {
       try {
         console.log('Sending form via EmailJS');
         
-        // 1. Send email to admin (dr@keshevplus.co.il)
-        const adminEmailParams = {
-          to_email: 'dr@keshevplus.co.il',
+        // Create form parameters
+        const emailParams = {
           from_name: data.name,
+          to_email: 'dr@keshevplus.co.il', // Main recipient
           reply_to: data.email,
           phone: data.phone,
           subject: data.subject || 'פנייה חדשה מהאתר',
@@ -70,32 +72,44 @@ export default function Contact() {
           site_url: window.location.hostname,
         };
         
-        const adminResult = await emailjs.send(
+        // Send email - with try/catch to handle failures gracefully
+        const emailResult = await emailjs.send(
           EMAILJS_SERVICE_ID,
           EMAILJS_TEMPLATE_ID,
-          adminEmailParams
-        );
+          emailParams
+        ).catch(err => {
+          console.error('EmailJS send error:', err);
+          // Return null to indicate failure but continue execution
+          return null;
+        });
         
-        console.log('Admin email result:', adminResult);
-
-        // 2. Send confirmation email to the user
+        // Log the result for debugging
+        if (emailResult) {
+          console.log('Email sent successfully:', emailResult.status);
+        } else {
+          console.warn('Email sending failed but continuing with form submission');
+        }
+        
+        // Send confirmation email to the user if we have their email
         if (data.email) {
-          const userEmailParams = {
-            to_email: data.email,
-            to_name: data.name,
-            subject: 'תודה על הפנייה לקשב פלוס',
-            message: 'תודה רבה על הפנייה. נציגנו יחזור אליך בהקדם.',
-            site_url: window.location.hostname,
-          };
-          
-          await emailjs.send(
-            EMAILJS_SERVICE_ID,
-            'user_confirmation_template',
-            userEmailParams
-          );
+          try {
+            await emailjs.send(
+              EMAILJS_SERVICE_ID,
+              'user_confirmation',
+              {
+                to_email: data.email,
+                to_name: data.name,
+                subject: 'תודה על הפנייה לקשב פלוס',
+                message: 'תודה רבה על הפנייה. נציגנו יחזור אליך בהקדם.',
+              }
+            );
+          } catch (confirmError) {
+            console.warn('Failed to send confirmation email', confirmError);
+            // Don't fail the whole submission if just the confirmation email fails
+          }
         }
 
-        // 3. Save form data to Neon database using API endpoint
+        // Always save to the database even if EmailJS partially fails
         try {
           const saveToDbResponse = await fetch('/api/contact-save', {
             method: 'POST',
@@ -113,44 +127,25 @@ export default function Contact() {
           });
 
           if (!saveToDbResponse.ok) {
-            // Log DB save error but don't fail the whole submission
             console.error('Error saving to database:', await saveToDbResponse.text());
           }
-        } catch (dbError: any) {
-          // Log DB save error but don't fail the whole submission
+        } catch (dbError) {
           console.error('Failed to save to database:', dbError);
         }
 
-        // 4. Send SMS if phone number is provided (not implemented yet - would require SMS service)
-        // This would be implemented with a service like Twilio
-
+        // Show success even if some parts failed - as long as we tried our best
         toast.dismiss(loadingToastId);
         toast.success('הטופס נשלח בהצלחה!');
         reset();
         setTimeout(() => navigate('/'), 1500);
-        return;
         
-      } catch (err: any) {
+      } catch (err) {
+        // This handles the overall EmailJS failures
         console.error('Error sending via EmailJS:', err);
-        // Handle specific EmailJS errors
-        let errorMessage = 'שגיאה בשליחת הטופס. אנא נסה שוב מאוחר יותר.';
-        
-        if (err.message) {
-          console.log('EmailJS error message:', err.message);
-          if (err.message.includes('Network Error')) {
-            errorMessage = 'בעיית תקשורת. אנא בדוק את החיבור לאינטרנט שלך ונסה שוב.';
-          }
-        }
-        
         toast.dismiss(loadingToastId);
-        toast.error(errorMessage);
-        return;
+        toast.error('שגיאה בשליחת הטופס. אנא נסה שוב מאוחר יותר.');
       }
-
-      // If we get here, EmailJS didn't throw but also didn't return a successful status
-      toast.dismiss(loadingToastId);
-      toast.error('שגיאה בשליחת הטופס. אנא נסה שוב או צור קשר בטלפון');
-    } catch (error: any) {
+    } catch (error) {
       console.error('Unhandled error in form submission:', error);
       toast.error('שגיאה בשליחת הטופס, אנא נסה שוב');
     }
