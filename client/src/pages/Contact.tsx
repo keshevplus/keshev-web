@@ -55,31 +55,81 @@ export default function Contact() {
         position: 'top-center',
       });
 
-      // Using EmailJS exclusively - no fallback to API
+      // Using EmailJS to send email notifications
       try {
         console.log('Sending form via EmailJS');
-        const result = await emailjs.send(
+        
+        // 1. Send email to admin (dr@keshevplus.co.il)
+        const adminEmailParams = {
+          to_email: 'dr@keshevplus.co.il',
+          from_name: data.name,
+          reply_to: data.email,
+          phone: data.phone,
+          subject: data.subject || 'פנייה חדשה מהאתר',
+          message: data.message,
+          site_url: window.location.hostname,
+        };
+        
+        const adminResult = await emailjs.send(
           EMAILJS_SERVICE_ID,
           EMAILJS_TEMPLATE_ID,
-          {
-            from_name: data.name,
-            reply_to: data.email,
-            phone: data.phone,
-            subject: data.subject || 'פנייה חדשה מהאתר',
-            message: data.message,
-            site_url: window.location.hostname,
-          }
+          adminEmailParams
         );
-
-        console.log('EmailJS result:', result);
         
-        if (result.status === 200) {
-          toast.dismiss(loadingToastId);
-          toast.success('הטופס נשלח בהצלחה!');
-          reset();
-          setTimeout(() => navigate('/'), 1500);
-          return;
+        console.log('Admin email result:', adminResult);
+
+        // 2. Send confirmation email to the user
+        if (data.email) {
+          const userEmailParams = {
+            to_email: data.email,
+            to_name: data.name,
+            subject: 'תודה על הפנייה לקשב פלוס',
+            message: 'תודה רבה על הפנייה. נציגנו יחזור אליך בהקדם.',
+            site_url: window.location.hostname,
+          };
+          
+          await emailjs.send(
+            EMAILJS_SERVICE_ID,
+            'user_confirmation_template',
+            userEmailParams
+          );
         }
+
+        // 3. Save form data to Neon database using API endpoint
+        try {
+          const saveToDbResponse = await fetch('/api/contact-save', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              name: data.name,
+              email: data.email,
+              phone: data.phone,
+              subject: data.subject || 'פנייה חדשה מהאתר',
+              message: data.message,
+              createdAt: new Date().toISOString(),
+            }),
+          });
+
+          if (!saveToDbResponse.ok) {
+            // Log DB save error but don't fail the whole submission
+            console.error('Error saving to database:', await saveToDbResponse.text());
+          }
+        } catch (dbError: any) {
+          // Log DB save error but don't fail the whole submission
+          console.error('Failed to save to database:', dbError);
+        }
+
+        // 4. Send SMS if phone number is provided (not implemented yet - would require SMS service)
+        // This would be implemented with a service like Twilio
+
+        toast.dismiss(loadingToastId);
+        toast.success('הטופס נשלח בהצלחה!');
+        reset();
+        setTimeout(() => navigate('/'), 1500);
+        return;
+        
       } catch (err: any) {
         console.error('Error sending via EmailJS:', err);
         // Handle specific EmailJS errors

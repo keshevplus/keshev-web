@@ -241,7 +241,11 @@ const AccessibilityWidget: React.FC = () => {
         aria-label="פתח תפריט נגישות"
         aria-expanded={menuOpen}
       >
-        ♿
+        <img 
+          src="/assets/images/accessibility-icon.svg" 
+          alt="u05e1u05deu05dc u05e0u05d2u05d9u05e9u05d5u05ea" 
+          className="accessibility-icon" 
+        />
       </button>
 
       {menuOpen && (
