@@ -17,4 +17,4 @@ EMAIL_TO=admin@keshevplus.com
 # EMAIL_USER=your-gmail@gmail.com
 # EMAIL_PASS=your-app-password  # Use an app password, not your regular Gmail password
 
-# Or you can use other email providers like SendGrid, Mailgun, etc.
+

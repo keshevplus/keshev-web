@@ -20,7 +20,8 @@
     "lint": "pnpm --recursive run lint",
     "lint:client": "pnpm --filter ./client lint",
     "lint:server": "pnpm --filter ./server lint",
-    "deploy": "cd client && pnpm run build && cd .. && git add . && git commit -m \"Deploy: Production build update\" && git push origin main"
+    "deploy": "cd client && pnpm run build && cd .. && git add . && git commit -m \"Deploy: Production build update\" && git push origin main",
+    "check-env-vars": "pnpm node scripts/check-env-vars.js"
   },
   "devDependencies": {
     "concurrently": "^7.6.0"
