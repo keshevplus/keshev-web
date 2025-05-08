@@ -10,6 +10,7 @@ import {
 } from '../store/sharedStateSlice'; // Redux actions for shared state
 import { useEffect } from 'react'; // React hook for side effects
 import VideoBG from './ui/VideoBG'; // Background video component
+import LanguageSwitcher from './LanguageSwitcher'; // Language Switcher component
 
 export const navItems = [
   { path: '/', text: 'בית', mobileOnly: true },
@@ -80,19 +81,31 @@ export default function Navbar() {
                 </Link>
               ))}
           </div>
-          <div className="navbar-item">
-            <img
-              src="/assets/images/greenphone.svg"
-              alt="Call Now"
-              className="w-16 hover:opacity-80 transition-transform duration-300"
-            />
+          <div className="flex items-center space-x-3">
+            {/* Language Switcher in Navbar */}
+            <div className="mr-2">
+              <div className="flex items-center justify-center">
+                <div className="bg-white/80 p-1 rounded-md shadow-sm">
+                  <div className="language-switcher">
+                    <LanguageSwitcher />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="navbar-item">
+              <img
+                src="/assets/images/greenphone.svg"
+                alt="Call Now"
+                className="w-16 hover:opacity-80 transition-transform duration-300"
+              />
+            </div>
+            <button
+              className="lg:hidden text-black"
+              onClick={() => dispatch(setIsMenuOpen(!isMenuOpen))}
+            >
+              {isMenuOpen ? <IoClose size={24} /> : <IoMenu size={24} />}
+            </button>
           </div>
-          <button
-            className="lg:hidden text-black"
-            onClick={() => dispatch(setIsMenuOpen(!isMenuOpen))}
-          >
-            {isMenuOpen ? <IoClose size={24} /> : <IoMenu size={24} />}
-          </button>
         </div>
       </div>
       <div
