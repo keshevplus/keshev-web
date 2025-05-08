@@ -1,4 +1,5 @@
-require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
+require('dotenv').config({ path: '../.env' });
+
 const bcrypt = require('bcryptjs');
 const { neon } = require('@neondatabase/serverless');
 
