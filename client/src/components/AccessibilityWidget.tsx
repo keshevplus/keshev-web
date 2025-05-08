@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/accessibility-widget.css';
+import { IoClose } from 'react-icons/io5';
 
 const AccessibilityWidget: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -233,7 +234,7 @@ const AccessibilityWidget: React.FC = () => {
   };
 
   return (
-    <div className="accessibility-container" dir="rtl">
+    <div className="accessibility-widget-fixed" dir="rtl">
       <button
         className="accessibility-button"
         onClick={toggleMenu}
@@ -247,13 +248,22 @@ const AccessibilityWidget: React.FC = () => {
         <div className="accessibility-menu">
           <div className="menu-header">
             <h2>נגישות</h2>
-            <button
-              className="reset-button"
-              onClick={resetSettings}
-              style={{ display: Object.values(settings).some(Boolean) ? 'block' : 'none' }}
-            >
-              איפוס הגדרות
-            </button>
+            <div className="flex items-center">
+              <button
+                className="reset-button mr-2"
+                onClick={resetSettings}
+                style={{ display: Object.values(settings).some(Boolean) ? 'block' : 'none' }}
+              >
+                איפוס הגדרות
+              </button>
+              <button 
+                className="close-button" 
+                onClick={toggleMenu} 
+                aria-label="סגור תפריט נגישות"
+              >
+                <IoClose size={24} />
+              </button>
+            </div>
           </div>
 
           <button
