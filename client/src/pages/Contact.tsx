@@ -43,8 +43,11 @@ export default function Contact() {
     emailjs.init(EMAILJS_PUBLIC_KEY);
   }, []);
 
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = async (data: FormValues, event: any) => {
     try {
+      // Prevent default form submission
+      event?.preventDefault?.();
+      
       console.log('Contact page - Submitting form data:', data);
 
       // Add a loading toast that will be dismissed when we get a response
@@ -111,7 +114,10 @@ export default function Contact() {
 
       <form
         className="bg-orange-400/65 p-8 rounded-lg shadow-lg w-full"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={(e) => {
+          e.preventDefault(); // Explicitly prevent default form submission
+          handleSubmit(onSubmit)(e);
+        }}
         noValidate
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-7 mb-2 pb-8">
