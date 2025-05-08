@@ -80,7 +80,7 @@ export default function Contact() {
           setTimeout(() => navigate('/'), 1500);
           return;
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error('Error sending via EmailJS:', err);
         // Handle specific EmailJS errors
         let errorMessage = 'שגיאה בשליחת הטופס. אנא נסה שוב מאוחר יותר.';
@@ -100,7 +100,7 @@ export default function Contact() {
       // If we get here, EmailJS didn't throw but also didn't return a successful status
       toast.dismiss(loadingToastId);
       toast.error('שגיאה בשליחת הטופס. אנא נסה שוב או צור קשר בטלפון');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Unhandled error in form submission:', error);
       toast.error('שגיאה בשליחת הטופס, אנא נסה שוב');
     }

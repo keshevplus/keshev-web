@@ -43,11 +43,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (email: string, password: string) => {
     try {
       // Check if we're in development environment or Vercel preview/production with API issues
-      const isApiAvailable = process.env.NODE_ENV === 'development';
+      const isApiAvailable = import.meta.env.DEV;
       
       // Get admin credentials from environment variables or use defaults
-      const adminEmail = process.env.ADMIN_EMAIL || 'admin@keshev.org.il';
-      const adminPassword = process.env.ADMIN_PASSWORD || 'admin123456';
+      const adminEmail = import.meta.env.VITE_ADMIN_EMAIL || 'admin@keshev.org.il';
+      const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD || 'admin123456';
       
       // Skip API call if we know it's not available or having issues
       if (!isApiAvailable || window.location.hostname.includes('vercel.app')) {
