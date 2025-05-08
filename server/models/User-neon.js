@@ -161,17 +161,21 @@ class User {
   static async authenticate(email, password) {
     try {
       if (!sql) {
+        console.error('Database connection not initialized');
         throw new Error('Database connection not initialized');
       }
       
       // Find user
       const user = await this.findByEmail(email);
+      console.log('Login attempt for email:', email);
+      console.log('User found:', !!user, user ? { id: user.id, email: user.email, username: user.username } : null);
       if (!user) {
         return null;
       }
 
       // Compare passwords
       const isMatch = await bcrypt.compare(password, user.password);
+      console.log('bcrypt.compare result:', isMatch);
       if (!isMatch) {
         return null;
       }
