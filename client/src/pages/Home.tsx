@@ -20,7 +20,7 @@ export default function Home() {
     );
   }
 
-  return (
+  
     <div className="rtl">
       {/* Hero Section - New Layout */}
 <div className="bg-[#F5F5F5]">

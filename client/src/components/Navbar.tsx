@@ -83,14 +83,8 @@ export default function Navbar() {
           </div>
           <div className="flex items-center space-x-3">
             {/* Language Switcher in Navbar */}
-            <div className="mr-2">
-              <div className="flex items-center justify-center">
-                <div className="bg-white/80 p-1 rounded-md shadow-sm">
-                  <div className="language-switcher">
-                    <LanguageSwitcher />
-                  </div>
-                </div>
-              </div>
+            <div className="navbar-language-switcher">
+              <LanguageSwitcher />
             </div>
             <div className="navbar-item">
               <img
