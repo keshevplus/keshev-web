@@ -48,11 +48,11 @@ export default function Home() {
             </div>
 
             {/* Hero Image Section */}
-            <div className="px-3 w-full md:w-1/2 order-2 md:order-2 flex justify-center items-center">
+            <div className="w-full md:w-1/2 order-2 md:order-2 flex justify-center items-center">
               <img 
                 src="/assets/images/doctor-hero.png" 
                 alt="רופא מקצועי" 
-                className="w-64 md:w-80 h-auto rounded-3xl shadow-xl border-4 border-white"
+                className="w-64 md:w-120 h-auto rounded-3xl shadow-xl border-4 border-white"
               />
             </div>
           </div>

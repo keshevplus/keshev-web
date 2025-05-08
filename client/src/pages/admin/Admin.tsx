@@ -3,8 +3,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Routes, Route, Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { pagesService, servicesService, formsService, contentService, leadsService } from '../services/api';
+import { useAuth } from '../../contexts/AuthContext';
+import { pagesService, servicesService, formsService, contentService, leadsService } from '../../services/api';
 
 // Interfaces for our content types
 interface Page {
