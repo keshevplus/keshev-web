@@ -26,21 +26,16 @@ async function seedUsers() {
       const passwordPlain = faker.internet.password(12);
       const doubleHashed = await doubleHashPassword(passwordPlain);
       const createdAt = new Date();
-      const lastLogin = new Date();
-      const userId = faker.datatype.uuid();
 
       await client.query(
-        `INSERT INTO users (user_id, username, password, email, is_admin, created_at, last_login, double_hash)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+        `INSERT INTO users (username, password, email, is_admin, created_at)
+          VALUES ($1, $2, $3, $4, $5)`,
         [
-          userId,
           username,
           doubleHashed,
           email,
           false,
           createdAt,
-          lastLogin,
-          doubleHashed,
         ]
       );
       console.log(`Inserted user ${i + 1}: ${username} (${email}) | password: ${passwordPlain}`);
