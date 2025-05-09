@@ -119,7 +119,7 @@ importers:
         specifier: link:/toolreduxjskit
         version: link:../../../toolreduxjskit
       typescript:
-        specifier: ^5.8.2
+        specifier: ^5.8.3
         version: 5.8.3
       vite:
         specifier: ^6.2.5
