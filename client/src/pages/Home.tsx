@@ -54,7 +54,7 @@ export default function Home() {
               <img 
                 src="/assets/images/doctor-hero.png" 
                 alt="רופא מקצועי" 
-                className="w-64 md:w-120 h-auto rounded-3xl shadow-xl border-4 border-white"
+                className="w-full max-w-xs sm:max-w-sm md:max-w-[50vw] h-auto rounded-3xl border-4 border-white"
               />
             </div>
           </div>
