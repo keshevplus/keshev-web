@@ -33,7 +33,7 @@ export default function Home() {
               <img 
                 src="/assets/images/logo.png" 
                 alt="קשב פלוס" 
-                className="w-40 md:w-96 xs:w-0 sm:w-0 mb-8 mx-auto drop-shadow-lg"
+                className="w-56 md:w-96 mb-8 mx-auto drop-shadow-lg"
               />
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-green-800 mb-4 md:mb-6">
                 {t('home.hero.title', 'רוצה להבין מה עובר עליך? בוא לבדוק אם זו הפרעת קשב.')}
