@@ -21,9 +21,11 @@ export default function Home() {
   }
 
   return (
+    <div>
+      <div> 
     <div className="rtl">
       {/* Hero Section - New Layout */}
-      <div className="bg-[#F5F5F5]">
+      
         <div className="container mx-auto px-4 py-12 md:py-16">
           <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
             {/* Hero Text Section */}
@@ -76,6 +78,7 @@ export default function Home() {
           </Link>
         </div>
       </div>
+    </div>
     </div>
   );
 }
