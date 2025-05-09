@@ -20,11 +20,15 @@ export default function Login() {
     setLoginError('');
     setIsLoading(true);
 
+    // Trim and sanitize inputs
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+
     try {
       // Add more comprehensive error handling and logging
-      console.log('Attempting login with:', { email: email.length > 0 ? '✓' : '✗', password: password.length > 0 ? '✓' : '✗' });
+      console.log('Attempting login with:', { email: trimmedEmail.length > 0 ? '✓' : '✗', password: trimmedPassword.length > 0 ? '✓' : '✗' });
       
-      await login(email, password);
+      await login(trimmedEmail, trimmedPassword);
       console.log('Login successful, redirecting to admin dashboard');
       navigate('/admin');
 

@@ -10,9 +10,8 @@ async function createAdminUser() {
     const sql = neon(process.env.DATABASE_URL);
     
     // Create admin user with default credentials
-    const email = 'admin@admin'; 
-    const username = 'admin48';
-    // const doubleHash = 'ed8cda9cffbbefeb36b8e85f59854037c366945a33466e11d62783f50518c89d';
+    const email = 'irine@admin'; 
+    const username = 'admin46';
     const password = '12345678';
     
     console.log('Checking if user already exists...');
@@ -27,14 +26,13 @@ async function createAdminUser() {
     console.log('Hashing password...');
     // Hash password
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = '12345678';
-    // await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     console.log('Creating admin user...');
     // Insert user
     const result = await sql`
       INSERT INTO users (username, password, email, is_admin, created_at, last_login)
-      VALUES (${username}, ${password}, ${email}, true, NOW(), NOW())
+      VALUES (${username}, ${hashedPassword}, ${email}, true, NOW(), NOW())
       RETURNING user_id, username, password, email, is_admin, created_at, last_login
     `;
 
