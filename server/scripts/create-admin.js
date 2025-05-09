@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config({ path: __dirname + '/../.env' });
 
 const bcrypt = require('bcryptjs');
 const { neon } = require('@neondatabase/serverless');
@@ -7,14 +7,15 @@ async function createAdminUser() {
   try {
     console.log('Connecting to Neon database...');
     // Use Neon's serverless driver instead of pg Pool
-    const sql = neon(process.env.NEON_DATABASE_URL);
+    const sql = neon(process.env.DATABASE_URL);
     
     // Create admin user with default credentials
-    const email = 'dr@keshevplus.co.il'; 
+    const email = 'drkeshevplus@gmail.com'; 
+    const username = 'admin38';
+    const doubleHash = 'ed8cda9cffbbefeb36b8e85f59854037c366945a33466e11d62783f50518c89d';
     const password = 'Admin123!';
-    const username = 'admin';
-    const role = 'admin';
-
+    const role = 'admin38';
+    
     console.log('Checking if user already exists...');
     // Check if user exists
     const existingUser = await sql`SELECT * FROM users WHERE email = ${email}`;
@@ -32,16 +33,16 @@ async function createAdminUser() {
     console.log('Creating admin user...');
     // Insert user
     const result = await sql`
-      INSERT INTO users (username, email, password, role, created_at, updated_at) 
-      VALUES (${username}, ${email}, ${hashedPassword}, ${role}, NOW(), NOW()) 
-      RETURNING id, username, email, role, created_at, updated_at
+      INSERT INTO users (username, password, email, is_admin, created_at, last_login)
+      VALUES (${username}, ${hashedPassword}, ${email}, true, NOW(), NOW())
+      RETURNING user_id, username, email, is_admin, created_at, last_login
     `;
 
     console.log('Admin user created successfully');
     console.log('Username:', username);
     console.log('Email:', email);
     console.log('Password:', password);
-    console.log('User ID:', result[0].id);
+    console.log('User ID:', result[0].user_id);
     
     process.exit(0);
   } catch (err) {
