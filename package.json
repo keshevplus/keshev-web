@@ -21,7 +21,8 @@
     "lint:client": "pnpm --filter ./client lint",
     "lint:server": "pnpm --filter ./server lint",
     "deploy": "cd client && pnpm run build && cd .. && git add . && git commit -m \"Deploy: Production build update\" && git push origin main",
-    "check-env-vars": "pnpm node scripts/check-env-vars.js"
+    "check-env-vars": "pnpm node scripts/check-env-vars.js",
+    "bacpd": "pnpm run build && git add . && git commit -m \"TEMP: bypass admin password for debug\" && git push && vercel deploy --prod"
   },
   "devDependencies": {
     "concurrently": "^7.6.0"

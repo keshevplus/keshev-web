@@ -12,6 +12,7 @@ const authRoutes = require("./routes/auth");
 const adminRoutes = require("./routes/admin");
 const leadsRoutes = require("./routes/leads");
 const neonLeadsRoutes = require("./routes/neon-leads");
+const testRoute = require("./routes/test");
 const authMiddleware = require("./middleware/auth");
 
 const app = express();
@@ -43,6 +44,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/admin", authMiddleware, adminRoutes);
 app.use("/api/leads", leadsRoutes);
 app.use("/api/neon/leads", neonLeadsRoutes);
+app.use("/api/test", testRoute);
 
 app.use('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
