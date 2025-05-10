@@ -48,11 +48,13 @@ router.post('/login', async (req, res) => {
   // DEV OVERRIDE: Free access in development
   if (process.env.NODE_ENV === 'development' || process.env.FREE_ADMIN === 'true') {
     return res.json({
-      id: 1,
-      username: 'devadmin',
-      email: 'dev@admin',
-      role: 'admin',
-      token: 'dev-token'
+      token: 'dev-token',
+      user: {
+        id: 1,
+        username: 'devadmin',
+        email: 'dev@admin',
+        role: 'admin'
+      }
     });
   }
 
