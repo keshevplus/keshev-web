@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { usePageData } from '../hooks/usePageData';
 import PageLayout from '../components/ui/PageLayout';
+import GoogleMap from '../components/GoogleMap';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
@@ -100,7 +101,20 @@ export default function Contact() {
       <h3 className="text-2xl md:text-xl font-bold text-green-800 text-right mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
         {pageData[0]?.subheading}
       </h3>
-
+      {/* Address and Map Section */}
+      <div className="mb-8 text-right">
+        <div className="font-bold text-lg">כתובת:</div>
+        <div className="mb-2">יגאל אלון 94, תל אביב (וויביז)</div>
+        <a
+          href="https://maps.google.com/?q=יגאל אלון 94 תל אביב"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-700 underline hover:text-blue-900"
+        >
+          פתח במפות גוגל
+        </a>
+        <GoogleMap />
+      </div>
       <form
         className="bg-orange-400/65 p-8 rounded-lg shadow-lg w-full"
         onSubmit={(e) => {
