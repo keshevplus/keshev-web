@@ -61,17 +61,25 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
+    // Only allow one admin login at a time
+    const adminsLoggedIn = await User.getLoggedInAdmins();
+    if (adminsLoggedIn.length > 0) {
+      return res.status(403).json({ message: 'An admin is already logged in elsewhere.' });
+    }
+
     // Authenticate user with User model
     const user = await User.authenticate(email, password);
-    
-    if (!user) {
+    if (!user || !user.is_admin) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
+
+    // Set logged_in true for this admin
+    await User.setLoggedIn(user.email, true);
 
     // Create JWT token
     const payload = {
       user: {
-        id: user.id,
+        id: user.id || user.user_id,
         role: user.role
       }
     };
@@ -88,6 +96,63 @@ router.post('/login', async (req, res) => {
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// @route   POST api/auth/request-reset
+// @desc    Request password reset for admin
+// @access  Public
+router.post('/request-reset', async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findByEmail(email);
+    if (!user || !user.is_admin) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
+    // Generate reset token (expires in 1 hour)
+    const resetToken = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin/reset-password?token=${resetToken}`;
+    // Send email (use your email sending logic)
+    await User.sendResetEmail(email, resetUrl);
+    res.json({ message: 'Password reset email sent' });
+  } catch (err) {
+    console.error('Password reset request error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// @route   POST api/auth/reset-password
+// @desc    Reset admin password
+// @access  Public
+router.post('/reset-password', async (req, res) => {
+  const { token, newPassword } = req.body;
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const email = decoded.email;
+    const user = await User.findByEmail(email);
+    if (!user || !user.is_admin) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
+    await User.updatePassword(email, newPassword);
+    res.json({ message: 'Password updated successfully' });
+  } catch (err) {
+    console.error('Password reset error:', err);
+    res.status(400).json({ message: 'Invalid or expired token' });
+  }
+});
+
+// @route   POST api/auth/logout
+// @desc    Logout admin user
+// @access  Private
+router.post('/logout', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (user && user.is_admin) {
+      await User.setLoggedIn(user.email, false);
+    }
+    res.json({ message: 'Logged out' });
+  } catch (err) {
+    res.status(500).json({ message: 'Logout error' });
   }
 });
 

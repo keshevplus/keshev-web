@@ -8,6 +8,7 @@ import ADHD from '../pages/ADHD';
 import Diagnosis from '../pages/Diagnosis';
 import Forms from '../pages/Forms';
 import Admin from '../pages/admin/Admin';
+import ResetPassword from '../pages/admin/reset-password';
 import NotFound from '../pages/NotFound';
 
 function AppRoutes() {
@@ -21,6 +22,7 @@ function AppRoutes() {
         <Route path="/diagnosis" element={<Diagnosis />} />
         <Route path="/forms" element={<Forms />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/admin/reset-password" element={<ResetPassword />} />
         <Route path="/admin/*" element={<Admin />} />
         {/* Catch-all route for any undefined paths */}
         <Route path="*" element={<NotFound />} />

@@ -256,6 +256,77 @@ class User {
       throw error;
     }
   }
+
+  /**
+   * Get all admins currently logged in
+   * @returns {Promise<Object[]>} Array of logged in admin users
+   */
+  static async getLoggedInAdmins() {
+    try {
+      if (!sql) throw new Error('Database connection not initialized');
+      const result = await sql`SELECT * FROM users WHERE is_admin = true AND logged_in = true`;
+      return result;
+    } catch (error) {
+      console.error('Error getting logged in admins:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Set logged_in flag for a user by email
+   * @param {string} email - User email
+   * @param {boolean} value - New logged_in value
+   */
+  static async setLoggedIn(email, value) {
+    try {
+      if (!sql) throw new Error('Database connection not initialized');
+      await sql`UPDATE users SET logged_in = ${value} WHERE email = ${email}`;
+    } catch (error) {
+      console.error('Error setting logged_in:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Send password reset email
+   * @param {string} email - User email
+   * @param {string} resetUrl - Password reset URL
+   */
+  static async sendResetEmail(email, resetUrl) {
+    // Use your EMAIL_API_KEY and email sending logic here
+    const nodemailer = require('nodemailer');
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_API_KEY,
+      },
+    });
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Admin Password Reset',
+      html: `<p>Click <a href='${resetUrl}'>here</a> to reset your admin password. This link is valid for 1 hour.</p>`
+    };
+    await transporter.sendMail(mailOptions);
+  }
+
+  /**
+   * Update password for a user by email
+   * @param {string} email - User email
+   * @param {string} newPassword - New password
+   */
+  static async updatePassword(email, newPassword) {
+    try {
+      if (!sql) throw new Error('Database connection not initialized');
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(newPassword, salt);
+      await sql`UPDATE users SET password = ${hashedPassword} WHERE email = ${email}`;
+    } catch (error) {
+      console.error('Error updating password:', error);
+      throw error;
+    }
+  }
 }
 
 module.exports = User;
