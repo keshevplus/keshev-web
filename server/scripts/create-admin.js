@@ -10,9 +10,9 @@ async function createAdminUser() {
     const sql = neon(process.env.DATABASE_URL);
     
     // Create admin user with default credentials
-    const email = 'irine@admin'; 
-    const username = 'admin46';
-    const password = '12345678';
+    const username = 'admin1';
+    const email = '1@1';
+    const password = '101112';
     
     console.log('Checking if user already exists...');
     // Check if user exists
