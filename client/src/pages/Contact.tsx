@@ -97,87 +97,75 @@ export default function Contact() {
   };
 
   return (
-    <PageLayout title={pageData[0]?.heading || ''} background="bg-white" maxWidth="md:max-w-[80%]">
+    <PageLayout title={pageData[0]?.heading || ''} background="bg-white" maxWidth="md:max-w-3xl">
       <h3 className="text-2xl md:text-xl font-bold text-green-800 text-right mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
         {pageData[0]?.subheading}
       </h3>
-      {/* Address and Map Section */}
-      <div className="mb-8 text-right">
-        <div className="font-bold text-lg">כתובת:</div>
-        <div className="mb-2">יגאל אלון 94, תל אביב (וויביז)</div>
-        <a
-          href="https://maps.google.com/?q=יגאל אלון 94 תל אביב"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-700 underline hover:text-blue-900"
-        >
-          פתח במפות גוגל
-        </a>
-        <GoogleMap />
-      </div>
-      <form
-        className="bg-orange-400/65 p-8 rounded-lg shadow-lg w-full"
-        onSubmit={(e) => {
-          e.preventDefault(); // Explicitly prevent default form submission
-          handleSubmit(onSubmit)(e);
-        }}
-        noValidate
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-7 mb-2 pb-8">
-          {[
-            { name: 'name', label: 'שם' },
-            { name: 'email', label: 'אימייל', type: 'email' },
-            { name: 'phone', label: 'טלפון', type: 'tel' },
-            { name: 'subject', label: 'נושא' },
-          ].map(({ name, label, type = 'text' }) => (
-            <div key={name} className="relative">
-              <input
-                {...register(name as keyof FormValues)}
-                type={type}
-                placeholder={label}
-                className={`w-full p-3 rounded-lg border text-right ${
-                  errors[name as keyof FormValues]
-                    ? 'border-red-700 border-2'
-                    : 'border-gray-300 focus:border-green-500'
-                }`}
-              />
-              {errors[name as keyof FormValues] && (
-                <span className="absolute left-0 text-red-700 font-bold text-sm m-2">
-                  {errors[name as keyof FormValues]?.message}
-                </span>
-              )}
-            </div>
-          ))}
-        </div>
-
-        <div className="relative mb-6">
-          <textarea
-            {...register('message')}
-            rows={4}
-            placeholder="הודעה"
-            className={`w-full p-3 rounded-lg border text-right ${
-              errors.message
-                ? 'border-red-700 border-2'
-                : 'border-gray-300 focus:border-green-500'
-            }`}
-          />
-          {errors.message && (
-            <span className="absolute left-0 text-red-700 font-bold text-sm m-2">
-              {errors.message.message}
-            </span>
-          )}
-        </div>
-
-        <div className="flex justify-center">
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition-colors duration-300 disabled:bg-gray-400"
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+        {/* Details and Map */}
+        <div className="mb-8 md:mb-0 text-right">
+          <div className="font-bold text-lg">כתובת:</div>
+          <div className="mb-2">יגאל אלון 94, תל אביב (וויביז)</div>
+          <a
+            href="https://maps.google.com/?q=יגאל אלון 94 תל אביב"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-700 underline hover:text-blue-900"
           >
-            {isSubmitting ? 'שולח...' : 'שלח הודעה'}
-          </button>
+            פתח במפות גוגל
+          </a>
+          <GoogleMap />
         </div>
-      </form>
+        {/* Contact Form */}
+        <form
+          className="bg-orange-400/65 p-6 rounded-lg shadow-lg w-full"
+          onSubmit={(e) => {
+            e.preventDefault(); // Explicitly prevent default form submission
+            handleSubmit(onSubmit)(e);
+          }}
+          noValidate
+        >
+          <div className="grid grid-cols-1 gap-4 mb-4">
+            {[{ name: 'name', label: 'שם' }, { name: 'email', label: 'אימייל', type: 'email' }, { name: 'phone', label: 'טלפון', type: 'tel' }, { name: 'subject', label: 'נושא' }].map(({ name, label, type = 'text' }) => (
+              <div key={name} className="relative">
+                <input
+                  {...register(name as keyof FormValues)}
+                  type={type}
+                  placeholder={label}
+                  className={`w-full p-3 rounded-lg border text-right ${errors[name as keyof FormValues] ? 'border-red-700 border-2' : 'border-gray-300 focus:border-green-500'}`}
+                />
+                {errors[name as keyof FormValues] && (
+                  <span className="absolute left-0 text-red-700 font-bold text-sm m-2">
+                    {errors[name as keyof FormValues]?.message}
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="relative mb-4">
+            <textarea
+              {...register('message')}
+              rows={3}
+              placeholder="הודעה"
+              className={`w-full p-3 rounded-lg border text-right ${errors.message ? 'border-red-700 border-2' : 'border-gray-300 focus:border-green-500'}`}
+            />
+            {errors.message && (
+              <span className="absolute left-0 text-red-700 font-bold text-sm m-2">
+                {errors.message.message}
+              </span>
+            )}
+          </div>
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition-colors duration-300 disabled:bg-gray-400"
+            >
+              {isSubmitting ? 'שולח...' : 'שלח הודעה'}
+            </button>
+          </div>
+        </form>
+      </div>
     </PageLayout>
   );
 }
