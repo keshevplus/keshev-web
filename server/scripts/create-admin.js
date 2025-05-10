@@ -10,9 +10,11 @@ async function createAdminUser() {
     const sql = neon(process.env.DATABASE_URL);
     
     // Create admin user with default credentials
-    const username = 'admin1';
-    const email = '1@1';
-    const password = '101112';
+    const username = 'admin';
+    const email = 'dr@keshevplus.co.il';
+    const password = 'changeme123'; // Prompt user to change after first login
+    const is_admin = true;
+    const role = 'db_owner';
     
     console.log('Checking if user already exists...');
     // Check if user exists
@@ -29,18 +31,18 @@ async function createAdminUser() {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     console.log('Creating admin user...');
-    // Insert user
-    const result = await sql`
-      INSERT INTO users (username, password, email, is_admin, created_at, last_login)
-      VALUES (${username}, ${hashedPassword}, ${email}, true, NOW(), NOW())
-      RETURNING user_id, username, password, email, is_admin, created_at, last_login
+    // Insert admin user
+    const insertResult = await sql`
+      INSERT INTO users (username, email, password, is_admin, role, created_at)
+      VALUES (${username}, ${email}, ${hashedPassword}, ${is_admin}, ${role}, NOW())
+      RETURNING user_id, username, email, is_admin, role
     `;
 
     console.log('Admin user created successfully');
     console.log('Username:', username);
     console.log('Email:', email);
     console.log('Password:', password);
-    console.log('User ID:', result[0].user_id);
+    console.log('User ID:', insertResult[0].user_id);
     
     process.exit(0);
   } catch (err) {
