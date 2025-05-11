@@ -1,9 +1,8 @@
 {
   "version": 2,
-  "buildCommand": "npx pnpm install --no-frozen-lockfile && npx pnpm build",
+  "buildCommand": "pnpm install --no-frozen-lockfile && pnpm run build && mkdir -p dist",
   "outputDirectory": "dist",
   "rewrites": [
-    
     { "source": "/api/contact", "destination": "/api/contact.js" },
     { "source": "/api/leads", "destination": "/api/leads.js" },
     { "source": "/assets/:path*", "destination": "/assets/:path*" },
