@@ -16,7 +16,7 @@ i18n
     // Default language
     fallbackLng: 'he',
     // Debug in development
-    debug: process.env.NODE_ENV === 'development',
+    debug: import.meta.env.NODE_ENV === 'development',
     // Load multiple languages
     supportedLngs: ['he', 'en'],
     // Namespaces to use

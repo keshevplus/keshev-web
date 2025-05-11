@@ -4,6 +4,7 @@
   "description": "Keshev Plus - Fullstack Application",
   "main": "server.js",
   "private": true,
+  "type": "module",
   "scripts": {
     "start": "node server.js"
   },

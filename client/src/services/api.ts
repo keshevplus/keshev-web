@@ -1,3 +1,5 @@
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 // Helper function for authenticated API requests
 const authenticatedRequest = async (url: string, options: RequestInit = {}) => {
   const token = localStorage.getItem('token');
@@ -5,8 +7,12 @@ const authenticatedRequest = async (url: string, options: RequestInit = {}) => {
     throw new Error('No token, authorization denied');
   }
 
+  const fullUrl = url.startsWith('http')
+    ? url
+    : `${API_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
+
   try {
-    const response = await fetch(url, {
+    const response = await fetch(fullUrl, {
       ...options,
       headers: {
         'x-auth-token': token,
@@ -36,18 +42,18 @@ const authenticatedRequest = async (url: string, options: RequestInit = {}) => {
 // Pages service
 export const pagesService = {
   async getAllPages() {
-    return authenticatedRequest('/api/admin/pages');
+    return authenticatedRequest(`${API_BASE_URL}/admin/pages`);
   },
 
   async createPage(pageData: any) {
-    return authenticatedRequest('/api/admin/pages', {
+    return authenticatedRequest(`${API_BASE_URL}/admin/pages`, {
       method: 'POST',
       body: JSON.stringify(pageData)
     });
   },
 
   async updatePage(id: string, pageData: any) {
-    return authenticatedRequest(`/api/admin/pages/${id}`, {
+    return authenticatedRequest(`${API_BASE_URL}/admin/pages/${id}`, {
       method: 'PUT',
       body: JSON.stringify(pageData)
     });
@@ -57,25 +63,25 @@ export const pagesService = {
 // Services service
 export const servicesService = {
   async getAllServices() {
-    return authenticatedRequest('/api/admin/services');
+    return authenticatedRequest(`${API_BASE_URL}/admin/services`);
   },
 
   async createService(serviceData: any) {
-    return authenticatedRequest('/api/admin/services', {
+    return authenticatedRequest(`${API_BASE_URL}/admin/services`, {
       method: 'POST',
       body: JSON.stringify(serviceData)
     });
   },
 
   async updateService(id: string, serviceData: any) {
-    return authenticatedRequest(`/api/admin/services/${id}`, {
+    return authenticatedRequest(`${API_BASE_URL}/admin/services/${id}`, {
       method: 'PUT',
       body: JSON.stringify(serviceData)
     });
   },
 
   async deleteService(id: string) {
-    return authenticatedRequest(`/api/admin/services/${id}`, {
+    return authenticatedRequest(`${API_BASE_URL}/admin/services/${id}`, {
       method: 'DELETE'
     });
   }
@@ -84,25 +90,25 @@ export const servicesService = {
 // Forms service
 export const formsService = {
   async getAllForms() {
-    return authenticatedRequest('/api/admin/forms');
+    return authenticatedRequest(`${API_BASE_URL}/admin/forms`);
   },
 
   async createForm(formData: any) {
-    return authenticatedRequest('/api/admin/forms', {
+    return authenticatedRequest(`${API_BASE_URL}/admin/forms`, {
       method: 'POST',
       body: JSON.stringify(formData)
     });
   },
 
   async updateForm(id: string, formData: any) {
-    return authenticatedRequest(`/api/admin/forms/${id}`, {
+    return authenticatedRequest(`${API_BASE_URL}/admin/forms/${id}`, {
       method: 'PUT',
       body: JSON.stringify(formData)
     });
   },
 
   async deleteForm(id: string) {
-    return authenticatedRequest(`/api/admin/forms/${id}`, {
+    return authenticatedRequest(`${API_BASE_URL}/admin/forms/${id}`, {
       method: 'DELETE'
     });
   }
@@ -111,29 +117,29 @@ export const formsService = {
 // Content service
 export const contentService = {
   async getAllContent(page = 1, limit = 10, filter = '') {
-    return authenticatedRequest(`/api/admin/content?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`);
+    return authenticatedRequest(`${API_BASE_URL}/admin/content?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`);
   },
 
   async getContentById(id: string) {
-    return authenticatedRequest(`/api/admin/content/${id}`);
+    return authenticatedRequest(`${API_BASE_URL}/admin/content/${id}`);
   },
 
   async createContent(contentData: any) {
-    return authenticatedRequest('/api/admin/content', {
+    return authenticatedRequest(`${API_BASE_URL}/admin/content`, {
       method: 'POST',
       body: JSON.stringify(contentData)
     });
   },
 
   async updateContent(id: string, contentData: any) {
-    return authenticatedRequest(`/api/admin/content/${id}`, {
+    return authenticatedRequest(`${API_BASE_URL}/admin/content/${id}`, {
       method: 'PUT',
       body: JSON.stringify(contentData)
     });
   },
 
   async deleteContent(id: string) {
-    return authenticatedRequest(`/api/admin/content/${id}`, {
+    return authenticatedRequest(`${API_BASE_URL}/api/content/${id}`, {
       method: 'DELETE'
     });
   }
@@ -142,15 +148,15 @@ export const contentService = {
 // Leads service
 export const leadsService = {
   async getAllLeads(page = 1, limit = 10, filter = '') {
-    return authenticatedRequest(`/api/admin/leads?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`);
+    return authenticatedRequest(`${API_BASE_URL}/admin/leads?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`);
   },
 
   async getLeadById(id: string) {
-    return authenticatedRequest(`/api/admin/leads/${id}`);
+    return authenticatedRequest(`${API_BASE_URL}/admin/leads/${id}`);
   },
 
   async deleteLead(id: string) {
-    return authenticatedRequest(`/api/admin/leads/${id}`, {
+    return authenticatedRequest(`${API_BASE_URL}/admin/leads/${id}`, {
       method: 'DELETE'
     });
   }

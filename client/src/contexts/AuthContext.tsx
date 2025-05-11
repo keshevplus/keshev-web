@@ -72,9 +72,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
       
       // Regular API authentication (only used in environments where the API is available)
-      console.log('Making API request to /api/auth/login');
+      console.log('Making API request to VITE_API_BASE_URL/auth/login');
       try {
-        const response = await fetch('/api/auth/login', {
+        const response = await fetch(import.meta.env.VITE_API_BASE_URL + '/auth/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

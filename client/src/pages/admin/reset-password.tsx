@@ -22,7 +22,7 @@ const ResetPassword: React.FC = () => {
     e.preventDefault();
     setMessage('');
     try {
-      await axios.post('/api/auth/request-reset', { email });
+      await axios.post(proca.env.VITE_API_BASE_URL + '/auth/request-reset', { email });
       setStep('done');
       setMessage('Check your email for a reset link.');
     } catch (err: any) {
