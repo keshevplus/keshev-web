@@ -26,10 +26,10 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 // Define EmailJS constants - Use your actual values here
-const EMAILJS_SERVICE_ID = process.env.VITE_EMAILJS_SERVICE_ID as string;
-const EMAILJS_ADMIN_TEMPLATE_ID = process.env.VITE_ADMIN_TEMPLATE_ID as string; // set this in EmailJS
-const EMAILJS_USER_TEMPLATE_ID = process.env.VITE_EMAILJS_TEMPLATE_ID as string; // set this in EmailJS
-const EMAILJS_PUBLIC_KEY = process.env.VITE_EMAILJS_PUBLIC_KEY as string; // use your EmailJS public key
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID as string;
+const EMAILJS_ADMIN_TEMPLATE_ID = import.meta.env.VITE_ADMIN_TEMPLATE_ID as string; // set this in EmailJS
+const EMAILJS_USER_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string; // set this in EmailJS
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string; // use your EmailJS public key
 
 export default function Contact() {
   const { data: pageData } = usePageData('contact');

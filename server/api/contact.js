@@ -1,11 +1,28 @@
 import axios from 'axios';
 import express from 'express';
 
-export default async function handler(req, res) {
+function setCorsHeaders(res) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
   res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+}
+
+function getMissingFieldErrors(body) {
+  return [
+    { field: 'name', message: !body.name ? 'Name is required' : '' },
+    { field: 'email', message: !body.email ? 'Email is required' : '' },
+    { field: 'message', message: !body.message ? 'Message is required' : '' },
+  ].filter(e => e.message);
+}
+
+function getBaseUrl() {
+  const protocol = process.env.VERCEL_ENV === 'development' ? 'http://' : 'https://';
+  return process.env.VERCEL_URL ? `${protocol}${process.env.VERCEL_URL}` : 'http://localhost:5000';
+}
+
+export default async function handler(req, res) {
+  setCorsHeaders(res);
 
   if (req.method === 'OPTIONS') {
     res.status(200).end();
@@ -18,23 +35,19 @@ export default async function handler(req, res) {
 
   if (req.method === 'POST') {
     console.log('Contact form data received:', req.body);
-    if (!req.body.name || !req.body.email || !req.body.message) {
+    const errors = getMissingFieldErrors(req.body);
+    if (errors.length > 0) {
       return res.status(400).json({
         success: false,
         message: 'Missing required fields',
-        errors: [
-          { field: 'name', message: !req.body.name ? 'Name is required' : '' },
-          { field: 'email', message: !req.body.email ? 'Email is required' : '' },
-          { field: 'message', message: !req.body.message ? 'Message is required' : '' },
-        ].filter(e => e.message),
+        errors,
       });
     }
     try {
-      const protocol = process.env.VERCEL_ENV === 'development' ? 'http://' : 'https://';
-      const baseUrl = process.env.VERCEL_URL ? `${protocol}${process.env.VERCEL_URL}` : 'http://localhost:3000';
+      const baseUrl = getBaseUrl();
       const response = await axios({
         method: 'post',
-        url: `${baseUrl}/api/neon/leads`,
+        url: `${baseUrl}/neon/leads`,
         data: req.body,
         headers: {
           'Content-Type': 'application/json',
@@ -50,10 +63,10 @@ export default async function handler(req, res) {
       return res.status(500).json({
         success: false,
         message: 'Failed to submit form',
+        error: error.message,
       });
     }
   }
 
-  res.setHeader('Allow', ['GET', 'POST', 'OPTIONS']);
-  res.status(405).end(`Method ${req.method} Not Allowed`);
+  res.status(405).json({ success: false, message: 'Method Not Allowed' });
 }

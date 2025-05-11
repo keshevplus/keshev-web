@@ -24,7 +24,7 @@
     <script>
         async function fetchLeads() {
             try {
-                const response = await fetch('/api/leads');
+                const response = await fetch({import /leads');
                 if (response.ok) {
                     const leads = await response.json();
                     const tableBody = document.getElementById('leadsTable');
