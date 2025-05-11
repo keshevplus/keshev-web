@@ -52,41 +52,21 @@ export default function Contact() {
   });
 
   const onSubmit = async (data: FormValues, event: any) => {
+    event?.preventDefault?.();
+    const loadingToastId = toast.loading('שולח את הטופס...', { position: 'top-center' });
     try {
-      event?.preventDefault?.();
-      const loadingToastId = toast.loading('שולח את הטופס...', { position: 'top-center' });
-      // --- Send notification to admin (you) ---
-      try {
-        await emailjs.send(
-          EMAILJS_SERVICE_ID,
-          EMAILJS_ADMIN_TEMPLATE_ID,
-          {
-            ...data,
-            to_email: 'dr@keshevplus.co.il',
-            site_url: window.location.hostname,
-          },
-          EMAILJS_PUBLIC_KEY
-        );
-      } catch (adminErr) {
-        console.error('Error sending admin notification:', adminErr);
-      }
+      // Try sending to your own backend API
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
 
-      // --- Send thank you note to sender ---
-      if (data.email) {
-        try {
-          await emailjs.send(
-            EMAILJS_SERVICE_ID,
-            EMAILJS_USER_TEMPLATE_ID,
-            {
-              ...data,
-              to_email: data.email,
-              to_name: data.name,
-            },
-            EMAILJS_PUBLIC_KEY
-          );
-        } catch (userErr) {
-          console.warn('Error sending thank you email to user:', userErr);
-        }
+      if (!response.ok) {
+        const errorData = await response.json();
+        toast.dismiss(loadingToastId);
+        toast.error(errorData.message || 'אירעה שגיאה בשליחת הטופס.');
+        return;
       }
 
       toast.dismiss(loadingToastId);
@@ -94,6 +74,7 @@ export default function Contact() {
       reset();
       setTimeout(() => navigate('/'), 1500);
     } catch (err) {
+      toast.dismiss(loadingToastId);
       toast.error('אירעה שגיאה בשליחת הטופס.');
       console.error('Contact form error:', err);
     }
