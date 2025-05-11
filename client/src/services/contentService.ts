@@ -1,4 +1,4 @@
-import { LocalPageContent } from '../types/content';
+import { ContentItem } from '../types/content';
 import aboutPageData from '../data/aboutPage';
 import servicesPageData from '../data/servicesPage';
 import adhdPageData from '../data/adhdPage';
@@ -7,7 +7,7 @@ import formsPageData from '../data/formsPage';
 import contactPageData from '../data/contactPage';
 
 export const contentService = {
-  async getPageContent(page: string): Promise<LocalPageContent[]> {
+  async getPageContent(page: string): Promise<ContentItem[]> {
     switch (page) {
       case 'about':
         return [aboutPageData];

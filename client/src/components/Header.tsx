@@ -1,6 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
 import { PhoneIcon } from './ui/PhoneIcon';
-import React from 'react';
 
 export default function Header() {
   const location = useLocation();
@@ -23,24 +22,26 @@ export default function Header() {
 
         <nav className="hidden md:block">
           <ul className="flex space-x-8">
-            [
-              { path: '/', label: 'בית' },
-              { path: '/about', label: 'אודותנו' },
-              { path: '/services', label: 'שירותינו' },
-              { path: '/diagnosis', label: 'תהליך אבחון' },
-              { path: '/adhd', label: 'מהי ADHD' },
-              { path: '/forms', label: 'שאלונים' },
-              { path: '/contact', label: 'יצירת קשר' },
-            ].map((item) => (
-              <li key={item.path}>
-                <Link
-                  to={item.path}
-                  className="text-gray-800 hover:text-green-800"
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+            {
+              [
+                { path: '/', label: 'בית' },
+                { path: '/about', label: 'אודותנו' },
+                { path: '/services', label: 'שירותינו' },
+                { path: '/diagnosis', label: 'תהליך אבחון' },
+                { path: '/adhd', label: 'מהי ADHD' },
+                { path: '/forms', label: 'שאלונים' },
+                { path: '/contact', label: 'יצירת קשר' },
+              ].map((item) => (
+                <li key={item.path}>
+                  <Link
+                    to={item.path}
+                    className="text-gray-800 hover:text-green-800"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))
+            }
           </ul>
         </nav>
 
