@@ -79,6 +79,7 @@ app.all(
         errors: [
           { field: 'name', message: !req.body.name ? 'Name is required' : '' },
           { field: 'email', message: !req.body.email ? 'Email is required' : '' },
+          { field: 'phone', message: !req.body.phone ? 'Phone is required' : '' },
           { field: 'message', message: !req.body.message ? 'Message is required' : '' }
         ].filter(e => e.message)
       });
