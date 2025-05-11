@@ -11,13 +11,13 @@ export default function Home() {
   useEffect(() => {
     document.documentElement.dir = 'rtl';
   }, []);
-
+  q 
   if (!pageData) {
     return (
-      <div className="container mx-auto max-w-full md:max-w-[75%] py-8 loading">
+      <div className="container mx-auto max-w-full md:max-w-[75%] py-4 loading">
         <div className="animate-pulse">Loading...</div>
       </div>
-    );
+    ); 
   }
 
   return (
@@ -41,6 +41,12 @@ export default function Home() {
               <p className="text-lg md:text-xl mb-8 text-gray-700">
                 {t('home.hero.subtitle', 'בדיקה מקצועית, מהירה ודיסקרטית ל-ADHD - לילדים, בני נוער ומבוגרים.')}
               </p>
+              <Link
+                to="/about"
+                className="inline-block bg-green-800 text-white px-8 py-4 rounded-md text-lg font-medium hover:bg-[#e78200] transition-colors duration-300 shadow-md hover:shadow-lg"
+              >
+                {t('home.hero.cta', 'קרא עוד עלינו')}
+              </Link>
               <Link
                 to="/contact"
                 className="inline-block bg-[#F7941D] text-black px-8 py-4 rounded-md text-lg font-medium hover:bg-[#e78200] transition-colors duration-300 shadow-md hover:shadow-lg"
