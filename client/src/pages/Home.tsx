@@ -11,7 +11,7 @@ export default function Home() {
   useEffect(() => {
     document.documentElement.dir = 'rtl';
   }, []);
-  q 
+  
   if (!pageData) {
     return (
       <div className="container mx-auto max-w-full md:max-w-[75%] py-4 loading">
