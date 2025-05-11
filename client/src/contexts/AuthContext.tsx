@@ -46,8 +46,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const isApiAvailable = import.meta.env.DEV;
       
       // Get admin credentials from environment variables or use defaults
-      const adminEmail = import.meta.env.VITE_ADMIN_EMAIL || 'admin@keshev.org.il';
-      const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD || 'admin123456';
+      const adminEmail = import.meta.env.VITE_ADMIN_EMAIL || 'dr@keshevplus.co.il';
+      const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD || 'changeme123';
       
       // Skip API call if we know it's not available or having issues
       if (!isApiAvailable || window.location.hostname.includes('vercel.app')) {

@@ -8,9 +8,9 @@ import {
 
 interface FormValues {
   name: string;
-  email: string;
-  phone: string;
-  subject: string;
+  email: string | null;
+  phone: string | null;
+  subject: string | null;
   message: string;
 }
 

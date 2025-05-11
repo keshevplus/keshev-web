@@ -2,8 +2,8 @@
 // Usage: pnpm run check-env-vars
 // Checks that all env vars used in code are present in .env.example files and vice versa
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 // Utility to extract env vars from code
 function extractEnvVarsFromCode(dir, regex, prefix = '') {
