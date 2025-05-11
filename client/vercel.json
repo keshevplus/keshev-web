@@ -3,10 +3,11 @@
   "buildCommand": "npx pnpm install --no-frozen-lockfile && npx pnpm build",
   "outputDirectory": "dist",
   "rewrites": [
+    
     { "source": "/api/contact", "destination": "/api/contact.js" },
-    { "source": "/api/neon/leads", "destination": "/api/neon-leads.js" },
+    { "source": "/api/leads", "destination": "/api/leads.js" },
     { "source": "/assets/:path*", "destination": "/assets/:path*" },
-    { "source": "/(.*)", "destination": "/$1" }
+    { "source": "/(.*)", "destination": "/" }
   ],
   "headers": [
     {
