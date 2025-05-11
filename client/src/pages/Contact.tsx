@@ -1,3 +1,5 @@
+import { config } from 'dotenv';
+
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import emailjs from '@emailjs/browser';
 import { useEffect } from 'react';
+
 
 const formSchema = z.object({
   name: z.string().min(2, 'השם חייב להכיל לפחות 2 תווים'),
@@ -23,10 +26,10 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 // Define EmailJS constants - Use your actual values here
-const EMAILJS_SERVICE_ID = 'service_9owftgo';
-const EMAILJS_ADMIN_TEMPLATE_ID = 'template_admin_notify'; // set this in EmailJS
-const EMAILJS_USER_TEMPLATE_ID = 'template_user_thankyou'; // set this in EmailJS
-const EMAILJS_PUBLIC_KEY = 'BRyv-hQs8PSYU-vKq'; // use your EmailJS public key
+const EMAILJS_SERVICE_ID = process.env.VITE_EMAILJS_SERVICE_ID as string;
+const EMAILJS_ADMIN_TEMPLATE_ID = process.env.VITE_ADMIN_TEMPLATE_ID as string; // set this in EmailJS
+const EMAILJS_USER_TEMPLATE_ID = process.env.VITE_EMAILJS_TEMPLATE_ID as string; // set this in EmailJS
+const EMAILJS_PUBLIC_KEY = process.env.VITE_EMAILJS_PUBLIC_KEY as string; // use your EmailJS public key
 
 export default function Contact() {
   const { data: pageData } = usePageData('contact');
@@ -110,7 +113,7 @@ export default function Contact() {
             href="https://maps.google.com/?q=יגאל אלון 94 תל אביב"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-700 underline hover:text-blue-900"
+            className="text-green-700 underline hover:text-green-900"
           >
             פתח במפות גוגל
           </a>
@@ -155,7 +158,14 @@ export default function Contact() {
               </span>
             )}
           </div>
-          <div className="flex justify-center">
+          <div className="flex justify-between mt-4">
+            <button
+              type="button"
+              className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 transition-colors duration-300 mr-2"
+              onClick={() => reset()}
+            >
+              נקה טופס
+            </button>
             <button
               type="submit"
               disabled={isSubmitting}

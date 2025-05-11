@@ -39,7 +39,7 @@ export default function Home() {
                 {t('home.hero.title', 'רוצה להבין מה עובר עליך? בוא לבדוק אם זו הפרעת קשב.')}
               </h1>
               <p className="text-lg md:text-xl mb-8 text-gray-700">
-                {t('home.hero.subtitle', 'בדיקה מקצועית, מהירה ודיסקרטית ל-ADHD – לילדים, בני נוער ומבוגרים. בלי לצאת מהבית, בלי סיבוך.')}
+                {t('home.hero.subtitle', 'בדיקה מקצועית, מהירה ודיסקרטית ל-ADHD - לילדים, בני נוער ומבוגרים.')}
               </p>
               <Link
                 to="/contact"
