@@ -42,36 +42,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (email: string, password: string) => {
     try {
-      // Check if we're in development environment or Vercel preview/production with API issues
-      const isApiAvailable = import.meta.env.DEV;
-      
+      // Check if VITE_DATABASE_URL is present
+      const hasDatabaseUrl = !!import.meta.env.VITE_DATABASE_URL;
+      if (!hasDatabaseUrl) {
+        throw new Error('Database is not configured. Please contact the administrator.');
+      }
+
       // Get admin credentials from environment variables or use defaults
       const adminEmail = import.meta.env.VITE_ADMIN_EMAIL || 'dr@keshevplus.co.il';
       const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD || 'changeme123';
-      
-      // Skip API call if we know it's not available or having issues
-      if (!isApiAvailable || window.location.hostname.includes('vercel.app')) {
-        console.log('Using local authentication fallback');
-        
-        // Simple local authentication check
-        if (email === adminEmail && password === adminPassword) {
-          const mockToken = 'local-auth-token-' + Date.now();
-          const mockUser = {
-            username: email.split('@')[0],
-            id: 1,
-            role: 'admin'
-          };
-          
-          setToken(mockToken);
-          setUser(mockUser);
-          
-          return { token: mockToken, user: mockUser };
-        } else {
-          throw new Error('Invalid email or password');
-        }
-      }
-      
-      // Regular API authentication (only used in environments where the API is available)
+
+      // Regular API authentication
       console.log('Making API request to VITE_API_BASE_URL/auth/login');
       try {
         const response = await fetch(import.meta.env.VITE_API_BASE_URL + '/auth/login', {
@@ -81,78 +62,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           },
           body: JSON.stringify({ email, password }),
         });
-
-        // Safely try to parse the response
-        let errorData = { message: 'Unknown error occurred' };
-        let responseText;
-        
-        try {
-          responseText = await response.text();
-          if (responseText) {
-            try {
-              errorData = JSON.parse(responseText);
-            } catch (parseError) {
-              console.error('Failed to parse response as JSON:', responseText);
-              errorData.message = 'Server returned invalid JSON response';
-              
-              // Fall back to local auth if API is failing
-              return await login(email, password);
-            }
-          }
-        } catch (textError) {
-          console.error('Failed to read response text:', textError);
-          // Fall back to local auth if API is failing
-          return await login(email, password);
-        }
-
+        const data = await response.json();
         if (!response.ok) {
-          // Fall back to local auth on API failure
-          if (response.status === 405) {
-            console.log('API route not available (405 error), falling back to local auth');
-            return await login(email, password);
-          }
-          throw new Error(errorData.message || `Login failed with status ${response.status}`);
+          throw new Error(data.message || 'Login failed.');
         }
-
-        // If we got here, we have a valid JSON response
-        const data = responseText ? JSON.parse(responseText) : {};
-        console.log('Login response:', data); // Log response for debugging
-        
-        if (!data.token) {
-          throw new Error('No token received from server');
-        }
-        
         setToken(data.token);
-        setUser(data.user || { // Fallback if server doesn't provide user
-          username: email.split('@')[0],
-          id: 1, 
-          role: 'admin'
-        });
-        
-        return data;
-      } catch (apiError) {
-        console.error('API login error:', apiError);
-        
-        // Fall back to local auth on API failure
-        if (email === adminEmail && password === adminPassword) {
-          console.log('Falling back to local authentication after API failure');
-          const mockToken = 'local-auth-token-' + Date.now();
-          const mockUser = {
-            username: email.split('@')[0],
-            id: 1,
-            role: 'admin'
-          };
-          
-          setToken(mockToken);
-          setUser(mockUser);
-          
-          return { token: mockToken, user: mockUser };
-        } else {
-          throw new Error('Invalid email or password');
-        }
+        setUser(data.user);
+        return { token: data.token, user: data.user };
+      } catch (error: any) {
+        throw new Error(error.message || 'API login failed.');
       }
     } catch (error: any) {
-      console.error('Login error:', error);
       throw error;
     }
   };
