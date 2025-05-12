@@ -2,6 +2,13 @@
   "version": 2,
   "buildCommand": "pnpm install --no-frozen-lockfile && pnpm run build && mkdir -p dist",
   "outputDirectory": "dist",
+  "redirects": [
+    {
+      "source": "/api/:match*",
+      "destination": "https://api.keshevplus.co.il/api/:match*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { "source": "/api/contact", "destination": "/api/contact.js" },
     { "source": "/api/leads", "destination": "/api/leads.js" },
