@@ -7,6 +7,7 @@
     { "source": "/api/contact-save", "destination": "/api/contact-save.js" },
     { "source": "/api/neon/leads", "destination": "/api/neon-leads.js" },
     { "source": "/assets/:path*", "destination": "/client/dist/assets/:path*" },
+    { "source": "/api/(.*)", "destination": "https://api.keshevplus.co.il/api/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
