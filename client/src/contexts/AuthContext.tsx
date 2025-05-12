@@ -53,9 +53,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD || 'changeme123';
 
       // Regular API authentication
-      console.log('Making API request to VITE_API_BASE_URL/auth/login');
+      // Ensure the login endpoint matches the backend: /auth/login (not /api/auth/login)
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+      const loginUrl = apiBaseUrl.replace(/\/?$/, '') + '/auth/login';
+      console.log('Making API request to', loginUrl);
       try {
-        const response = await fetch(import.meta.env.VITE_API_BASE_URL + '/auth/login', {
+        const response = await fetch(loginUrl, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
