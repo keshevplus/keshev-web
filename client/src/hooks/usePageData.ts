@@ -27,8 +27,6 @@ export function usePageData(pageName: string) {
 
   return { data, isLoading, error };
 }
-
-// NOTE: This hook is a fallback to using the data folder in client/src,
-// which is only used when the NEON_DB_URL environment variable is not set.
-// In production, we should use the NEON_DB_URL to fetch content from the
-// Neon database.
+// NOTE: This hook serves as a fallback when the DATABASE_URL environment variable is not set.
+// In production, it is recommended to use the DATABASE_URL to fetch content from the Neon database.
+// Additionally, in the admin dashboard, the content fetched by this hook will be editable.
