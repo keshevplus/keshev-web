@@ -8,6 +8,13 @@
     { "source": "/assets/:path*", "destination": "/assets/:path*" },
     { "source": "/(.*)", "destination": "/" }
   ],
+  "redirects": [
+    {
+      "source": "/api/admin/login",
+      "destination": "/admin/login",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/assets/images/(.*)",
