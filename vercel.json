@@ -1,13 +1,12 @@
 {
   "version": 2,
-  "buildCommand": "cd client && npx pnpm install --no-frozen-lockfile && npx pnpm build",
-  "outputDirectory": "client/dist",
+  "buildCommand": "pnpm install --no-frozen-lockfile && pnpm run build && mkdir -p dist",
+  "outputDirectory": "dist",
   "rewrites": [
     { "source": "/api/contact", "destination": "/api/contact.js" },
-    { "source": "/api/contact-save", "destination": "/api/contact-save.js" },
-    { "source": "/api/neon/leads", "destination": "/api/neon-leads.js" },
-    { "source": "/assets/:path*", "destination": "/client/dist/assets/:path*" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/api/leads", "destination": "/api/leads.js" },
+    { "source": "/assets/:path*", "destination": "/assets/:path*" },
+    { "source": "/(.*)", "destination": "/" }
   ],
   "headers": [
     {
