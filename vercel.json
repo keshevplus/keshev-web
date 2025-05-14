@@ -4,8 +4,8 @@
   "outputDirectory": "dist",
 
   "rewrites": [
+    {"source": "/api/(.*)","destination": "https://api.keshevplus.co.il/api/$1"},
     { "source": "/assets/:path*", "destination": "/assets/:path*" },
-    
     { "source": "/(.*)", "destination": "/" }
   ],
   "headers": [
