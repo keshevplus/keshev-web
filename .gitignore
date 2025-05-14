@@ -1,7 +1,11 @@
 node_modules
 .vercel
-*.bak
-*.sql
 .env
-
-.vercel
+.env.example
+.env.*
+scripts/*
+scripts/backup/*    
+qa/*
+qa/backup/*
+qa/backup/vercel.json
+qa/backup/.env.example

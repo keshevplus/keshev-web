@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "buildCommand": "pnpm install --no-frozen-lockfile && pnpm run build && mkdir -p dist",
-  "outputDirectory": "dist",
-
+  "buildCommand": "npx pnpm install --no-frozen-lockfile && npx pnpm build",
+  "outputDirectory": "/dist",
   "rewrites": [
-    { "source": "/assets/:path*", "destination": "/assets/:path*" },
-    
-    { "source": "/(.*)", "destination": "/" }
+    { "source": "/api/contact", "destination": "/api/contact.js" },
+    { "source": "/api/neon/leads", "destination": "/api/neon-leads.js" },
+    { "source": "/assets/:path*", "destination": "/dist/assets/:path*" },
+    { "source": "/(.*)", "destination": "/dist/$1" }
   ],
   "headers": [
     {
