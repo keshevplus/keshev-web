@@ -57,8 +57,8 @@ function compareVars(used, documented, context) {
 }
 
 // --- CLIENT ---
-const clientDir = path.join(__dirname, '../client/src');
-const clientEnvPath = path.join(__dirname, '../client/.env.example');
+const clientDir = path.join(__dirname, '../src');
+const clientEnvPath = path.join(__dirname, '../.env.example');
 const viteRegex = /import\.meta\.env\.([A-Z0-9_]+)/g;
 const vitePrefix = 'VITE_';
 const clientUsed = extractEnvVarsFromCode(clientDir, viteRegex, vitePrefix);
@@ -67,7 +67,7 @@ compareVars(clientUsed, clientDocumented, 'CLIENT');
 
 // --- SERVER ---
 const serverDir = path.join(__dirname, '../server');
-const serverEnvPath = path.join(__dirname, '../server/.env.example');
+const serverEnvPath = path.join(__dirname, 'https://api.keshevplus.co.il/.env.example');
 const nodeRegex = /process\.env\.([A-Z0-9_]+)/g;
 const serverUsed = extractEnvVarsFromCode(serverDir, nodeRegex);
 const serverDocumented = extractEnvVarsFromEnvFile(serverEnvPath);
