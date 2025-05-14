@@ -1,23 +1,25 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import homePageData from '../data/homePage';
 import { useTranslation } from 'react-i18next';
+import type { HomePageContent } from '../types/content';
 
 export default function Home() {
-  const [pageData] = useState(homePageData);
+  const [pageData, setPageData] = useState<HomePageContent | null>(null);
   const { t } = useTranslation();
 
-  // Set RTL direction for the document
   useEffect(() => {
     document.documentElement.dir = 'rtl';
+    import('../data/homePage').then(module => {
+      setPageData(module.default);
+    });
   }, []);
-  
+
   if (!pageData) {
     return (
       <div className="container mx-auto max-w-full md:max-w-[75%] py-4 loading">
         <div className="animate-pulse">Loading...</div>
       </div>
-    ); 
+    );
   }
 
   return (
