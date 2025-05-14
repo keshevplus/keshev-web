@@ -1,5 +1,3 @@
-import { supabase } from '../lib/supabase';
-
 // Helper function for authenticated API requests
 const authenticatedRequest = async (url: string, options: RequestInit = {}) => {
   const token = localStorage.getItem('token');

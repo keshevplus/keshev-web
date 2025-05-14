@@ -234,20 +234,21 @@ const AccessibilityWidget: React.FC = () => {
   };
 
   return (
-    <div className="accessibility-widget-fixed" dir="rtl">
+    <div className="accessibility-widget-fixed" dir="rtl" aria-label="Accessibility controls" tabIndex={0}>
       <button
         className="accessibility-button"
         onClick={toggleMenu}
         aria-label="פתח תפריט נגישות"
         aria-expanded={menuOpen}
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
         <img 
           src="/assets/images/wheelchair-icon.svg" 
-          alt="סמל נגישות" 
+          alt="International accessibility icon" 
           className="accessibility-icon" 
+          style={{ width: 32, height: 32, filter: 'drop-shadow(0 0 2px #fff)' }}
         />
       </button>
-
       {menuOpen && (
         <div className="accessibility-menu">
           <div className="menu-header">
