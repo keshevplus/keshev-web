@@ -3,6 +3,13 @@ import '../styles/accessibility-widget.css';
 import { IoClose } from 'react-icons/io5';
 
 const AccessibilityWidget: React.FC = () => {
+  // Prevent duplicate widgets (singleton pattern)
+  if (typeof window !== 'undefined') {
+    if ((window as any).__accessibility_widget_rendered) {
+      return null;
+    }
+    (window as any).__accessibility_widget_rendered = true;
+  }
   const [menuOpen, setMenuOpen] = useState(false);
   const [settings, setSettings] = useState({
     textSize: 0,
@@ -234,43 +241,31 @@ const AccessibilityWidget: React.FC = () => {
   };
 
   return (
-    <div className="accessibility-widget-fixed" dir="rtl" aria-label="Accessibility controls" tabIndex={0}>
+    <div className={`accessibility-menu ${menuOpen ? 'open' : ''}`}>
       <button
         className="accessibility-button"
         onClick={toggleMenu}
-        aria-label="פתח תפריט נגישות"
-        aria-expanded={menuOpen}
-        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        aria-label="תפריט נגישות"
       >
-        <img 
-          src="/assets/images/wheelchair-icon.svg" 
-          alt="International accessibility icon" 
-          className="accessibility-icon" 
-          style={{ width: 32, height: 32, filter: 'drop-shadow(0 0 2px #fff)' }}
-        />
+        <IoClose size={24} />
       </button>
-      {menuOpen && (
-        <div className="accessibility-menu">
-          <div className="menu-header">
-            <h2>נגישות</h2>
-            <div className="flex items-center">
-              <button
-                className="reset-button mr-2"
-                onClick={resetSettings}
-                style={{ display: Object.values(settings).some(Boolean) ? 'block' : 'none' }}
-              >
-                איפוס הגדרות
-              </button>
-              <button 
-                className="close-button" 
-                onClick={toggleMenu} 
-                aria-label="סגור תפריט נגישות"
-              >
-                <IoClose size={24} />
-              </button>
-            </div>
-          </div>
-
+      <div className="menu-content">
+        <button
+          className="reset-button"
+          onClick={resetSettings}
+          style={{ display: Object.values(settings).some(Boolean) ? 'block' : 'none' }}
+        >
+          איפוס הגדרות
+        </button>
+        <button
+          className="close-button"
+          onClick={toggleMenu}
+          aria-label="סגור תפריט נגישות"
+        >
+          <IoClose size={24} />
+        </button>
+        </div>
+        <div className="menu-items">
           <button
             className={`menu-item ${settings.textSize > 0 ? 'active' : ''}`}
             onClick={() => updateSetting('textSize', settings.textSize + 1)}
@@ -345,8 +340,7 @@ const AccessibilityWidget: React.FC = () => {
             בטל אנימציות
           </button>
         </div>
-      )}
-    </div>
+      </div>
   );
 };
 
