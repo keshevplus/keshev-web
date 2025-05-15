@@ -47,13 +47,13 @@ export default function Home() {
                 to="/about"
                 className="inline-block bg-green-800 text-white px-8 py-4 rounded-md text-lg font-medium hover:bg-[#e78200] transition-colors duration-300 shadow-md hover:shadow-lg"
               >
-                {t('home.hero.cta', 'קרא עוד עלינו')}
+                {t('home.hero.readMore', 'קרא עוד עלינו')}
               </Link>
               <Link
                 to="/contact"
                 className="inline-block bg-[#F7941D] text-black px-8 py-4 rounded-md text-lg font-medium hover:bg-[#e78200] transition-colors duration-300 shadow-md hover:shadow-lg"
               >
-                {t('home.hero.cta', 'התחילו את האבחון שלכם עכשיו')}
+                {t('home.hero.startDiagnosis', 'התחילו את האבחון שלכם עכשיו')}
               </Link>
             </div>
 

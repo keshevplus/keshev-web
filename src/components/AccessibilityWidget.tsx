@@ -241,107 +241,102 @@ const AccessibilityWidget: React.FC = () => {
   };
 
   return (
-    <div className={`accessibility-menu ${menuOpen ? 'open' : ''}`}>
+    <div className={`accessibility-widget-fixed${menuOpen ? ' menu-open' : ' menu-closed'}`}> 
       <button
         className="accessibility-button"
         onClick={toggleMenu}
         aria-label="תפריט נגישות"
       >
-        <IoClose size={24} />
+        <span role="img" aria-label="נגישות" style={{ fontSize: 35 }}>♿️</span>
       </button>
-      <div className="menu-content">
-        <button
-          className="reset-button"
-          onClick={resetSettings}
-          style={{ display: Object.values(settings).some(Boolean) ? 'block' : 'none' }}
-        >
-          איפוס הגדרות
-        </button>
-        <button
-          className="close-button"
-          onClick={toggleMenu}
-          aria-label="סגור תפריט נגישות"
-        >
-          <IoClose size={24} />
-        </button>
+      {menuOpen && (
+        <div className="accessibility-menu open">
+          <button
+            className="reset-button"
+            onClick={resetSettings}
+            style={{ display: Object.values(settings).some(Boolean) ? 'block' : 'none' }}
+          >
+            איפוס הגדרות
+          </button>
+          <button
+            className="close-button"
+            onClick={toggleMenu}
+            aria-label="סגור תפריט נגישות"
+          >
+            <IoClose size={28} />
+          </button>
+          <div className="menu-items">
+            <button
+              className={`menu-item ${settings.textSize > 0 ? 'active' : ''}`}
+              onClick={() => updateSetting('textSize', settings.textSize + 1)}
+            >
+              הגדל טקסט
+            </button>
+            <button
+              className={`menu-item ${settings.textSize < 0 ? 'active' : ''}`}
+              onClick={() => updateSetting('textSize', settings.textSize - 1)}
+            >
+              הקטן טקסט
+            </button>
+            <button
+              className={`menu-item ${settings.textSpacing > 0 ? 'active' : ''}`}
+              onClick={() => updateSetting('textSpacing', settings.textSpacing + 1)}
+            >
+              הגדל מרווח
+            </button>
+            <button
+              className={`menu-item ${settings.textSpacing < 0 ? 'active' : ''}`}
+              onClick={() => updateSetting('textSpacing', settings.textSpacing - 1)}
+            >
+              הקטן מרווח
+            </button>
+            <button
+              className={`menu-item ${settings.lineHeight > 0 ? 'active' : ''}`}
+              onClick={() => updateSetting('lineHeight', settings.lineHeight + 1)}
+            >
+              הגדל גובה שורה
+            </button>
+            <button
+              className={`menu-item ${settings.lineHeight < 0 ? 'active' : ''}`}
+              onClick={() => updateSetting('lineHeight', settings.lineHeight - 1)}
+            >
+              הקטן גובה שורה
+            </button>
+            <button
+              className={`menu-item ${settings.invertColors ? 'active' : ''}`}
+              onClick={() => updateSetting('invertColors', !settings.invertColors)}
+            >
+              הפוך צבעים
+            </button>
+            <button
+              className={`menu-item ${settings.grayHues ? 'active' : ''}`}
+              onClick={() => updateSetting('grayHues', !settings.grayHues)}
+            >
+              גווני אפור
+            </button>
+            <button
+              className={`menu-item ${settings.bigCursor ? 'active' : ''}`}
+              onClick={() => updateSetting('bigCursor', !settings.bigCursor)}
+            >
+              סמן גדול
+            </button>
+            <button
+              className={`menu-item ${settings.readingGuide ? 'active' : ''}`}
+              onClick={() => updateSetting('readingGuide', !settings.readingGuide)}
+            >
+              מדריך קריאה
+            </button>
+            <button
+              className={`menu-item ${settings.disableAnimations ? 'active' : ''}`}
+              onClick={() => updateSetting('disableAnimations', !settings.disableAnimations)}
+            >
+              בטל אנימציות
+            </button>
+          </div>
         </div>
-        <div className="menu-items">
-          <button
-            className={`menu-item ${settings.textSize > 0 ? 'active' : ''}`}
-            onClick={() => updateSetting('textSize', settings.textSize + 1)}
-          >
-            הגדל טקסט
-          </button>
-          <button
-            className={`menu-item ${settings.textSize < 0 ? 'active' : ''}`}
-            onClick={() => updateSetting('textSize', settings.textSize - 1)}
-          >
-            הקטן טקסט
-          </button>
-
-          <button
-            className={`menu-item ${settings.textSpacing > 0 ? 'active' : ''}`}
-            onClick={() => updateSetting('textSpacing', settings.textSpacing + 1)}
-          >
-            הגדל מרווח
-          </button>
-          <button
-            className={`menu-item ${settings.textSpacing < 0 ? 'active' : ''}`}
-            onClick={() => updateSetting('textSpacing', settings.textSpacing - 1)}
-          >
-            הקטן מרווח
-          </button>
-
-          <button
-            className={`menu-item ${settings.lineHeight > 0 ? 'active' : ''}`}
-            onClick={() => updateSetting('lineHeight', settings.lineHeight + 1)}
-          >
-            הגדל גובה שורה
-          </button>
-          <button
-            className={`menu-item ${settings.lineHeight < 0 ? 'active' : ''}`}
-            onClick={() => updateSetting('lineHeight', settings.lineHeight - 1)}
-          >
-            הקטן גובה שורה
-          </button>
-
-          <button
-            className={`menu-item ${settings.invertColors ? 'active' : ''}`}
-            onClick={() => updateSetting('invertColors', !settings.invertColors)}
-          >
-            הפוך צבעים
-          </button>
-
-          <button
-            className={`menu-item ${settings.grayHues ? 'active' : ''}`}
-            onClick={() => updateSetting('grayHues', !settings.grayHues)}
-          >
-            גווני אפור
-          </button>
-
-          <button
-            className={`menu-item ${settings.bigCursor ? 'active' : ''}`}
-            onClick={() => updateSetting('bigCursor', !settings.bigCursor)}
-          >
-            סמן גדול
-          </button>
-
-          <button
-            className={`menu-item ${settings.readingGuide ? 'active' : ''}`}
-            onClick={() => updateSetting('readingGuide', !settings.readingGuide)}
-          >
-            מדריך קריאה
-          </button>
-
-          <button
-            className={`menu-item ${settings.disableAnimations ? 'active' : ''}`}
-            onClick={() => updateSetting('disableAnimations', !settings.disableAnimations)}
-          >
-            בטל אנימציות
-          </button>
-        </div>
-      </div>
+      )}  
+    </div>
   );
-};
+}
 
 export default AccessibilityWidget;
