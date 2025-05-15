@@ -18,12 +18,7 @@ export default defineConfig(({ mode }) => {
             'import.meta.env': {
               VITE_API_BASE_URL: JSON.stringify(env.VITE_API_BASE_URL),
               VITE_BASE_URL: JSON.stringify(env.VITE_BASE_URL),
-              VITE_EMAILJS_PUBLIC_KEY: JSON.stringify(env.VITE_EMAILJS_PUBLIC_KEY),
-              VITE_EMAILJS_SERVICE_ID: JSON.stringify(env.VITE_EMAILJS_SERVICE_ID),
-              VITE_EMAILJS_TEMPLATE_ID: JSON.stringify(env.VITE_EMAILJS_TEMPLATE_ID),
               VITE_ADMIN_TEMPLATE_ID: JSON.stringify(env.VITE_ADMIN_TEMPLATE_ID),
-              VITE_ADMIN_EMAIL: JSON.stringify(env.VITE_ADMIN_EMAIL),
-              VITE_ADMIN_PASSWORD: JSON.stringify(env.VITE_ADMIN_PASSWORD),
               VITE_APP_TITLE: JSON.stringify(env.VITE_APP_TITLE),
               // Add other VITE_ variables you want to expose here
             }
@@ -35,9 +30,9 @@ export default defineConfig(({ mode }) => {
             strictPort: true,
             open: true,
             proxy: {
-              // Forward API requests to your Express server
+              // Forward API requests to your local Express server in development
               '/api': {
-                target: 'https://api.keshevplus.co.il',
+                target: mode === 'development' ? 'http://localhost:5000' : 'https://api.keshevplus.co.il',
                 changeOrigin: true,
                 secure: false,
               },
