@@ -7,8 +7,6 @@ import GoogleMap from '../components/GoogleMap';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
-import emailjs from '@emailjs/browser';
-import { useEffect } from 'react';
 
 
 const formSchema = z.object({
@@ -23,23 +21,12 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-// Define EmailJS constants - Use your actual values here
-const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID as string;
-const EMAILJS_ADMIN_TEMPLATE_ID = import.meta.env.VITE_ADMIN_TEMPLATE_ID as string; // set this in EmailJS
-const EMAILJS_USER_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string; // set this in EmailJS
-const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string; // use your EmailJS public key
 
 export default function Contact() {
   const { data: pageData } = usePageData('contact');
   const navigate = useNavigate();
   
-  // Initialize EmailJS within the component's effect
-  useEffect(() => {
-    emailjs.init(EMAILJS_PUBLIC_KEY);
-    // Log initialization for debugging
-    console.log('EmailJS initialized with public key');
-  }, []);
-  
+
   const {
     register,
     handleSubmit,
@@ -54,7 +41,8 @@ export default function Contact() {
     const loadingToastId = toast.loading('שולח את הטופס...', { position: 'top-center' });
     try {
       // Try sending to your own backend API
-      const response = await fetch('/api/contact', {
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(`${apiBaseUrl}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
