@@ -1,13 +1,15 @@
+/* Always fixed bottom right, high z-index */
 .accessibility-widget-fixed {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  z-index: 1000;
+  z-index: 1001;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
 }
 
+/* Fixed button, high z-index */
 .accessibility-button {
   width: 48px;
   height: 48px;
@@ -19,6 +21,7 @@
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s ease;
+  z-index: 1001;
 }
 
 .accessibility-button:hover {
@@ -30,6 +33,7 @@
   outline-offset: 2px;
 }
 
+/* Menu above button, higher z-index */
 .accessibility-menu {
   position: absolute;
   bottom: 60px;
@@ -41,6 +45,7 @@
   padding: 16px;
   max-height: 80vh;
   overflow-y: auto;
+  z-index: 1002;
 }
 
 @media (max-width: 480px) {
