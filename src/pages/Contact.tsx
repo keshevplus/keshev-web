@@ -128,15 +128,15 @@ export default function Contact() {
           <div className="flex justify-between mt-4">
             <button
               type="button"
-              className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 transition-colors duration-300 mr-2"
+              className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors duration-300 mr-2"
               onClick={() => reset()}
             >
-              נקה טופס
+              ניקוי טופס
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition-colors duration-300 disabled:bg-gray-400"
+              className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors duration-300 disabled:bg-gray-400"
             >
               {isSubmitting ? 'שולח...' : 'שלח הודעה'}
             </button>

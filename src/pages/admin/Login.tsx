@@ -1,43 +1,34 @@
-import React, { useState } from 'react';
-import { useNavigate, Navigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState('');
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
-
-  // If already authenticated, redirect to admin dashboard
-  if (isAuthenticated) {
-    return <Navigate to="/admin" replace />;
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoginError('');
+    setLoginError("");
     setIsLoading(true);
 
-    // Trim and sanitize inputs
     const trimmedEmail = email.trim();
     const trimmedPassword = password.trim();
 
     try {
-      // Add more comprehensive error handling and logging
-      console.log('Attempting login with:', { email: trimmedEmail.length > 0 ? '✓' : '✗', password: trimmedPassword.length > 0 ? '✓' : '✗' });
-      
-      await login(trimmedEmail, trimmedPassword);
-      console.log('Login successful, redirecting to admin dashboard');
+            // Actual login logic - replace URL with your backend endpoint
+      const res = await fetch(import.meta.env.VITE_API_BASE_URL + '/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: trimmedEmail, password: trimmedPassword }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Login failed');
+      // You may want to store the token or user info here
       navigate('/admin');
-
     } catch (error: any) {
-      console.error('Login error details:', error);
-      setLoginError(
-        error.message || 'Login failed. Please check your credentials.'
-      );
-    } finally {
+      setLoginError(error.message || "Login failed. Please check your credentials.");
       setIsLoading(false);
     }
   };
@@ -55,7 +46,6 @@ export default function Login() {
             התחברות לניהול האתר
           </h2>
         </div>
-
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
@@ -71,7 +61,7 @@ export default function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
-                placeholder="דוא״ל"
+                placeholder='דוא"ל'
                 dir="rtl"
               />
             </div>
@@ -93,11 +83,9 @@ export default function Login() {
               />
             </div>
           </div>
-
           {loginError && (
             <div className="text-red-500 text-center text-sm">{loginError}</div>
           )}
-
           <div>
             <button
               type="submit"
@@ -111,4 +99,6 @@ export default function Login() {
       </div>
     </div>
   );
-}
+};
+
+export default Login;

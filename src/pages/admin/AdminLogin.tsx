@@ -1,4 +1,4 @@
-import React, { useState, FormEvent, ChangeEvent } from 'react';
+import { ChangeEvent, FormEvent, useState } from "react";
 
 interface LoginResponse {
   token: string;
