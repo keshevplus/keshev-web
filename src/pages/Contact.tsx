@@ -49,9 +49,20 @@ export default function Contact() {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        let errorMessage = 'אירעה שגיאה בשליחת הטופס.';
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.message || errorMessage;
+        } catch (jsonErr) {
+          try {
+            const errorText = await response.text();
+            if (errorText && errorText.length < 200) {
+              errorMessage = errorText;
+            }
+          } catch {}
+        }
         toast.dismiss(loadingToastId);
-        toast.error(errorData.message || 'אירעה שגיאה בשליחת הטופס.');
+        toast.error(errorMessage);
         return;
       }
 
@@ -59,9 +70,10 @@ export default function Contact() {
       toast.success('הטופס נשלח בהצלחה!');
       reset();
       setTimeout(() => navigate('/'), 1500);
-    } catch (err) {
+    } catch (err: any) {
       toast.dismiss(loadingToastId);
-      toast.error('אירעה שגיאה בשליחת הטופס.');
+      const errorMsg = err?.message || err?.toString() || 'אירעה שגיאה בשליחת הטופס.';
+      toast.error(`אירעה שגיאה בשליחת הטופס: ${errorMsg}`);
       console.error('Contact form error:', err);
     }
   };
