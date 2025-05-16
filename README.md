@@ -172,6 +172,19 @@ pnpm run server
 pnpm run client
 ```
 
+## Environment Variables (`.env`)
+
+- Always use the format: `KEY=VALUE` (no spaces around `=`)
+- Example for production:
+  ```env
+  VITE_API_BASE_URL=https://api.keshevplus.co.il
+  VITE_DATABASE_URL=postgresql://<user>:<password>@<host>/<dbname>?sslmode=require
+  ```
+- For local development, you can use:
+  ```env
+  VITE_API_BASE_URL=http://localhost:5000
+  ```
+
 ## Development
 
 - Backend: http://localhost:5000
@@ -183,11 +196,26 @@ The project uses the following deployment workflow:
 
 1. **Build:** `pnpm run build`
 2. **Add:** `git add .`
-3. **Commit:** `git commit`
+3. **Commit:** `git commit -m "Describe your changes"`
 4. **Push:** `git push`
-5. **Deploy:** `vercel deploy`
+5. **Deploy:** `vercel --prod` (or use the Vercel dashboard)
 
 Both client and server must be deployed for full functionality.
+
+---
+
+## Contact Form & Neon Database Integration
+
+- The contact form submits data to `${VITE_API_BASE_URL}/api/contact`.
+- The backend validates required fields and forwards data to the Neon database via `/api/neon-leads`.
+- On success, the frontend shows a success message. On error, it displays the backend error message.
+- To verify submissions are saved, check your admin panel or query the Neon DB directly.
+
+### Troubleshooting
+- **Form not submitting:** Ensure `VITE_API_BASE_URL` is set correctly and the backend is deployed.
+- **Validation errors:** Make sure all required fields (`name`, `email`, `phone`, `message`) are filled.
+- **500 errors:** Check backend logs for errors with Neon DB or forwarding logic.
+- **CORS issues:** Allowed origins are set in the backend. Update them in `api/contact.js` if needed.
 
 ## Environment Variables
 
