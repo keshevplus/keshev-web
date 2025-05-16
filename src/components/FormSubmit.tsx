@@ -5,7 +5,7 @@ interface FormData {
 
 const handleSubmit = async (formData: FormData): Promise<void> => {
   try {
-    const response = await fetch(import.meta.env.VITE_API_BASE_URL + '/leads', {
+    const response = await fetch(import.meta.env.VITE_API_BASE_URL + '/api/neon/leads', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),

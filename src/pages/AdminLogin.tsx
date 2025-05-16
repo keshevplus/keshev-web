@@ -26,7 +26,7 @@ export default function Login() {
       
       await login(email, password);
       console.log('Login successful, redirecting to admin dashboard');
-      navigate('/admin');
+      navigate('/api/admin');
 
     } catch (error: any) {
       console.error('Login error details:', error);
