@@ -3,13 +3,6 @@ import '../styles/accessibility-widget.css';
 import { IoClose } from 'react-icons/io5';
 
 const AccessibilityWidget: React.FC = () => {
-  // Prevent duplicate widgets (singleton pattern)
-  if (typeof window !== 'undefined') {
-    if ((window as any).__accessibility_widget_rendered) {
-      return null;
-    }
-    (window as any).__accessibility_widget_rendered = true;
-  }
   const [menuOpen, setMenuOpen] = useState(false);
   const [settings, setSettings] = useState({
     textSize: 0,
@@ -241,102 +234,120 @@ const AccessibilityWidget: React.FC = () => {
   };
 
   return (
-    <div className={`accessibility-widget-fixed${menuOpen ? ' menu-open' : ' menu-closed'}`}> 
+    <div className="accessibility-widget-fixed" dir="rtl" aria-label="Accessibility controls" tabIndex={0}>
       <button
         className="accessibility-button"
         onClick={toggleMenu}
-        aria-label="תפריט נגישות"
+        aria-label="פתח תפריט נגישות"
+        aria-expanded={menuOpen}
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
-        <span role="img" aria-label="נגישות" style={{ fontSize: 35 }}>♿️</span>
+        <img 
+          src="/assets/images/wheelchair-icon.svg" 
+          alt="International accessibility icon" 
+          className="accessibility-icon" 
+          style={{ width: 32, height: 32, filter: 'drop-shadow(0 0 2px #fff)' }}
+        />
       </button>
       {menuOpen && (
-        <div className="accessibility-menu open">
-          <button
-            className="reset-button"
-            onClick={resetSettings}
-            style={{ display: Object.values(settings).some(Boolean) ? 'block' : 'none' }}
-          >
-            איפוס הגדרות
-          </button>
-          <button
-            className="close-button"
-            onClick={toggleMenu}
-            aria-label="סגור תפריט נגישות"
-          >
-            <IoClose size={28} />
-          </button>
-          <div className="menu-items">
-            <button
-              className={`menu-item ${settings.textSize > 0 ? 'active' : ''}`}
-              onClick={() => updateSetting('textSize', settings.textSize + 1)}
-            >
-              הגדל טקסט
-            </button>
-            <button
-              className={`menu-item ${settings.textSize < 0 ? 'active' : ''}`}
-              onClick={() => updateSetting('textSize', settings.textSize - 1)}
-            >
-              הקטן טקסט
-            </button>
-            <button
-              className={`menu-item ${settings.textSpacing > 0 ? 'active' : ''}`}
-              onClick={() => updateSetting('textSpacing', settings.textSpacing + 1)}
-            >
-              הגדל מרווח
-            </button>
-            <button
-              className={`menu-item ${settings.textSpacing < 0 ? 'active' : ''}`}
-              onClick={() => updateSetting('textSpacing', settings.textSpacing - 1)}
-            >
-              הקטן מרווח
-            </button>
-            <button
-              className={`menu-item ${settings.lineHeight > 0 ? 'active' : ''}`}
-              onClick={() => updateSetting('lineHeight', settings.lineHeight + 1)}
-            >
-              הגדל גובה שורה
-            </button>
-            <button
-              className={`menu-item ${settings.lineHeight < 0 ? 'active' : ''}`}
-              onClick={() => updateSetting('lineHeight', settings.lineHeight - 1)}
-            >
-              הקטן גובה שורה
-            </button>
-            <button
-              className={`menu-item ${settings.invertColors ? 'active' : ''}`}
-              onClick={() => updateSetting('invertColors', !settings.invertColors)}
-            >
-              הפוך צבעים
-            </button>
-            <button
-              className={`menu-item ${settings.grayHues ? 'active' : ''}`}
-              onClick={() => updateSetting('grayHues', !settings.grayHues)}
-            >
-              גווני אפור
-            </button>
-            <button
-              className={`menu-item ${settings.bigCursor ? 'active' : ''}`}
-              onClick={() => updateSetting('bigCursor', !settings.bigCursor)}
-            >
-              סמן גדול
-            </button>
-            <button
-              className={`menu-item ${settings.readingGuide ? 'active' : ''}`}
-              onClick={() => updateSetting('readingGuide', !settings.readingGuide)}
-            >
-              מדריך קריאה
-            </button>
-            <button
-              className={`menu-item ${settings.disableAnimations ? 'active' : ''}`}
-              onClick={() => updateSetting('disableAnimations', !settings.disableAnimations)}
-            >
-              בטל אנימציות
-            </button>
+        <div className="accessibility-menu">
+          <div className="menu-header">
+            <h2>נגישות</h2>
+            <div className="flex items-center">
+              <button
+                className="reset-button mr-2"
+                onClick={resetSettings}
+                style={{ display: Object.values(settings).some(Boolean) ? 'block' : 'none' }}
+              >
+                איפוס הגדרות
+              </button>
+              <button 
+                className="close-button" 
+                onClick={toggleMenu} 
+                aria-label="סגור תפריט נגישות"
+              >
+                <IoClose size={24} />
+              </button>
+            </div>
           </div>
+
+          <button
+            className={`menu-item ${settings.textSize > 0 ? 'active' : ''}`}
+            onClick={() => updateSetting('textSize', settings.textSize + 1)}
+          >
+            הגדל טקסט
+          </button>
+          <button
+            className={`menu-item ${settings.textSize < 0 ? 'active' : ''}`}
+            onClick={() => updateSetting('textSize', settings.textSize - 1)}
+          >
+            הקטן טקסט
+          </button>
+
+          <button
+            className={`menu-item ${settings.textSpacing > 0 ? 'active' : ''}`}
+            onClick={() => updateSetting('textSpacing', settings.textSpacing + 1)}
+          >
+            הגדל מרווח
+          </button>
+          <button
+            className={`menu-item ${settings.textSpacing < 0 ? 'active' : ''}`}
+            onClick={() => updateSetting('textSpacing', settings.textSpacing - 1)}
+          >
+            הקטן מרווח
+          </button>
+
+          <button
+            className={`menu-item ${settings.lineHeight > 0 ? 'active' : ''}`}
+            onClick={() => updateSetting('lineHeight', settings.lineHeight + 1)}
+          >
+            הגדל גובה שורה
+          </button>
+          <button
+            className={`menu-item ${settings.lineHeight < 0 ? 'active' : ''}`}
+            onClick={() => updateSetting('lineHeight', settings.lineHeight - 1)}
+          >
+            הקטן גובה שורה
+          </button>
+
+          <button
+            className={`menu-item ${settings.invertColors ? 'active' : ''}`}
+            onClick={() => updateSetting('invertColors', !settings.invertColors)}
+          >
+            הפוך צבעים
+          </button>
+
+          <button
+            className={`menu-item ${settings.grayHues ? 'active' : ''}`}
+            onClick={() => updateSetting('grayHues', !settings.grayHues)}
+          >
+            גווני אפור
+          </button>
+
+          <button
+            className={`menu-item ${settings.bigCursor ? 'active' : ''}`}
+            onClick={() => updateSetting('bigCursor', !settings.bigCursor)}
+          >
+            סמן גדול
+          </button>
+
+          <button
+            className={`menu-item ${settings.readingGuide ? 'active' : ''}`}
+            onClick={() => updateSetting('readingGuide', !settings.readingGuide)}
+          >
+            מדריך קריאה
+          </button>
+
+          <button
+            className={`menu-item ${settings.disableAnimations ? 'active' : ''}`}
+            onClick={() => updateSetting('disableAnimations', !settings.disableAnimations)}
+          >
+            בטל אנימציות
+          </button>
         </div>
-      )}  
+      )}
     </div>
   );
-}
+};
 
 export default AccessibilityWidget;
