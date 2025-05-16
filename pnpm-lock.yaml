@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@emailjs/browser':
-        specifier: ^4.4.1
-        version: 4.4.1
       '@hookform/resolvers':
         specifier: ^5.0.1
         version: 5.0.1(react-hook-form@7.55.0(react@19.1.0))
@@ -20,9 +17,6 @@ importers:
       '@supabase/supabase-js':
         specifier: ^2.49.3
         version: 2.49.4
-      accessibility:
-        specifier: ^6.0.7
-        version: 6.0.7
       axios:
         specifier: ^1.9.0
         version: 1.9.0
@@ -213,10 +207,6 @@ packages:
   '@babel/types@7.27.0':
     resolution: {integrity: sha512-H45s8fVLYjbhFH62dIJ3WtmJ6RSPt/3DRO0ZcT2SUiYiQyz3BLVb9ADEnLl91m74aQPS3AzzeajZHYOalWe3bg==}
     engines: {node: '>=6.9.0'}
-
-  '@emailjs/browser@4.4.1':
-    resolution: {integrity: sha512-DGSlP9sPvyFba3to2A50kDtZ+pXVp/0rhmqs2LmbMS3I5J8FSOgLwzY2Xb4qfKlOVHh29EAutLYwe5yuEZmEFg==}
-    engines: {node: '>=14.0.0'}
 
   '@esbuild/aix-ppc64@0.25.2':
     resolution: {integrity: sha512-wCIboOL2yXZym2cgm6mlA742s9QeJ8DjGVaL39dLN4rRwrOgOyYSnOaFPhKZGLb2ngj4EyfAFjsNJwPXZvseag==}
@@ -707,9 +697,6 @@ packages:
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.2.0 || ^5.0.0 || ^6.0.0
-
-  accessibility@6.0.7:
-    resolution: {integrity: sha512-JFOrgGw53RpOtXlwj75Kx6o2RFP5tld0USPtEPBZ0rdCAhAFfHlbhIIw24eDGqsd1tFVD1cOsbahjQDBPs+yow==}
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -2494,8 +2481,6 @@ snapshots:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
 
-  '@emailjs/browser@4.4.1': {}
-
   '@esbuild/aix-ppc64@0.25.2':
     optional: true
 
@@ -2930,10 +2915,6 @@ snapshots:
       vite: 6.2.5(@types/node@22.15.17)(jiti@1.21.7)(yaml@2.7.1)
     transitivePeerDependencies:
       - supports-color
-
-  accessibility@6.0.7:
-    dependencies:
-      regenerator-runtime: 0.14.1
 
   acorn-jsx@5.3.2(acorn@8.14.1):
     dependencies:
