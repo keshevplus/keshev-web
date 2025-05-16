@@ -47,6 +47,8 @@ function App() {
         <ToastContainer position="top-center" />
         <ErrorBoundary>
           <div id="main-container" className="flex flex-col min-h-screen scrollbar overflow">
+            {/* Accessibility Widget */}
+            <AccessibilityWidget />
             <Routes>
               {/* Admin routes */}
               <Route path="/admin/login" element={<Login />} />
