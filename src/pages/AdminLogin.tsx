@@ -1,17 +1,4 @@
-import React, { useState } from 'react';
-import { useNavigate, Navigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-
-export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const { login, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
-
-  // If already authenticated, redirect to admin dashboard
-  if (isAuthenticated) {
+// Admin login removed as per user request.
     return <Navigate to="/admin" replace />;
   }
 
