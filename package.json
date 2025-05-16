@@ -5,6 +5,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "bacpd": "bash ./scripts/bacpd.sh",
     "dev": "vite",
     "start": "vite",
     "build": "rimraf dist && vite build",
