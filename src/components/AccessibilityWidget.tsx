@@ -1,353 +1,123 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/accessibility-widget.css';
-import { IoClose } from 'react-icons/io5';
+import { useTranslation } from 'react-i18next';
+import '../styles/accessibility.css';
 
-const AccessibilityWidget: React.FC = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [settings, setSettings] = useState({
-    textSize: 0,
-    textSpacing: 0,
-    lineHeight: 0,
-    invertColors: false,
-    grayHues: false,
-    bigCursor: false,
-    readingGuide: false,
-    disableAnimations: false
+interface AccessibilityState {
+  fontSize: number;
+  contrast: number;
+  lineHeight: number;
+}
+
+const AccessibilityIcon: React.FC = () => {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'he';
+  const [isOpen, setIsOpen] = useState(false);
+  const [settings, setSettings] = useState<AccessibilityState>({
+    fontSize: 100, // 100% is normal
+    contrast: 100, // 100% is normal
+    lineHeight: 1.5, // 1.5 is normal
   });
 
+  // Apply RTL/LTR direction to the document on language change
   useEffect(() => {
-    // Apply accessibility settings from localStorage on mount
-    const storedSettings = localStorage.getItem('accessibilitySettings');
-    if (storedSettings) {
-      try {
-        setSettings(JSON.parse(storedSettings));
-        applyAllSettings(JSON.parse(storedSettings));
-      } catch (e) {
-        console.error('Error parsing accessibility settings:', e);
-      }
-    }
-
-    // Create reading guide element
-    const readingGuide = document.createElement('div');
-    readingGuide.id = 'reading-guide-element';
-    readingGuide.className = 'reading-guide';
-    document.body.appendChild(readingGuide);
-
-    return () => {
-      // Clean up on unmount
-      const readingGuideElement = document.getElementById('reading-guide-element');
-      if (readingGuideElement) {
-        document.body.removeChild(readingGuideElement);
-      }
-      document.removeEventListener('mousemove', moveReadingGuide);
-    };
-  }, []);
-
-  // Save settings to localStorage whenever they change
-  useEffect(() => {
-    localStorage.setItem('accessibilitySettings', JSON.stringify(settings));
-    applyAllSettings(settings);
-  }, [settings]);
+    document.documentElement.setAttribute('dir', isRTL ? 'rtl' : 'ltr');
+  }, [isRTL]);
 
   const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
+    setIsOpen(!isOpen);
   };
 
-  const updateSetting = (setting: keyof typeof settings, value: any) => {
-    setSettings(prev => ({
-      ...prev,
-      [setting]: value
-    }));
+  const adjustFontSize = (increment: number) => {
+    const newSize = Math.min(Math.max(settings.fontSize + increment, 100), 150);
+    setSettings({ ...settings, fontSize: newSize });
+    document.documentElement.style.setProperty('--accessibility-font-size', `${newSize}%`);
   };
 
-  const applyAllSettings = (currentSettings: typeof settings) => {
-    applyTextSize(currentSettings.textSize);
-    applyTextSpacing(currentSettings.textSpacing);
-    applyLineHeight(currentSettings.lineHeight);
-    applyInvertColors(currentSettings.invertColors);
-    applyGrayHues(currentSettings.grayHues);
-    applyBigCursor(currentSettings.bigCursor);
-    applyReadingGuide(currentSettings.readingGuide);
-    applyDisableAnimations(currentSettings.disableAnimations);
+  const adjustContrast = (increment: number) => {
+    const newContrast = Math.min(Math.max(settings.contrast + increment, 100), 150);
+    setSettings({ ...settings, contrast: newContrast });
+    document.documentElement.style.setProperty('--accessibility-contrast', `${newContrast}%`);
+  };
+
+  const adjustLineHeight = (increment: number) => {
+    const newLineHeight = Math.min(Math.max(settings.lineHeight + increment, 1.5), 2.5);
+    setSettings({ ...settings, lineHeight: newLineHeight });
+    document.documentElement.style.setProperty('--accessibility-line-height', `${newLineHeight}`);
   };
 
   const resetSettings = () => {
-    setSettings({
-      textSize: 0,
-      textSpacing: 0,
-      lineHeight: 0,
-      invertColors: false,
-      grayHues: false,
-      bigCursor: false,
-      readingGuide: false,
-      disableAnimations: false
-    });
-  };
-
-  // Apply text size changes
-  const applyTextSize = (size: number) => {
-    const styleId = 'accessibility-text-size';
-    removeExistingStyle(styleId);
-
-    if (size !== 0) {
-      const factor = size * 0.05; // 5% change per step
-      const style = document.createElement('style');
-      style.id = styleId;
-      style.textContent = `
-        html:not(.accessibility-menu *):not(.accessibility-button) {
-          font-size: calc(1em + ${factor}em) !important;
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  };
-
-  // Apply text spacing changes
-  const applyTextSpacing = (spacing: number) => {
-    const styleId = 'accessibility-text-spacing';
-    removeExistingStyle(styleId);
-
-    if (spacing !== 0) {
-      const factor = spacing * 0.25; // 0.25px change per step
-      const style = document.createElement('style');
-      style.id = styleId;
-      style.textContent = `
-        body:not(.accessibility-menu), body:not(.accessibility-menu) *:not(.accessibility-menu):not(.accessibility-menu *):not(.accessibility-button) {
-          letter-spacing: ${factor}px !important;
-          word-spacing: calc(0.16em + ${factor}px) !important;
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  };
-
-  // Apply line height changes
-  const applyLineHeight = (height: number) => {
-    const styleId = 'accessibility-line-height';
-    removeExistingStyle(styleId);
-
-    if (height !== 0) {
-      const factor = 1 + height * 0.05; // 5% change per step
-      const style = document.createElement('style');
-      style.id = styleId;
-      style.textContent = `
-        body:not(.accessibility-menu), body:not(.accessibility-menu) *:not(.accessibility-menu):not(.accessibility-menu *):not(.accessibility-button) {
-          line-height: ${factor} !important;
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  };
-
-  // Apply color inversion
-  const applyInvertColors = (invert: boolean) => {
-    const styleId = 'accessibility-invert-colors';
-    removeExistingStyle(styleId);
-
-    if (invert) {
-      const style = document.createElement('style');
-      style.id = styleId;
-      style.textContent = `
-        html {
-          filter: invert(100%) !important;
-        }
-        img, video, canvas, svg, [style*="background-image"] {
-          filter: invert(100%) !important;
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  };
-
-  // Apply gray hues
-  const applyGrayHues = (gray: boolean) => {
-    const styleId = 'accessibility-gray-hues';
-    removeExistingStyle(styleId);
-
-    if (gray) {
-      const style = document.createElement('style');
-      style.id = styleId;
-      style.textContent = `
-        html {
-          filter: grayscale(100%) !important;
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  };
-
-  // Apply big cursor
-  const applyBigCursor = (big: boolean) => {
-    if (big) {
-      document.body.classList.add('big-cursor');
-    } else {
-      document.body.classList.remove('big-cursor');
-    }
-  };
-
-  // Apply reading guide
-  const applyReadingGuide = (show: boolean) => {
-    const readingGuide = document.getElementById('reading-guide-element');
-    if (!readingGuide) return;
-
-    if (show) {
-      readingGuide.style.display = 'block';
-      document.addEventListener('mousemove', moveReadingGuide);
-    } else {
-      readingGuide.style.display = 'none';
-      document.removeEventListener('mousemove', moveReadingGuide);
-    }
-  };
-
-  // Move reading guide with mouse
-  const moveReadingGuide = (e: MouseEvent) => {
-    const readingGuide = document.getElementById('reading-guide-element');
-    if (readingGuide) {
-      readingGuide.style.top = `${e.clientY - 6}px`;
-    }
-  };
-
-  // Apply disable animations
-  const applyDisableAnimations = (disable: boolean) => {
-    const styleId = 'accessibility-disable-animations';
-    removeExistingStyle(styleId);
-
-    if (disable) {
-      const style = document.createElement('style');
-      style.id = styleId;
-      style.textContent = `
-        * {
-          animation: none !important;
-          transition: none !important;
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  };
-
-  // Remove existing style element by id
-  const removeExistingStyle = (id: string) => {
-    const existingStyle = document.getElementById(id);
-    if (existingStyle) {
-      existingStyle.remove();
-    }
+    const defaultSettings = {
+      fontSize: 100,
+      contrast: 100,
+      lineHeight: 1.5,
+    };
+    setSettings(defaultSettings);
+    document.documentElement.style.setProperty('--accessibility-font-size', '100%');
+    document.documentElement.style.setProperty('--accessibility-contrast', '100%');
+    document.documentElement.style.setProperty('--accessibility-line-height', '1.5');
   };
 
   return (
-    <div className="accessibility-widget-fixed" dir="rtl" aria-label="Accessibility controls" tabIndex={0}>
-      <button
-        className="accessibility-button"
-        onClick={toggleMenu}
-        aria-label="פתח תפריט נגישות"
-        aria-expanded={menuOpen}
-        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    <div className="accessibility-widget">
+      <button 
+        onClick={toggleMenu} 
+        className="accessibility-toggle" 
+        aria-expanded={isOpen}
+        aria-label={t('common:accessibility')}
       >
-        <img 
-          src="/assets/images/wheelchair-icon.svg" 
-          alt="International accessibility icon" 
-          className="accessibility-icon" 
-          style={{ width: 32, height: 32, filter: 'drop-shadow(0 0 2px #fff)' }}
-        />
+        ♿
       </button>
-      {menuOpen && (
-        <div className="accessibility-menu">
-          <div className="menu-header">
-            <h2>נגישות</h2>
-            <div className="flex items-center">
-              <button
-                className="reset-button mr-2"
-                onClick={resetSettings}
-                style={{ display: Object.values(settings).some(Boolean) ? 'block' : 'none' }}
-              >
-                איפוס הגדרות
+
+      {isOpen && (
+        <div className={`accessibility-menu ${isOpen ? 'open' : ''}`}>
+          <div className="accessibility-header">
+            <h2>{isRTL ? 'נגישות' : 'Accessibility'}</h2>
+            <button onClick={toggleMenu} aria-label="Close">
+              ✕
+            </button>
+          </div>
+          <div className="accessibility-content">
+            <div className="accessibility-section">
+              <button onClick={() => adjustFontSize(5)} aria-label="Increase font size">
+                <span className="accessibility-icon">A+</span>
+                <span>{isRTL ? 'הגדל טקסט' : 'Larger Text'}</span>
               </button>
-              <button 
-                className="close-button" 
-                onClick={toggleMenu} 
-                aria-label="סגור תפריט נגישות"
-              >
-                <IoClose size={24} />
+              <button onClick={() => adjustFontSize(-5)} aria-label="Decrease font size">
+                <span className="accessibility-icon">A-</span>
+                <span>{isRTL ? 'הקטן טקסט' : 'Smaller Text'}</span>
               </button>
             </div>
+
+            <div className="accessibility-section">
+              <button onClick={() => adjustContrast(5)} aria-label="Increase contrast">
+                <span className="accessibility-icon">◐+</span>
+                <span>{isRTL ? 'הגבר ניגודיות' : 'Higher Contrast'}</span>
+              </button>
+              <button onClick={() => adjustContrast(-5)} aria-label="Decrease contrast">
+                <span className="accessibility-icon">◐-</span>
+                <span>{isRTL ? 'הפחת ניגודיות' : 'Lower Contrast'}</span>
+              </button>
+            </div>
+
+            <div className="accessibility-section">
+              <button onClick={() => adjustLineHeight(0.1)} aria-label="Increase line spacing">
+                <span className="accessibility-icon">≡+</span>
+                <span>{isRTL ? 'הגדל רווח בין שורות' : 'Increase Line Spacing'}</span>
+              </button>
+              <button onClick={() => adjustLineHeight(-0.1)} aria-label="Decrease line spacing">
+                <span className="accessibility-icon">≡-</span>
+                <span>{isRTL ? 'הקטן רווח בין שורות' : 'Decrease Line Spacing'}</span>
+              </button>
+            </div>
+
+            <button onClick={resetSettings} className="accessibility-reset">
+              {isRTL ? 'איפוס הגדרות' : 'Reset Settings'}
+            </button>
           </div>
-
-          <button
-            className={`menu-item ${settings.textSize > 0 ? 'active' : ''}`}
-            onClick={() => updateSetting('textSize', settings.textSize + 1)}
-          >
-            הגדל טקסט
-          </button>
-          <button
-            className={`menu-item ${settings.textSize < 0 ? 'active' : ''}`}
-            onClick={() => updateSetting('textSize', settings.textSize - 1)}
-          >
-            הקטן טקסט
-          </button>
-
-          <button
-            className={`menu-item ${settings.textSpacing > 0 ? 'active' : ''}`}
-            onClick={() => updateSetting('textSpacing', settings.textSpacing + 1)}
-          >
-            הגדל מרווח
-          </button>
-          <button
-            className={`menu-item ${settings.textSpacing < 0 ? 'active' : ''}`}
-            onClick={() => updateSetting('textSpacing', settings.textSpacing - 1)}
-          >
-            הקטן מרווח
-          </button>
-
-          <button
-            className={`menu-item ${settings.lineHeight > 0 ? 'active' : ''}`}
-            onClick={() => updateSetting('lineHeight', settings.lineHeight + 1)}
-          >
-            הגדל גובה שורה
-          </button>
-          <button
-            className={`menu-item ${settings.lineHeight < 0 ? 'active' : ''}`}
-            onClick={() => updateSetting('lineHeight', settings.lineHeight - 1)}
-          >
-            הקטן גובה שורה
-          </button>
-
-          <button
-            className={`menu-item ${settings.invertColors ? 'active' : ''}`}
-            onClick={() => updateSetting('invertColors', !settings.invertColors)}
-          >
-            הפוך צבעים
-          </button>
-
-          <button
-            className={`menu-item ${settings.grayHues ? 'active' : ''}`}
-            onClick={() => updateSetting('grayHues', !settings.grayHues)}
-          >
-            גווני אפור
-          </button>
-
-          <button
-            className={`menu-item ${settings.bigCursor ? 'active' : ''}`}
-            onClick={() => updateSetting('bigCursor', !settings.bigCursor)}
-          >
-            סמן גדול
-          </button>
-
-          <button
-            className={`menu-item ${settings.readingGuide ? 'active' : ''}`}
-            onClick={() => updateSetting('readingGuide', !settings.readingGuide)}
-          >
-            מדריך קריאה
-          </button>
-
-          <button
-            className={`menu-item ${settings.disableAnimations ? 'active' : ''}`}
-            onClick={() => updateSetting('disableAnimations', !settings.disableAnimations)}
-          >
-            בטל אנימציות
-          </button>
         </div>
       )}
     </div>
   );
 };
 
-export default AccessibilityWidget;
+export default AccessibilityIcon;
