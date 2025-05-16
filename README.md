@@ -101,6 +101,41 @@ Each page follows a consistent layout:
 
 ## Setup Instructions
 
+## Recent Architectural & Environment Changes (2025-05)
+
+### 1. Environment-based Backend Routing
+- The backend base URL is now determined by environment variables:
+  - If both `NODE_ENV=development` and `VERCEL_ENV=development`, the backend uses `http://localhost:5000`.
+  - In all other cases (production/staging), it uses `https://api.keshevplus.co.il`.
+- This logic is implemented in the `getBaseUrl()` function in `api/contact.js` and should be used for all backend-to-backend requests.
+
+### 2. Protocol Handling (HTTP vs HTTPS)
+- Development uses `http` (no SSL) for simplicity.
+- Production uses `https` for secure communication.
+- Never mix protocols in production to avoid browser security issues.
+
+### 3. Nodemailer Configuration
+- All Nodemailer settings are now loaded from `.env.email` (or `.env` in some deployments) using `dotenv` at the top of the backend and mailer modules.
+- Required variables: `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USER`, `EMAIL_PASS`, `EMAIL_FROM`, `EMAIL_TO`.
+- For Gmail, use an App Password for `EMAIL_PASS` (not your main Gmail password).
+
+### 4. Removal of VERCEL_URL Reliance
+- The system no longer relies on `VERCEL_URL` for backend routing.
+- All routing logic is handled by explicit environment checks, reducing the risk of malformed URLs and protocol confusion.
+
+### 5. Axios Error Handling Improvements
+- Axios error responses in the backend no longer include circular or non-serializable objects.
+- Only plain error details (message, stack, status, headers) are returned, preventing server crashes on error serialization.
+
+### 6. Deployment/Production Notes
+- Always ensure your production server uses HTTPS and a valid SSL certificate.
+- Double-check all environment variables before deploying.
+- Never commit `.env` or `.env.email` to version control.
+
+---
+These changes make the application more robust, secure, and easier to maintain across different environments. See the relevant code sections and `.env` examples for further details.
+
+
 ### Prerequisites
 
 - Node.js
@@ -175,10 +210,10 @@ EMAILJS_PUBLIC_KEY=your_public_key
 FREE_ADMIN=true
 
 # Client (Vite)
-VITE_EMAILJS_PUBLIC_KEY=your_public_key
-VITE_EMAILJS_SERVICE_ID=your_service_id
-VITE_EMAILJS_TEMPLATE_ID=your_template_id
-VITE_ADMIN_TEMPLATE_ID=your_admin_template_id
+=your_public_key
+=your_service_id
+=your_template_id
+VITE_=your_admin_template_id
 VITE_PNPM_HOME=C:\Users\<user>\AppData\Local\pnpm
 ```
 
