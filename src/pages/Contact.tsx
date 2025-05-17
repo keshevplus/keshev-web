@@ -126,21 +126,21 @@ export default function Contact() {
             )}
           </div>
           <div className="flex justify-between mt-4">
-            <button
-              type="button"
-              className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors duration-300 mr-2"
-              onClick={() => reset()}
-            >
-              ניקוי טופס
-            </button>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors duration-300 disabled:bg-gray-400"
-            >
-              {isSubmitting ? 'שולח...' : 'שלח הודעה'}
-            </button>
-          </div>
+  <button
+    type="submit"
+    disabled={isSubmitting}
+    className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors duration-300 disabled:bg-gray-400"
+  >
+    {isSubmitting ? 'שולח...' : 'שלח הודעה'}
+  </button>
+  <button
+    type="button"
+    className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors duration-300 mr-2"
+    onClick={() => reset()}
+  >
+    ניקוי טופס
+  </button>
+</div>
         </form>
       </div>
     </PageLayout>
