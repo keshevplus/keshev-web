@@ -24,20 +24,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ErrorBoundary from './components/ErrorBoundary';
 import AccessibilityWidget from './components/AccessibilityWidget';
-
-// Styles for the fixed corner container
-// const cornerContainerStyle: React.CSSProperties = {
-//   position: 'fixed',
-//   bottom: '1rem', // Adjust as needed
-//   right: '1rem', // Adjust as needed
-//   zIndex: 1000, // Ensure it's above other content
-//   backgroundColor: 'rgba(255, 255, 255, 0.8)', // Optional: light background for visibility
-//   padding: '0.5rem',
-//   borderRadius: '5px',
-//   display: 'flex',
-//   alignItems: 'center',
-//   gap: '0.5rem' // Add spacing between components
-// };
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 function App() {
   return (
@@ -76,6 +63,7 @@ function App() {
                 }
               />
             </Routes>
+            <SpeedInsights /> 
           </div>
         </ErrorBoundary>
       </AuthProvider>
