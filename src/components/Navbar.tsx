@@ -9,7 +9,7 @@ import {
   setIsHomePage,
 } from '../store/sharedStateSlice'; // Redux actions for shared state
 import { useEffect } from 'react'; // React hook for side effects
-import VideoBG from './ui/VideoBG'; // Background video component
+// import VideoBG from './ui/VideoBG'; // Background video component
 import LanguageSwitcher from './LanguageSwitcher'; // Language Switcher component
 
 export const navItems = [
@@ -48,8 +48,8 @@ export default function Navbar() {
       }`}
     >
       <div className="relative">
-        {!isHomePage && <VideoBG />}
-        <div className="container px-4 max-w-3xl flex items-center justify-between relative bg-transparent backdrop-blur-sm">
+        {!isHomePage}
+        <div className="container px-4 max-w-3xl flex items-center justify-between relative bg-[url(/assets/images/bgvideogif.gif)] backdrop-blur-sm">
           <Link
             to="/"
             className={`flex items-center transition-opacity duration-300 ${
