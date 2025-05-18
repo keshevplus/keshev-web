@@ -46,9 +46,11 @@ export default function Navbar() {
         isScrolled ? 'shadow-md bg-white/95 backdrop-blur-lg' : 'bg-white/70 backdrop-blur-sm'
       }`}
     >
-      <div className="relative">
-        {!isHomePage}
-        <div className="container px-4 max-w-3xl flex items-center justify-between relative bg-[url(/assets/images/bgvideogif.gif)] backdrop-blur-sm">
+
+    {!isHomePage}
+
+      <div className="relative bg-[url(/assets/images/bgvideogif.gif)]">
+        <div className="container px-4 max-w-3xl flex items-center justify-between relative backdrop-blur-sm">
           <Link
             to="/"
             className={`flex items-center transition-opacity duration-300 ${
@@ -101,6 +103,7 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+
       <div
         className={`lg:hidden fixed left-0 right-0 top-90 z-3 bg-green-800/95 transition-transform duration-300 ${
           isMenuOpen
@@ -125,6 +128,7 @@ export default function Navbar() {
           ))}
         </div>
       </div>
+      
     </nav>
   );
 }
