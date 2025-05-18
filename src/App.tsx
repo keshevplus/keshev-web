@@ -23,7 +23,6 @@ import store from './store/store';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ErrorBoundary from './components/ErrorBoundary';
-import AccessibilityWidget from './components/AccessibilityWidget';
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
 function App() {
@@ -34,8 +33,6 @@ function App() {
         <ToastContainer position="top-center" />
         <ErrorBoundary>
           <div id="main-container" className="flex flex-col min-h-screen scrollbar overflow">
-            {/* Accessibility Widget */}
-            <AccessibilityWidget />
             <Routes>
               {/* Admin routes */}
               <Route path="/admin/login" element={<Login />} />

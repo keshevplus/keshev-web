@@ -11,18 +11,7 @@
   filter: contrast(1.1) brightness(0.9);
 }
 
-/* Particle overlay */
-.particles-overlay {
-  background-image: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.1) 1px,
-    transparent 1px
-  );
-  background-size: 20px 20px;
-  animation: particle-float 15s linear infinite;
-  opacity: 0.5;
-  z-index: 2;
-}
+
 
 /* Logo container animations */
 .logo-container {

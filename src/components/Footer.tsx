@@ -11,15 +11,12 @@ export default function Footer() {
               &copy; {new Date().getFullYear()} כל הזכויות שמורות לקשב פלוס
             </p>
           </div>
-          <nav className="text-center md:text-right" aria-label="Footer navigation">
-            <ul className="flex flex-wrap justify-center md:justify-end space-x-6 rtl:space-x-reverse">
+          <nav className="text-center md:text-right">
+            <ul className="flex flex-col md:flex-row space-y-2 md:space-y-0">
               {navItems.map((item) => (
-                <li key={item.path} className="inline-block">
-                  <Link
-                    to={item.path}
-                    className="text-base text-white hover:text-orange-400 transition-colors"
-                  >
-                    {item.text}
+                <li key={item.path}>
+                  <Link to={item.path} className="text-gray-300 hover:text-white">
+                    <span className='text-gray-300 hover:text-white'>{item.text}</span>
                   </Link>
                 </li>
               ))}
