@@ -9,7 +9,6 @@ import {
   setIsHomePage,
 } from '../store/sharedStateSlice'; // Redux actions for shared state
 import { useEffect } from 'react'; // React hook for side effects
-// import VideoBG from './ui/VideoBG'; // Background video component
 import LanguageSwitcher from './LanguageSwitcher'; // Language Switcher component
 
 export const navItems = [
@@ -34,7 +33,7 @@ export default function Navbar() {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       dispatch(setIsScrolled(scrollY > 100));
-    };v
+    };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [location.pathname, dispatch]);
