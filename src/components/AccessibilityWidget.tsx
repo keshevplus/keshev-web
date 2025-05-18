@@ -17,7 +17,9 @@ const AccessibilityWidget: React.FC = () => {
   }, [open]);
 
   return (
-    <div style={{ position: 'fixed', bottom: 20, right: 20, zIndex: 1001 }}>
+    <div 
+    className='accessibility-widget-fixed'
+    style={{ position: 'fixed', bottom: 20, right: 20, zIndex: 1001 }}>
       {/* Accessibility Button */}
       <button
         aria-label="תפריט נגישות"
@@ -26,7 +28,7 @@ const AccessibilityWidget: React.FC = () => {
           width: 52,
           height: 52,
           borderRadius: '50%',
-          background: '#005cb9',
+          backgroundColor: '#005cb9',
           color: 'white',
           fontSize: 28,
           border: 'none',
@@ -46,7 +48,7 @@ const AccessibilityWidget: React.FC = () => {
             bottom: 62,
             right: 0,
             width: 250,
-            background: 'white',
+            backgroundColor: 'white',
             borderRadius: 8,
             boxShadow: '0 4px 16px rgba(0,0,0,0.18)',
             padding: 18,
@@ -58,13 +60,13 @@ const AccessibilityWidget: React.FC = () => {
             <button
               aria-label="סגור תפריט"
               onClick={() => setOpen(false)}
-              style={{ background: 'none', border: 'none', color: '#005cb9', fontSize: 22, cursor: 'pointer' }}
+              style={{ backgroundColor: 'none', border: 'none', color: '#005cb9', fontSize: 22, cursor: 'pointer' }}
             >×</button>
           </div>
           <div style={{ marginTop: 12 }}>
-            <button style={{ width: '100%', padding: 10, marginBottom: 8, borderRadius: 4, border: '1px solid #e0e0e0', background: '#f5f5f5', cursor: 'pointer' }}>הגדל טקסט</button>
-            <button style={{ width: '100%', padding: 10, marginBottom: 8, borderRadius: 4, border: '1px solid #e0e0e0', background: '#f5f5f5', cursor: 'pointer' }}>הקטן טקסט</button>
-            <button style={{ width: '100%', padding: 10, marginBottom: 8, borderRadius: 4, border: '1px solid #e0e0e0', background: '#f5f5f5', cursor: 'pointer' }}>ניגודיות גבוהה</button>
+            <button style={{ width: '100%', padding: 10, marginBottom: 8, borderRadius: 4, border: '1px solid #e0e0e0', backgroundColor: '#f5f5f5', cursor: 'pointer' }}>הגדל טקסט</button>
+            <button style={{ width: '100%', padding: 10, marginBottom: 8, borderRadius: 4, border: '1px solid #e0e0e0', backgroundColor: '#f5f5f5', cursor: 'pointer' }}>הקטן טקסט</button>
+            <button style={{ width: '100%', padding: 10, marginBottom: 8, borderRadius: 4, border: '1px solid #e0e0e0', backgroundColor: '#f5f5f5', cursor: 'pointer' }}>ניגודיות גבוהה</button>
           </div>
         </div>
       )}

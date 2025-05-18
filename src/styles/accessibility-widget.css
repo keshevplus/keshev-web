@@ -10,7 +10,7 @@
 }
 
 /* Fixed button, high z-index */
-.accessibility-button {
+.accessibility-widget-fixed {
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -24,11 +24,11 @@
   z-index: 101;
 }
 
-.accessibility-button:hover {
+.accessibility-widget-fixed:hover {
   background-color: #004a93;
 }
 
-.accessibility-button:focus {
+.accessibilit y-widget-fixed:focus {
   outline: 2px solid #0078d7;
   outline-offset: 2px;
 }
