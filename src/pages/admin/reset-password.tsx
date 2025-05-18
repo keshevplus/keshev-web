@@ -34,7 +34,7 @@ const ResetPassword: React.FC = () => {
     e.preventDefault();
     setMessage('');
     try {
-      await axios.post('/api/auth/reset-password', { token, newPassword });
+      await axios.post('/auth/reset-password', { token, newPassword });
       setStep('done');
       setMessage('Password updated! You can now log in.');
     } catch (err: any) {

@@ -18,7 +18,7 @@ const Login = () => {
 
     try {
             // Actual login logic - replace URL with your backend endpoint
-      const res = await fetch(import.meta.env.VITE_API_BASE_URL + '/api/auth/login', {
+      const res = await fetch(import.meta.env.VITE_API_BASE_URL + '/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: trimmedEmail, password: trimmedPassword }),
