@@ -50,7 +50,7 @@ export default function Navbar() {
     {!isHomePage}
 
       <div className="relative bg-[url(/assets/images/bgvideogif.gif)]">
-        <div className="container px-4 max-w-3xl flex items-center justify-between relative backdrop-blur-sm">
+        <div className="container bg-white/70 px-4 max-w-3xl flex items-center justify-between relative backdrop-blur-sm ">
           <Link
             to="/"
             className={`flex items-center transition-opacity duration-300 ${
@@ -128,7 +128,7 @@ export default function Navbar() {
           ))}
         </div>
       </div>
-      
+
     </nav>
   );
 }
