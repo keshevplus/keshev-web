@@ -4,7 +4,7 @@
   "outputDirectory": "dist",
 
   "rewrites": [
-    { "source": "/auth/:path*", "destination": "https://api.keshevplus.co.il/auth/:path*" }
+    { "source": "/auth/:path*", "destination": "https://api.keshevplus.co.il/auth/:path*"}
     {"source": "/api/(.*)","destination": "https://api.keshevplus.co.il/api/$1"},
     { "source": "/assets/:path*", "destination": "/assets/:path*" },
     { "source": "/(.*)", "destination": "/" }
