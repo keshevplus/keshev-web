@@ -34,7 +34,7 @@ export default function Navbar() {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       dispatch(setIsScrolled(scrollY > 100));
-    };
+    };v
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [location.pathname, dispatch]);

@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "vite",
     "start": "vite",
+    "reinstall": "pnpm install --no-frozen-lockfile && pnpm run build && mkdir -p dist",
     "build": "rimraf dist && vite build",
     "preview": "vite preview",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
