@@ -15,7 +15,6 @@ const VideoBG: React.FC<VideoBGProps> = ({ children }) => {
        
     
       <div className="absolute inset-0 bg-orange-400 opacity-10"></div>
-      {children}
     </div>
   );
 };
