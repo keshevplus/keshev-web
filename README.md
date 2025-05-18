@@ -232,9 +232,9 @@ Both client and server must be deployed for full functionality.
 # Server
 DATABASE_URL=postgresql://<username>:<password>@<host>/<database>?sslmode=require
 EMAIL_API_KEY=your_email_api_key
-EMAILJS_SERVICE_ID=your_service_id
-EMAILJS_TEMPLATE_ID=your_template_id
-EMAILJS_PUBLIC_KEY=your_public_key
+
+
+
 FREE_ADMIN=true
 
 # Client (Vite)
