@@ -47,8 +47,7 @@ export default function Navbar() {
       }`}
     >
 
-    {!isHomePage}
-
+    {!isHomePage && (
       <div className="relative w-full bg-[url('/assets/images/bgvideogif.gif')">
         <div className="container bg-white/70 px-4 max-w-3xl flex items-center justify-between relative backdrop-blur-sm ">
           <Link
@@ -103,13 +102,14 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+    )}
 
       <div
-        className={`lg:hidden fixed left-0 right-0 top-90 z-3 bg-green-800/95 transition-transform duration-300 ${
+        className={`lg:hidden fixed left-0 right-0 top-90 transition-all duration-300 ${
           isMenuOpen
-            ? 'translate-y-0 opacity-100 overflow-y-auto relative'
-            : 'translate-y-full opacity-0 overflow-y-hidden'
-        }`}
+            ? 'translate-y-0 opacity-95 overflow-y-auto relative z-[100] block'
+            : 'hidden'
+        } bg-green-800/95`}
       >
         <div className="container mx-auto py-4 px-4">
           {navItems.map((item) => (
