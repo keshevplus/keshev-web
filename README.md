@@ -235,13 +235,12 @@ EMAIL_API_KEY=your_email_api_key
 
 
 
-FREE_ADMIN=true
 
-# Client (Vite)
-=your_public_key
-=your_service_id
-=your_template_id
-VITE_=your_admin_template_id
+# Client (Vite) 
+VITE_PUBLIC_KEY=your_public_key
+VITE_SERVICE_ID=your_service_id
+VITE_TEMPLATE_ID=your_template_id
+VITE_ADMIN_TEMPLATE_ID=your_admin_template_id
 VITE_PNPM_HOME=C:\Users\<user>\AppData\Local\pnpm
 ```
 
