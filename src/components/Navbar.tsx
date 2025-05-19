@@ -87,11 +87,14 @@ export default function Navbar() {
               <LanguageSwitcher />
             </div>
             <div className="navbar-item">
-              <img
-                src="/assets/images/greenphone.svg"
-                alt="Call Now"
-                className="w-16 hover:opacity-80 transition-transform duration-300"
-              />
+              <a href="tel:055-27-399-27" className="flex items-center">
+                <img
+                  src="/assets/images/greenphone.svg"
+                  alt="Call Now"
+                  className="w-16 hover:opacity-80 transition-transform duration-300"
+                />
+                <span className="hidden md:inline text-xl text-green-800">055-27-399-27</span>
+              </a>
             </div>
             <button
               className="lg:hidden text-black"
