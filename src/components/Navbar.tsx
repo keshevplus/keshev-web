@@ -87,14 +87,11 @@ export default function Navbar() {
               <LanguageSwitcher />
             </div>
             <div className="navbar-item">
-              <a href="tel:055-27-399-27" className="flex items-center">
-                <img
-                  src="/assets/images/greenphone.svg"
-                  alt="Call Now"
-                  className="w-16 hover:opacity-80 transition-transform duration-300"
-                />
-                <span className="hidden md:inline text-xl text-green-800">055-27-399-27</span>
-              </a>
+              <img
+                src="/assets/images/greenphone.svg"
+                alt="Call Now"
+                className="w-12 hover:opacity-80 transition-transform duration-300"
+              />
             </div>
             <button
               className="lg:hidden text-black"
@@ -108,27 +105,53 @@ export default function Navbar() {
     )}
 
       <div
-        className={`lg:hidden fixed left-0 right-0 top-90 transition-all duration-300 ${
+        className={`lg:hidden fixed inset-0 transition-all duration-300 ${
           isMenuOpen
-            ? 'translate-y-0 opacity-95 overflow-y-auto relative z-[100] block'
+            ? 'opacity-100 z-[100] block'
             : 'hidden'
-        } bg-green-800/95`}
+        }`}
       >
-        <div className="container mx-auto py-4 px-4">
-          {navItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`block text-xl font-semibold py-2 px-4 my-2 rounded-lg ${
-                isActive(item.path)
-                  ? 'bg-white text-green-800'
-                  : 'text-white hover:bg-white/10'
-              }`}
+        <div className="flex flex-col h-screen">
+          {/* Dimmed background overlay */}
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm -z-10"></div>
+          
+          {/* Menu header with close button */}
+          <div className="bg-green-800 py-4 px-6 flex justify-between items-center">
+            <span className="text-white text-2xl font-bold">תפריט</span>
+            <button
+              className="text-white p-2"
               onClick={() => dispatch(setIsMenuOpen(false))}
             >
-              {item.text}
-            </Link>
-          ))}
+              <IoClose size={28} />
+            </button>
+          </div>
+          
+          {/* Menu items - flex-grow to take remaining height */}
+          <div className="flex-grow bg-green-800/95 overflow-y-auto py-6 px-6">
+            <div className="flex flex-col space-y-4">
+              {navItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`text-xl font-semibold py-3 px-4 rounded-lg transition-colors duration-200 ${
+                    isActive(item.path)
+                      ? 'bg-white text-green-800'
+                      : 'text-white hover:bg-white/10'
+                  }`}
+                  onClick={() => dispatch(setIsMenuOpen(false))}
+                >
+                  {item.text}
+                </Link>
+              ))}
+            </div>
+          </div>
+          
+          {/* Footer area */}
+          <div className="bg-green-900 py-4 px-6 text-center">
+            <a href="tel:055-27-399-27" className="text-white text-lg font-semibold">
+              התקשרו: 055-27-399-27
+            </a>
+          </div>
         </div>
       </div>
 

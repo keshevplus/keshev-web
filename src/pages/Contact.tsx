@@ -7,7 +7,7 @@ import GoogleMap from '../components/GoogleMap';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
-import React from 'react';
+import React, { useState } from 'react';
 
 
 const formSchema = z.object({
@@ -23,10 +23,57 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 
+// Modal component for displaying additional contact information
+interface ContactInfoModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const ContactInfoModal: React.FC<ContactInfoModalProps> = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6 relative max-h-[90vh] overflow-y-auto">
+        <button
+          onClick={onClose}
+          className="absolute top-4 left-4 text-gray-500 hover:text-gray-700"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        
+        <h2 className="text-2xl font-bold text-green-800 mb-4 text-right">פרטי התקשרות נוספים</h2>
+        
+        <div className="space-y-4 text-right">
+          <div>
+            <h3 className="text-lg font-semibold text-green-700">שעות פעילות:</h3>
+            <p>ימים א'-ה': 9:00-18:00</p>
+            <p>יום ו': 9:00-13:00</p>
+          </div>
+          
+          <div>
+            <h3 className="text-lg font-semibold text-green-700">אמצעי תשלום:</h3>
+            <p>אנו מקבלים מזומן, כרטיסי אשראי, והעברות בנקאיות</p>
+          </div>
+          
+          <div>
+            <h3 className="text-lg font-semibold text-green-700">מידע נוסף:</h3>
+            <p>לקביעת פגישות יש להתקשר מראש</p>
+            <p>ניתן להגיע בתחבורה ציבורית (קווי אוטובוס 72, 172, 27)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function Contact() {
   const { data: pageData } = usePageData('contact');
   const navigate = useNavigate();
-  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   const {
     register,
@@ -116,21 +163,7 @@ const onSubmit = async (data: FormValues, event: any) => {
         {pageData[0]?.subheading}
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-        {/* Details and Map */}
-        <div className="mb-8 md:mb-0 text-right">
-          <div className="font-bold text-lg">כתובת:</div>
-          <div className="mb-2">יגאל אלון 94, תל אביב (וויביז)</div>
-          <a
-            href="https://maps.google.com/?q=יגאל אלון 94 תל אביב"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-green-700 underline hover:text-green-900"
-          >
-            פתח במפות גוגל
-          </a>
-          <GoogleMap />
-        </div>
-        {/* Contact Form */}
+        {/* Contact Form - Now first */}
         <form
           className="bg-orange-400/65 p-6 rounded-lg shadow-lg w-full"
           onSubmit={(e) => {
@@ -186,7 +219,46 @@ const onSubmit = async (data: FormValues, event: any) => {
   </button>
 </div>
         </form>
+        
+        {/* Contact Details - Now second */}
+        <div className="bg-white p-6 rounded-lg shadow-lg text-right">
+          <h3 className="text-xl font-bold text-green-800 mb-4">פרטי התקשרות</h3>
+          
+          <div className="mb-4">
+            <div className="font-bold text-lg">כתובת:</div>
+            <div className="mb-2">יגאל אלון 94, תל אביב (וויביז)</div>
+            <a
+              href="https://maps.google.com/?q=יגאל אלון 94 תל אביב"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-700 underline hover:text-green-900"
+            >
+              פתח במפות גוגל
+            </a>
+          </div>
+          
+          <div className="mb-4">
+            <div className="font-bold text-lg">טלפון:</div>
+            <a href="tel:055-27-399-27" className="text-green-700 hover:text-green-900">
+              055-27-399-27
+            </a>
+          </div>
+          
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors mt-2 mb-4"
+          >
+            לפרטים נוספים
+          </button>
+          
+          <div className="mt-4">
+            <GoogleMap />
+          </div>
+        </div>
       </div>
+      
+      {/* Modal */}
+      <ContactInfoModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </PageLayout>
   );
 }

@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import FloatingPhoneNumber from './components/FloatingPhoneNumber';
 
 // pages routes
 import Home from './pages/Home';
@@ -43,6 +44,7 @@ function App() {
                 element={
                   <>
                     <Navbar />
+                    <FloatingPhoneNumber />
                     <main className="flex-grow p-0">
                       <Routes>
                         <Route path="/" element={<Home />} />
