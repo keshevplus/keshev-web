@@ -1,5 +1,5 @@
-/* All accessibility widget, menu, and overlay styles removed as per user request. */
-  padding: 4px 8px;
+.accessibility-button {
+padding: 4px 8px;
   font-size: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
