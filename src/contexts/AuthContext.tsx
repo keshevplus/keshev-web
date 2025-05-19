@@ -1,14 +1,15 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 interface User {
-  username: string;
   id: number;
+  username: string;
+  email: string;
   role: string;
 }
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<any>;
+  login: (email: string, password?: string) => Promise<any>;
   logout: () => void;
   token: string | null;
   user: User | null;
@@ -40,42 +41,73 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, [token, user]);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password?: string) => {
     try {
-      // Check if VITE_DATABASE_URL is present
-      const hasDatabaseUrl = !!import.meta.env.VITE_DATABASE_URL;
-      if (!hasDatabaseUrl) {
-        throw new Error('Database is not configured. Please contact the administrator.');
-      }
+      const devAdminEmail = import.meta.env.VITE_DEV_ADMIN_EMAIL;
+      const masterAdminEmail = import.meta.env.VITE_ADMIN_EMAIL || 'dr@keshevplus.co.il';
+      const masterAdminPassword = import.meta.env.VITE_ADMIN_PASSWORD; // Must be set for this to work
 
-      // Get admin credentials from environment variables or use defaults
-      const adminEmail = import.meta.env.VITE_ADMIN_EMAIL || 'dr@keshevplus.co.il';
-      const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD || 'changeme123';
+      let effectiveEmail = email;
+      let effectivePassword = password;
+      let isDevAdminShortcut = false;
 
-      // Regular API authentication
-      // Ensure the login endpoint matches the backend: /auth/login (not /api/auth/login)
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-      const loginUrl = apiBaseUrl.replace(/\/?$/, '') + '/auth/login';
-      console.log('Making API request to', loginUrl);
-      try {
-        const response = await fetch(loginUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, password }),
-        });
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.message || 'Login failed.');
+      if (devAdminEmail && email === devAdminEmail && password === undefined) {
+        console.warn('Attempting passwordless Dev Admin shortcut: will use master admin credentials for API login.');
+        if (!masterAdminPassword) {
+          throw new Error('Master admin password (VITE_ADMIN_PASSWORD) is not configured for Dev Admin shortcut.');
         }
-        setToken(data.token);
-        setUser(data.user);
-        return { token: data.token, user: data.user };
-      } catch (error: any) {
-        throw new Error(error.message || 'API login failed.');
+        effectiveEmail = masterAdminEmail;
+        effectivePassword = masterAdminPassword;
+        isDevAdminShortcut = true;
+      } else if (password === undefined) {
+        // Standard login path requires a password if not the dev admin shortcut
+        throw new Error('Password is required for standard login.');
       }
+
+      // Common API login logic
+      const loginUrl = import.meta.env.VITE_API_BASE_URL ? `${import.meta.env.VITE_API_BASE_URL}/auth/login` : '';
+      if (!loginUrl) {
+        throw new Error('API base URL (VITE_API_BASE_URL) is not configured.');
+      }
+
+      const response = await fetch(loginUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: effectiveEmail, password: effectivePassword }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        // If dev admin shortcut login failed, provide a specific error
+        if (isDevAdminShortcut) {
+          throw new Error(`Dev Admin shortcut failed: API login with master credentials (${masterAdminEmail}) failed. API Error: ${data.message || 'Login failed.'}`);
+        }
+        throw new Error(data.message || 'Login failed.');
+      }
+
+      // Successfully logged in (either normally or via dev admin shortcut using master creds)
+      setToken(data.token); // This is now a REAL token from the API
+      
+      // If it was the dev admin shortcut, we might want to set a specific user object for frontend identification
+      if (isDevAdminShortcut) {
+        setUser({ 
+          id: data.user?.id || 0, // Use backend user id if available
+          username: data.user?.username || 'Dev Admin (as Master)', 
+          email: masterAdminEmail, // The email used for the actual login
+          role: data.user?.role || 'admin' 
+        });
+      } else {
+        setUser(data.user); // User object from the API for normal login
+      }
+      
+      return { token: data.token, user: data.user };
+
     } catch (error: any) {
+      // Clear any potentially partially set auth state on error
+      // logout(); // Consider if this is too aggressive or if error boundary handles display
+      console.error('Login process failed:', error);
       throw error;
     }
   };

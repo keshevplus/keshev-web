@@ -1,10 +1,48 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const DEV_ADMIN_TOKEN = 'dev-admin-token-xyz'; // The token set by AuthContext for the dev admin
 
 // Helper function for authenticated API requests
 const authenticatedRequest = async (url: string, options: RequestInit = {}) => {
   const token = localStorage.getItem('token');
+
+  // Check for Dev Admin Token
+  if (token === DEV_ADMIN_TOKEN) {
+    console.warn(`DEV ADMIN MODE: Skipping API call to ${url}. Returning mock/empty data.`);
+    
+    const defaultPagination = { total: 0, page: 1, limit: 10, totalPages: 1, hasNextPage: false, hasPrevPage: false };
+
+    // For GET requests in dev admin mode, provide structured mock data
+    if (!options.method || options.method.toUpperCase() === 'GET') {
+      if (url.includes('/admin/leads')) {
+        return Promise.resolve({ leads: [], pagination: defaultPagination });
+      } else if (url.includes('/admin/pages')) {
+        return Promise.resolve({ pages: [], pagination: defaultPagination });
+      } else if (url.includes('/admin/services')) {
+        return Promise.resolve({ services: [], pagination: defaultPagination });
+      } else if (url.includes('/admin/forms')) {
+        return Promise.resolve({ forms: [], pagination: defaultPagination });
+      } else if (url.includes('/admin/content')) { // Assuming content list expects 'content' array
+        return Promise.resolve({ content: [], pagination: defaultPagination });
+      } else {
+        // Fallback for other GET requests: return a generic structure or an empty array if that's preferred.
+        // Let's use a generic list structure that components might look for.
+        // Or, if most other GETs expect a single object, this might be { data: {} }.
+        // For now, let's assume lists are common, or an empty array is a safer very-generic default if no specific structure known.
+        console.warn(`DEV ADMIN MODE: No specific mock for GET ${url}, returning generic { data: [], pagination: ... }. Adjust if needed.`);
+        return Promise.resolve({ data: [], pagination: defaultPagination }); 
+      }
+    }
+    // For POST/PUT/DELETE in dev admin mode
+    return Promise.resolve({ success: true, message: 'Dev admin mock response (mutation)', data: {} });
+  }
+
   if (!token) {
-    throw new Error('No token, authorization denied');
+    // No real token and not dev admin token. Redirect to login.
+    // Ensure this runs only on the client-side if this code could ever be part of SSR/SSG.
+    if (typeof window !== 'undefined') {
+      window.location.href = '/admin/login'; 
+    }
+    throw new Error('No token, authorization denied. Please log in.');
   }
 
   const fullUrl = url.startsWith('http')
@@ -15,27 +53,45 @@ const authenticatedRequest = async (url: string, options: RequestInit = {}) => {
     const response = await fetch(fullUrl, {
       ...options,
       headers: {
-        'x-auth-token': token,
+        'x-auth-token': token, // Ensure your backend expects 'x-auth-token'
         'Content-Type': 'application/json',
         ...options.headers
       }
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      // If token is invalid, clear local storage to force re-login
-      if (response.status === 401) {
+      let errorData = { message: `HTTP error! status: ${response.status}` };
+      try {
+        // Attempt to parse JSON error response from backend
+        errorData = await response.json();
+      } catch (e) {
+        // If response is not JSON, use the status text or the generic message
+        errorData.message = response.statusText || errorData.message;
+      }
+      
+      if (response.status === 401) { // Unauthorized or Token is not valid
+        console.error('Authentication error (401): Token might be invalid or expired.');
+        // Clear potentially invalid token and user from localStorage
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-        window.location.href = '/admin/login'; // Redirect to login
+        // Redirect to login page
+        if (typeof window !== 'undefined') {
+          window.location.href = '/admin/login'; 
+        }
       }
-      throw new Error(errorData.message || 'Error with API request');
+      // Include more details in the error if available from errorData
+      throw new Error(errorData.message || `API request failed with status ${response.status}`);
     }
     
+    // Handle cases where response might be empty (e.g., 204 No Content for DELETE)
+    if (response.status === 204) {
+        return Promise.resolve({ success: true, message: 'Operation successful (No Content)' });
+    }
     return await response.json();
   } catch (error) {
-    console.error(`API request failed for ${url}:`, error);
-    throw error;
+    // Log the detailed error object, not just error.message if it's an Error instance
+    console.error(`API request failed for ${url}:`, error instanceof Error ? error.message : error);
+    throw error; // Re-throw the error to be caught by the calling service/component
   }
 };
 
