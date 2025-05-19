@@ -36,35 +36,78 @@ export default function Contact() {
     resolver: zodResolver(formSchema),
   });
 
+  // --- LocalStorage queue helpers ---
+  const LOCAL_STORAGE_KEY = 'unsentContactMessages';
+  function saveMessageLocally(message: FormValues) {
+    const queue = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
+    queue.push(message);
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(queue));
+  }
+  function getUnsentMessages(): FormValues[] {
+    return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
+  }
+  function removeSentMessage(index: number) {
+    const queue = getUnsentMessages();
+    queue.splice(index, 1);
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(queue));
+  }
+
+  // --- On submit ---
   const onSubmit = async (data: FormValues, event: any) => {
     event?.preventDefault?.();
     const loadingToastId = toast.loading('שולח את הטופס...', { position: 'top-center' });
     try {
-      // Try sending to your own backend API
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
       const response = await fetch(`${apiBaseUrl}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
-
       if (!response.ok) {
-        const errorData = await response.json();
+        // Save locally if server error (including DB down)
+        saveMessageLocally(data);
         toast.dismiss(loadingToastId);
-        toast.error(errorData.message || 'אירעה שגיאה בשליחת הטופס.');
+        toast.error('השרת אינו זמין. ההודעה נשמרה ותישלח אוטומטית כשתהיה אפשרות.');
         return;
       }
-
       toast.dismiss(loadingToastId);
       toast.success('הטופס נשלח בהצלחה!');
       reset();
       setTimeout(() => navigate('/'), 1500);
     } catch (err) {
+      // Network or CORS error: Save locally
+      saveMessageLocally(data);
       toast.dismiss(loadingToastId);
-      toast.error('אירעה שגיאה בשליחת הטופס.');
+      toast.error('השרת אינו זמין. ההודעה נשמרה ותישלח אוטומטית כשתהיה אפשרות.');
       console.error('Contact form error:', err);
     }
   };
+
+  // --- On mount: resend unsent messages ---
+  React.useEffect(() => {
+    const tryResend = async () => {
+      const queue = getUnsentMessages();
+      if (queue.length === 0) return;
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+      for (let i = 0; i < queue.length; i++) {
+        try {
+          const response = await fetch(`${apiBaseUrl}/api/contact`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(queue[i]),
+          });
+          if (response.ok) {
+            removeSentMessage(i);
+            i--; // adjust index after removal
+            toast.success('הודעה שנשמרה נשלחה בהצלחה!');
+          }
+        } catch (err) {
+          // Still failing, keep in queue
+        }
+      }
+    };
+    tryResend();
+  }, []);
 
   return (
     <PageLayout title={pageData[0]?.heading || ''} background="bg-white" maxWidth="md:max-w-3xl">
