@@ -14,7 +14,7 @@ import NotFound from './pages/NotFound';
 
 // admin routes
 import Admin from './pages/admin/Admin';
-import Login from './pages/admin/Login';
+import AdminLogin from './pages/admin/AdminLogin';
 
 import { AuthProvider } from './contexts/AuthContext';
 import ScrollToTop from './components/ui/ScrollToTop';
@@ -35,7 +35,7 @@ function App() {
           <div id="main-container" className="flex flex-col min-h-screen scrollbar overflow">
             <Routes>
               {/* Admin routes */}
-              <Route path="/admin/login" element={<Login />} />
+              <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin/*" element={<Admin />} />
               {/* Public routes */}
               <Route
