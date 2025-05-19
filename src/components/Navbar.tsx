@@ -49,7 +49,7 @@ export default function Navbar() {
 
     {!isHomePage}
 
-      <div className="relative bg-[url(/assets/images/bgvideogif.gif)]">
+      <div className="relative w-full bg-[url('/assets/images/bgvideogif.gif')">
         <div className="container bg-white/70 px-4 max-w-3xl flex items-center justify-between relative backdrop-blur-sm ">
           <Link
             to="/"
