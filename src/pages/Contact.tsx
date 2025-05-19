@@ -7,6 +7,7 @@ import GoogleMap from '../components/GoogleMap';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
+import React from 'react';
 
 
 const formSchema = z.object({
@@ -53,7 +54,7 @@ export default function Contact() {
   }
 
   // --- On submit ---
-  const onSubmit = async (data: FormValues, event: any) => {
+const onSubmit = async (data: FormValues, event: any) => {
     event?.preventDefault?.();
     const loadingToastId = toast.loading('שולח את הטופס...', { position: 'top-center' });
     try {
