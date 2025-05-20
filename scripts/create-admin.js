@@ -22,8 +22,8 @@ async function createAdminUser() {
     const username = 'admin';
     const email = 'dr@keshevplus.co.il';
     const password = 'changeme123'; // Prompt user to change after first login
-    const is_admin = true;
-    const role = 'db_owner';
+    const logged_in = true;
+    const role = 'admin';
     
     console.log('Checking if user already exists...');
     // Check if user exists
@@ -42,8 +42,8 @@ async function createAdminUser() {
     console.log('Creating admin user...');
     // Insert admin user
     const insertResult = await sql`
-      INSERT INTO users (name, email, password_hash, role, status, created_at)
-      VALUES (${username}, ${email}, ${hashedPassword}, ${role}, 'active', NOW())
+      INSERT INTO users (name, email, password_hash, role, status, logged_in, created_at)
+      VALUES (${username}, ${email}, ${hashedPassword}, ${role}, 'active', ${logged_in}, NOW())
       RETURNING id, name, email, role, status
     `;
 
