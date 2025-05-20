@@ -1,12 +1,14 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext"; 
 import { useNavigate } from "react-router-dom"; 
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const { login } = useAuth(); 
   const navigate = useNavigate(); 
 
@@ -48,7 +50,7 @@ const AdminLogin: React.FC = () => {
               id="email"
               value={email}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-              placeholder="admin@keshevplus.co.il"
+              placeholder="dr@keshevplus.co.il"
               type="email"
               required
               className="w-full px-3 py-2 text-right border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
@@ -59,14 +61,24 @@ const AdminLogin: React.FC = () => {
             <label htmlFor="password" className="block text-sm font-medium text-right text-gray-700 mb-1">
               סיסמה
             </label>
-            <input
-              id="password"
-              value={password}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-              type="password"
-              placeholder="******"
-              className="w-full px-3 py-2 text-right border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-            />
+            <div className="relative">
+              <input
+                id="password"
+                value={password}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                type={showPassword ? 'text' : 'password_hash'}
+                placeholder="******"
+                className="w-full px-3 py-2 text-right border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(prev => !prev)}
+                className="absolute inset-y-0 left-0 flex items-center px-3 text-gray-500 hover:text-gray-700 focus:outline-none"
+                aria-label={showPassword ? 'הסתר סיסמה' : 'הצג סיסמה'}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
           </div>
           
           {error && (
