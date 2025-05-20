@@ -16,6 +16,7 @@ export default function Home() {
 
   if (!pageData) {
     return (
+  
       <div className="container mx-auto max-w-full md:max-w-[75%] py-4 loading">
         <div className="animate-pulse">Loading...</div>
       </div>
@@ -45,13 +46,13 @@ export default function Home() {
               </p>
               <Link
                 to="/about"
-                className="inline-block bg-green-800 hover:bg-green-600 text-white px-8 py-4 rounded-md text-lg font-medium transition-colors duration-300 shadow-md hover:shadow-lg"
+                className="inline-block bg-green-800 hover:bg-green-600 text-white px-8 py-4 rounded-md text-xl font-bold transition-colors duration-300 shadow-md hover:shadow-lg mx-4"
               >
                 {t('home.hero.about', 'קרא עוד עלינו')}
               </Link>
               <Link
                 to="/contact"
-                className="inline-block bg-orange-500 hover:bg-orange-400 text-black px-8 py-4 rounded-md text-lg font-medium  transition-colors duration-300 shadow-md hover:shadow-lg"
+                className="inline-block bg-orange-400 hover:bg-orange-600 hover:text-white text-black px-8 py-4 rounded-md text-xl font-bold  transition-colors duration-300 shadow-md hover:shadow-lg mx-4"
               >
                 {t('home.hero.contact', 'התחילו את האבחון שלכם עכשיו')}
               </Link>
@@ -82,7 +83,7 @@ export default function Home() {
             to="/contact"
             className="inline-block bg-[#F7941D] text-black px-8 py-4 rounded-md text-lg font-bold hover:bg-white hover:text-[#005BAA] transition-colors duration-300 shadow-lg hover:shadow-xl"
           >
-            {t('home.cta.button', 'צור קשר עכשיו')}
+            {t('home.cta.button', 'צרו קשר עכשיו')}
           </Link>
         </div>
       </div>

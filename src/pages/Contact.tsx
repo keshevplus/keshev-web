@@ -89,7 +89,7 @@ const ContactInfoModal: React.FC<ContactInfoModalProps> = ({ isOpen, onClose }) 
             </div>
             
             <div className="mt-4 bg-yellow-50 p-2 rounded">
-              <p className="flex items-center justify-end font-medium">
+              <p className="flex-row items-center justify-end font-medium">
                 <strong>טיפ:</strong>
                 <span className="mr-2">💡</span>
               </p>
