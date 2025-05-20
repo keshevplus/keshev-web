@@ -48,6 +48,10 @@ const ContactInfoModal: React.FC<ContactInfoModalProps> = ({ isOpen, onClose }) 
         
         <div className="space-y-6 text-right">
           <div>
+          <div>
+            <h3 className="text-lg font-semibold text-green-700">מידע נוסף:</h3>
+            <p>לקביעת פגישות יש להתקשר מראש</p>
+          </div> 
             <h3 className="text-lg font-semibold text-green-700">שעות פעילות:</h3>
             <p>ימים א'-ה': 9:00-18:00</p>
             <p>יום ו': 9:00-13:00</p>
@@ -84,36 +88,18 @@ const ContactInfoModal: React.FC<ContactInfoModalProps> = ({ isOpen, onClose }) 
               </p>
             </div>
             
-            <div className="mt-4 bg-yellow-50 p-2 rounded">
-              <p className="flex items-center font-medium">
-                <span className="ml-2">💡</span>
-                <strong>טיפ:</strong> אפשר להימנע מכניסה עם רכב לתא"ולחנות בחינם בחניון הנתיב המהיר, ולהגיע עם שאטל לתחנת רכבת השלום ללא עלות!
+            <div className="mt-4 bg-yellow-50 p-2 rounded text-right">
+              <p className="flex items-center justify-end font-medium">
+                <strong>טיפ:</strong>
+                <span className="mr-2">💡</span>
+              </p>
+              <p className="font-medium">
+                אפשר להימנע מכניסה עם רכב לת"א ולחנות בחינם בחניון הנתיב המהיר, ולהגיע עם שאטל לתחנת רכבת השלום ללא עלות!
               </p>
             </div>
+          </div>
+          
 
-            <div className="mt-4 border-t pt-3">
-              <p className="font-medium mb-1">אופציה נוספת לקבועים:</p>
-              <p className="flex items-center">
-                <span className="ml-2">🅿️</span>
-                <strong>חנייה פרטית במגדלי אלון</strong>
-              </p>
-              <ul className="list-disc mr-6 mt-1 text-sm">
-                <li>1,200₪ בחודש + מעמ</li>
-                <li>מקום חניה אחד קבוע</li>
-                <li>אפשרות להחליף רכבים בכל עת</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div>
-            <h3 className="text-lg font-semibold text-green-700">אמצעי תשלום:</h3>
-            <p>אנו מקבלים מזומן, כרטיסי אשראי, והעברות בנקאיות</p>
-          </div>
-          
-          <div>
-            <h3 className="text-lg font-semibold text-green-700">מידע נוסף:</h3>
-            <p>לקביעת פגישות יש להתקשר מראש</p>
-          </div>
         </div>
       </div>
     </div>
