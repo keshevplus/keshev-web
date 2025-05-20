@@ -9,7 +9,7 @@ interface User {
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  login: (email: string, password?: string) => Promise<any>;
+  login: (email: string, password_hash?: string) => Promise<any>;
   logout: () => void;
   token: string | null;
   user: User | null;
@@ -41,17 +41,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, [token, user]);
 
-  const login = async (email: string, password?: string) => {
+  const login = async (email: string, password_hash?: string) => {
     try {
       const devAdminEmail = import.meta.env.VITE_DEV_ADMIN_EMAIL;
       const masterAdminEmail = import.meta.env.VITE_ADMIN_EMAIL || 'dr@keshevplus.co.il';
       const masterAdminPassword = import.meta.env.VITE_ADMIN_PASSWORD; // Must be set for this to work
 
       let effectiveEmail = email;
-      let effectivePassword = password;
+      let effectivePassword = password_hash;
       let isDevAdminShortcut = false;
 
-      if (devAdminEmail && email === devAdminEmail && password === undefined) {
+      if (devAdminEmail && email === devAdminEmail && password_hash === undefined) {
         console.warn('Attempting passwordless Dev Admin shortcut: will use master admin credentials for API login.');
         if (!masterAdminPassword) {
           throw new Error('Master admin password (VITE_ADMIN_PASSWORD) is not configured for Dev Admin shortcut.');
@@ -59,7 +59,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         effectiveEmail = masterAdminEmail;
         effectivePassword = masterAdminPassword;
         isDevAdminShortcut = true;
-      } else if (password === undefined) {
+      } else if (password_hash === undefined) {
         // Standard login path requires a password if not the dev admin shortcut
         throw new Error('Password is required for standard login.');
       }
@@ -75,7 +75,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: effectiveEmail, password: effectivePassword }),
+        body: JSON.stringify({ email: effectiveEmail, password_hash: effectivePassword }),
       });
 
       const data = await response.json();

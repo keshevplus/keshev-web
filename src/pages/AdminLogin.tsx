@@ -9,7 +9,21 @@
 
     try {
       // Add more comprehensive error handling and logging
-      console.log('Attempting login with:', { email: email.length > 0 ? '✓' : '✗', password: password.length > 0 ? '✓' : '✗' });
+    console.log('Attempting login with:', { email: email.length > 0 ? '✓' : '✗', password: password.length > 0 ? '✓' : '✗' });
+    
+    await login(email, password);
+    console.log('Login successful, redirecting to admin dashboard');
+    navigate('/admin');
+
+  } catch (error: any) {
+    console.error('Login error details:', error);
+    setLoginError(
+      error.message || 'Login failed. Please check your credentials.'
+    );
+  } finally {
+    setIsLoading(false);
+  }
+};
       
       await login(email, password);
       console.log('Login successful, redirecting to admin dashboard');
