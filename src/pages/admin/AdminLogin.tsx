@@ -66,7 +66,7 @@ const AdminLogin: React.FC = () => {
                 id="password"
                 value={password}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-                type={showPassword ? 'text' : 'password_hash'}
+                type={showPassword ? 'text' : 'password'}
                 placeholder="******"
                 className="w-full px-3 py-2 text-right border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               />
