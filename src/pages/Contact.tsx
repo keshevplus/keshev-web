@@ -46,11 +46,63 @@ const ContactInfoModal: React.FC<ContactInfoModalProps> = ({ isOpen, onClose }) 
         
         <h2 className="text-2xl font-bold text-green-800 mb-4 text-right">פרטי התקשרות נוספים</h2>
         
-        <div className="space-y-4 text-right">
+        <div className="space-y-6 text-right">
           <div>
             <h3 className="text-lg font-semibold text-green-700">שעות פעילות:</h3>
             <p>ימים א'-ה': 9:00-18:00</p>
             <p>יום ו': 9:00-13:00</p>
+          </div>
+          
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <h3 className="text-lg font-semibold text-green-700 flex items-center">
+              <span className="ml-2">🚗</span> אפשרויות חניה באזור:
+            </h3>
+            <ul className="space-y-3 mt-2">
+              <li>
+                <strong>חניון אורחים מגדלי אלון</strong> - כניסה דרך מגדל אלון 1 בצד הצפוני
+                <p className="text-sm mt-1">חניות אורחים מסומנות באור ירוק ושלט מגדל"הראל</p>
+                <a href="https://waze.com/ul/hsv8wrvb38" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm">מגדלי אלון- כניסה צפונית Waze</a>
+              </li>
+              <li>
+                <strong>חניון אושר"עד"</strong> - ממש ברחוב המקביל אלינו
+                <a href="https://waze.com/ul/hsv8wrv8y2" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm">Waze לחניון אושר עד</a>
+              </li>
+              <li>
+                <strong>חניון אחוזת חוף</strong> - ליד מגדל טויוטה (חניון הסינרמה, יגאל אלון 63)
+                <p className="text-sm mt-1">כניסה מהצד הדרומי</p>
+                <a href="https://waze.com/ul/hsv8wrtx41" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm">Waze לחניון אחוזת חוף</a>
+              </li>
+              <li>
+                <strong>כחול לבן</strong> באזור (זמין בעיקר בבוקר ובערב)
+              </li>
+            </ul>
+            
+            <div className="mt-4">
+              <p className="flex items-center">
+                <span className="ml-2">🚌</span>
+                <strong>לבאים ברכבת</strong> - מרחק הליכה מתחנת השלום (עזריאלי)
+              </p>
+            </div>
+            
+            <div className="mt-4 bg-yellow-50 p-2 rounded">
+              <p className="flex items-center font-medium">
+                <span className="ml-2">💡</span>
+                <strong>טיפ:</strong> אפשר להימנע מכניסה עם רכב לתא"ולחנות בחינם בחניון הנתיב המהיר, ולהגיע עם שאטל לתחנת רכבת השלום ללא עלות!
+              </p>
+            </div>
+
+            <div className="mt-4 border-t pt-3">
+              <p className="font-medium mb-1">אופציה נוספת לקבועים:</p>
+              <p className="flex items-center">
+                <span className="ml-2">🅿️</span>
+                <strong>חנייה פרטית במגדלי אלון</strong>
+              </p>
+              <ul className="list-disc mr-6 mt-1 text-sm">
+                <li>1,200₪ בחודש + מעמ</li>
+                <li>מקום חניה אחד קבוע</li>
+                <li>אפשרות להחליף רכבים בכל עת</li>
+              </ul>
+            </div>
           </div>
           
           <div>
@@ -61,7 +113,6 @@ const ContactInfoModal: React.FC<ContactInfoModalProps> = ({ isOpen, onClose }) 
           <div>
             <h3 className="text-lg font-semibold text-green-700">מידע נוסף:</h3>
             <p>לקביעת פגישות יש להתקשר מראש</p>
-            <p>ניתן להגיע בתחבורה ציבורית (קווי אוטובוס 72, 172, 27)</p>
           </div>
         </div>
       </div>
