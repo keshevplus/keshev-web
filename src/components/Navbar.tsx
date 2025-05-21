@@ -10,6 +10,7 @@ import {
 } from '../store/sharedStateSlice'; // Redux actions for shared state
 import { useEffect } from 'react'; // React hook for side effects
 import LanguageSwitcher from './LanguageSwitcher'; // Language Switcher component
+import FloatingPhoneNumber from './FloatingPhoneNumber';
 
 export const navItems = [
   { path: '/', text: 'בית', mobileOnly: true },
@@ -87,11 +88,14 @@ export default function Navbar() {
               <LanguageSwitcher />
             </div>
             <div className="navbar-item">
+              <a href="tel:055-27-399-27">
               <img
                 src="/assets/images/greenphone.svg"
                 alt="Call Now"
                 className="w-12 hover:opacity-80 transition-transform duration-300"
               />
+              <FloatingPhoneNumber />
+              </a>
             </div>
             <button
               className="lg:hidden text-black"

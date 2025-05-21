@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import AnimatedFooter from './components/AnimatedFooter';
 import FloatingPhoneNumber from './components/FloatingPhoneNumber';
 
 // pages routes
@@ -57,6 +58,7 @@ function App() {
                         <Route path="*" element={<NotFound />} />
                       </Routes>
                     </main>
+                    <AnimatedFooter />
                     <Footer />
                   </>
                 }
