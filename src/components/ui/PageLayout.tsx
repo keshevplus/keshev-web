@@ -29,10 +29,10 @@ export default function PageLayout({
     <div className={`${withRtl ? 'rtl' : ''} flex flex-col min-h-screen`}>
       <PageTitle title={title} />
       <div
-        className={`${background} flex-grow py-0 ${withAnimation ? 'animate-slide-in' : ''}`}
+        className={`${background} flex-grow pb-0 ${withAnimation ? 'animate-slide-in' : ''}`}
         style={withAnimation ? { animation: 'slideUp 0.8s ease-out' } : {}}
       >
-        <div className={`container mx-auto px-8 ${maxWidth}`}>{children}</div>
+        <div className={`container mx-auto px-8 pb-4 ${maxWidth}`}>{children}</div>
       </div>
     </div>
   );

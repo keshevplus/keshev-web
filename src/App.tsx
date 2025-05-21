@@ -56,8 +56,10 @@ function App() {
                         <Route path="*" element={<NotFound />} />
                       </Routes>
                     </main>
-                    <AnimatedFooter />
-                    <Footer />
+                    <div className="mt-0">
+                      <AnimatedFooter />
+                      <Footer />
+                    </div>
                   </>
                 }
               />
