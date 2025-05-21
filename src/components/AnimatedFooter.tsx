@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface Particle {
   x: number;
@@ -24,7 +23,6 @@ const AnimatedFooter: React.FC<AnimatedFooterProps> = ({
   const [mousePosition, setMousePosition] = useState<{ x: number; y: number } | null>(null);
   const particlesRef = useRef<Particle[]>([]);
   const animationFrameIdRef = useRef<number>(0);
-  const { t } = useTranslation();
 
   // Colors from the main theme
   const orangeColor = '#F97316'; // Orange
@@ -54,16 +52,16 @@ const AnimatedFooter: React.FC<AnimatedFooterProps> = ({
     
     // Calculate appropriate number of particles based on canvas size
     // But less than in the original to keep it lighter
-    const particleCount = Math.min(Math.floor((width * height) / 10000), 50);
+    const particleCount = Math.min(Math.floor((width * height) / 10000), 70);
 
     for (let i = 0; i < particleCount; i++) {
       const particle: Particle = {
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.3, // Slower horizontal movement
-        vy: (Math.random() - 0.5) * 0.1, // Very subtle vertical movement
-        size: Math.random() * 1.5 + 0.5, // Smaller particles for subtlety
-        color: Math.random() > 0.5 ? orangeColor : greenColor,
+        vx: (Math.random() - 0.5) * 0.8, // Faster horizontal movement
+        vy: (Math.random() - 0.5) * 0.3, // More noticeable vertical movement
+        size: Math.random() * 3 + 1.5, // Larger particles for visibility
+        color: Math.random() > 0.4 ? orangeColor : greenColor, // More orange particles
         connections: []
       };
       particles.push(particle);
@@ -149,22 +147,22 @@ const AnimatedFooter: React.FC<AnimatedFooterProps> = ({
           ctx.moveTo(p1.x, p1.y);
           ctx.lineTo(p2.x, p2.y);
           ctx.strokeStyle = gradient;
-          ctx.globalAlpha = 0.6 * (1 - (distance / maxDistance)); // More transparent
-          ctx.lineWidth = 0.3; // Thinner lines
+          ctx.globalAlpha = 0.8 * (1 - (distance / maxDistance)); // More opaque
+          ctx.lineWidth = 0.8; // Thicker lines
           ctx.stroke();
           ctx.globalAlpha = 1;
         }
       }
     }
 
-    // Subtle glow effect on nodes with many connections
+    // Enhanced glow effect on nodes with connections
     for (let i = 0; i < particles.length; i++) {
       const p = particles[i];
-      if (p.connections.length > 2) { // Lower threshold for glow
+      if (p.connections.length > 1) { // Lower threshold for glow, more particles glowing
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size + 1 + p.connections.length / 3, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, p.size + 2 + p.connections.length / 2, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
-        ctx.globalAlpha = 0.05; // Very subtle glow
+        ctx.globalAlpha = 0.15; // More pronounced glow
         ctx.fill();
         ctx.globalAlpha = 1;
       }
@@ -209,7 +207,7 @@ const AnimatedFooter: React.FC<AnimatedFooterProps> = ({
 
   return (
     <div 
-      className="relative w-full overflow-hidden" 
+      className="relative w-full overflow-hidden mt-0" 
       style={{ height: `${height}px` }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -223,10 +221,10 @@ const AnimatedFooter: React.FC<AnimatedFooterProps> = ({
       {/* Content that can be placed over the animation */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 text-center pointer-events-none">
         <h3 className="text-xl md:text-2xl font-semibold text-green-800 mb-2">
-          {t('footer.animated.title', 'Better Health with Better Understanding')}
+          בריאות טובה יותר עם הבנה טובה יותר
         </h3>
         <p className="text-gray-600 max-w-2xl mx-auto">
-          {t('footer.animated.tagline', 'ADHD diagnosis and treatment solutions, tailored to your needs.')}
+          פתרונות אבחון וטיפול ב-ADHD, מותאמים לצרכים שלך
         </p>
       </div>
     </div>

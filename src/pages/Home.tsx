@@ -71,7 +71,7 @@ export default function Home() {
       </div>
 
       {/* CTA Section */}
-      <div className="py-16 md:py-20 bg-green-800 text-white">
+      <div className="pt-16 pb-6 md:pt-20 md:pb-6 bg-green-800 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             {t('home.cta.title', 'מוכנים להתחיל?')}
