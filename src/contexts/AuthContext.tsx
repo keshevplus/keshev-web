@@ -45,20 +45,34 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const devAdminEmail = import.meta.env.VITE_DEV_ADMIN_EMAIL;
       const masterAdminEmail = import.meta.env.VITE_ADMIN_EMAIL || 'dr@keshevplus.co.il';
-      const masterAdminPassword = import.meta.env.VITE_ADMIN_PASSWORD; // Must be set for this to work
+      const masterAdminPassword = import.meta.env.VITE_ADMIN_PASSWORD;
 
       let effectiveEmail = email;
       let effectivePassword = password_hash;
       let isDevAdminShortcut = false;
 
+      // Check if this is a dev admin passwordless login attempt
       if (devAdminEmail && email === devAdminEmail && password_hash === undefined) {
-        console.warn('Attempting passwordless Dev Admin shortcut: will use master admin credentials for API login.');
-        if (!masterAdminPassword) {
-          throw new Error('Master admin password (VITE_ADMIN_PASSWORD) is not configured for Dev Admin shortcut.');
-        }
-        effectiveEmail = masterAdminEmail;
-        effectivePassword = masterAdminPassword;
-        isDevAdminShortcut = true;
+        console.log('Detected passwordless Dev Admin login attempt');
+        
+        // DIRECT PASSWORDLESS LOGIN - No need to call the API
+        // Create a mock JWT token (only for development)
+        const mockToken = `dev.admin.${Date.now()}`;
+        const mockUser = {
+          id: 999,
+          username: 'Development Admin',
+          email: devAdminEmail,
+          role: 'admin'
+        };
+        
+        console.log('Created mock dev admin session:', { user: mockUser });
+        
+        // Set token and user in state/localStorage
+        setToken(mockToken);
+        setUser(mockUser);
+        
+        // Return early with success
+        return { token: mockToken, user: mockUser };
       } else if (password_hash === undefined) {
         // Standard login path requires a password if not the dev admin shortcut
         throw new Error('Password is required for standard login.');
