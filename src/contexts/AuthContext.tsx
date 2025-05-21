@@ -52,7 +52,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       let isDevAdminShortcut = false;
 
       // Check if this is a dev admin passwordless login attempt
-      if (devAdminEmail && email === devAdminEmail && password_hash === undefined) {
+      if (devAdminEmail && email === devAdminEmail && (!password_hash || password_hash === '')) {
         console.log('Detected passwordless Dev Admin login attempt');
         
         // DIRECT PASSWORDLESS LOGIN - No need to call the API
@@ -73,7 +73,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         
         // Return early with success
         return { token: mockToken, user: mockUser };
-      } else if (password_hash === undefined) {
+      } else if ((password_hash === undefined || password_hash === '') && email !== devAdminEmail) {
         // Standard login path requires a password if not the dev admin shortcut
         throw new Error('Password is required for standard login.');
       }

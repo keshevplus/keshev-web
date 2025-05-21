@@ -14,7 +14,43 @@ const authenticatedRequest = async (url: string, options: RequestInit = {}) => {
     // For GET requests in dev admin mode, provide structured mock data
     if (!options.method || options.method.toUpperCase() === 'GET') {
       if (url.includes('/admin/leads')) {
-        return Promise.resolve({ leads: [], pagination: defaultPagination });
+        // Return mock lead data for dev admin
+        const mockLeads = [
+          {
+            id: 'mock-lead-1',
+            name: 'ישראל ישראלי',
+            email: 'israel@example.com',
+            phone: '050-1234567',
+            subject: 'שאלה בנוגע לשירותים',
+            message: 'אני מעוניין לקבל מידע נוסף על השירותים שאתם מציעים לטיפול בהפרעות קשב וריכוז.',
+            created_at: new Date().toISOString(),
+            date_received: new Date().toISOString()
+          },
+          {
+            id: 'mock-lead-2',
+            name: 'שרה כהן',
+            email: 'sarah@example.com',
+            phone: '052-7654321',
+            subject: 'פנייה בנושא אבחון',
+            message: 'אשמח לקבוע פגישת ייעוץ לגבי אבחון ADHD למבוגרים. מהם הזמנים הפנויים בשבוע הבא?',
+            created_at: new Date(Date.now() - 86400000).toISOString(), // Yesterday
+            date_received: new Date(Date.now() - 86400000).toISOString()
+          },
+          {
+            id: 'mock-lead-3',
+            name: 'דוד לוי',
+            email: 'david@example.com',
+            phone: '054-9876543',
+            subject: 'התייעצות מקצועית',
+            message: 'אני מטפל המתמחה בטיפול בילדים עם ADHD ואשמח להתייעץ עם אחד המומחים שלכם בנוגע לשיטות טיפול חדשניות.',
+            created_at: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
+            date_received: new Date(Date.now() - 172800000).toISOString()
+          }
+        ];
+        
+        // Update pagination to reflect the mock data
+        const mockPagination = { ...defaultPagination, total: mockLeads.length, totalPages: 1 };
+        return Promise.resolve({ leads: mockLeads, pagination: mockPagination });
       } else if (url.includes('/admin/pages')) {
         return Promise.resolve({ pages: [], pagination: defaultPagination });
       } else if (url.includes('/admin/services')) {
