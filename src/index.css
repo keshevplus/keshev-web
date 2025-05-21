@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-bg-primary: #ffffff;
+  --color-text-primary: #333333;
+  --color-green-primary: #15803d;
+  --color-orange-primary: #F97316;
+  --color-card-bg: #f9fafb;
+  --color-card-shadow: rgba(0, 0, 0, 0.1);
+}
+
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;

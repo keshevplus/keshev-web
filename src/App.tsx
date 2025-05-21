@@ -1,7 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import AnimatedFooter from './components/AnimatedFooter';
+// No Animation
+// import AnimatedFooter from './components/AnimatedFooter';
 
 // pages routes
 import Home from './pages/Home';
@@ -25,15 +26,18 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ErrorBoundary from './components/ErrorBoundary';
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import AccessibilityWidget from './components/acc/AccessibilityWidget';
 
 function App() {
   return (
     <Provider store={store}>
-      <AuthProvider>
-        <ScrollToTop />
-        <ToastContainer position="top-center" />
-        <ErrorBoundary>
+        <AuthProvider>
+          <ScrollToTop />
+          <ToastContainer position="top-center" />
+          <ErrorBoundary>
           <div id="main-container" className="flex flex-col min-h-screen scrollbar overflow">
+            {/* Accessibility Widget - Israeli Standard 5568 compliant */}
+            <AccessibilityWidget />
             <Routes>
               {/* Admin routes */}
               <Route path="/admin/login" element={<AdminLogin />} />
@@ -56,10 +60,14 @@ function App() {
                         <Route path="*" element={<NotFound />} />
                       </Routes>
                     </main>
-                    <div className="mt-0">
-                      <AnimatedFooter />
-                      <Footer />
-                    </div>
+                    
+                    {/* AnimatedFooter only shown on non-home pages */}
+                    {/* <Routes>
+                      <Route path="/" element={null} />
+                      <Route path="*" element={<AnimatedFooter />} />
+                    </Routes> */}
+                    
+                    <Footer />
                   </>
                 }
               />
@@ -67,7 +75,7 @@ function App() {
             <SpeedInsights /> 
           </div>
         </ErrorBoundary>
-      </AuthProvider>
+        </AuthProvider>
     </Provider>
   );
 }

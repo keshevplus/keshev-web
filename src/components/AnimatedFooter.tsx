@@ -1,4 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+// Import our custom translation hook for consistent i18n implementation
+import { useTranslations } from '../hooks/useTranslations';
+// Import translation keys for type safety and consistency
+import { TRANSLATION_KEYS } from '../i18n/translations';
 
 interface Particle {
   x: number;
@@ -23,6 +28,8 @@ const AnimatedFooter: React.FC<AnimatedFooterProps> = ({
   const [mousePosition, setMousePosition] = useState<{ x: number; y: number } | null>(null);
   const particlesRef = useRef<Particle[]>([]);
   const animationFrameIdRef = useRef<number>(0);
+  // Use our custom translations hook for better reliability
+  const { t } = useTranslations('common');
 
   // Colors from the main theme
   const orangeColor = '#F97316'; // Orange
@@ -207,7 +214,7 @@ const AnimatedFooter: React.FC<AnimatedFooterProps> = ({
 
   return (
     <div 
-      className="relative w-full overflow-hidden mt-0" 
+      className="relative w-full overflow-hidden mt-0 bg-orange-50" 
       style={{ height: `${height}px` }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -219,13 +226,19 @@ const AnimatedFooter: React.FC<AnimatedFooterProps> = ({
       />
       
       {/* Content that can be placed over the animation */}
-      <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 text-center pointer-events-none">
+      <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 text-center">
         <h3 className="text-xl md:text-2xl font-semibold text-green-800 mb-2">
-          בריאות טובה יותר עם הבנה טובה יותר
+          {t(TRANSLATION_KEYS.common.footer.animated.title, 'בריאות טובה יותר עם הבנה טובה יותר')}
         </h3>
-        <p className="text-gray-600 max-w-2xl mx-auto">
-          פתרונות אבחון וטיפול ב-ADHD, מותאמים לצרכים שלך
+        <p className="text-gray-600 max-w-2xl mx-auto mb-4">
+          {t(TRANSLATION_KEYS.common.footer.animated.tagline, 'פתרונות אבחון וטיפול ב-ADHD, מותאמים לצרכים שלך')}
         </p>
+        <Link 
+          to="/contact" 
+          className="inline-block bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-md text-lg font-bold transition-colors duration-300 shadow-md hover:shadow-lg"
+        >
+          {t(TRANSLATION_KEYS.common.footer.animated.cta, 'זמנו פגישה היום')}
+        </Link>
       </div>
     </div>
   );

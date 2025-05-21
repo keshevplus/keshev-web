@@ -69,8 +69,8 @@ export default function Forms() {
             />
             {/* File Downloads Card */}
             <Card
-              bgcolor="bg-green-800 hover:bg-green-900 w-full mt-4"
-              textColor="text-white font-bold"
+              bgcolor="bg-white hover:bg-orange-50 w-full mt-4"
+              textColor="text-green-900 font-bold"
               textSize="text-lg md:text-xl"
               paraSize="text-md md:text-lg"
               title="קבצים להורדה"
