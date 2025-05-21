@@ -1,3 +1,12 @@
 {
-
+  "admin": {
+    "title": "אזור ניהול",
+    "email": "כתובת אימייל",
+    "password": "סיסמה",
+    "login": "התחבר",
+    "logging_in": "מתחבר...",
+    "authorized_only": "הכניסה מורשית לאנשי הנהלה בלבד",
+    "show_password": "הצג סיסמה",
+    "hide_password": "הסתר סיסמה"
+  }
 }

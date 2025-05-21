@@ -2,6 +2,8 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext"; 
 import { useNavigate } from "react-router-dom"; 
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '../../components/LanguageSwitcher';
 
 const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -11,6 +13,8 @@ const AdminLogin: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { login } = useAuth(); 
   const navigate = useNavigate(); 
+  const { t, i18n } = useTranslation(['forms']); 
+  const isRTL = i18n.language === 'he';
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,6 +32,9 @@ const AdminLogin: React.FC = () => {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-green-50 px-6 py-12">
+      <div className="absolute top-4 right-4">
+        <LanguageSwitcher />
+      </div>
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <div className="flex justify-center mb-8">
           <img
@@ -38,13 +45,13 @@ const AdminLogin: React.FC = () => {
         </div>
         
         <h2 className="mb-6 text-center text-2xl font-bold text-gray-900">
-          אזור ניהול
+          {t('forms:admin.title')}
         </h2>
         
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-right text-gray-700 mb-1">
-              כתובת אימייל
+            <label htmlFor="email" className={`block text-sm font-medium ${isRTL ? 'text-right' : 'text-left'} text-gray-700 mb-1`}>
+              {t('forms:admin.email')}
             </label>
             <input
               id="email"
@@ -53,13 +60,13 @@ const AdminLogin: React.FC = () => {
               placeholder="dr@keshevplus.co.il"
               type="email"
               required
-              className="w-full px-3 py-2 text-right border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className={`w-full px-3 py-2 ${isRTL ? 'text-right' : 'text-left'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent`}
             />
           </div>
           
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-right text-gray-700 mb-1">
-              סיסמה
+            <label htmlFor="password" className={`block text-sm font-medium ${isRTL ? 'text-right' : 'text-left'} text-gray-700 mb-1`}>
+              {t('forms:admin.password')}
             </label>
             <div className="relative">
               <input
@@ -68,13 +75,13 @@ const AdminLogin: React.FC = () => {
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 type={showPassword ? 'text' : 'password'}
                 placeholder="******"
-                className="w-full px-3 py-2 text-right border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className={`w-full px-3 py-2 ${isRTL ? 'text-right' : 'text-left'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent`}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(prev => !prev)}
                 className="absolute inset-y-0 left-0 flex items-center px-3 text-gray-500 hover:text-gray-700 focus:outline-none"
-                aria-label={showPassword ? 'הסתר סיסמה' : 'הצג סיסמה'}
+                aria-label={showPassword ? t('forms:admin.hide_password') : t('forms:admin.show_password')}
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
@@ -92,12 +99,12 @@ const AdminLogin: React.FC = () => {
             disabled={isLoading}
             className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-300 disabled:bg-green-300 disabled:cursor-not-allowed"
           >
-            {isLoading ? 'מתחבר...' : 'התחבר'}
+            {isLoading ? t('forms:admin.logging_in') : t('forms:admin.login')}
           </button>
         </form>
         
         <p className="mt-4 text-center text-sm text-gray-500">
-          הכניסה מורשית לאנשי הנהלה בלבד
+          {t('forms:admin.authorized_only')}
         </p>
       </div>
     </div>
