@@ -26,7 +26,7 @@ export default function PageLayout({
   }, [withRtl]);
 
   return (
-    <div className={`${withRtl ? 'rtl' : ''} flex flex-col min-h-screen`}>
+    <div className={`${withRtl ? 'rtl' : ''} flex flex-col pb-10`}>
       <PageTitle title={title} />
       <div
         className={`${background} flex-grow pb-0 ${withAnimation ? 'animate-slide-in' : ''}`}

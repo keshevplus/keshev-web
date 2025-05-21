@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { HomePageContent } from '../types/content';
+import NeuralBackground from '../components/NeuralBackground';
 
 export default function Home() {
   const [pageData, setPageData] = useState<HomePageContent | null>(null);
@@ -24,8 +25,12 @@ export default function Home() {
   }
 
   return (
-    <div>
-      <div> 
+    <div className="relative">
+      {/* Neural network animated background - with reduced density and speed */}
+      {/* <NeuralBackground density={4} speed={3} opacity={0.3} /> */}
+      
+      {/* All content positioned with z-index to ensure it stays above background */}
+      <div className="relative z-10"> 
     <div className="rtl">
       {/* Hero Section - New Layout */}
       
