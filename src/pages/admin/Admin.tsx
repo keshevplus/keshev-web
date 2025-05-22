@@ -909,8 +909,29 @@ function LeadsManager() {
 }
 
 function Admin() {
-  const { user, logout } = useAuth() as AuthContextType;
+  const { user: authUser, logout } = useAuth() as AuthContextType;
   const navigate = useNavigate();
+  
+  // Create a fallback dev user if authentication fails
+  const [devFallbackActive, setDevFallbackActive] = React.useState(false);
+  const [user, setUser] = React.useState(authUser);
+
+  // If in development mode and no auth user, create a fallback
+  React.useEffect(() => {
+    if (authUser) {
+      setUser(authUser);
+      setDevFallbackActive(false);
+    } else if (import.meta.env.DEV && !devFallbackActive) {
+      console.log('[Admin] Creating development fallback user');
+      const fallbackUser = {
+        username: 'Development Admin (Fallback)',
+        email: 'dev@example.com',
+        role: 'admin'
+      };
+      setUser(fallbackUser);
+      setDevFallbackActive(true);
+    }
+  }, [authUser, devFallbackActive]);
 
   // State to track the authentication check status
   const [authChecked, setAuthChecked] = React.useState(false);
@@ -957,7 +978,14 @@ function Admin() {
   }, [user, navigate]);
 
   const handleLogout = () => {
-    logout();
+    // Only call the real logout if not using the fallback
+    if (!devFallbackActive) {
+      logout();
+    } else {
+      console.log('[Admin] Logging out fallback dev user');
+      setDevFallbackActive(false);
+      setUser(null);
+    }
     navigate('/admin/login');
   };
 
