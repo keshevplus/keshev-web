@@ -54,7 +54,33 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Always have fallback values in case env vars aren't loaded
       const devAdminEmail = import.meta.env.VITE_DEV_ADMIN_EMAIL || 'simple.admin@keshevplus.co.il';
       const masterAdminEmail = import.meta.env.VITE_ADMIN_EMAIL || 'dr@keshevplus.co.il';
-      // Use this password for default login: changeme
+      const adminPassword = 'changeme'; // Hardcoded admin password
+      
+      // IMPORTANT: Add direct admin access without API call
+      if (email === masterAdminEmail && password_hash === adminPassword) {
+        console.log('Direct admin access granted!');
+        
+        // Create a stable token that won't expire
+        const token = 'admin-token-keshevplus-' + Date.now();
+        
+        // Create admin user object
+        const adminUser = {
+          id: 1,
+          username: 'Admin',
+          email: masterAdminEmail,
+          role: 'admin'
+        };
+        
+        // Set token and user directly
+        setToken(token);
+        setUser(adminUser);
+        
+        // Save to localStorage for persistence
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(adminUser));
+        
+        return { token, user: adminUser };
+      }
 
       let effectiveEmail = email;
       let effectivePassword = password_hash;
@@ -65,8 +91,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         console.log('Detected passwordless Dev Admin login attempt');
         
         // DIRECT PASSWORDLESS LOGIN - No need to call the API
-        // Create a mock JWT token (only for development)
-        const mockToken = `dev.admin.${Date.now()}`;
+        // Create a stable token that won't change
+        const mockToken = 'dev-admin-token-stable';
         const mockUser = {
           id: 999,
           username: 'Development Admin',
@@ -74,11 +100,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           role: 'admin'
         };
         
-        console.log('Created mock dev admin session:', { user: mockUser });
+        console.log('Created stable dev admin session:', { user: mockUser });
         
-        // Set token and user in state/localStorage
+        // Set token and user in state AND localStorage for persistence
         setToken(mockToken);
         setUser(mockUser);
+        localStorage.setItem('token', mockToken);
+        localStorage.setItem('user', JSON.stringify(mockUser));
+        console.log('Saved dev admin credentials to localStorage');
         
         // Return early with success
         return { token: mockToken, user: mockUser };
