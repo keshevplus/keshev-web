@@ -913,8 +913,26 @@ function Admin() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
+    console.log('[Admin] Checking user authentication state:', user ? `User: ${user.username}` : 'No user');
+    
+    // Only redirect if we're sure the user is not authenticated
+    // Add a small delay to avoid race conditions with localStorage
     if (!user) {
-      navigate('/admin/login');
+      console.log('[Admin] No user found, preparing to redirect to login');
+      const timer = setTimeout(() => {
+        // Check again after a small delay in case the auth state is still being loaded
+        const tokenCheck = localStorage.getItem('token');
+        const userCheck = localStorage.getItem('user');
+        
+        if (!tokenCheck || !userCheck) {
+          console.log('[Admin] Still no authentication after delay, redirecting to login');
+          navigate('/admin/login');
+        } else {
+          console.log('[Admin] Authentication found after delay, staying on admin page');
+        }
+      }, 500);
+      
+      return () => clearTimeout(timer);
     }
   }, [user, navigate]);
 

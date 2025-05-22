@@ -57,7 +57,7 @@ const AdminLogin: React.FC = () => {
               id="email"
               value={email}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-              placeholder="dr@keshevplus.co.il"
+              placeholder="admin@user.com"
               type="email"
               required
               className={`w-full px-3 py-2 ${isRTL ? 'text-right' : 'text-left'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent`}
@@ -80,7 +80,7 @@ const AdminLogin: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(prev => !prev)}
-                className="absolute inset-y-0 left-0 flex items-center px-3 text-gray-500 hover:text-gray-700 focus:outline-none"
+                className={`absolute inset-y-0 ${isRTL ? 'left-0' : 'right-0'} flex items-center px-3 text-gray-500 hover:text-gray-700 focus:outline-none`}
                 aria-label={showPassword ? t('forms:admin.hide_password') : t('forms:admin.show_password')}
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -106,6 +106,12 @@ const AdminLogin: React.FC = () => {
         <p className="mt-4 text-center text-sm text-gray-500">
           {t('forms:admin.authorized_only')}
         </p>
+        
+        <div className="mt-4 text-center">
+          <a href="/admin/register" className="text-sm text-green-600 hover:text-green-800">
+            Create Test Admin Account
+          </a>
+        </div>
       </div>
     </div>
   );

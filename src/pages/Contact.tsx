@@ -16,7 +16,7 @@ const formSchema = z.object({
   phone: z
     .string()
     .regex(/^0(5[^7]|[2-4]|[8-9]|7[0-9])[0-9]{7}$/, 'מספר טלפון לא תקין'),
-  subject: z.string().optional(),
+  subject: z.string().min(1, 'אנא בחר נושא פנייה'),
   message: z.string().min(2, 'ההודעה חייבת להכיל לפחות 2 תווים'),
 });
 
@@ -142,8 +142,14 @@ const onSubmit = async (data: FormValues, event: any) => {
     event?.preventDefault?.();
     const loadingToastId = toast.loading('שולח את הטופס...', { position: 'top-center' });
     try {
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-      const response = await fetch(`${apiBaseUrl}/api/contact`, {
+      // Use the proxy server for development, or direct API for production
+      const isProduction = import.meta.env.PROD;
+      const apiUrl = isProduction 
+        ? `${import.meta.env.VITE_API_BASE_URL}/api/contact`
+        : 'http://localhost:3001/api/contact';
+      
+      console.log('Submitting form to:', apiUrl);
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -210,7 +216,8 @@ const onSubmit = async (data: FormValues, event: any) => {
           noValidate
         >
           <div className="grid grid-cols-1 gap-4 mb-4">
-            {[{ name: 'name', label: 'שם' }, { name: 'email', label: 'אימייל', type: 'email' }, { name: 'phone', label: 'טלפון', type: 'tel' }, { name: 'subject', label: 'נושא' }].map(({ name, label, type = 'text' }) => (
+            {/* Name, Email, Phone fields */}
+            {[{ name: 'name', label: 'שם' }, { name: 'email', label: 'אימייל', type: 'email' }, { name: 'phone', label: 'טלפון', type: 'tel' }].map(({ name, label, type = 'text' }) => (
               <div key={name} className="relative">
                 <input
                   {...register(name as keyof FormValues)}
@@ -225,6 +232,29 @@ const onSubmit = async (data: FormValues, event: any) => {
                 )}
               </div>
             ))}
+            
+            {/* Subject dropdown */}
+            <div className="relative">
+              <select
+                {...register('subject')}
+                className={`w-full p-3 rounded-lg border text-right ${errors.subject ? 'border-red-700 border-2' : 'border-gray-300 focus:border-green-500'}`}
+                defaultValue=""
+              >
+                <option value="" disabled>אנא בחר נושא פנייה</option>
+                <option value="זימון תור">זימון תור</option>
+                <option value="שאלות כלליות">שאלות כלליות</option>
+                <option value="המלצה">המלצה</option>
+                <option value="בדיקות MOXO">מידע על בדיקות MOXO</option>
+                <option value="אבחון">אבחון</option>
+                <option value="תרפיה">תרפיה</option>
+                <option value="אחר">אחר</option>
+              </select>
+              {errors.subject && (
+                <span className="absolute left-0 text-red-700 font-bold text-sm m-2">
+                  {errors.subject.message}
+                </span>
+              )}
+            </div>
           </div>
           <div className="relative mb-4">
             <textarea

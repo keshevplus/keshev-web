@@ -1,12 +1,21 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const DEV_ADMIN_TOKEN = 'dev-admin-token-xyz'; // The token set by AuthContext for the dev admin
+// In development, use the local proxy server to bypass CORS issues
+const IS_DEV = import.meta.env.DEV;
+
+// Local proxy server that forwards requests to the real API but bypasses CORS issues
+const PROXY_URL = 'http://localhost:3001/api';
+
+// Choose API URL based on environment - proxy for dev, real API for production
+export const API_BASE_URL = IS_DEV ? PROXY_URL : import.meta.env.VITE_API_BASE_URL;
+export const DEV_ADMIN_TOKEN = 'dev-admin-token-xyz'; // The token set by AuthContext for the dev admin
 
 // Helper function for authenticated API requests
 const authenticatedRequest = async (url: string, options: RequestInit = {}) => {
   const token = localStorage.getItem('token');
+  
+  console.log(`[API] Request to ${url} with token: ${token ? token.substring(0, 10) + '...' : 'none'}`);
 
-  // Check for Dev Admin Token
-  if (token === DEV_ADMIN_TOKEN) {
+  // Check for Dev Admin Token - matches exactly or starts with dev.admin
+  if (token === DEV_ADMIN_TOKEN || token?.startsWith('dev.admin')) {
     console.warn(`DEV ADMIN MODE: Skipping API call to ${url}. Returning mock/empty data.`);
     
     const defaultPagination = { total: 0, page: 1, limit: 10, totalPages: 1, hasNextPage: false, hasPrevPage: false };
@@ -251,5 +260,61 @@ export const leadsService = {
     return authenticatedRequest(`${API_BASE_URL}/admin/leads/${id}`, {
       method: 'DELETE'
     });
+  }
+};
+
+// Auth service for admin users
+export const authService = {
+  async login(email: string, password: string) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password_hash: password }),
+      });
+      
+      console.log('Login API response status:', response.status);
+      const data = await response.json();
+      if (!response.ok) {
+        console.error('Login failed:', data);
+        throw new Error(data?.message || `Login failed with status ${response.status}`);
+      }
+      return data;
+    } catch (error) {
+      console.error('API login error:', error);
+      throw error;
+    }
+  },
+  
+  async registerTestAdmin(email: string, password: string, username: string) {
+    // This is only for development purposes
+    if (!email || !password) {
+      throw new Error('Email and password are required');
+    }
+    
+    try {
+      // For development, we'll create a test admin directly
+      // In production, we would call the API
+      const testAdminData = {
+        token: `test-admin-${Date.now()}`,
+        user: {
+          id: 1000,
+          username: username || 'Test Admin',
+          email: email,
+          role: 'admin'
+        }
+      };
+      
+      // Store in localStorage to simulate a real login
+      localStorage.setItem('token', testAdminData.token);
+      localStorage.setItem('user', JSON.stringify(testAdminData.user));
+      
+      return testAdminData;
+    } catch (error) {
+      console.error('Error creating test admin:', error);
+      throw error;
+    }
   }
 };

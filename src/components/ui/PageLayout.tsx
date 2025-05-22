@@ -30,7 +30,12 @@ export default function PageLayout({
       <PageTitle title={title} />
       <div
         className={`${background} flex-grow pb-0 ${withAnimation ? 'animate-slide-in' : ''}`}
-        style={withAnimation ? { animation: 'slideUp 0.8s ease-out' } : {}}
+        style={withAnimation ? { 
+          animation: 'slideUp 0.8s ease-out',
+          minHeight: 'calc(100vh - 180px)' // Ensure content area is tall enough to maintain scroll position
+        } : {
+          minHeight: 'calc(100vh - 180px)' // Same min-height without animation
+        }}
       >
         <div className={`container mx-auto px-8 pb-4 ${maxWidth}`}>{children}</div>
       </div>
