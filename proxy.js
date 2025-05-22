@@ -42,7 +42,21 @@ const apiProxy = createProxyMiddleware({
     
     // Log request details
     console.log(`Proxying ${req.method} ${req.path}`);
-    if (req.body) {
+    
+    // Add detailed logging for auth and contact requests
+    if (req.path.includes('/auth/login')) {
+      console.log('Processing authentication request');
+      // Don't log password details for security
+      if (req.body) {
+        console.log('Auth request for email:', req.body.email);
+      }
+    } else if (req.path.includes('/contact')) {
+      console.log('Processing contact form submission');
+      if (req.body) {
+        console.log('Contact from:', req.body.name, req.body.email);
+      }
+    } else if (req.body) {
+      // General request body logging for other endpoints
       console.log('Request body:', req.body);
     }
   },
