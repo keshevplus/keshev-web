@@ -17,6 +17,7 @@ import NotFound from './pages/NotFound';
 // admin routes
 import Admin from './pages/admin/Admin';
 import AdminLogin from './pages/admin/AdminLogin';
+import RegisterAdmin from './pages/admin/RegisterAdmin';
 
 import { AuthProvider } from './contexts/AuthContext';
 import ScrollToTop from './components/ui/ScrollToTop';
@@ -41,6 +42,7 @@ function App() {
             <Routes>
               {/* Admin routes */}
               <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/register" element={<RegisterAdmin />} />
               <Route path="/admin/*" element={<Admin />} />
               {/* Public routes */}
               <Route

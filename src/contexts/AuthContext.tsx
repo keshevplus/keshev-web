@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { API_BASE_URL } from '../services/api';
 
 interface User {
   id: number;
@@ -30,11 +31,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!token && !!user);
 
   useEffect(() => {
+    console.log('[Auth] Effect triggered with token:', token ? `${token.substring(0, 10)}...` : 'none');
+    console.log('[Auth] User state:', user ? `${user.username} (${user.email})` : 'none');
+    
     if (token && user) {
+      console.log('[Auth] Saving authentication state to localStorage');
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       setIsAuthenticated(true);
     } else {
+      console.log('[Auth] Clearing authentication state - missing token or user');
+      console.log('[Auth] Token present:', !!token);
+      console.log('[Auth] User present:', !!user);
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       setIsAuthenticated(false);
@@ -79,10 +87,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
 
       // Common API login logic
-      const loginUrl = import.meta.env.VITE_API_BASE_URL ? `${import.meta.env.VITE_API_BASE_URL}/auth/login` : '';
-      if (!loginUrl) {
-        throw new Error('API base URL (VITE_API_BASE_URL) is not configured.');
+      // Use API_BASE_URL from api.ts to ensure we use the proxy in development
+      const loginUrl = `${API_BASE_URL}/auth/login`;
+      console.log('Using login URL:', loginUrl);
+      if (!API_BASE_URL) {
+        throw new Error('API base URL is not configured.');
       }
+      
+      console.log('Attempting standard login with:', { 
+        email: effectiveEmail,
+        hasPassword: !!effectivePassword,
+        loginUrl
+      });
 
       const response = await fetch(loginUrl, {
         method: 'POST',
@@ -91,14 +107,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         },
         body: JSON.stringify({ email: effectiveEmail, password_hash: effectivePassword }),
       });
+      
+      console.log('Login response status:', response.status);
 
-      const data = await response.json();
+      console.log('Attempting to parse login response data');
+      let data;
+      try {
+        data = await response.json();
+        console.log('Login response data:', data);
+      } catch (e) {
+        console.error('Error parsing login response JSON:', e);
+        throw new Error('Failed to parse login response. The API endpoint may not be responding correctly.');
+      }
+      
       if (!response.ok) {
         // If dev admin shortcut login failed, provide a specific error
+        console.error('Login failed with status:', response.status, 'Response data:', data);
         if (isDevAdminShortcut) {
-          throw new Error(`Dev Admin shortcut failed: API login with master credentials (${masterAdminEmail}) failed. API Error: ${data.message || 'Login failed.'}`);
+          throw new Error(`Dev Admin shortcut failed: API login with master credentials (${masterAdminEmail}) failed. API Error: ${data?.message || 'Login failed.'}`);
         }
-        throw new Error(data.message || 'Login failed.');
+        throw new Error(data?.message || `Login failed with status ${response.status}`);
       }
 
       // Successfully logged in (either normally or via dev admin shortcut using master creds)
