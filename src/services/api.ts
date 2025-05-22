@@ -96,14 +96,24 @@ const authenticatedRequest = async (url: string, options: RequestInit = {}) => {
     : `${API_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
 
   try {
+    console.log(`🔎 Making API request to: ${fullUrl}`);
+    console.log(`🔑 Using auth token: ${token ? token.substring(0, 10) + '...' : 'none'}`);
+    
+    // Prepare headers with both token formats for maximum compatibility
+    const headers = {
+      'x-auth-token': token, // Ensure your backend expects 'x-auth-token'
+      'Authorization': `Bearer ${token}`, // Add Bearer token format too for API compatibility
+      'Content-Type': 'application/json',
+      ...options.headers
+    };
+    
+    // Log the final request details
+    console.log('💬 Request headers:', Object.keys(headers));
+    console.log('💬 Request method:', options.method || 'GET');
+    
     const response = await fetch(fullUrl, {
       ...options,
-      headers: {
-        'x-auth-token': token, // Ensure your backend expects 'x-auth-token'
-        'Authorization': `Bearer ${token}`, // Add Bearer token format too for API compatibility
-        'Content-Type': 'application/json',
-        ...options.headers
-      }
+      headers
     });
 
     if (!response.ok) {
@@ -259,8 +269,14 @@ export const leadsService = {
       const response = await authenticatedRequest(`${API_BASE_URL}/admin/leads?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`);
       console.log('📊 API Response for leads:', response);
       
-      // ALWAYS show mock data for testing
-      console.log('📝 SHOWING MOCK LEADS FOR TESTING');
+      // Check if we got valid data from the API
+      if (response && response.leads) {
+        console.log('✅ Successfully retrieved leads from NeonDB:', response.leads.length);
+        return response;
+      }
+      
+      // Only show mock data if the API returned no leads or has an incorrect format
+      console.log('⚠️ No leads found in API response, using mock data as fallback');
       
       // Create mock leads for dev testing
       const mockLeads = [
@@ -306,7 +322,7 @@ export const leadsService = {
           hasPrevPage: false
         };
         
-        // Always return mock data for testing
+        // Return mock data only as fallback
         return { leads: mockLeads, pagination: mockPagination };
 
     } catch (error) {
