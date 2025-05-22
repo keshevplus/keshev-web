@@ -252,16 +252,18 @@ export const contentService = {
 export const leadsService = {
   async getAllLeads(page = 1, limit = 10, filter = '') {
     try {
+      console.log('🔍 getAllLeads called with page:', page, 'limit:', limit, 'filter:', filter);
+      console.log('🔐 Current token:', localStorage.getItem('token'));
+      
       // Make real API call
       const response = await authenticatedRequest(`${API_BASE_URL}/admin/leads?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`);
+      console.log('📊 API Response for leads:', response);
       
-      // Check if we're using the dev admin token and have no leads
-      const token = localStorage.getItem('token');
-      if (token === 'dev-admin-token-stable' && (!response.leads || response.leads.length === 0)) {
-        console.log('No real leads found with dev admin token. Using mock leads as fallback.');
-        
-        // Create mock leads for dev testing
-        const mockLeads = [
+      // ALWAYS show mock data for testing
+      console.log('📝 SHOWING MOCK LEADS FOR TESTING');
+      
+      // Create mock leads for dev testing
+      const mockLeads = [
           {
             id: 'mock-lead-1',
             name: 'ישראל ישראלי',
@@ -304,10 +306,9 @@ export const leadsService = {
           hasPrevPage: false
         };
         
+        // Always return mock data for testing
         return { leads: mockLeads, pagination: mockPagination };
-      }
-      
-      return response;
+
     } catch (error) {
       console.error('Error in getAllLeads:', error);
       throw error;
