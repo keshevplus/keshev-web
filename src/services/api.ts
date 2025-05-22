@@ -251,7 +251,67 @@ export const contentService = {
 // Leads service
 export const leadsService = {
   async getAllLeads(page = 1, limit = 10, filter = '') {
-    return authenticatedRequest(`${API_BASE_URL}/admin/leads?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`);
+    try {
+      // Make real API call
+      const response = await authenticatedRequest(`${API_BASE_URL}/admin/leads?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`);
+      
+      // Check if we're using the dev admin token and have no leads
+      const token = localStorage.getItem('token');
+      if (token === 'dev-admin-token-stable' && (!response.leads || response.leads.length === 0)) {
+        console.log('No real leads found with dev admin token. Using mock leads as fallback.');
+        
+        // Create mock leads for dev testing
+        const mockLeads = [
+          {
+            id: 'mock-lead-1',
+            name: 'ישראל ישראלי',
+            email: 'israel@example.com',
+            phone: '050-1234567',
+            subject: 'שאלה בנוגע לשירותים',
+            message: 'אני מעוניין לקבל מידע נוסף על השירותים שאתם מציעים לטיפול בהפרעות קשב וריכוז.',
+            created_at: new Date().toISOString(),
+            date_received: new Date().toISOString()
+          },
+          {
+            id: 'mock-lead-2',
+            name: 'שרה כהן',
+            email: 'sarah@example.com',
+            phone: '052-7654321',
+            subject: 'פנייה בנושא אבחון',
+            message: 'אשמח לקבוע פגישת ייעוץ לגבי אבחון ADHD למבוגרים. מהם הזמנים הפנויים בשבוע הבא?',
+            created_at: new Date(Date.now() - 86400000).toISOString(), // Yesterday
+            date_received: new Date(Date.now() - 86400000).toISOString()
+          },
+          {
+            id: 'mock-lead-3',
+            name: 'דוד לוי',
+            email: 'david@example.com',
+            phone: '054-9876543',
+            subject: 'התייעצות מקצועית',
+            message: 'אני מטפל המתמחה בטיפול בילדים עם ADHD ואשמח להתייעץ עם אחד המומחים שלכם בנוגע לשיטות טיפול חדשניות.',
+            created_at: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
+            date_received: new Date(Date.now() - 172800000).toISOString()
+          }
+        ];
+        
+        // Return mock data with appropriate pagination
+        const mockPagination = { 
+          total: mockLeads.length, 
+          page: 1, 
+          limit: 10, 
+          totalPages: 1,
+          hasNextPage: false,
+          hasPrevPage: false
+        };
+        
+        return { leads: mockLeads, pagination: mockPagination };
+      }
+      
+      return response;
+    } catch (error) {
+      console.error('Error in getAllLeads:', error);
+      throw error;
+    }
   },
 
   async getLeadById(id: string) {
