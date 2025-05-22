@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { HomePageContent } from '../types/content';
-import NeuralBackground from '../components/NeuralBackground';
+// import NeuralBackground from '../components/NeuralBackground';
 
 export default function Home() {
   const [pageData, setPageData] = useState<HomePageContent | null>(null);
@@ -76,7 +76,7 @@ export default function Home() {
       </div>
 
       {/* CTA Section */}
-      <div className="pt-16 pb-6 md:pt-20 md:pb-6 bg-green-800 text-white">
+      <div className="pt-16 pb-6 md:pt-20 md:pb-6 bg-gradient-to-b from-green-800 to-green-950 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             {t('home.cta.title', 'מוכנים להתחיל?')}
@@ -84,6 +84,12 @@ export default function Home() {
           <p className="text-xl mb-8 max-w-2xl mx-auto">
             {t('home.cta.subtitle', 'פנה אלינו היום כדי לקבוע את האבחון שלך ולקחת את הצעד הראשון לקראת חיים טובים יותר.')}
           </p>
+          
+          <div className="shine-text-container" >  
+           <span className="absolute hidden md:block  mx-10 left-16 top-24 transform -translate-x-1/2 z-50 text-white whitespace-nowrap bg-transparent px-3 py-1 hover:text-green-100 transition-all duration-300 text-base md:text-lg font-semibold shine-text"
+            > 055-27-399-27 </span>
+           </div>
+
           <Link
             to="/contact"
             className="inline-block bg-[#F7941D] text-black px-8 py-4 rounded-md text-lg font-bold hover:bg-white hover:text-[#005BAA] transition-colors duration-300 shadow-lg hover:shadow-xl"
