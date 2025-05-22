@@ -14,11 +14,16 @@ const authenticatedRequest = async (url: string, options: RequestInit = {}) => {
   
   console.log(`[API] Request to ${url} with token: ${token ? token.substring(0, 10) + '...' : 'none'}`);
 
-  // Check for Dev Admin Token - matches exactly or starts with dev.admin
-  if (token === DEV_ADMIN_TOKEN || token?.startsWith('dev.admin')) {
-    console.warn(`DEV ADMIN MODE: Skipping API call to ${url}. Returning mock/empty data.`);
+  // Previously we returned mock data for dev admin tokens, but now we want real API data
+  // Check if it's the old dev admin token that should return mock data
+  if (token === 'dev-admin-token-xyz') {
+    console.warn(`LEGACY DEV ADMIN MODE: Skipping API call to ${url}. Returning mock/empty data.`);
     
     const defaultPagination = { total: 0, page: 1, limit: 10, totalPages: 1, hasNextPage: false, hasPrevPage: false };
+  } else if (token === 'dev-admin-token-stable' || token?.startsWith('admin-token-keshevplus')) {
+    // The new dev admin tokens will use real API data
+    console.log(`ADMIN MODE: Making real API call to ${url} with admin token.`);
+    // Continue with real API call by not returning early here
 
     // For GET requests in dev admin mode, provide structured mock data
     if (!options.method || options.method.toUpperCase() === 'GET') {
