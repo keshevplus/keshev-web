@@ -86,13 +86,13 @@ export default function Home() {
           </p>
           
           <div className="shine-text-container" >  
-           <span className="absolute hidden md:block  mx-10 left-16 top-24 transform -translate-x-1/2 z-50 text-white whitespace-nowrap bg-transparent px-3 py-1 hover:text-green-100 transition-all duration-300 text-base md:text-lg font-semibold shine-text"
+           <span className="absolute md:block  mx-10 left-16 top-24 transform -translate-x-1/2 z-50 text-white whitespace-nowrap bg-transparent px-3 py-1 hover:text-green-100 transition-all duration-300 text-base md:text-lg font-semibold shine-text"
             > 055-27-399-27 </span>
            </div>
 
           <Link
             to="/contact"
-            className="inline-block bg-[#F7941D] text-black px-8 py-4 rounded-md text-lg font-bold hover:bg-white hover:text-[#005BAA] transition-colors duration-300 shadow-lg hover:shadow-xl"
+            className="inline-block bg-[#F7941D] text-black px-8 pb-4 rounded-md text-lg font-bold hover:bg-white hover:text-[#005BAA] transition-colors duration-300 shadow-lg hover:shadow-xl"
           >
             {t('home.cta.button', 'צרו קשר עכשיו')}
           </Link>
