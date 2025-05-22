@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { API_BASE_URL } from '../services/api';
+// Don't import API_BASE_URL since we're using direct connection for login
 
 interface User {
   id: number;
@@ -54,7 +54,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Always have fallback values in case env vars aren't loaded
       const devAdminEmail = import.meta.env.VITE_DEV_ADMIN_EMAIL || 'simple.admin@keshevplus.co.il';
       const masterAdminEmail = import.meta.env.VITE_ADMIN_EMAIL || 'dr@keshevplus.co.il';
-      const masterAdminPassword = import.meta.env.VITE_ADMIN_PASSWORD || 'changeme';
+      // Use this password for default login: changeme
 
       let effectiveEmail = email;
       let effectivePassword = password_hash;
@@ -87,13 +87,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         throw new Error('Password is required for standard login.');
       }
 
-      // Common API login logic
-      // Use API_BASE_URL from api.ts to ensure we use the proxy in development
-      const loginUrl = `${API_BASE_URL}/auth/login`;
-      console.log('Using login URL:', loginUrl);
-      if (!API_BASE_URL) {
-        throw new Error('API base URL is not configured.');
-      }
+      // For login, always use the production API directly to avoid proxy issues
+      // This ensures consistent login behavior in all environments
+      const prodApiBase = 'https://api.keshevplus.co.il/api';
+      const loginUrl = `${prodApiBase}/auth/login`;
+      console.log('Using direct production login URL:', loginUrl);
+      
+      // Log detailed auth attempt info
+      console.log('Login attempt details:', {
+        email: effectiveEmail,
+        passwordProvided: !!effectivePassword,
+        passwordLength: effectivePassword ? effectivePassword.length : 0,
+        loginUrl
+      });
       
       console.log('Attempting standard login with:', { 
         email: effectiveEmail,
