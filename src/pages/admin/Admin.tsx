@@ -912,25 +912,45 @@ function Admin() {
   const { user, logout } = useAuth() as AuthContextType;
   const navigate = useNavigate();
 
+  // State to track the authentication check status
+  const [authChecked, setAuthChecked] = React.useState(false);
+
+  // First useEffect - just check localStorage directly and log what's there
   React.useEffect(() => {
-    console.log('[Admin] Checking user authentication state:', user ? `User: ${user.username}` : 'No user');
+    const tokenCheck = localStorage.getItem('token');
+    const userCheck = localStorage.getItem('user');
+    console.log('[Admin] Initial localStorage check:', { 
+      hasToken: !!tokenCheck, 
+      hasUserData: !!userCheck,
+      userData: userCheck ? JSON.parse(userCheck) : null
+    });
+  }, []);
+
+  // Second useEffect - handle authentication status with a longer delay
+  React.useEffect(() => {
+    console.log('[Admin] Checking user authentication state:', user ? user.username : 'No user');
     
-    // Only redirect if we're sure the user is not authenticated
-    // Add a small delay to avoid race conditions with localStorage
-    if (!user) {
-      console.log('[Admin] No user found, preparing to redirect to login');
+    if (!user && !authChecked) {
+      console.log('[Admin] No user found in context, preparing delayed check');
+      
+      // Give a longer delay to see if auth state updates
       const timer = setTimeout(() => {
-        // Check again after a small delay in case the auth state is still being loaded
+        // Check localStorage directly in case the context hasn't updated yet
         const tokenCheck = localStorage.getItem('token');
         const userCheck = localStorage.getItem('user');
+        
+        console.log('[Admin] Delayed auth check:', { hasToken: !!tokenCheck, hasUserData: !!userCheck });
         
         if (!tokenCheck || !userCheck) {
           console.log('[Admin] Still no authentication after delay, redirecting to login');
           navigate('/admin/login');
         } else {
-          console.log('[Admin] Authentication found after delay, staying on admin page');
+          console.log('[Admin] Authentication found in localStorage, staying on admin page');
+          // Force a page reload to ensure the auth context picks up the stored credentials
+          window.location.reload();
         }
-      }, 500);
+        setAuthChecked(true);
+      }, 1500); // Increased from 500ms to 1500ms
       
       return () => clearTimeout(timer);
     }

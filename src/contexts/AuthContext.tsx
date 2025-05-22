@@ -51,9 +51,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (email: string, password_hash?: string) => {
     try {
-      const devAdminEmail = import.meta.env.VITE_DEV_ADMIN_EMAIL;
+      // Always have fallback values in case env vars aren't loaded
+      const devAdminEmail = import.meta.env.VITE_DEV_ADMIN_EMAIL || 'simple.admin@keshevplus.co.il';
       const masterAdminEmail = import.meta.env.VITE_ADMIN_EMAIL || 'dr@keshevplus.co.il';
-      const masterAdminPassword = import.meta.env.VITE_ADMIN_PASSWORD;
+      const masterAdminPassword = import.meta.env.VITE_ADMIN_PASSWORD || 'changeme123';
 
       let effectiveEmail = email;
       let effectivePassword = password_hash;
