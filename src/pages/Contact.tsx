@@ -218,6 +218,7 @@ const onSubmit = async (data: FormValues, event: any) => {
             toast.success('הודעה שנשמרה נשלחה בהצלחה!');
           }
         } catch (err) {
+          console.log('Error resending message:', err);
           // Still failing, keep in queue
         }
       }
