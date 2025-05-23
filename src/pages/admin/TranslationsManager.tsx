@@ -38,12 +38,10 @@ export default function TranslationsManager() {
   const [loading, setLoading] = useState(true);
   const [selectedNamespace, setSelectedNamespace] = useState('common');
   const [searchQuery, setSearchQuery] = useState('');
-  const [newKey, setNewKey] = useState({ namespace: 'common', key: '', translations: {} });
+  const [newKey, setNewKey] = useState<{ namespace: string; key: string; translations: Record<string, string> }>({ namespace: 'common', key: '', translations: {} });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isAddingKey, setIsAddingKey] = useState(false);
-  
-  const navigate = useNavigate();
 
   // Load languages
   useEffect(() => {
