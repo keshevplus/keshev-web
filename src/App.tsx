@@ -26,6 +26,7 @@ import store from './store/store';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ErrorBoundary from './components/ErrorBoundary';
+import AdminErrorBoundary from './components/AdminErrorBoundary';
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import AccessibilityWidget from './components/acc/AccessibilityWidget';
 
@@ -40,10 +41,16 @@ function App() {
             {/* Accessibility Widget - Israeli Standard 5568 compliant */}
             <AccessibilityWidget />
             <Routes>
-              {/* Admin routes */}
-              <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/admin/register" element={<RegisterAdmin />} />
-              <Route path="/admin/*" element={<Admin />} />
+              {/* Admin routes - isolated with specialized admin error boundary */}
+              <Route path="/admin/*" element={
+                <AdminErrorBoundary>
+                  <Routes>
+                    <Route path="/login" element={<AdminLogin />} />
+                    <Route path="/register" element={<RegisterAdmin />} />
+                    <Route path="/*" element={<Admin />} />
+                  </Routes>
+                </AdminErrorBoundary>
+              } />
               {/* Public routes */}
               <Route
                 path="*"
