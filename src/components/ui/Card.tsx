@@ -28,12 +28,9 @@ const Card: React.FC<CardProps> = ({
   const [animate, setAnimate] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [isOverflowing, setIsOverflowing] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
   const descriptionRef = useRef<HTMLDivElement>(null);
 
-  // Handle hover state for subtle animations
-  const handleMouseEnter = () => setIsHovered(true);
-  const handleMouseLeave = () => setIsHovered(false);
+  // We don't need hover state as we're using CSS hover effects instead
   
   useEffect(() => {
     const timeout = setTimeout(() => setAnimate(true), 500); // Delay animation slightly
