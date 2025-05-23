@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { HomePageContent } from '../types/content';
+import '../styles/shine.css'; // Import shine effect CSS
 // import NeuralBackground from '../components/NeuralBackground';
 
 export default function Home() {
@@ -85,10 +86,11 @@ export default function Home() {
             {t('home.cta.subtitle', 'פנה אלינו היום כדי לקבוע את האבחון שלך ולקחת את הצעד הראשון לקראת חיים טובים יותר.')}
           </p>
           
-          <div className="shine-text-container" >  
-           <span className="absolute md:block  mx-10 left-16 top-24 transform -translate-x-1/2 z-50 text-white whitespace-nowrap bg-transparent px-3 py-1 hover:text-green-100 transition-all duration-300 text-base md:text-lg font-semibold shine-text"
-            > 055-27-399-27 </span>
-           </div>
+          <div className="shine-text-container text-center" >  
+            <span className="shine-text text-2xl md:text-3xl text-white whitespace-nowrap bg-transparent hover:text-green-100 transition-all duration-300 font-semibold">
+              055-27-399-27
+            </span>
+          </div>
 
           <Link
             to="/contact"
