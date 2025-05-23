@@ -3,12 +3,15 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { pagesService, servicesService, formsService, messagesService, leadsService } from '../../services/api';
 import { useTranslation } from 'react-i18next';
-import { FiRefreshCw, FiAlertTriangle, FiCheckCircle, FiMenu, FiX } from 'react-icons/fi';
+import { FiRefreshCw, FiAlertTriangle, FiCheckCircle, FiMenu, FiX, FiLogOut, FiMoon, FiSun } from 'react-icons/fi';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiHome, FiFileText, FiMessageSquare, FiUsers, FiSettings, FiGlobe, FiLayout } from 'react-icons/fi';
+import LanguageSwitcher from '../../components/LanguageSwitcher';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface AdminDashboardProps {
   darkMode?: boolean;
+  toggleDarkMode?: () => void;
 }
 
 type ResourceStatus = 'idle' | 'loading' | 'success' | 'error';
@@ -26,7 +29,7 @@ interface NavItem {
   icon: React.ReactNode;
 }
 
-const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false }) => {
+const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggleDarkMode }) => {
   const [resources, setResources] = useState({
     pages: { status: 'idle' as ResourceStatus, count: 0, error: null, lastUpdated: null },
     services: { status: 'idle' as ResourceStatus, count: 0, error: null, lastUpdated: null },
@@ -34,13 +37,19 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false }) => 
     messages: { status: 'idle' as ResourceStatus, count: 0, error: null, lastUpdated: null },
     leads: { status: 'idle' as ResourceStatus, count: 0, error: null, lastUpdated: null }
   });
+  const [messageCount, setMessageCount] = useState(0);
+  const [newMessagesCount, setNewMessagesCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const isRtl = i18n.language === 'he';
+  
+  // Timer ref for periodic message checking
+  const messageCheckIntervalRef = useRef<number | null>(null);
 
   // Navigation items for the mobile menu - slim and compact
   const navItems: NavItem[] = [
@@ -67,43 +76,93 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false }) => 
     };
   }, []);
 
+  // Set up periodic message checking
+  useEffect(() => {
+    // Initial check
+    checkForNewMessages();
+    
+    // Set up interval for checking new messages (every 30 seconds)
+    const intervalId = window.setInterval(() => {
+      checkForNewMessages();
+    }, 30000);
+    
+    messageCheckIntervalRef.current = intervalId;
+    
+    // Clean up on unmount
+    return () => {
+      if (messageCheckIntervalRef.current) {
+        window.clearInterval(messageCheckIntervalRef.current);
+      }
+    };
+  }, []);
+
+  // Function to check for new messages
+  const checkForNewMessages = async () => {
+    try {
+      const messagesRes = await messagesService.getAllMessages();
+      const newCount = messagesRes?.messages?.length || 0;
+      
+      // If we already had a count and the new count is higher, we have new messages
+      if (messageCount > 0 && newCount > messageCount) {
+        setNewMessagesCount(newCount - messageCount);
+      }
+      
+      // Update the message count
+      setMessageCount(newCount);
+    } catch (error) {
+      console.error('Error checking for new messages:', error);
+    }
+  };
+
   // Fetch all statistics
   useEffect(() => {
-    async function fetchStats() {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        const [pagesRes, servicesRes, formsRes, messagesRes, leadsRes] = await Promise.all([
-          pagesService.getAllPages(),
-          servicesService.getAllServices(),
-          formsService.getAllForms(),
-          messagesService.getAllMessages(),
-          leadsService.getAllLeads(),
-        ]);
-
-        setResources({
-          pages: { status: 'success', count: pagesRes.length, error: null, lastUpdated: new Date() },
-          services: { status: 'success', count: servicesRes.length, error: null, lastUpdated: new Date() },
-          forms: { status: 'success', count: formsRes.length, error: null, lastUpdated: new Date() },
-          messages: { status: 'success', count: messagesRes?.messages?.length || 0, error: null, lastUpdated: new Date() },
-          leads: { status: 'success', count: leadsRes?.leads?.length || 0, error: null, lastUpdated: new Date() }
-        });
-      } catch (error) {
-        console.error('Error fetching stats:', error);
-        setError('Failed to load dashboard data');
-      } finally {
-        setLoading(false);
-      }
-    }
-
     fetchStats();
   }, []);
+
+  async function fetchStats() {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const [pagesRes, servicesRes, formsRes, messagesRes, leadsRes] = await Promise.all([
+        pagesService.getAllPages(),
+        servicesService.getAllServices(),
+        formsService.getAllForms(),
+        messagesService.getAllMessages(),
+        leadsService.getAllLeads(),
+      ]);
+
+      // Update message count for notification badge
+      const newCount = messagesRes?.messages?.length || 0;
+      setMessageCount(newCount);
+
+      setResources({
+        pages: { status: 'success', count: pagesRes.length, error: null, lastUpdated: new Date() },
+        services: { status: 'success', count: servicesRes.length, error: null, lastUpdated: new Date() },
+        forms: { status: 'success', count: formsRes.length, error: null, lastUpdated: new Date() },
+        messages: { status: 'success', count: messagesRes?.messages?.length || 0, error: null, lastUpdated: new Date() },
+        leads: { status: 'success', count: leadsRes?.leads?.length || 0, error: null, lastUpdated: new Date() }
+      });
+      } catch (error) {
+        console.error('Error fetching stats:', error);
+    }
+  }
 
   // Navigate to different admin sections
   const handleNavigation = (path: string) => {
     navigate(path);
     setMobileMenuOpen(false);
+    
+    // If navigating to messages, reset the new messages counter
+    if (path === '/admin/messages') {
+      setNewMessagesCount(0);
+    }
+  };
+  
+  // Handle logout
+  const handleLogout = () => {
+    logout();
+    navigate('/admin/login');
   };
 
   return (
@@ -132,7 +191,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false }) => 
               : '-translate-x-full'
         }`}
       >
-        <div className="p-3 border-b border-gray-200 dark:border-gray-700">
+        <div className="px-4 py-3 flex items-center justify-between border-b border-gray-200">
+          <button
+            className="text-gray-500 hover:text-gray-700 focus:outline-none"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <FiX size={20} />
+          </button>
           <h3 className="text-sm font-semibold truncate">
             {t('admin.admin_panel', 'Admin Panel')}
           </h3>
@@ -144,17 +209,78 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false }) => 
               <li key={index}>
                 <button
                   onClick={() => handleNavigation(item.path)}
-                  className={`w-full text-left flex items-center px-3 py-2 text-xs ${
+                  className={`w-full text-left flex items-center justify-between px-3 py-2 text-xs ${
                     darkMode 
                       ? 'hover:bg-gray-700' 
                       : 'hover:bg-gray-100'
                   } transition-colors duration-200`}
                 >
-                  <span className="mr-3">{item.icon}</span>
-                  <span className="truncate">{item.title}</span>
+                  <div className="flex items-center">
+                    <span className="mr-3">{item.icon}</span>
+                    <span className="truncate">{item.title}</span>
+                  </div>
+                  
+                  {/* Badge for new messages */}
+                  {item.path === '/admin/messages' && newMessagesCount > 0 && (
+                    <span className="flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 ml-2">
+                      {newMessagesCount > 9 ? '9+' : newMessagesCount}
+                    </span>
+                  )}
                 </button>
               </li>
             ))}
+          </ul>
+          
+          {/* Divider */}
+          <div className="border-t border-gray-200 my-3"></div>
+          
+          {/* Admin, Logout, Dark Mode Toggle, Language Switcher */}
+          <ul>
+            {/* Admin section */}
+            <li>
+              <div className="px-3 py-2 text-xs text-gray-500">
+                {t('admin.admin', 'Admin')}
+              </div>
+            </li>
+            
+            {/* Logout button */}
+            <li>
+              <button
+                onClick={handleLogout}
+                className={`w-full text-left flex items-center px-3 py-2 text-xs ${
+                  darkMode 
+                    ? 'hover:bg-gray-700 text-red-400 hover:text-red-300' 
+                    : 'hover:bg-gray-100 text-red-600 hover:text-red-700'
+                } transition-colors duration-200`}
+              >
+                <span className="mr-3"><FiLogOut size={16} /></span>
+                <span className="truncate">{t('navigation.logout', 'Logout')}</span>
+              </button>
+            </li>
+            
+            {/* Dark Mode Toggle */}
+            <li>
+              <button
+                onClick={toggleDarkMode}
+                className={`w-full text-left flex items-center px-3 py-2 text-xs ${
+                  darkMode 
+                    ? 'hover:bg-gray-700 text-yellow-300' 
+                    : 'hover:bg-gray-100 text-gray-600'
+                } transition-colors duration-200`}
+              >
+                <span className="mr-3">{darkMode ? <FiSun size={16} /> : <FiMoon size={16} />}</span>
+                <span className="truncate">{darkMode ? t('admin.light_mode', 'Light Mode') : t('admin.dark_mode', 'Dark Mode')}</span>
+              </button>
+            </li>
+            
+            {/* Language Switcher */}
+            <li className="px-3 py-2">
+              <div className="flex items-center">
+                <span className="mr-3"><FiGlobe size={16} /></span>
+                <span className="truncate text-xs mr-2">{t('admin.language', 'Language')}:</span>
+                <LanguageSwitcher />
+              </div>
+            </li>
           </ul>
         </nav>
       </div>
@@ -211,9 +337,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false }) => 
               <p className="text-2xl font-bold">{resources.forms.count}</p>
             </div>
             
-            <div className={`${darkMode ? 'bg-gray-700 text-white' : 'bg-white'} p-4 rounded-lg shadow-sm`}>
+            <div className={`${darkMode ? 'bg-gray-700 text-white' : 'bg-white'} p-4 rounded-lg shadow-sm relative`}>
               <h3 className="text-sm font-medium mb-1">Messages</h3>
-              <p className="text-2xl font-bold">{resources.messages.count}</p>
+              <div className="flex items-center">
+                <p className="text-2xl font-bold">{resources.messages.count}</p>
+                {newMessagesCount > 0 && (
+                  <span className="ml-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                    +{newMessagesCount} new
+                  </span>
+                )}
+              </div>
             </div>
             
             <div className={`${darkMode ? 'bg-gray-700 text-white' : 'bg-white'} p-4 rounded-lg shadow-sm`}>
