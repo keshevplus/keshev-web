@@ -1,12 +1,13 @@
 // Admin.tsx
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Routes, Route, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { pagesService, servicesService, formsService, contentService, leadsService, messagesService } from '../../services/api';
 import TranslationsManager from './TranslationsManager';
+import MessagesManager from './MessagesManager';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
 // Interfaces for our content types
 interface Page {
@@ -916,73 +917,6 @@ function LeadsManager({ darkMode = false }: { darkMode?: boolean }) {
           <span className={darkMode ? 'text-gray-200' : 'text-gray-600'}>
             Page {pagination.page} of {pagination.totalPages} 
             {pagination.total > 0 && <span className="text-sm ml-2">({pagination.total} leads total)</span>}
-          </span>
-          <button
-            onClick={() => setPage(p => p + 1)}
-            disabled={page >= pagination.totalPages}
-            className={`px-4 py-2 rounded-lg disabled:opacity-50 ${
-              darkMode 
-                ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 disabled:bg-gray-800' 
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
-          >
-            Next
-          </button>
-        </div>
-                        onClick={() => setExpandedRowId(message.id)}
-                      >
-                        Details
-                      </button>
-                      <button
-                        onClick={() => handleDelete(message.id)}
-                        className={`${darkMode ? 'text-red-400 hover:text-red-300' : 'text-red-600 hover:text-red-800'}`}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                  {expandedRowId === message.id && (
-                    <tr>
-                      <td colSpan={6} className={`p-4 ${darkMode ? 'bg-gray-700 text-gray-200' : 'bg-gray-50 text-gray-800'}`}>
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
-                          <div><strong>Name:</strong> {message.name}</div>
-                          <div><strong>Email:</strong> {message.email}</div>
-                          <div><strong>Subject:</strong> {message.subject}</div>
-                          <div className="col-span-2"><strong>Message:</strong> {message.message}</div>
-                          <div><strong>Received:</strong> {message.created_at ? new Date(message.created_at).toLocaleString('en-US') : 'N/A'}</div>
-                        </div>
-                        <button
-                          className={`mt-2 ${darkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-800'}`}
-                          onClick={() => setExpandedRowId(null)}
-                        >
-                          Close details
-                        </button>
-                      </td>
-                    </tr>
-                  )}
-                </React.Fragment>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      {pagination.totalPages > 1 && (
-        <div className="mt-4 flex justify-between items-center">
-          <button
-            onClick={() => setPage(p => Math.max(1, p - 1))}
-            disabled={page === 1}
-            className={`px-4 py-2 rounded-lg disabled:opacity-50 ${
-              darkMode 
-                ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 disabled:bg-gray-800' 
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
-          >
-            Previous
-          </button>
-          <span className={darkMode ? 'text-gray-200' : 'text-gray-600'}>
-            Page {pagination.page} of {pagination.totalPages} 
-            {pagination.total > 0 && <span className="text-sm ml-2">({pagination.total} messages total)</span>}
           </span>
           <button
             onClick={() => setPage(p => p + 1)}
