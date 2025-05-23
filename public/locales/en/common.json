@@ -5,7 +5,8 @@
   },
   "admin": {
     "admin_panel": "Admin Panel",
-    "dashboard": "DASHBOARD"
+    "dashboard": "DASHBOARD",
+    "menu": "Menu"
   },
   "navigation": {
     "home": "Home",

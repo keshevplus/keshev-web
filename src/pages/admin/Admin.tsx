@@ -1,61 +1,36 @@
 // Admin.tsx
 
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Routes, Route, Link } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import React, { useContext, useState, useEffect } from 'react';
+import { Routes, Route, useNavigate, Link, useLocation } from 'react-router-dom';
+import { AuthContext } from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
-import { pagesService, servicesService, formsService, contentService, leadsService, messagesService } from '../../services/api';
-import TranslationsManager from './TranslationsManager';
+
+// Import individual admin components
+import LeadsManager from './LeadsManager';
 import MessagesManager from './MessagesManager';
+import PagesManager from './PagesManager';
+import ServicesManager from './ServicesManager';
+import AdminDashboard from './AdminDashboard';
+import ContentManager from './ContentManager';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
-// Interfaces for our content types
-interface Page {
-  id: string;
-  slug: string;
-  title: string;
-  status: string;
-  sections?: PageSection[];
-}
-
-interface PageSection {
-  id: string;
-  page_id: string;
-  section_type: string;
-  title: string;
-  content: string;
-  content_json: any;
-  display_order: number;
-}
-
-interface Service {
-  id: string;
-  title: string;
-  description: string;
-  icon: string;
-  image_url: string;
-  display_order: number;
-}
 
 interface Form {
   id: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  file_url: string;
-  image_url: string;
+  form_type: string;
+  fields: FormField[];
+  submit_text: string;
+  success_message: string;
   display_order: number;
 }
 
-interface Content {
-  id: string;
-  title: string;
-  content_type: string;
-  content_data: any;
-  status: string;
-  created_by: string;
-  created_at: string;
-  updated_at: string;
+interface FormField {
+  field_type: string;
+  name: string;
+  label: string;
+  placeholder: string;
+  required: boolean;
+  options?: string[];
+  display_order: number;
 }
 
 interface Lead {
@@ -66,10 +41,10 @@ interface Lead {
   subject: string;
   message: string;
   created_at: string;
-  date_received: string;
+  updated_at: string;
 }
 
-export interface AuthContextType {
+interface AuthContextType {
   user: { username: string } | null;
   logout: () => void;
 }
@@ -124,38 +99,7 @@ function AdminDashboard({ darkMode = false }: { darkMode?: boolean }) {
   );
 }
 
-function ContentEditable<T extends string | number>({
-  content,
-  onUpdate,
-  className = '',
-}: {
-  content: T;
-  onUpdate: (value: string) => void;
-  className?: string;
-}) {
-  const element = React.useRef<HTMLDivElement>(null);
-
-  const handleBlur = () => {
-    if (element.current) {
-      const newContent = element.current.innerText;
-      if (newContent !== String(content)) {
-        onUpdate(newContent);
-      }
-    }
-  };
-
-  return (
-    <div
-      ref={element}
-      contentEditable
-      onBlur={handleBlur}
-      className={`focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2 py-1 ${className}`}
-      suppressContentEditableWarning
-    >
-      {String(content)}
-    </div>
-  );
-}
+// Removed duplicate implementations since we're now importing external components
 
 function PagesManager() {
   const [pages, setPages] = React.useState<Page[]>([]);
@@ -619,339 +563,79 @@ function FormsManager() {
                   }
                   className="w-16 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 />
-  const [content, setContent] = React.useState<Content[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  const { i18n } = useTranslation();
-  const isRtl = i18n.language === 'he';
-
-  React.useEffect(() => {
-    fetchContent();
-  }, []);
-
-  async function fetchContent() {
-    try {
-      const contentData = await contentService.getAllContent();
-      setContent(contentData);
-    } catch (error) {
-      console.error('Error fetching content:', error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function handleDelete(id: string) {
-    if (window.confirm('Are you sure you want to delete this content?')) {
-      try {
-        await contentService.deleteContent(id);
-        fetchContent();
-      } catch (error) {
-        console.error('Error deleting content:', error);
-      }
-    }
-  }
-
-  if (loading) {
-          Next
-        </button>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
-function LeadsManager({ darkMode = false }: { darkMode?: boolean }) {
-  const [leads, setLeads] = React.useState<Lead[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  const [page, setPage] = React.useState(1);
-  const [filter, setFilter] = React.useState('');
-  const [pagination, setPagination] = React.useState({
-    total: 0,
-    page: 1,
-    limit: 10,
-    totalPages: 1
-  });
-  const [expandedRowId, setExpandedRowId] = React.useState<string | null>(null);
-
-  React.useEffect(() => {
-    fetchLeads();
-  }, [page, filter]);
-
-  async function fetchLeads() {
-    try {
-      setLoading(true);
-      const response = await leadsService.getAllLeads(page, 10, filter);
-      setLeads(response.leads);
-      setPagination(response.pagination);
-    } catch (error) {
-      console.error('Error fetching leads:', error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function handleDelete(id: string) {
-    if (window.confirm('Are you sure you want to delete this lead?')) {
-      try {
-        await leadsService.deleteLead(id);
-        fetchLeads();
-      } catch (error) {
-        console.error('Error deleting lead:', error);
-      }
-    }
-  }
-  
-  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilter(e.target.value);
-    setPage(1); // Reset to first page when filter changes
-  };
-
-  const { i18n } = useTranslation();
-  const isRtl = i18n.language === 'he';
-
-  if (loading && leads.length === 0) {
-    return (
-      <div className={`p-6 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
-        <div className="flex justify-center">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="p-6" style={{ direction: isRtl ? 'rtl' : 'ltr' }}>
-      <h2 className={`text-2xl font-bold mb-6 ${darkMode ? 'text-white' : 'text-gray-800'}`}>Leads Management</h2>
-
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Search by name, email, or phone"
-          value={filter}
-          onChange={handleFilterChange}
-          className={`w-full md:w-1/2 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-            darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300 text-gray-800'
-          }`}
-        />
-      </div>
-
-      <div className={`rounded-lg shadow overflow-hidden overflow-x-auto ${darkMode ? 'bg-gray-800' : 'bg-white'}`} style={{ maxWidth: '100%', width: '100%' }}>
-        <table className="w-full" style={{ borderSpacing: '0', borderCollapse: 'separate' }}>
-          <thead className={`${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
-            <tr>
-              <th className={`px-4 py-3 text-left text-xs font-medium uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Name</th>
-              <th className={`px-4 py-3 text-left text-xs font-medium uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Email</th>
-              <th className={`px-4 py-3 text-left text-xs font-medium uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Phone</th>
-              <th className={`px-4 py-3 text-left text-xs font-medium uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Subject</th>
-              <th className={`px-4 py-3 text-left text-xs font-medium uppercase tracking-wider w-1/4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Message</th>
-              <th className={`px-4 py-3 text-left text-xs font-medium uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Created At</th>
-              <th className={`px-4 py-3 text-left text-xs font-medium uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Actions</th>
-            </tr>
-          </thead>
-          <tbody className={`${darkMode ? 'bg-gray-800 divide-gray-700' : 'bg-white divide-gray-200'} divide-y`}>
-            {leads.length === 0 ? (
-              <tr>
-                <td colSpan={7} className={`px-6 py-4 text-center ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>
-                  {filter ? 'No leads match your search' : 'No leads found'}
-                </td>
-              </tr>
-            ) : (
-              leads.map((lead) => (
-                <React.Fragment key={lead.id}>
-                  <tr className={darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-50'}>
-                    <td className={`px-4 py-2 text-sm ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{lead.name}</td>
-                    <td className={`px-4 py-2 text-sm ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{lead.email}</td>
-                    <td className={`px-4 py-2 text-sm ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{lead.phone}</td>
-                    <td className={`px-4 py-2 text-sm ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{lead.subject}</td>
-                    <td className={`px-4 py-2 text-sm break-words ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
-                      {lead.message.length > 50 ? `${lead.message.substring(0, 50)}...` : lead.message}
-                    </td>
-                    <td className={`px-4 py-2 text-sm ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
-                      {lead.date_received ? new Date(lead.date_received).toLocaleString('en-US') : 'N/A'}
-                    </td>
-                    <td className="px-4 py-2 text-sm whitespace-nowrap">
-                      <button
-                        className={`mr-2 ${darkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-800'}`}
-                        onClick={() => setExpandedRowId(lead.id)}
-                      >
-                        Details
-                      </button>
-                      <button
-                        onClick={() => handleDelete(lead.id)}
-                        className={`${darkMode ? 'text-red-400 hover:text-red-300' : 'text-red-600 hover:text-red-800'}`}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                  {expandedRowId === lead.id && (
-                    <tr>
-                      <td colSpan={7} className={`p-4 ${darkMode ? 'bg-gray-700 text-gray-200' : 'bg-gray-50 text-gray-800'}`}>
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
-                          <div><strong>Name:</strong> {lead.name}</div>
-                          <div><strong>Email:</strong> {lead.email}</div>
-                          <div><strong>Phone:</strong> {lead.phone}</div>
-                          <div><strong>Subject:</strong> {lead.subject}</div>
-                          <div className="col-span-2"><strong>Message:</strong> {lead.message}</div>
-                          <div><strong>Received:</strong> {lead.date_received ? new Date(lead.date_received).toLocaleString('en-US') : 'N/A'}</div>
-                        </div>
-                        <button
-                          className={`mt-2 ${darkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-800'}`}
-                          onClick={() => setExpandedRowId(null)}
-                        >
-                          Close details
-                        </button>
-                      </td>
-                    </tr>
-                  )}
-                </React.Fragment>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      {pagination.totalPages > 1 && (
-        <div className="mt-4 flex justify-between items-center">
-          <button
-            onClick={() => setPage(p => Math.max(1, p - 1))}
-            disabled={page === 1}
-            className={`px-4 py-2 rounded-lg disabled:opacity-50 ${
-              darkMode 
-                ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 disabled:bg-gray-800' 
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
-          >
-            Previous
-          </button>
-          <span className={darkMode ? 'text-gray-200' : 'text-gray-600'}>
-            Page {pagination.page} of {pagination.totalPages} 
-            {pagination.total > 0 && <span className="text-sm ml-2">({pagination.total} leads total)</span>}
-          </span>
-          <button
-            onClick={() => setPage(p => p + 1)}
-            disabled={page >= pagination.totalPages}
-            className={`px-4 py-2 rounded-lg disabled:opacity-50 ${
-              darkMode 
-                ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 disabled:bg-gray-800' 
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
-          >
-            Next
-          </button>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function Admin() {
-  const { user: authUser, logout } = useAuth() as AuthContextType;
+const Admin: React.FC = () => {
+  const { auth, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-  
-  // Create a fallback dev user if authentication fails
-  const [devFallbackActive, setDevFallbackActive] = React.useState(false);
-  const [user, setUser] = React.useState(authUser);
+  const { t, i18n } = useTranslation();
+  const location = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
 
-  // If in development mode and no auth user, create a fallback
-  React.useEffect(() => {
-    if (authUser) {
-      setUser(authUser);
-      setDevFallbackActive(false);
-    } else if (import.meta.env.DEV && !devFallbackActive) {
-      console.log('[Admin] Creating development fallback user');
-      const fallbackUser = {
-        username: 'Development Admin (Fallback)',
-        email: 'dev@example.com',
-        role: 'admin'
-      };
-      setUser(fallbackUser);
-      setDevFallbackActive(true);
+  const isRtl = i18n.language === 'he';
+
+  useEffect(() => {
+    if (!auth.isAuthenticated) {
+      navigate('/admin/login');
     }
-  }, [authUser, devFallbackActive]);
-
-  // State to track the authentication check status
-  const [authChecked, setAuthChecked] = React.useState(false);
-
-  // First useEffect - just check localStorage directly and log what's there
-  React.useEffect(() => {
-    const tokenCheck = localStorage.getItem('token');
-    const userCheck = localStorage.getItem('user');
-    console.log('[Admin] Initial localStorage check:', { 
-      hasToken: !!tokenCheck, 
-      hasUserData: !!userCheck,
-      userData: userCheck ? JSON.parse(userCheck) : null
-    });
-  }, []);
-
-  // Second useEffect - handle authentication status with a longer delay
-  React.useEffect(() => {
-    console.log('[Admin] Checking user authentication state:', user ? user.username : 'No user');
-    
-    if (!user && !authChecked) {
-      console.log('[Admin] No user found in context, preparing delayed check');
-      
-      // Give a longer delay to see if auth state updates
-      const timer = setTimeout(() => {
-        // Check localStorage directly in case the context hasn't updated yet
-        const tokenCheck = localStorage.getItem('token');
-        const userCheck = localStorage.getItem('user');
-        
-        console.log('[Admin] Delayed auth check:', { hasToken: !!tokenCheck, hasUserData: !!userCheck });
-        
-        if (!tokenCheck || !userCheck) {
-          console.log('[Admin] Still no authentication after delay, redirecting to login');
-          navigate('/admin/login');
-        } else {
-          console.log('[Admin] Authentication found in localStorage, staying on admin page');
-          // Force a page reload to ensure the auth context picks up the stored credentials
-          window.location.reload();
-        }
-        setAuthChecked(true);
-      }, 1500); // Increased from 500ms to 1500ms
-      
-      return () => clearTimeout(timer);
-    }
-  }, [user, navigate]);
+  }, [auth, navigate]);
 
   const handleLogout = () => {
-    // Only call the real logout if not using the fallback
-    if (!devFallbackActive) {
-      logout();
-    } else {
-      console.log('[Admin] Logging out fallback dev user');
-      setDevFallbackActive(false);
-      setUser(null);
-    }
+    logout();
     navigate('/admin/login');
   };
 
-  if (!user) return null;
-
-  // State for theme toggle (light/dark mode)
-  const [darkMode, setDarkMode] = useState(false);
-  const { i18n } = useTranslation();
-  const isRtl = i18n.language === 'he';
-  
-  // Toggle dark mode
   const toggleDarkMode = () => {
-    setDarkMode(prev => !prev);
-    // Apply dark mode class to document body
-    if (!darkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    setDarkMode(!darkMode);
   };
+
+  if (!auth.isAuthenticated) {
+    return null;
+  }
 
   return (
     <div className={`min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-800'} flex`} style={{ direction: isRtl ? 'rtl' : 'ltr' }}>
-      {/* Sidebar - positioned based on language direction */}
-      <div className={`w-64 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg fixed inset-y-0 ${isRtl ? 'right-0' : 'left-0'} z-10`}>
+      {/* Mobile hamburger button */}
+      <button
+        className={`lg:hidden fixed z-20 p-3 rounded-full ${darkMode ? 'bg-gray-700' : 'bg-white'} shadow-lg ${isRtl ? 'right-5' : 'left-5'} top-5`}
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        aria-label={t('admin.menu')}
+      >
+        {isMobileMenuOpen ? (
+          // X icon for closing
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        ) : (
+          // Hamburger icon
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        )}
+      </button>
+      
+      {/* Sidebar - positioned based on language direction and responsive */}
+      <div className={`w-64 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg fixed inset-y-0 ${isRtl ? 'right-0' : 'left-0'} z-10 transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        isMobileMenuOpen 
+          ? 'translate-x-0' 
+          : isRtl 
+            ? 'translate-x-full' 
+            : '-translate-x-full'
+      }`}>
         <div className="flex flex-col h-full">
           {/* Header section with language switcher and theme toggle */}
           <div className="p-4 border-b border-gray-200 dark:border-gray-700">
             <div className={`flex items-center justify-between ${isRtl ? 'flex-row-reverse' : 'flex-row'}`}>
               <Link to="/admin" className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
-                Admin Panel
+                {t('admin.admin_panel')}
               </Link>
               
               <div className="flex items-center space-x-2">
@@ -988,7 +672,259 @@ function Admin() {
                 to="/admin"
                 className={`group flex items-center px-4 py-2 text-sm font-medium rounded-md ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'}`}
               >
-                Dashboard
+                {t('admin.dashboard')}
+              </Link>
+              <Link
+                to="/admin/content"
+                className={`group flex items-center px-4 py-2 text-sm font-medium rounded-md ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'}`}
+              >
+                Content
+              </Link>
+              <Link
+                to="/admin/translations"
+                className={`group flex items-center px-4 py-2 text-sm font-medium rounded-md ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'}`}
+              >
+                Translations
+              </Link>
+              <Link
+                to="/admin/leads"
+                className={`group flex items-center px-4 py-2 text-sm font-medium rounded-md ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'}`}
+              >
+                Leads
+              </Link>
+              <Link
+                to="/admin/messages"
+                className={`group flex items-center px-4 py-2 text-sm font-medium rounded-md ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'}`}
+              >
+                Messages
+              </Link>
+              <Link
+                to="/admin/pages"
+                className={`group flex items-center px-4 py-2 text-sm font-medium rounded-md ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'}`}
+              >
+                Pages
+              </Link>
+              <Link
+                to="/admin/services"
+                className={`group flex items-center px-4 py-2 text-sm font-medium rounded-md ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'}`}
+              >
+                Services
+              </Link>
+              <Link
+                to="/admin/forms"
+                className={`group flex items-center px-4 py-2 text-sm font-medium rounded-md ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'}`}
+              >
+                Forms
+              </Link>
+            </div>
+          </nav>
+          
+          {/* User info and logout at bottom of sidebar */}
+          <div className={`p-4 border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+            <div className="flex items-center justify-between">
+              <span className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                {auth.username}
+              </span>
+              <button
+                onClick={handleLogout}
+                className={`text-sm ${darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-700'}`}
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main content - with responsive padding */}
+      <div className={`flex-1 p-6 transition-all duration-300 ${
+        // On large screens, always use margin
+        // On small screens, only use margin when menu is open
+        isMobileMenuOpen
+          ? isRtl ? 'mr-64' : 'ml-64'  // Mobile with open menu
+          : isRtl 
+            ? 'lg:mr-64' : 'lg:ml-64'  // Desktop or mobile with closed menu
+      }`}>
+        <Routes>
+          <Route path="/" element={<AdminDashboard darkMode={darkMode} />} />
+          <Route path="/messages" element={<MessagesManager darkMode={darkMode} />} />
+          <Route path="/leads" element={<LeadsManager darkMode={darkMode} />} />
+          <Route path="/pages" element={<PagesManager darkMode={darkMode} />} />
+          <Route path="/services" element={<ServicesManager darkMode={darkMode} />} />
+          <Route path="/forms" element={<FormsManager darkMode={darkMode} />} />
+        </Routes>
+      </div>
+    </div>
+  );
+}
+
+function Admin() {
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const [devFallbackActive, setDevFallbackActive] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.language === 'he';
+
+  // Use dev fallback user in development if needed
+  useEffect(() => {
+    if (!user && process.env.NODE_ENV === 'development' && !devFallbackActive) {
+      console.log('[Admin] Using development fallback user');
+      const fallbackUser = {
+        username: 'Development Admin (Fallback)',
+        email: 'dev@example.com',
+        role: 'admin'
+      };
+      setUser(fallbackUser);
+      setDevFallbackActive(true);
+    }
+  }, [user, devFallbackActive]);
+
+  // First useEffect - just check localStorage directly and log what's there
+  useEffect(() => {
+    const tokenCheck = localStorage.getItem('token');
+    const userCheck = localStorage.getItem('user');
+    console.log('[Admin] Initial localStorage check:', { 
+      hasToken: !!tokenCheck, 
+      hasUserData: !!userCheck,
+      userData: userCheck ? JSON.parse(userCheck) : null
+    });
+  }, []);
+
+  // Second useEffect - handle authentication status with a longer delay
+  useEffect(() => {
+    console.log('[Admin] Checking user authentication state:', user ? user.username : 'No user');
+    
+    if (!user && !authChecked) {
+      console.log('[Admin] No user found in context, preparing delayed check');
+      
+      // Give a longer delay to see if auth state updates
+      const timer = setTimeout(() => {
+        // Check localStorage directly in case the context hasn't updated yet
+        const tokenCheck = localStorage.getItem('token');
+        const userCheck = localStorage.getItem('user');
+        
+        console.log('[Admin] Delayed auth check:', { hasToken: !!tokenCheck, hasUserData: !!userCheck });
+        
+        if (!tokenCheck || !userCheck) {
+          console.log('[Admin] Still no authentication after delay, redirecting to login');
+          navigate('/admin/login');
+        } else {
+          console.log('[Admin] Authentication found in localStorage, staying on admin page');
+          // Force a page reload to ensure the auth context picks up the stored credentials
+          window.location.reload();
+        }
+        setAuthChecked(true);
+      }, 1500); // Increased from 500ms to 1500ms
+      
+      return () => clearTimeout(timer);
+    }
+  }, [user, navigate, authChecked]);
+
+  const handleLogout = () => {
+    // Only call the real logout if not using the fallback
+    if (!devFallbackActive) {
+      logout();
+    } else {
+      console.log('[Admin] Logging out fallback dev user');
+      setDevFallbackActive(false);
+      setUser(null);
+    }
+    navigate('/admin/login');
+  };
+
+  // Toggle dark mode
+  const toggleDarkMode = () => {
+    setDarkMode(prev => !prev);
+    // Apply dark mode class to document body
+    if (!darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
+  
+  // Toggle mobile menu
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(prev => !prev);
+  };
+
+  if (!user) return null;
+
+  return (
+    <div className={`min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-800'} flex`} style={{ direction: isRtl ? 'rtl' : 'ltr' }}>
+      {/* Mobile hamburger button */}
+      <button
+        className={`lg:hidden fixed z-20 p-3 rounded-full ${darkMode ? 'bg-gray-700' : 'bg-white'} shadow-lg ${isRtl ? 'right-5' : 'left-5'} top-5`}
+        onClick={toggleMobileMenu}
+        aria-label={t('admin.menu')}
+      >
+        {mobileMenuOpen ? (
+          // X icon for closing
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        ) : (
+          // Hamburger icon
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        )}
+      </button>
+      
+      {/* Sidebar - positioned based on language direction and responsive */}
+      <div className={`w-64 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg fixed inset-y-0 ${isRtl ? 'right-0' : 'left-0'} z-10 transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        mobileMenuOpen 
+          ? 'translate-x-0' 
+          : isRtl 
+            ? 'translate-x-full' 
+            : '-translate-x-full'
+      }`}>
+        <div className="flex flex-col h-full">
+          {/* Header section with language switcher and theme toggle */}
+          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+            <div className={`flex items-center justify-between ${isRtl ? 'flex-row-reverse' : 'flex-row'}`}>
+              <Link to="/admin" className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+                {t('admin.admin_panel')}
+              </Link>
+              
+              <div className="flex items-center space-x-2">
+                {/* Show language switcher first in RTL mode */}
+                {isRtl && <LanguageSwitcher />}
+                
+                {/* Light/Dark mode toggle */}
+                <button
+                  onClick={toggleDarkMode}
+                  className={`${darkMode ? 'text-yellow-300 hover:text-yellow-100' : 'text-gray-600 hover:text-gray-800'} p-2 rounded-full focus:outline-none`}
+                  aria-label="Toggle dark mode"
+                >
+                  {darkMode ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-5 h-5 fill-current">
+                      <path d="M361.5 1.2c5 2.1 8.6 6.6 9.6 11.9L391 121l107.9 19.8c5.3 1 9.8 4.6 11.9 9.6s1.5 10.7-1.6 15.2L446.9 256l62.3 90.3c3.1 4.5 3.7 10.2 1.6 15.2s-6.6 8.6-11.9 9.6L391 391 371.1 498.9c-1 5.3-4.6 9.8-9.6 11.9s-10.7 1.5-15.2-1.6L256 446.9l-90.3 62.3c-4.5 3.1-10.2 3.7-15.2 1.6s-8.6-6.6-9.6-11.9L121 391 13.1 371.1c-5.3-1-9.8-4.6-11.9-9.6s-1.5-10.7 1.6-15.2L65.1 256 2.8 165.7c-3.1-4.5-3.7-10.2-1.6-15.2s6.6-8.6 11.9-9.6L121 121 140.9 13.1c1-5.3 4.6-9.8 9.6-11.9s10.7-1.5 15.2 1.6L256 65.1 346.3 2.8c4.5-3.1 10.2-3.7 15.2-1.6z" />
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" className="w-5 h-5 fill-current">
+                      <path d="M223.5 32C100 32 0 132.3 0 256S100 480 223.5 480c60.6 0 115.5-24.2 155.8-63.4c5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6c-96.9 0-175.5-78.8-175.5-176c0-65.8 36-123.1 89.3-153.3c6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z" />
+                    </svg>
+                  )}
+                </button>
+                
+                {/* Show language switcher after toggle in LTR mode */}
+                {!isRtl && <LanguageSwitcher />}
+              </div>
+            </div>
+          </div>
+          
+          {/* Navigation links */}
+          <nav className="flex-1 overflow-y-auto py-4">
+            <div className="px-2 space-y-1">
+              <Link
+                to="/admin"
+                className={`group flex items-center px-4 py-2 text-sm font-medium rounded-md ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'}`}
+              >
+                {t('admin.dashboard')}
               </Link>
               <Link
                 to="/admin/content"
@@ -1045,18 +981,25 @@ function Admin() {
                 onClick={handleLogout}
                 className={`text-sm ${darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-700'}`}
               >
-                Logout
+                {t('navigation.logout')}
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Main content - with padding to avoid sidebar overlap */}
-      <div className={`flex-1 ${isRtl ? 'mr-64' : 'ml-64'} p-6`}>
+      {/* Main content - with responsive padding */}
+      <div className={`flex-1 p-6 transition-all duration-300 ${
+        // On large screens, always use margin
+        // On small screens, only use margin when menu is open
+        mobileMenuOpen
+          ? isRtl ? 'mr-64' : 'ml-64'  // Mobile with open menu
+          : isRtl 
+            ? 'lg:mr-64' : 'lg:ml-64'  // Desktop or mobile with closed menu
+      }`}>
         <Routes>
           <Route path="/" element={<AdminDashboard darkMode={darkMode} />} />
-          <Route path="/content" element={<ContentManager />} />
+          <Route path="/content" element={<ContentManager darkMode={darkMode} />} />
           <Route path="/translations" element={<TranslationsManager />} />
           <Route path="/leads" element={<LeadsManager darkMode={darkMode} />} />
           <Route path="/messages" element={<MessagesManager darkMode={darkMode} />} />
