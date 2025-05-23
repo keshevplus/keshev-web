@@ -205,7 +205,7 @@ export const messagesService = {
       console.log('📞 Making messages API request to:', messageApiUrl);
       console.log('📞 Full URL:', API_BASE_URL + messageApiUrl);
       
-      // Make real API call WITHOUT AbortController to avoid the abort signal error
+      // Make real API call without AbortController to avoid the signal aborted error
       console.log('📞 Calling authenticatedRequest for messages...');
       try {
         const response = await authenticatedRequest(messageApiUrl);
@@ -255,8 +255,7 @@ export const messagesService = {
           };
         }
       } catch (innerError) {
-        // Handle timeout or other fetch errors
-        clearTimeout(timeoutId);
+        // Handle fetch errors without trying to clear a non-existent timeout
         console.error('Error in messages API request:', innerError);
         throw innerError;
       }
@@ -299,7 +298,7 @@ export const leadsService = {
       console.log('📞 Making leads API request to:', leadApiUrl);
       console.log('📞 Full URL:', API_BASE_URL + leadApiUrl);
       
-      // Make API call WITHOUT AbortController to avoid signal aborted errors
+      // Make API call without AbortController to avoid signal aborted errors
       console.log('📞 Calling authenticatedRequest for leads...');
       try {
         const response = await authenticatedRequest(leadApiUrl);
@@ -404,8 +403,7 @@ export const leadsService = {
           };
         }
       } catch (innerError) {
-        // Handle timeout or other fetch errors
-        clearTimeout(timeoutId);
+        // Handle fetch errors
         console.error('Error in leads API request:', innerError);
         throw innerError;
       }
