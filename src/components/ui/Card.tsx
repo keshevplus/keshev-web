@@ -53,8 +53,6 @@ const Card: React.FC<CardProps> = ({
         ${bgcolor} 
         ${expanded ? 'min-h-[240px]' : 'md:min-h-[240px]'} 
         hover:shadow-2xl hover:-translate-y-1`}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
     >
       {/* Icon with animation */}
       {icon && (
