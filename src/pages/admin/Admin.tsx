@@ -74,7 +74,7 @@ export interface AuthContextType {
   logout: () => void;
 }
 
-function AdminDashboard() {
+function AdminDashboard({ darkMode = false }: { darkMode?: boolean }) {
   const [stats, setStats] = React.useState({
     pages: 0,
     services: 0,
@@ -105,17 +105,17 @@ function AdminDashboard() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+      <h1 className={`text-2xl font-bold mb-6 ${darkMode ? 'text-white' : 'text-gray-800'}`}>Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow-sm">
+        <div className={`${darkMode ? 'bg-gray-700 text-white' : 'bg-white'} p-6 rounded-lg shadow-sm`}>
           <h3 className="text-lg font-semibold mb-2">Pages</h3>
           <p className="text-3xl font-bold">{stats.pages}</p>
         </div>
-        <div className="bg-white p-6 rounded-lg shadow-sm">
+        <div className={`${darkMode ? 'bg-gray-700 text-white' : 'bg-white'} p-6 rounded-lg shadow-sm`}>
           <h3 className="text-lg font-semibold mb-2">Services</h3>
           <p className="text-3xl font-bold">{stats.services}</p>
         </div>
-        <div className="bg-white p-6 rounded-lg shadow-sm">
+        <div className={`${darkMode ? 'bg-gray-700 text-white' : 'bg-white'} p-6 rounded-lg shadow-sm`}>
           <h3 className="text-lg font-semibold mb-2">Forms</h3>
           <p className="text-3xl font-bold">{stats.forms}</p>
         </div>
@@ -1039,27 +1039,38 @@ function Admin() {
       {/* Sidebar - positioned based on language direction */}
       <div className={`w-64 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg fixed inset-y-0 ${isRtl ? 'right-0' : 'left-0'} z-10`}>
         <div className="flex flex-col h-full">
-          {/* Logo and admin panel title */}
+          {/* Header section with language switcher and theme toggle */}
           <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-            <Link to="/admin" className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'} flex items-center justify-between`}>
-              Admin Panel
-              {/* Light/Dark mode toggle */}
-              <button
-                onClick={toggleDarkMode}
-                className={`${darkMode ? 'text-yellow-300 hover:text-yellow-100' : 'text-gray-600 hover:text-gray-800'} p-2 rounded-full focus:outline-none`}
-                aria-label="Toggle dark mode"
-              >
-                {darkMode ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-5 h-5 fill-current">
-                    <path d="M361.5 1.2c5 2.1 8.6 6.6 9.6 11.9L391 121l107.9 19.8c5.3 1 9.8 4.6 11.9 9.6s1.5 10.7-1.6 15.2L446.9 256l62.3 90.3c3.1 4.5 3.7 10.2 1.6 15.2s-6.6 8.6-11.9 9.6L391 391 371.1 498.9c-1 5.3-4.6 9.8-9.6 11.9s-10.7 1.5-15.2-1.6L256 446.9l-90.3 62.3c-4.5 3.1-10.2 3.7-15.2 1.6s-8.6-6.6-9.6-11.9L121 391 13.1 371.1c-5.3-1-9.8-4.6-11.9-9.6s-1.5-10.7 1.6-15.2L65.1 256 2.8 165.7c-3.1-4.5-3.7-10.2-1.6-15.2s6.6-8.6 11.9-9.6L121 121 140.9 13.1c1-5.3 4.6-9.8 9.6-11.9s10.7-1.5 15.2 1.6L256 65.1 346.3 2.8c4.5-3.1 10.2-3.7 15.2-1.6z" />
-                  </svg>
-                ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" className="w-5 h-5 fill-current">
-                    <path d="M223.5 32C100 32 0 132.3 0 256S100 480 223.5 480c60.6 0 115.5-24.2 155.8-63.4c5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6c-96.9 0-175.5-78.8-175.5-176c0-65.8 36-123.1 89.3-153.3c6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z" />
-                  </svg>
-                )}
-              </button>
-            </Link>
+            <div className={`flex items-center justify-between ${isRtl ? 'flex-row-reverse' : 'flex-row'}`}>
+              <Link to="/admin" className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+                Admin Panel
+              </Link>
+              
+              <div className="flex items-center space-x-2">
+                {/* Show language switcher first in RTL mode */}
+                {isRtl && <LanguageSwitcher />}
+                
+                {/* Light/Dark mode toggle */}
+                <button
+                  onClick={toggleDarkMode}
+                  className={`${darkMode ? 'text-yellow-300 hover:text-yellow-100' : 'text-gray-600 hover:text-gray-800'} p-2 rounded-full focus:outline-none`}
+                  aria-label="Toggle dark mode"
+                >
+                  {darkMode ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-5 h-5 fill-current">
+                      <path d="M361.5 1.2c5 2.1 8.6 6.6 9.6 11.9L391 121l107.9 19.8c5.3 1 9.8 4.6 11.9 9.6s1.5 10.7-1.6 15.2L446.9 256l62.3 90.3c3.1 4.5 3.7 10.2 1.6 15.2s-6.6 8.6-11.9 9.6L391 391 371.1 498.9c-1 5.3-4.6 9.8-9.6 11.9s-10.7 1.5-15.2-1.6L256 446.9l-90.3 62.3c-4.5 3.1-10.2 3.7-15.2 1.6s-8.6-6.6-9.6-11.9L121 391 13.1 371.1c-5.3-1-9.8-4.6-11.9-9.6s-1.5-10.7 1.6-15.2L65.1 256 2.8 165.7c-3.1-4.5-3.7-10.2-1.6-15.2s6.6-8.6 11.9-9.6L121 121 140.9 13.1c1-5.3 4.6-9.8 9.6-11.9s10.7-1.5 15.2 1.6L256 65.1 346.3 2.8c4.5-3.1 10.2-3.7 15.2-1.6z" />
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" className="w-5 h-5 fill-current">
+                      <path d="M223.5 32C100 32 0 132.3 0 256S100 480 223.5 480c60.6 0 115.5-24.2 155.8-63.4c5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6c-96.9 0-175.5-78.8-175.5-176c0-65.8 36-123.1 89.3-153.3c6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z" />
+                    </svg>
+                  )}
+                </button>
+                
+                {/* Show language switcher after toggle in LTR mode */}
+                {!isRtl && <LanguageSwitcher />}
+              </div>
+            </div>
           </div>
           
           {/* Navigation links */}
@@ -1118,19 +1129,16 @@ function Admin() {
           
           {/* User info and logout at bottom of sidebar */}
           <div className={`p-4 border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-            <div className="flex flex-col space-y-3">
-              <LanguageSwitcher />
-              <div className="flex items-center justify-between">
-                <span className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                  {user.username}
-                </span>
-                <button
-                  onClick={handleLogout}
-                  className={`text-sm ${darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-700'}`}
-                >
-                  Logout
-                </button>
-              </div>
+            <div className="flex items-center justify-between">
+              <span className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                {user.username}
+              </span>
+              <button
+                onClick={handleLogout}
+                className={`text-sm ${darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-700'}`}
+              >
+                Logout
+              </button>
             </div>
           </div>
         </div>
