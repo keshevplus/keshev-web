@@ -1179,6 +1179,12 @@ function Admin() {
                   Content
                 </Link>
                 <Link
+                  to="/admin/translations"
+                  className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                >
+                  Translations
+                </Link>
+                <Link
                   to="/admin/leads"
                   className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                 >
@@ -1228,6 +1234,7 @@ function Admin() {
           <Routes>
             <Route path="/" element={<AdminDashboard />} />
             <Route path="/content" element={<ContentManager />} />
+            <Route path="/translations" element={<TranslationsManager />} />
             <Route path="/leads" element={<LeadsManager />} />
             <Route path="/messages" element={<MessagesManager />} />
             <Route path="/pages" element={<PagesManager />} />
