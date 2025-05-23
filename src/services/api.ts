@@ -201,8 +201,8 @@ export const messagesService = {
   async getAllMessages(page = 1, limit = 10, filter = '') {
     try {
       // Fix endpoint to correctly match the backend route structure
-      // The API_BASE_URL already includes '/api', so we need to use the correct path
-      const messageApiUrl = `/api/messages?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`;
+      // Avoid duplicating '/api' if API_BASE_URL already includes it
+      const messageApiUrl = `/messages?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`;
       console.log('📞 Making messages API request to:', messageApiUrl);
       
       // Make real API call with the correct endpoint
@@ -263,8 +263,8 @@ export const leadsService = {
   async getAllLeads(page = 1, limit = 10, filter = '') {
     try {
       // Fix endpoint to correctly match the backend route structure
-      // The API_BASE_URL already includes '/api', so we need to use the correct path
-      const leadApiUrl = `/api/leads?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`;
+      // Avoid duplicating '/api' if API_BASE_URL already includes it
+      const leadApiUrl = `/leads?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`;
       console.log('📞 Making leads API request to:', leadApiUrl);
       
       // Make real API call with the correct endpoint
