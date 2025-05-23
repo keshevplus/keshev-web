@@ -290,68 +290,21 @@ export const messagesService = {
         },
         {
           id: 'mock-message-3',
-          name: 'אבי כהן',
-          email: 'avi@example.com',
-          phone: '054-7778888',
-          subject: 'שאלה בנוגע לטיפולים',
-          message: 'האם אתם מציעים טיפולים גם למבוגרים? אני בן 42 ומעוניין באבחון.',
-          created_at: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
-          date_received: new Date(Date.now() - 172800000).toISOString()
-        },
-        {
-          id: 'mock-message-4',
-          name: 'רוני אזולאי',
-          email: 'roni@example.com',
-          phone: '053-3337777',
-          subject: 'עלות טיפולים',
-          message: 'אשמח לקבל מידע על מחירי הטיפולים והאם יש אפשרות להחזר מקופת חולים.',
-          created_at: new Date(Date.now() - 259200000).toISOString(), // 3 days ago
-          date_received: new Date(Date.now() - 259200000).toISOString()
-        },
-        {
-          id: 'mock-message-5',
-          name: 'דני ברקוביץ',
-          email: 'dani@example.com',
-          phone: '050-9998888',
-          subject: 'סדנאות קבוצתיות',
-          message: 'אני מורה בבית ספר יסודי ומעוניין לדעת אם אתם מציעים סדנאות קבוצתיות לצוות החינוכי.',
-          created_at: new Date(Date.now() - 345600000).toISOString(), // 4 days ago
-          date_received: new Date(Date.now() - 345600000).toISOString()
-        }
-      ];
-      
-      // Prepare fallback pagination
-      const mockPagination = { 
-        total: mockMessages.length, 
-        page: 1, 
-        limit: 10, 
-        totalPages: 1,
-        hasNextPage: false,
-        hasPrevPage: false
-      };
-
-      try {
-        // Make real API call
-        const response = await authenticatedRequest(`${API_BASE_URL}/admin/messages?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`);
-        console.log('📊 API Response for messages:', response);
-        
-        // Check if we got valid data from the API
-        if (response && response.leads && response.leads.length > 0) {
-          console.log('✅ Successfully retrieved messages from API:', response.leads.length);
-          return response;
-        }
-
-        console.log('⚠️ No messages found in API response, using mock data as fallback');
-      } catch (err) {
-        console.error('⚠️ API call failed, using mock data as fallback:', err);
       }
-
-      // Always return mock data if API call fails or returns no data
-      console.log('📝 Returning mock messages data:', mockMessages.length, 'items');
-      return { leads: mockMessages, pagination: mockPagination };
     } catch (error) {
       console.error('Error in getAllMessages:', error);
-      throw error;
+      // Return empty results instead of mock data
+      return { 
+        leads: [], 
+        pagination: { 
+          total: 0, 
+          page, 
+          limit, 
+          totalPages: 0,
+          hasNextPage: false,
+          hasPrevPage: false
+        }
+      };
     }
   },
 
