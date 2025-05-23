@@ -265,31 +265,28 @@ export const messagesService = {
       console.log('🔍 getAllMessages called with page:', page, 'limit:', limit, 'filter:', filter);
       console.log('🔐 Current token:', localStorage.getItem('token'));
       
-      // Create fallback mock messages that will always be available
-      // These will be used if the API call fails or returns no data
-      const mockMessages = [
-        {
-          id: 'mock-message-1',
-          name: 'יעקב ישראלי',
-          email: 'yaakov@example.com',
-          phone: '050-5551234',
-          subject: 'בקשה למידע נוסף',
-          message: 'אשמח לקבל מידע נוסף על שירותי האבחון המוצעים במרכז שלכם.',
-          created_at: new Date().toISOString(),
-          date_received: new Date().toISOString()
-        },
-        {
-          id: 'mock-message-2',
-          name: 'חנה לוי',
-          email: 'hana@example.com',
-          phone: '052-1114444',
-          subject: 'תיאום פגישה',
-          message: 'הייתי רוצה לקבוע פגישת התייעצות. מהם המועדים האפשריים?',
-          created_at: new Date(Date.now() - 86400000).toISOString(), // Yesterday
-          date_received: new Date(Date.now() - 86400000).toISOString()
-        },
-        {
-          id: 'mock-message-3',
+      // Make real API call
+      const response = await authenticatedRequest(`${API_BASE_URL}/admin/messages?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`);
+      console.log('📊 API Response for messages:', response);
+      
+      // Return the API response (even if empty)
+      if (response && response.leads) {
+        console.log(`✅ Retrieved ${response.leads.length} messages from API`);
+        return response;
+      } else {
+        // Initialize empty response format if needed
+        console.log('No messages found in API response, returning empty array');
+        return { 
+          leads: [], 
+          pagination: { 
+            total: 0, 
+            page, 
+            limit, 
+            totalPages: 0,
+            hasNextPage: false,
+            hasPrevPage: false
+          }
+        };
       }
     } catch (error) {
       console.error('Error in getAllMessages:', error);
@@ -323,97 +320,43 @@ export const messagesService = {
 export const leadsService = {
   async getAllLeads(page = 1, limit = 10, filter = '') {
     try {
-      console.log('🔍 getAllLeads called with page:', page, 'limit:', limit, 'filter:', filter);
-      console.log('🔐 Current token:', localStorage.getItem('token'));
+      // Make real API call
+      const response = await authenticatedRequest(`${API_BASE_URL}/admin/leads?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`);
+      console.log('📊 API Response for leads:', response);
       
-      // Create fallback mock leads that will always be available
-      // These will be used if the API call fails or returns no data
-      const mockLeads = [
-        {
-          id: 'mock-lead-1',
-          name: 'ישראל ישראלי',
-          email: 'israel@example.com',
-          phone: '050-1234567',
-          subject: 'שאלה בנוגע לשירותים',
-          message: 'אני מעוניין לקבל מידע נוסף על השירותים שאתם מציעים לטיפול בהפרעות קשב וריכוז.',
-          created_at: new Date().toISOString(),
-          date_received: new Date().toISOString()
-        },
-        {
-          id: 'mock-lead-2',
-          name: 'שרה כהן',
-          email: 'sarah@example.com',
-          phone: '052-7654321',
-          subject: 'פנייה בנושא אבחון',
-          message: 'אשמח לקבוע פגישת ייעוץ לגבי אבחון ADHD למבוגרים. מהם הזמנים הפנויים בשבוע הבא?',
-          created_at: new Date(Date.now() - 86400000).toISOString(), // Yesterday
-          date_received: new Date(Date.now() - 86400000).toISOString()
-        },
-        {
-          id: 'mock-lead-3',
-          name: 'דוד לוי',
-          email: 'david@example.com',
-          phone: '054-9876543',
-          subject: 'התייעצות מקצועית',
-          message: 'אני מטפל המתמחה בטיפול בילדים עם ADHD ואשמח להתייעץ עם אחד המומחים שלכם בנוגע לשיטות טיפול חדשניות.',
-          created_at: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
-          date_received: new Date(Date.now() - 172800000).toISOString()
-        },
-        {
-          id: 'mock-lead-4',
-          name: 'מיכל אברהם',
-          email: 'michal@example.com',
-          phone: '053-1112222',
-          subject: 'ייעוץ למשפחה',
-          message: 'יש לי ילד בן 9 עם קשיי קשב וריכוז. אני מחפשת מידע על הסדנאות להורים שאתם מציעים.',
-          created_at: new Date(Date.now() - 259200000).toISOString(), // 3 days ago
-          date_received: new Date(Date.now() - 259200000).toISOString()
-        },
-        {
-          id: 'mock-lead-5',
-          name: 'יוסי לוינסון',
-          email: 'yossi@example.com',
-          phone: '050-3334444',
-          subject: 'פנייה עסקית',
-          message: 'אני מנהל מרכז חינוכי ומעוניין לשתף פעולה עם הקליניקה שלכם. נשמח לקיים פגישה לבחינת אפשרויות.',
-          created_at: new Date(Date.now() - 345600000).toISOString(), // 4 days ago
-          date_received: new Date(Date.now() - 345600000).toISOString()
-        }
-      ];
-      
-      // Prepare fallback pagination
-      const mockPagination = { 
-        total: mockLeads.length, 
-        page: 1, 
-        limit: 10, 
-        totalPages: 1,
-        hasNextPage: false,
-        hasPrevPage: false
-      };
-
-      try {
-        // Make real API call
-        const response = await authenticatedRequest(`${API_BASE_URL}/admin/leads?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`);
-        console.log('📊 API Response for leads:', response);
-        
-        // Check if we got valid data from the API
-        if (response && response.leads && response.leads.length > 0) {
-          console.log('✅ Successfully retrieved leads from API:', response.leads.length);
-          return response;
-        }
-
-        console.log('⚠️ No leads found in API response, using mock data as fallback');
-      } catch (err) {
-        console.error('⚠️ API call failed, using mock data as fallback:', err);
+      // Return the API response (even if empty)
+      if (response && response.leads) {
+        console.log(`✅ Retrieved ${response.leads.length} leads from API`);
+        return response;
+      } else {
+        // Initialize empty response format if needed
+        console.log('No leads found in API response, returning empty array');
+        return { 
+          leads: [], 
+          pagination: { 
+            total: 0, 
+            page, 
+            limit, 
+            totalPages: 0,
+            hasNextPage: false,
+            hasPrevPage: false
+          }
+        };
       }
-
-      // Always return mock data if API call fails or returns no data
-      console.log('📝 Returning mock leads data:', mockLeads.length, 'items');
-      return { leads: mockLeads, pagination: mockPagination };
-
     } catch (error) {
       console.error('Error in getAllLeads:', error);
-      throw error;
+      // Return empty results instead of mock data
+      return { 
+        leads: [], 
+        pagination: { 
+          total: 0, 
+          page, 
+          limit, 
+          totalPages: 0,
+          hasNextPage: false,
+          hasPrevPage: false
+        }
+      };
     }
   },
 

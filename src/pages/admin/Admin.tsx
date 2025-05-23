@@ -6,6 +6,7 @@ import { Routes, Route, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { pagesService, servicesService, formsService, contentService, leadsService, messagesService } from '../../services/api';
 import TranslationsManager from './TranslationsManager';
+import LanguageSwitcher from '../../components/LanguageSwitcher';
 // Interfaces for our content types
 interface Page {
   id: string;
@@ -1216,11 +1217,12 @@ function Admin() {
                 </Link>
               </div>
             </div>
-            <div className="flex items-center">
-              <span className="text-gray-500 mr-4">{user.username}</span>
+            <div className="flex items-center space-x-4">
+              <LanguageSwitcher />
+              <span className="text-gray-700">Welcome, {user.username}</span>
               <button
                 onClick={handleLogout}
-                className="bg-gray-100 p-2 rounded-md text-gray-500 hover:text-gray-600 focus:outline-none"
+                className="text-sm text-gray-500 hover:text-gray-700"
               >
                 Logout
               </button>
