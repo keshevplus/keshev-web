@@ -749,7 +749,7 @@ function ContentManager() {
   );
 }
 
-function LeadsManager() {
+function LeadsManager({ darkMode = false }: { darkMode?: boolean }) {
   const [leads, setLeads] = React.useState<Lead[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [page, setPage] = React.useState(1);
@@ -795,11 +795,22 @@ function LeadsManager() {
     setPage(1); // Reset to first page when filter changes
   };
 
-  if (loading && leads.length === 0) return <div className="p-6">Loading...</div>;
+  const { i18n } = useTranslation();
+  const isRtl = i18n.language === 'he';
+
+  if (loading && leads.length === 0) {
+    return (
+      <div className={`p-6 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+        <div className="flex justify-center">
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="p-6" style={{ direction: 'ltr' }}>
-      <h2 className="text-2xl font-bold mb-6">Leads Management</h2>
+    <div className="p-6" style={{ direction: isRtl ? 'rtl' : 'ltr' }}>
+      <h2 className={`text-2xl font-bold mb-6 ${darkMode ? 'text-white' : 'text-gray-800'}`}>Leads Management</h2>
 
       <div className="mb-4">
         <input
@@ -807,52 +818,56 @@ function LeadsManager() {
           placeholder="Search by name, email, or phone"
           value={filter}
           onChange={handleFilterChange}
-          className="w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className={`w-full md:w-1/2 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+            darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300 text-gray-800'
+          }`}
         />
       </div>
 
-      <div className="bg-white rounded-lg shadow overflow-hidden overflow-x-auto" style={{ maxWidth: '100%', width: '100%' }}>
-        <table className="w-full table-fixed">
-          <thead className="bg-gray-50 table-header">
+      <div className={`rounded-lg shadow overflow-hidden overflow-x-auto ${darkMode ? 'bg-gray-800' : 'bg-white'}`} style={{ maxWidth: '100%', width: '100%' }}>
+        <table className="w-full" style={{ borderSpacing: '0', borderCollapse: 'separate' }}>
+          <thead className={`${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
             <tr>
-              <th className="table-header">Name</th>
-              <th className="table-header">Email</th>
-              <th className="table-header">Phone</th>
-              <th className="table-header">Subject</th>
-              <th className="table-header w-2/6">Message</th>
-              <th className="table-header">Created At</th>
-              <th className="table-header w-1/12">Actions</th>
+              <th className={`px-4 py-3 text-left text-xs font-medium uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Name</th>
+              <th className={`px-4 py-3 text-left text-xs font-medium uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Email</th>
+              <th className={`px-4 py-3 text-left text-xs font-medium uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Phone</th>
+              <th className={`px-4 py-3 text-left text-xs font-medium uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Subject</th>
+              <th className={`px-4 py-3 text-left text-xs font-medium uppercase tracking-wider w-1/4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Message</th>
+              <th className={`px-4 py-3 text-left text-xs font-medium uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Created At</th>
+              <th className={`px-4 py-3 text-left text-xs font-medium uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Actions</th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className={`${darkMode ? 'bg-gray-800 divide-gray-700' : 'bg-white divide-gray-200'} divide-y`}>
             {leads.length === 0 ? (
               <tr>
-                <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
+                <td colSpan={7} className={`px-6 py-4 text-center ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>
                   {filter ? 'No leads match your search' : 'No leads found'}
                 </td>
               </tr>
             ) : (
               leads.map((lead) => (
                 <React.Fragment key={lead.id}>
-                  <tr>
-                    <td className="table-cell">{lead.name}</td>
-                    <td className="table-cell">{lead.email}</td>
-                    <td className="table-cell">{lead.phone}</td>
-                    <td className="table-cell">{lead.subject}</td>
-                    <td className="table-cell break-words">{lead.message}</td>
-                    <td className="table-cell">
+                  <tr className={darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-50'}>
+                    <td className={`px-4 py-2 text-sm ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{lead.name}</td>
+                    <td className={`px-4 py-2 text-sm ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{lead.email}</td>
+                    <td className={`px-4 py-2 text-sm ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{lead.phone}</td>
+                    <td className={`px-4 py-2 text-sm ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{lead.subject}</td>
+                    <td className={`px-4 py-2 text-sm break-words ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
+                      {lead.message.length > 50 ? `${lead.message.substring(0, 50)}...` : lead.message}
+                    </td>
+                    <td className={`px-4 py-2 text-sm ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
                       {lead.date_received ? new Date(lead.date_received).toLocaleString('en-US') : 'N/A'}
                     </td>
-                    <td className="table-cell">
+                    <td className="px-4 py-2 text-sm whitespace-nowrap">
                       <button
-                        className="text-blue-600 underline"
+                        className={`mr-2 ${darkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-800'}`}
                         onClick={() => setExpandedRowId(lead.id)}
                       >
-                        Read more
+                        Details
                       </button>
                       <button
                         onClick={() => handleDelete(lead.id)}
-                        className="text-red-600 hover:text-red-900"
+                        className={`${darkMode ? 'text-red-400 hover:text-red-300' : 'text-red-600 hover:text-red-800'}`}
                       >
                         Delete
                       </button>
@@ -860,20 +875,20 @@ function LeadsManager() {
                   </tr>
                   {expandedRowId === lead.id && (
                     <tr>
-                      <td colSpan={8} className="bg-gray-50 p-4">
-                        <div className="flex flex-col md:flex-row gap-4">
+                      <td colSpan={7} className={`p-4 ${darkMode ? 'bg-gray-700 text-gray-200' : 'bg-gray-50 text-gray-800'}`}>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
                           <div><strong>Name:</strong> {lead.name}</div>
                           <div><strong>Email:</strong> {lead.email}</div>
                           <div><strong>Phone:</strong> {lead.phone}</div>
                           <div><strong>Subject:</strong> {lead.subject}</div>
-                          <div><strong>Message:</strong> {lead.message}</div>
+                          <div className="col-span-2"><strong>Message:</strong> {lead.message}</div>
                           <div><strong>Received:</strong> {lead.date_received ? new Date(lead.date_received).toLocaleString('en-US') : 'N/A'}</div>
                         </div>
                         <button
-                          className="mt-2 text-blue-600 underline"
+                          className={`mt-2 ${darkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-800'}`}
                           onClick={() => setExpandedRowId(null)}
                         >
-                          Show less
+                          Close details
                         </button>
                       </td>
                     </tr>
@@ -890,18 +905,26 @@ function LeadsManager() {
           <button
             onClick={() => setPage(p => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg disabled:opacity-50"
+            className={`px-4 py-2 rounded-lg disabled:opacity-50 ${
+              darkMode 
+                ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 disabled:bg-gray-800' 
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
           >
             Previous
           </button>
-          <span>
+          <span className={darkMode ? 'text-gray-200' : 'text-gray-600'}>
             Page {pagination.page} of {pagination.totalPages} 
             {pagination.total > 0 && <span className="text-sm ml-2">({pagination.total} leads total)</span>}
           </span>
           <button
             onClick={() => setPage(p => p + 1)}
             disabled={page >= pagination.totalPages}
-            className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg disabled:opacity-50"
+            className={`px-4 py-2 rounded-lg disabled:opacity-50 ${
+              darkMode 
+                ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 disabled:bg-gray-800' 
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
           >
             Next
           </button>
