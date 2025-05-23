@@ -10,10 +10,21 @@ export default function Home() {
   const { t } = useTranslation();
 
   useEffect(() => {
-    document.documentElement.dir = 'rtl';
-    import('../data/homePage').then(module => {
-      setPageData(module.default);
-    });
+    try {
+      // Log to debug
+      console.log('Home page initializing');
+      document.documentElement.dir = 'rtl';
+      import('../data/homePage')
+        .then(module => {
+          console.log('Home page data loaded successfully');
+          setPageData(module.default);
+        })
+        .catch(error => {
+          console.error('Failed to load home page data:', error);
+        });
+    } catch (error) {
+      console.error('Error in Home page useEffect:', error);
+    }
   }, []);
 
   if (!pageData) {
