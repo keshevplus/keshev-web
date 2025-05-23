@@ -1,0 +1,65 @@
+/* Landing Page Specific Styles */
+
+/* Shake animation for CTA button */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  10% { transform: translateX(-4px); }
+  20% { transform: translateX(4px); }
+  30% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  50% { transform: translateX(-4px); }
+  60% { transform: translateX(4px); }
+  70% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+  90% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+
+.shake-animation {
+  animation: shake 0.8s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* Slow pulse animation for CTA button background glow */
+@keyframes pulse-slow {
+  0% { opacity: 0.1; }
+  50% { opacity: 0.3; }
+  100% { opacity: 0.1; }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s infinite;
+}
+
+/* Make sure the RTL layout works properly */
+.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Shine effect for phone number */
+@keyframes shine {
+  0% { background-position: -100% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shine-text {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  background-size: 200% 100%;
+  animation: shine 3s infinite;
+  position: relative;
+  display: inline-block;
+}
+
+.shine-text-container {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}

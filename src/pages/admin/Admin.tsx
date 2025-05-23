@@ -77,7 +77,7 @@ const Admin: React.FC = () => {
       </button>
       
       {/* Sidebar - positioned based on language direction and responsive */}
-      <div className={`w-64 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg fixed inset-y-0 ${isRtl ? 'right-0' : 'left-0'} z-10 transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+      <div className={`w-56 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg fixed inset-y-0 ${isRtl ? 'right-0' : 'left-0'} z-10 transition-all duration-500 ease-in-out lg:translate-x-0 overflow-y-auto ${
         mobileMenuOpen 
           ? 'translate-x-0' 
           : isRtl 
@@ -85,37 +85,12 @@ const Admin: React.FC = () => {
             : '-translate-x-full'
       }`}>
         <div className="flex flex-col h-full">
-          {/* Header section with language switcher and theme toggle */}
+          {/* Header section - simplified without toggles */}
           <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-            <div className={`flex items-center justify-between ${isRtl ? 'flex-row-reverse' : 'flex-row'}`}>
+            <div className="flex items-center justify-center">
               <Link to="/admin" className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
                 {t('admin.admin_panel')}
               </Link>
-              
-              <div className="flex items-center space-x-2">
-                {/* Show language switcher first in RTL mode */}
-                {isRtl && <LanguageSwitcher />}
-                
-                {/* Light/Dark mode toggle */}
-                <button
-                  onClick={toggleDarkMode}
-                  className={`${darkMode ? 'text-yellow-300 hover:text-yellow-100' : 'text-gray-600 hover:text-gray-800'} p-2 rounded-full focus:outline-none`}
-                  aria-label="Toggle dark mode"
-                >
-                  {darkMode ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-5 h-5 fill-current">
-                      <path d="M361.5 1.2c5 2.1 8.6 6.6 9.6 11.9L391 121l107.9 19.8c5.3 1 9.8 4.6 11.9 9.6s1.5 10.7-1.6 15.2L446.9 256l62.3 90.3c3.1 4.5 3.7 10.2 1.6 15.2s-6.6 8.6-11.9 9.6L391 391 371.1 498.9c-1 5.3-4.6 9.8-9.6 11.9s-10.7 1.5-15.2-1.6L256 446.9l-90.3 62.3c-4.5 3.1-10.2 3.7-15.2 1.6s-8.6-6.6-9.6-11.9L121 391 13.1 371.1c-5.3-1-9.8-4.6-11.9-9.6s-1.5-10.7 1.6-15.2L65.1 256 2.8 165.7c-3.1-4.5-3.7-10.2-1.6-15.2s6.6-8.6 11.9-9.6L121 121 140.9 13.1c1-5.3 4.6-9.8 9.6-11.9s10.7-1.5 15.2 1.6L256 65.1 346.3 2.8c4.5-3.1 10.2-3.7 15.2-1.6z" />
-                    </svg>
-                  ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" className="w-5 h-5 fill-current">
-                      <path d="M223.5 32C100 32 0 132.3 0 256S100 480 223.5 480c60.6 0 115.5-24.2 155.8-63.4c5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6c-96.9 0-175.5-78.8-175.5-176c0-65.8 36-123.1 89.3-153.3c6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z" />
-                    </svg>
-                  )}
-                </button>
-                
-                {/* Show language switcher after toggle in LTR mode */}
-                {!isRtl && <LanguageSwitcher />}
-              </div>
             </div>
           </div>
           
@@ -173,31 +148,69 @@ const Admin: React.FC = () => {
             </div>
           </nav>
           
-          {/* User info and logout at bottom of sidebar */}
-          <div className={`p-4 border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-            <div className="flex items-center justify-between">
-              <span className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                {user?.username || 'Admin'}
-              </span>
-              <button
-                onClick={handleLogout}
-                className={`text-sm ${darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-700'}`}
-              >
-                {t('navigation.logout')}
-              </button>
+          {/* Settings and user info at bottom of sidebar */}
+          <div className="mt-auto">
+            {/* Controls section with language switcher and theme toggle */}
+            <div className={`p-4 border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+              <div className="flex flex-col space-y-4">
+                {/* Dark/Light mode toggle with label */}
+                <div className="flex items-center justify-between">
+                  <span className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                    {t('admin.theme')}
+                  </span>
+                  <button
+                    onClick={toggleDarkMode}
+                    className={`${darkMode ? 'text-yellow-300 hover:text-yellow-100' : 'text-gray-600 hover:text-gray-800'} p-2 rounded-full focus:outline-none`}
+                    aria-label="Toggle dark mode"
+                  >
+                    {darkMode ? (
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-5 h-5 fill-current">
+                        <path d="M361.5 1.2c5 2.1 8.6 6.6 9.6 11.9L391 121l107.9 19.8c5.3 1 9.8 4.6 11.9 9.6s1.5 10.7-1.6 15.2L446.9 256l62.3 90.3c3.1 4.5 3.7 10.2 1.6 15.2s-6.6 8.6-11.9 9.6L391 391 371.1 498.9c-1 5.3-4.6 9.8-9.6 11.9s-10.7 1.5-15.2-1.6L256 446.9l-90.3 62.3c-4.5 3.1-10.2 3.7-15.2 1.6s-8.6-6.6-9.6-11.9L121 391 13.1 371.1c-5.3-1-9.8-4.6-11.9-9.6s-1.5-10.7 1.6-15.2L65.1 256 2.8 165.7c-3.1-4.5-3.7-10.2-1.6-15.2s6.6-8.6 11.9-9.6L121 121 140.9 13.1c1-5.3 4.6-9.8 9.6-11.9s10.7-1.5 15.2 1.6L256 65.1 346.3 2.8c4.5-3.1 10.2-3.7 15.2-1.6z" />
+                      </svg>
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" className="w-5 h-5 fill-current">
+                        <path d="M223.5 32C100 32 0 132.3 0 256S100 480 223.5 480c60.6 0 115.5-24.2 155.8-63.4c5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6c-96.9 0-175.5-78.8-175.5-176c0-65.8 36-123.1 89.3-153.3c6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+                
+                {/* Language switcher with label */}
+                <div className="flex items-center justify-between">
+                  <span className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                    {t('admin.language')}
+                  </span>
+                  <LanguageSwitcher />
+                </div>
+              </div>
+            </div>
+            
+            {/* User info and logout */}
+            <div className={`p-4 border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+              <div className="flex items-center justify-between">
+                <span className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                  {user?.username || 'Admin'}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className={`text-sm ${darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-700'}`}
+                >
+                  {t('navigation.logout')}
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Main content - with responsive padding */}
-      <div className={`flex-1 p-6 transition-all duration-300 ${
+      <div className={`flex-1 p-6 transition-all duration-500 ease-in-out ${
         // On large screens, always use margin
         // On small screens, only use margin when menu is open
         mobileMenuOpen
-          ? isRtl ? 'mr-64' : 'ml-64'  // Mobile with open menu
+          ? isRtl ? 'mr-56' : 'ml-56'  // Mobile with open menu
           : isRtl 
-            ? 'lg:mr-64' : 'lg:ml-64'  // Desktop or mobile with closed menu
+            ? 'lg:mr-56' : 'lg:ml-56'  // Desktop or mobile with closed menu
       }`}>
         <Routes>
           <Route path="/" element={<AdminDashboard darkMode={darkMode} />} />
