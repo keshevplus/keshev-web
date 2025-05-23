@@ -25,7 +25,7 @@ const RegisterAdmin: React.FC = () => {
 
     try {
       // Register the test admin
-      await authService.https://fontawesome.com/icons/sun?s=solidsunregisterTestAdmin(email, password, username);
+      await authService.registerTestAdmin(email, password, username);
       setSuccess(true);
       // Redirect to admin dashboard after a delay
       setTimeout(() => {
