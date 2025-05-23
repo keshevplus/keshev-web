@@ -205,17 +205,10 @@ export const messagesService = {
       console.log('📞 Making messages API request to:', messageApiUrl);
       console.log('📞 Full URL:', API_BASE_URL + messageApiUrl);
       
-      // Add timeout handling to address database connection issues
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-      
-      // Make real API call with the correct endpoint and timeout handling
+      // Make real API call WITHOUT AbortController to avoid the abort signal error
       console.log('📞 Calling authenticatedRequest for messages...');
       try {
-        const response = await authenticatedRequest(messageApiUrl, {
-          signal: controller.signal
-        });
-        clearTimeout(timeoutId); // Clear timeout if successful
+        const response = await authenticatedRequest(messageApiUrl);
         
         console.log('📈 API Response for messages:', response);
         console.log('📈 Response type:', typeof response);
@@ -306,17 +299,10 @@ export const leadsService = {
       console.log('📞 Making leads API request to:', leadApiUrl);
       console.log('📞 Full URL:', API_BASE_URL + leadApiUrl);
       
-      // Add timeout handling to address database connection issues
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-      
-      // Make real API call with the correct endpoint and timeout handling
+      // Make API call WITHOUT AbortController to avoid signal aborted errors
       console.log('📞 Calling authenticatedRequest for leads...');
       try {
-        const response = await authenticatedRequest(leadApiUrl, {
-          signal: controller.signal
-        });
-        clearTimeout(timeoutId); // Clear timeout if successful
+        const response = await authenticatedRequest(leadApiUrl);
         
         console.log('📈 API Response for leads:', response);
         console.log('📈 Response type:', typeof response);
@@ -328,11 +314,66 @@ export const leadsService = {
           throw new Error('Empty response from leads API');
         }
         
-        // Return the API response (even if empty)
-        if (response && response.leads) {
-          console.log(`✅ Retrieved ${response.leads.length} leads from API`);
-          console.log('✅ First few leads:', response.leads.slice(0, 2));
-          return response;
+        // Return the API response with safer error handling
+        if (response && typeof response === 'object') {
+          // Check if response has a leads property that is an array
+          if (response.leads && Array.isArray(response.leads)) {
+            console.log(`✅ Retrieved ${response.leads.length} leads from API`);
+            console.log('✅ First few leads:', response.leads.slice(0, 2));
+            return response;
+          }
+          // Check if response itself is the leads data (not wrapped in a 'leads' property)
+          else if (Array.isArray(response)) {
+            console.log(`✅ Retrieved ${response.length} leads directly from API`);
+            return {
+              leads: response,
+              pagination: {
+                total: response.length,
+                page,
+                limit,
+                totalPages: Math.ceil(response.length / limit),
+                hasNextPage: response.length > page * limit,
+                hasPrevPage: page > 1
+              }
+            };
+          }
+          // For other object formats, extract any array property that might contain leads
+          else {
+            // Find the first array property in the response
+            const arrayProps = Object.entries(response)
+              .filter(([_, value]) => Array.isArray(value))
+              .map(([key, value]) => ({ key, length: Array.isArray(value) ? value.length : 0 }));
+            
+            if (arrayProps.length > 0) {
+              // Use the first array property as leads data
+              const mainArrayProp = arrayProps[0].key;
+              console.log(`✅ Using '${mainArrayProp}' as leads data (${response[mainArrayProp].length} items)`);
+              return {
+                leads: response[mainArrayProp],
+                pagination: response.pagination || {
+                  total: response[mainArrayProp].length,
+                  page,
+                  limit,
+                  totalPages: Math.ceil(response[mainArrayProp].length / limit),
+                  hasNextPage: response[mainArrayProp].length > page * limit,
+                  hasPrevPage: page > 1
+                }
+              };
+            }
+            // If no array properties found, create an empty response
+            console.log('⚠️ No leads array found in response, returning empty leads array');
+            return {
+              leads: [],
+              pagination: {
+                total: 0,
+                page,
+                limit,
+                totalPages: 0,
+                hasNextPage: false,
+                hasPrevPage: false
+              }
+            };
+          }
         } else if (Array.isArray(response)) {
           // Handle case where response might be an array directly
           console.log(`✅ Retrieved ${response.length} leads from API (array format)`);
