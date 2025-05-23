@@ -93,18 +93,18 @@ const authenticatedRequest = async (url: string, options: RequestInit = {}) => {
 // Pages service
 export const pagesService = {
   async getAllPages() {
-    return authenticatedRequest(`${API_BASE_URL}/admin/pages`);
+    return authenticatedRequest(`${API_BASE_URL}/api/pages`);
   },
 
   async createPage(pageData: any) {
-    return authenticatedRequest(`${API_BASE_URL}/admin/pages`, {
+    return authenticatedRequest(`${API_BASE_URL}/api/pages`, {
       method: 'POST',
       body: JSON.stringify(pageData)
     });
   },
 
   async updatePage(id: string, pageData: any) {
-    return authenticatedRequest(`${API_BASE_URL}/admin/pages/${id}`, {
+    return authenticatedRequest(`${API_BASE_URL}/api/pages/${id}`, {
       method: 'PUT',
       body: JSON.stringify(pageData)
     });
@@ -114,25 +114,25 @@ export const pagesService = {
 // Services service
 export const servicesService = {
   async getAllServices() {
-    return authenticatedRequest(`${API_BASE_URL}/admin/services`);
+    return authenticatedRequest(`${API_BASE_URL}/api/services`);
   },
 
   async createService(serviceData: any) {
-    return authenticatedRequest(`${API_BASE_URL}/admin/services`, {
+    return authenticatedRequest(`${API_BASE_URL}/api/services`, {
       method: 'POST',
       body: JSON.stringify(serviceData)
     });
   },
 
   async updateService(id: string, serviceData: any) {
-    return authenticatedRequest(`${API_BASE_URL}/admin/services/${id}`, {
+    return authenticatedRequest(`${API_BASE_URL}/api/services/${id}`, {
       method: 'PUT',
       body: JSON.stringify(serviceData)
     });
   },
 
   async deleteService(id: string) {
-    return authenticatedRequest(`${API_BASE_URL}/admin/services/${id}`, {
+    return authenticatedRequest(`${API_BASE_URL}/api/services/${id}`, {
       method: 'DELETE'
     });
   }
@@ -141,25 +141,25 @@ export const servicesService = {
 // Forms service
 export const formsService = {
   async getAllForms() {
-    return authenticatedRequest(`${API_BASE_URL}/admin/forms`);
+    return authenticatedRequest(`${API_BASE_URL}/api/forms`);
   },
 
   async createForm(formData: any) {
-    return authenticatedRequest(`${API_BASE_URL}/admin/forms`, {
+    return authenticatedRequest(`${API_BASE_URL}/api/forms`, {
       method: 'POST',
       body: JSON.stringify(formData)
     });
   },
 
   async updateForm(id: string, formData: any) {
-    return authenticatedRequest(`${API_BASE_URL}/admin/forms/${id}`, {
+    return authenticatedRequest(`${API_BASE_URL}/api/forms/${id}`, {
       method: 'PUT',
       body: JSON.stringify(formData)
     });
   },
 
   async deleteForm(id: string) {
-    return authenticatedRequest(`${API_BASE_URL}/admin/forms/${id}`, {
+    return authenticatedRequest(`${API_BASE_URL}/api/forms/${id}`, {
       method: 'DELETE'
     });
   }
@@ -168,22 +168,22 @@ export const formsService = {
 // Content service
 export const contentService = {
   async getAllContent(page = 1, limit = 10, filter = '') {
-    return authenticatedRequest(`${API_BASE_URL}/admin/content?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`);
+    return authenticatedRequest(`${API_BASE_URL}/api/content?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`);
   },
 
   async getContentById(id: string) {
-    return authenticatedRequest(`${API_BASE_URL}/admin/content/${id}`);
+    return authenticatedRequest(`${API_BASE_URL}/api/content/${id}`);
   },
 
   async createContent(contentData: any) {
-    return authenticatedRequest(`${API_BASE_URL}/admin/content`, {
+    return authenticatedRequest(`${API_BASE_URL}/api/content`, {
       method: 'POST',
       body: JSON.stringify(contentData)
     });
   },
 
   async updateContent(id: string, contentData: any) {
-    return authenticatedRequest(`${API_BASE_URL}/admin/content/${id}`, {
+    return authenticatedRequest(`${API_BASE_URL}/api/content/${id}`, {
       method: 'PUT',
       body: JSON.stringify(contentData)
     });
