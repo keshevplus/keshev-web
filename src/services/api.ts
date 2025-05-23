@@ -210,14 +210,14 @@ export const messagesService = {
       console.log('📊 API Response for messages:', response);
       
       // Return the API response (even if empty)
-      if (response && response.leads) {
-        console.log(`✅ Retrieved ${response.leads.length} messages from API`);
+      if (response && response.messages) {
+        console.log(`✅ Retrieved ${response.messages.length} messages from API`);
         return response;
       } else {
         // Initialize empty response format if needed
         console.log('No messages found in API response, returning empty array');
         return { 
-          leads: [], 
+          messages: [], 
           pagination: { 
             total: 0, 
             page, 
@@ -232,7 +232,7 @@ export const messagesService = {
       console.error('Error in getAllMessages:', error);
       // Return empty results instead of mock data
       return { 
-        leads: [], 
+        messages: [], 
         pagination: { 
           total: 0, 
           page, 
