@@ -14,72 +14,10 @@ const authenticatedRequest = async (url: string, options: RequestInit = {}) => {
   
   console.log(`[API] Request to ${url} with token: ${token ? token.substring(0, 10) + '...' : 'none'}`);
 
-  // Define pagination object here so it's available throughout the function
-  const defaultPagination = { total: 0, page: 1, limit: 10, totalPages: 1, hasNextPage: false, hasPrevPage: false };
-
-  // Check if it's the legacy mock token - only this token should return mock data
+  // IMPORTANT: Always make real API calls to fetch real data, regardless of token
+  // Log if using dev token, but don't return mock data
   if (token === 'dev-admin-token-xyz') {
-    console.warn(`LEGACY DEV ADMIN MODE: Using mock data for ${url}`);
-    // Legacy mock data - this section is only for the old token
-    // For GET requests, provide structured mock data
-    if (!options.method || options.method?.toUpperCase() === 'GET') {
-      if (url.includes('/admin/leads')) {
-        // Return mock lead data for dev admin
-        const mockLeads = [
-          {
-            id: 'mock-lead-1',
-            name: 'ישראל ישראלי',
-            email: 'israel@example.com',
-            phone: '050-1234567',
-            subject: 'שאלה בנוגע לשירותים',
-            message: 'אני מעוניין לקבל מידע נוסף על השירותים שאתם מציעים לטיפול בהפרעות קשב וריכוז.',
-            created_at: new Date().toISOString(),
-            date_received: new Date().toISOString()
-          },
-          {
-            id: 'mock-lead-2',
-            name: 'שרה כהן',
-            email: 'sarah@example.com',
-            phone: '052-7654321',
-            subject: 'פנייה בנושא אבחון',
-            message: 'אשמח לקבוע פגישת ייעוץ לגבי אבחון ADHD למבוגרים. מהם הזמנים הפנויים בשבוע הבא?',
-            created_at: new Date(Date.now() - 86400000).toISOString(), // Yesterday
-            date_received: new Date(Date.now() - 86400000).toISOString()
-          },
-          {
-            id: 'mock-lead-3',
-            name: 'דוד לוי',
-            email: 'david@example.com',
-            phone: '054-9876543',
-            subject: 'התייעצות מקצועית',
-            message: 'אני מטפל המתמחה בטיפול בילדים עם ADHD ואשמח להתייעץ עם אחד המומחים שלכם בנוגע לשיטות טיפול חדשניות.',
-            created_at: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
-            date_received: new Date(Date.now() - 172800000).toISOString()
-          }
-        ];
-        
-        // Update pagination to reflect the mock data
-        const mockPagination = { ...defaultPagination, total: mockLeads.length, totalPages: 1 };
-        return Promise.resolve({ leads: mockLeads, pagination: mockPagination });
-      } else if (url.includes('/admin/pages')) {
-        return Promise.resolve({ pages: [], pagination: defaultPagination });
-      } else if (url.includes('/admin/services')) {
-        return Promise.resolve({ services: [], pagination: defaultPagination });
-      } else if (url.includes('/admin/forms')) {
-        return Promise.resolve({ forms: [], pagination: defaultPagination });
-      } else if (url.includes('/admin/content')) { // Assuming content list expects 'content' array
-        return Promise.resolve({ content: [], pagination: defaultPagination });
-      } else {
-        // Fallback for other GET requests: return a generic structure or an empty array if that's preferred.
-        // Let's use a generic list structure that components might look for.
-        // Or, if most other GETs expect a single object, this might be { data: {} }.
-        // For now, let's assume lists are common, or an empty array is a safer very-generic default if no specific structure known.
-        console.warn(`DEV ADMIN MODE: No specific mock for GET ${url}, returning generic { data: [], pagination: ... }. Adjust if needed.`);
-        return Promise.resolve({ data: [], pagination: defaultPagination }); 
-      }
-    }
-    // For POST/PUT/DELETE in dev admin mode
-    return Promise.resolve({ success: true, message: 'Dev admin mock response (mutation)', data: {} });
+    console.warn(`DEV ADMIN MODE: Making real API call to ${url} despite using dev token`);
   }
 
   if (!token) {
@@ -262,11 +200,13 @@ export const contentService = {
 export const messagesService = {
   async getAllMessages(page = 1, limit = 10, filter = '') {
     try {
-      console.log('🔍 getAllMessages called with page:', page, 'limit:', limit, 'filter:', filter);
-      console.log('🔐 Current token:', localStorage.getItem('token'));
+      // Fix endpoint to correctly match the backend route structure
+      // The API_BASE_URL already includes '/api', so we need to use the correct path
+      const messageApiUrl = `/api/messages?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`;
+      console.log('📞 Making messages API request to:', messageApiUrl);
       
-      // Make real API call
-      const response = await authenticatedRequest(`${API_BASE_URL}/admin/messages?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`);
+      // Make real API call with the correct endpoint
+      const response = await authenticatedRequest(messageApiUrl);
       console.log('📊 API Response for messages:', response);
       
       // Return the API response (even if empty)
@@ -306,11 +246,13 @@ export const messagesService = {
   },
 
   async getMessageById(id: string) {
-    return authenticatedRequest(`${API_BASE_URL}/admin/messages/${id}`);
+    // Fix endpoint to correctly match the backend route structure
+    return authenticatedRequest(`/api/messages/${id}`);
   },
 
   async deleteMessage(id: string) {
-    return authenticatedRequest(`${API_BASE_URL}/admin/messages/${id}`, {
+    // Fix endpoint to correctly match the backend route structure
+    return authenticatedRequest(`/api/messages/${id}`, {
       method: 'DELETE'
     });
   }
@@ -320,8 +262,13 @@ export const messagesService = {
 export const leadsService = {
   async getAllLeads(page = 1, limit = 10, filter = '') {
     try {
-      // Make real API call
-      const response = await authenticatedRequest(`${API_BASE_URL}/admin/leads?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`);
+      // Fix endpoint to correctly match the backend route structure
+      // The API_BASE_URL already includes '/api', so we need to use the correct path
+      const leadApiUrl = `/api/leads?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`;
+      console.log('📞 Making leads API request to:', leadApiUrl);
+      
+      // Make real API call with the correct endpoint
+      const response = await authenticatedRequest(leadApiUrl);
       console.log('📊 API Response for leads:', response);
       
       // Return the API response (even if empty)
@@ -361,11 +308,13 @@ export const leadsService = {
   },
 
   async getLeadById(id: string) {
-    return authenticatedRequest(`${API_BASE_URL}/admin/leads/${id}`);
+    // Fix endpoint to correctly match the backend route structure
+    return authenticatedRequest(`/api/leads/${id}`);
   },
 
   async deleteLead(id: string) {
-    return authenticatedRequest(`${API_BASE_URL}/admin/leads/${id}`, {
+    // Fix endpoint to correctly match the backend route structure
+    return authenticatedRequest(`/api/leads/${id}`, {
       method: 'DELETE'
     });
   }
