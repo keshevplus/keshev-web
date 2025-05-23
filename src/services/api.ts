@@ -201,21 +201,44 @@ export const messagesService = {
   async getAllMessages(page = 1, limit = 10, filter = '') {
     try {
       // Fix endpoint to correctly match the backend route structure
-      // Avoid duplicating '/api' if API_BASE_URL already includes it
       const messageApiUrl = `/messages?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`;
       console.log('📞 Making messages API request to:', messageApiUrl);
+      console.log('📞 Full URL:', API_BASE_URL + messageApiUrl);
       
       // Make real API call with the correct endpoint
+      console.log('📞 Calling authenticatedRequest for messages...');
       const response = await authenticatedRequest(messageApiUrl);
-      console.log('📊 API Response for messages:', response);
+      console.log('📈 API Response for messages:', response);
+      console.log('📈 Response type:', typeof response);
+      console.log('📈 Response structure:', Object.keys(response || {}));
+      
+      // Add debug for specific checks of the response
+      if (response === null || response === undefined) {
+        console.warn('⚠️ Messages API returned null or undefined response');
+      }
       
       // Return the API response (even if empty)
       if (response && response.messages) {
         console.log(`✅ Retrieved ${response.messages.length} messages from API`);
+        console.log('✅ First few messages:', response.messages.slice(0, 2));
         return response;
+      } else if (Array.isArray(response)) {
+        // Handle case where response might be an array directly
+        console.log(`✅ Retrieved ${response.length} messages from API (array format)`);
+        return { 
+          messages: response, 
+          pagination: { 
+            total: response.length, 
+            page, 
+            limit, 
+            totalPages: Math.ceil(response.length / limit),
+            hasNextPage: response.length > page * limit,
+            hasPrevPage: page > 1
+          }
+        };
       } else {
         // Initialize empty response format if needed
-        console.log('No messages found in API response, returning empty array');
+        console.log('⚠️ No messages found in API response, returning empty array');
         return { 
           messages: [], 
           pagination: { 
@@ -263,21 +286,44 @@ export const leadsService = {
   async getAllLeads(page = 1, limit = 10, filter = '') {
     try {
       // Fix endpoint to correctly match the backend route structure
-      // Avoid duplicating '/api' if API_BASE_URL already includes it
       const leadApiUrl = `/leads?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`;
       console.log('📞 Making leads API request to:', leadApiUrl);
+      console.log('📞 Full URL:', API_BASE_URL + leadApiUrl);
       
       // Make real API call with the correct endpoint
+      console.log('📞 Calling authenticatedRequest for leads...');
       const response = await authenticatedRequest(leadApiUrl);
-      console.log('📊 API Response for leads:', response);
+      console.log('📈 API Response for leads:', response);
+      console.log('📈 Response type:', typeof response);
+      console.log('📈 Response structure:', Object.keys(response || {}));
+      
+      // Add debug for specific checks of the response
+      if (response === null || response === undefined) {
+        console.warn('⚠️ Leads API returned null or undefined response');
+      }
       
       // Return the API response (even if empty)
       if (response && response.leads) {
         console.log(`✅ Retrieved ${response.leads.length} leads from API`);
+        console.log('✅ First few leads:', response.leads.slice(0, 2));
         return response;
+      } else if (Array.isArray(response)) {
+        // Handle case where response might be an array directly
+        console.log(`✅ Retrieved ${response.length} leads from API (array format)`);
+        return { 
+          leads: response, 
+          pagination: { 
+            total: response.length, 
+            page, 
+            limit, 
+            totalPages: Math.ceil(response.length / limit),
+            hasNextPage: response.length > page * limit,
+            hasPrevPage: page > 1
+          }
+        };
       } else {
         // Initialize empty response format if needed
-        console.log('No leads found in API response, returning empty array');
+        console.log('⚠️ No leads found in API response, returning empty array');
         return { 
           leads: [], 
           pagination: { 
