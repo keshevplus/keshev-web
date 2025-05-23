@@ -757,52 +757,6 @@ const Admin: React.FC = () => {
     </div>
   );
 }
-
-function Admin() {
-  const navigate = useNavigate();
-  const { user, logout } = useAuth();
-  const [devFallbackActive, setDevFallbackActive] = useState(false);
-  const [authChecked, setAuthChecked] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { t, i18n } = useTranslation();
-  const isRtl = i18n.language === 'he';
-
-  // Use dev fallback user in development if needed
-  useEffect(() => {
-    if (!user && process.env.NODE_ENV === 'development' && !devFallbackActive) {
-      console.log('[Admin] Using development fallback user');
-      const fallbackUser = {
-        username: 'Development Admin (Fallback)',
-        email: 'dev@example.com',
-        role: 'admin'
-      };
-      setUser(fallbackUser);
-      setDevFallbackActive(true);
-    }
-  }, [user, devFallbackActive]);
-
-  // First useEffect - just check localStorage directly and log what's there
-  useEffect(() => {
-    const tokenCheck = localStorage.getItem('token');
-    const userCheck = localStorage.getItem('user');
-    console.log('[Admin] Initial localStorage check:', { 
-      hasToken: !!tokenCheck, 
-      hasUserData: !!userCheck,
-      userData: userCheck ? JSON.parse(userCheck) : null
-    });
-  }, []);
-
-  // Second useEffect - handle authentication status with a longer delay
-  useEffect(() => {
-    console.log('[Admin] Checking user authentication state:', user ? user.username : 'No user');
-    
-    if (!user && !authChecked) {
-      console.log('[Admin] No user found in context, preparing delayed check');
-      
-      // Give a longer delay to see if auth state updates
-      const timer = setTimeout(() => {
-        // Check localStorage directly in case the context hasn't updated yet
         const tokenCheck = localStorage.getItem('token');
         const userCheck = localStorage.getItem('user');
         
