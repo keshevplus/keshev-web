@@ -16,28 +16,48 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false }) => 
     messages: 0,
     leads: 0
   });
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     async function fetchStats() {
       try {
-        const [pagesRes, servicesRes, formsRes, messagesRes, leadsRes] = await Promise.all([
-          pagesService.getAllPages(),
-          servicesService.getAllServices(),
-          formsService.getAllForms(),
-          messagesService.getAllMessages(),
-          leadsService.getAllLeads(),
-        ]);
+        console.log('🔍 AdminDashboard: Fetching all stats...');
+        
+        // Fetch stats one by one for better debugging
+        const pagesRes = await pagesService.getAllPages();
+        console.log('📄 Pages response:', pagesRes);
+        
+        const servicesRes = await servicesService.getAllServices();
+        console.log('🔧 Services response:', servicesRes);
+        
+        const formsRes = await formsService.getAllForms();
+        console.log('📝 Forms response:', formsRes);
+        
+        // Add extra debugging for messages and leads
+        console.log('📨 Fetching messages...');
+        const messagesRes = await messagesService.getAllMessages();
+        console.log('📨 Messages response:', messagesRes);
+        console.log('📨 Messages data structure:', JSON.stringify(messagesRes));
+        
+        console.log('👥 Fetching leads...');
+        const leadsRes = await leadsService.getAllLeads();
+        console.log('👥 Leads response:', leadsRes);
+        console.log('👥 Leads data structure:', JSON.stringify(leadsRes));
 
+        // Log the counts we're calculating
+        const messageCount = messagesRes?.messages?.length || 0;
+        const leadCount = leadsRes?.leads?.length || 0;
+        console.log(`📊 Counts - Messages: ${messageCount}, Leads: ${leadCount}`);
+        
         setStats({
           pages: pagesRes.length,
           services: servicesRes.length,
           forms: formsRes.length,
-          messages: messagesRes?.messages?.length || 0,
-          leads: leadsRes?.leads?.length || 0
+          messages: messageCount,
+          leads: leadCount
         });
       } catch (error) {
-        console.error('Error fetching stats:', error);
+        console.error('❌ Error fetching stats:', error);
       }
     }
 
@@ -47,7 +67,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false }) => 
   return (
     <div className="p-6">
       <h1 className={`text-2xl font-bold mb-6 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
-        {t('admin.dashboard')}
+        {i18n.language === 'he' ? 'בקרה אדמיניסטרציה' : t('admin.dashboard')}
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
         <div className={`${darkMode ? 'bg-gray-700 text-white' : 'bg-white'} p-6 rounded-lg shadow-sm`}>

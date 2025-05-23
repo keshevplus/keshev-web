@@ -149,30 +149,44 @@ const onSubmit = async (data: FormValues, event: any) => {
       
       // Determine if we're in development or production
       const isProduction = import.meta.env.PROD;
-      const apiUrl = isProduction
-        ? `${import.meta.env.VITE_API_BASE_URL || 'https://api.keshevplus.co.il/api'}/contact`
-        : 'http://localhost:3001/api/contact';
+      const apiBaseUrl = isProduction
+        ? (import.meta.env.VITE_API_BASE_URL || 'https://api.keshevplus.co.il/api')
+        : 'http://localhost:3001/api';
 
-      console.log(`Submitting form to: ${apiUrl} (${isProduction ? 'Production' : 'Development'} mode)`);
+      console.log(`Using API base URL: ${apiBaseUrl} (${isProduction ? 'Production' : 'Development'} mode)`);
       
-      try {
-        // Try to submit to the API
-        const response = await fetch(apiUrl, {
+      // Submit data to BOTH endpoints to ensure it appears in both admin panels
+      const endpoints = ['messages', 'leads'];
+      const submissionPromises = endpoints.map(endpoint => {
+        const url = `${apiBaseUrl}/${endpoint}`;
+        console.log(`Submitting to ${endpoint} endpoint at: ${url}`);
+        
+        return fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data),
+        }).then(response => {
+          if (response.ok) {
+            console.log(`${endpoint} submission successful`);
+            return true;
+          } else {
+            console.warn(`${endpoint} submission failed with status: ${response.status}`);
+            return false;
+          }
+        }).catch(error => {
+          console.error(`${endpoint} submission error:`, error);
+          return false;
         });
-        
-        if (response.ok) {
-          console.log('API submission successful');
-        } else {
-          console.warn(`API submission failed with status: ${response.status}`);
-          throw new Error(`API responded with status ${response.status}`);
-        }
-      } catch (apiError) {
-        // API submission failed, but we already saved locally
-        console.warn('API submission error, falling back to local storage:', apiError);
-        // Continue with success flow even if API fails (data is saved locally)
+      });
+      
+      // Wait for all submissions to complete
+      const results = await Promise.all(submissionPromises);
+      
+      // Continue even if some submissions failed (we saved locally as backup)
+      if (results.some(result => result === true)) {
+        console.log('At least one submission endpoint succeeded');
+      } else {
+        console.warn('All submission endpoints failed, using local storage backup');
       }
       
       // Show success message regardless of API result since we saved locally
