@@ -3,6 +3,10 @@
     "english": "English",
     "hebrew": "Hebrew"
   },
+  "admin": {
+    "admin_panel": "Admin Panel",
+    "dashboard": "DASHBOARD"
+  },
   "navigation": {
     "home": "Home",
     "about": "About",
