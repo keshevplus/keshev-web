@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Color Converter</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    canvas { border: 1px solid #ccc; margin: 10px 0; }
+    button { padding: 10px; margin: 5px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h2>Converting plus.png to green (gplus.png)</h2>
+  <div>
+    <canvas id="originalCanvas" width="200" height="200"></canvas>
+    <canvas id="greenCanvas" width="200" height="200"></canvas>
+  </div>
+  <div>
+    <button id="convertBtn">Convert to Green</button>
+    <a id="downloadLink" download="gplus.png" href="#">Download gplus.png</a>
+  </div>
+
+  <script>
+    const originalCanvas = document.getElementById('originalCanvas');
+    const greenCanvas = document.getElementById('greenCanvas');
+    const originalCtx = originalCanvas.getContext('2d');
+    const greenCtx = greenCanvas.getContext('2d');
+    const convertBtn = document.getElementById('convertBtn');
+    const downloadLink = document.getElementById('downloadLink');
+
+    // Load the original image
+    const img = new Image();
+    img.crossOrigin = 'Anonymous';
+    img.src = '../plus.png';
+    
+    img.onload = function() {
+      // Resize canvas to match image dimensions
+      originalCanvas.width = img.width;
+      originalCanvas.height = img.height;
+      greenCanvas.width = img.width;
+      greenCanvas.height = img.height;
+      
+      // Draw original image
+      originalCtx.drawImage(img, 0, 0);
+      
+      // Auto-convert when loaded
+      convertToGreen();
+    };
+
+    convertBtn.addEventListener('click', convertToGreen);
+
+    function convertToGreen() {
+      // Get image data from original canvas
+      const imageData = originalCtx.getImageData(0, 0, originalCanvas.width, originalCanvas.height);
+      const data = imageData.data;
+      
+      // Change orange to green (preserve alpha channel)
+      for (let i = 0; i < data.length; i += 4) {
+        // If this is an orange/yellow pixel (R high, G medium, B low)
+        if (data[i] > 200 && data[i+1] > 100 && data[i+2] < 100) {
+          // Convert to green (R low, G high, B low)
+          data[i] = 0;             // R
+          data[i+1] = 180;          // G
+          data[i+2] = 0;             // B
+          // Alpha channel (data[i+3]) remains unchanged
+        }
+      }
+      
+      // Put the modified image data back on the canvas
+      greenCtx.putImageData(imageData, 0, 0);
+      
+      // Update download link
+      downloadLink.href = greenCanvas.toDataURL('image/png');
+    }
+  </script>
+</body>
+</html>

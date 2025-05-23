@@ -72,6 +72,7 @@ export default function Services() {
             title="בדיקות MOXO"
             description="בדיקה ממוחשבת לאבחון קשב וריכוז המסייעת באיתור וטיפול בהפרעות קשב, מותאמת לילדים ומבוגרים"
             icon={<FaClipboardCheck size={36} />}
+            isRtl={true}
           />
         </li>
         {/* Original service cards from data */}
@@ -86,6 +87,7 @@ export default function Services() {
               description={item.description || ''}
               image={item.image}
               icon={serviceIcons[index % serviceIcons.length]} // Use the icon that corresponds to this service
+              isRtl={true} // Enable RTL for Hebrew content
             />
           </li>
         ))}
