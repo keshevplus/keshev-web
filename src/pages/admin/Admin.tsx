@@ -1,8 +1,8 @@
 // Admin.tsx
 
-import React, { useContext, useState, useEffect } from 'react';
-import { Routes, Route, useNavigate, Link, useLocation } from 'react-router-dom';
-import { AuthContext } from '../../contexts/AuthContext';
+import React, { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
 
 // Import individual admin components
@@ -17,20 +17,20 @@ import LanguageSwitcher from '../../components/LanguageSwitcher';
 import TranslationsManager from './TranslationsManager';
 
 const Admin: React.FC = () => {
-  const { auth, logout } = useContext(AuthContext);
+  // Use the useAuth hook to access auth context
+  const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
   const isRtl = i18n.language === 'he';
 
   useEffect(() => {
-    if (!auth.isAuthenticated) {
+    if (!isAuthenticated) {
       navigate('/admin/login');
     }
-  }, [auth, navigate]);
+  }, [isAuthenticated, navigate]);
 
   const handleLogout = () => {
     logout();
@@ -51,7 +51,7 @@ const Admin: React.FC = () => {
     setMobileMenuOpen(prev => !prev);
   };
 
-  if (!auth.isAuthenticated) {
+  if (!isAuthenticated) {
     return null;
   }
 
@@ -177,7 +177,7 @@ const Admin: React.FC = () => {
           <div className={`p-4 border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
             <div className="flex items-center justify-between">
               <span className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                {auth.user?.username || 'Admin'}
+                {user?.username || 'Admin'}
               </span>
               <button
                 onClick={handleLogout}
