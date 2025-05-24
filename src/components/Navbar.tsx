@@ -49,14 +49,14 @@ export default function Navbar() {
     >
 
     <div className="relative w-full bg-[url('/assets/images/bgvideogif.gif')">
-      <div className="container bg-white/70 px-4 max-w-3xl flex align-items-center justify-between relative backdrop-blur-sm ">
+      <div className="container bg-white/70 px-4 max-w-3xl flex items-center justify-between relative backdrop-blur-sm ">
         <Link
           to="/"
-          className={`flex align-items-center transition-opacity duration-300 ${
+          className={`flex items-center transition-opacity duration-300 ${
             isHomePage && !isScrolled ? 'opacity-0' : 'opacity-100'
           }`}
         >
-          <div className="flex align-items-center ">
+          <div className="flex items-center ">
             <img
               src="/assets/images/logo.png"
               alt="קשב"
@@ -81,7 +81,7 @@ export default function Navbar() {
               </Link>
             ))}
         </div>
-        <div className="flex align-items-center space-x-3">
+        <div className="flex items-center space-x-3">
           {/* Language Switcher in Navbar */}
           <div className="navbar-language-switcher">
             <LanguageSwitcher />
@@ -118,8 +118,8 @@ export default function Navbar() {
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm -z-10"></div>
           
           {/* Menu header with close button */}
-          <div className="bg-green-800 py-4 px-6 flex justify-between align-items-center">
-            <span className="text-white text-2xl font-bold align-items-center">תפריט</span>
+          <div className="bg-green-800 py-4 px-6 flex justify-between items-center">
+            <span className="text-white text-2xl font-bold items-center">תפריט</span>
             <button
               className="text-white p-2"
               onClick={() => dispatch(setIsMenuOpen(false))}
