@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { pagesService, servicesService, formsService, messagesService, leadsService } from '../../services/api';
 import { useTranslation } from 'react-i18next';
 import { FiRefreshCw, FiAlertTriangle, FiCheckCircle, FiMenu, FiX, FiLogOut, FiMoon, FiSun } from 'react-icons/fi';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FiHome, FiFileText, FiMessageSquare, FiUsers, FiSettings, FiGlobe, FiLayout } from 'react-icons/fi';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
 import { useAuth } from '../../contexts/AuthContext';
@@ -116,15 +116,20 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
 
   // Fetch all statistics
   useEffect(() => {
-    fetchStats();
+    const loadStats = async () => {
+      await fetchStats();
+    };
+    loadStats();
   }, []);
 
   async function fetchStats() {
     try {
       setLoading(true);
       setError(null);
+      console.log('Fetching stats for dashboard...');
       
-      const [pagesRes, servicesRes, formsRes, messagesRes, leadsRes] = await Promise.all([
+      // Using Promise.allSettled to prevent one failure from blocking all results
+      const results = await Promise.allSettled([
         pagesService.getAllPages(),
         servicesService.getAllServices(),
         formsService.getAllForms(),
@@ -132,21 +137,49 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
         leadsService.getAllLeads(),
       ]);
 
+      console.log('Stats fetch results:', results);
+      
+      // Extract results safely
+      const [pagesResult, servicesResult, formsResult, messagesResult, leadsResult] = results;
+      
+      // Get data from successful requests or use fallbacks for failed ones
+      const pagesRes = pagesResult.status === 'fulfilled' ? pagesResult.value : [];
+      const servicesRes = servicesResult.status === 'fulfilled' ? servicesResult.value : [];
+      const formsRes = formsResult.status === 'fulfilled' ? formsResult.value : [];
+      const messagesRes = messagesResult.status === 'fulfilled' ? messagesResult.value : { messages: [] };
+      const leadsRes = leadsResult.status === 'fulfilled' ? leadsResult.value : { leads: [] };
+
+      console.log('Messages response:', messagesRes);
+      console.log('Leads response:', leadsRes);
+
       // Update message count for notification badge
-      const newCount = messagesRes?.messages?.length || 0;
-      setMessageCount(newCount);
+      const newMessageCount = messagesRes?.messages?.length || 0;
+      console.log('New message count:', newMessageCount);
+      setMessageCount(newMessageCount);
+
+      // Check for unread messages
+      const unreadMessages = messagesRes?.messages?.filter((msg: { is_read?: boolean }) => !msg.is_read)?.length || 0;
+      console.log('Unread messages:', unreadMessages);
+      setNewMessagesCount(unreadMessages);
 
       setResources({
-        pages: { status: 'success', count: pagesRes.length, error: null, lastUpdated: new Date() },
-        services: { status: 'success', count: servicesRes.length, error: null, lastUpdated: new Date() },
-        forms: { status: 'success', count: formsRes.length, error: null, lastUpdated: new Date() },
-        messages: { status: 'success', count: messagesRes?.messages?.length || 0, error: null, lastUpdated: new Date() },
+        pages: { status: 'success', count: pagesRes.length || 0, error: null, lastUpdated: new Date() },
+        services: { status: 'success', count: servicesRes.length || 0, error: null, lastUpdated: new Date() },
+        forms: { status: 'success', count: formsRes.length || 0, error: null, lastUpdated: new Date() },
+        messages: { status: 'success', count: newMessageCount, error: null, lastUpdated: new Date() },
         leads: { status: 'success', count: leadsRes?.leads?.length || 0, error: null, lastUpdated: new Date() }
       });
-      } catch (error) {
-        console.error('Error fetching stats:', error);
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+      setError('Failed to load dashboard data. Please try again later.');
+    } finally {
+      setLoading(false);
     }
   }
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
 
   // Navigate to different admin sections
   const handleNavigation = (path: string) => {
@@ -170,7 +203,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
       {/* Mobile Hamburger Button - Only visible on mobile/tablet */}
       <button
         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        className={`md:hidden fixed z-30 top-4 ${isRtl ? 'left-4' : 'right-4'} w-8 h-8 flex items-center justify-center rounded-full ${
+        className={`md:hidden fixed z-30 top-4 ${isRtl ? 'left-4' : 'left-4'} w-8 h-8 flex items-center justify-center rounded-full ${
           darkMode ? 'bg-gray-700 text-white' : 'bg-white text-gray-800'
         } shadow-lg focus:outline-none transition-all duration-200`}
         aria-label="Toggle menu"
@@ -181,14 +214,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
       {/* Mobile Menu - Slim and Modern */}
       <div
         ref={menuRef}
-        className={`fixed z-20 top-0 ${isRtl ? 'right-0' : 'left-0'} h-full w-44 md:hidden ${
+        className={`fixed z-20 top-0 left-0 h-full w-44 md:hidden ${
           darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'
         } shadow-lg transform transition-transform duration-300 ease-in-out ${
           mobileMenuOpen 
             ? 'translate-x-0' 
-            : isRtl 
-              ? 'translate-x-full' 
-              : '-translate-x-full'
+            : '-translate-x-full'
         }`}
       >
         <div className="px-4 py-3 flex items-center justify-between border-b border-gray-200">
@@ -285,12 +316,17 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
         </nav>
       </div>
 
-      {/* Main Content - With proper spacing for mobile menu */}
-      <div className={`p-4 ${mobileMenuOpen ? 'md:ml-0 ml-44' : 'ml-0'} transition-all duration-300`}>
+      {/* Main Content - With proper spacing for mobile menu and 100px top margin */}
+      <div className={`p-4 mt-[100px] ${mobileMenuOpen ? 'md:ml-0 ml-44' : 'ml-0'} transition-all duration-300`}>
         <div className="flex justify-between items-center mb-6">
-          <h1 className={`text-xl font-semibold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
-            {t('admin.dashboard', 'Dashboard')}
-          </h1>
+          <div>
+            <h1 className={`text-xl font-semibold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+              {t('admin.dashboard', 'ניהול לקוחות ותוכן')}
+            </h1>
+            <p className={`text-xs mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+              NeonDB: keshevplus_production
+            </p>
+          </div>
           
           <button
             onClick={() => window.location.reload()}
@@ -325,16 +361,25 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
             <div className={`${darkMode ? 'bg-gray-700 text-white' : 'bg-white'} p-4 rounded-lg shadow-sm`}>
               <h3 className="text-sm font-medium mb-1">Pages</h3>
               <p className="text-2xl font-bold">{resources.pages.count}</p>
+              <p className={`text-xs mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                <code>pages</code> table
+              </p>
             </div>
             
             <div className={`${darkMode ? 'bg-gray-700 text-white' : 'bg-white'} p-4 rounded-lg shadow-sm`}>
               <h3 className="text-sm font-medium mb-1">Services</h3>
               <p className="text-2xl font-bold">{resources.services.count}</p>
+              <p className={`text-xs mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                <code>services</code> table
+              </p>
             </div>
             
             <div className={`${darkMode ? 'bg-gray-700 text-white' : 'bg-white'} p-4 rounded-lg shadow-sm`}>
               <h3 className="text-sm font-medium mb-1">Forms</h3>
               <p className="text-2xl font-bold">{resources.forms.count}</p>
+              <p className={`text-xs mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                <code>forms</code> table
+              </p>
             </div>
             
             <div className={`${darkMode ? 'bg-gray-700 text-white' : 'bg-white'} p-4 rounded-lg shadow-sm relative`}>
@@ -347,11 +392,17 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
                   </span>
                 )}
               </div>
+              <p className={`text-xs mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                <code>messages</code> table
+              </p>
             </div>
             
             <div className={`${darkMode ? 'bg-gray-700 text-white' : 'bg-white'} p-4 rounded-lg shadow-sm`}>
               <h3 className="text-sm font-medium mb-1">Leads</h3>
               <p className="text-2xl font-bold">{resources.leads.count}</p>
+              <p className={`text-xs mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                <code>leads</code> table
+              </p>
             </div>
           </div>
         )}

@@ -11,6 +11,7 @@ interface Message {
   subject: string;
   message: string;
   created_at: string;
+  is_read?: boolean;
 }
 
 interface PaginationData {
@@ -45,10 +46,23 @@ const MessagesManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false })
       const response = await messagesService.getAllMessages(page, 10, filter);
       setMessages(response.messages);
       setPagination(response.pagination);
+      console.log('Messages loaded:', response.messages);
     } catch (error) {
       console.error('Error fetching messages:', error);
     } finally {
       setLoading(false);
+    }
+  }
+  
+  async function markAsRead(id: string) {
+    try {
+      await messagesService.markMessageAsRead(id);
+      // Update local state to reflect the change without refetching
+      setMessages(messages.map(msg => 
+        msg.id === id ? { ...msg, is_read: true } : msg
+      ));
+    } catch (error) {
+      console.error('Error marking message as read:', error);
     }
   }
 
@@ -80,7 +94,11 @@ const MessagesManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false })
 
   return (
     <div className="p-6" style={{ direction: isRtl ? 'rtl' : 'ltr' }}>
-      <h2 className={`text-2xl font-bold mb-6 ${darkMode ? 'text-white' : 'text-gray-800'}`}>Messages Management</h2>
+      <h2 className={`text-2xl font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}>ניהול הודעות</h2>
+      <div className={`mb-4 text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+        <p>NeonDB Table: <code>messages</code></p>
+        <p>Database: <code>keshevplus_production</code></p>
+      </div>
 
       <div className="mb-4">
         <input
@@ -117,19 +135,24 @@ const MessagesManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false })
               messages.map((message) => (
                 <React.Fragment key={message.id}>
                   <tr className={darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-50'}>
-                    <td className={`px-4 py-2 text-sm ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{message.name}</td>
-                    <td className={`px-4 py-2 text-sm ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{message.email}</td>
-                    <td className={`px-4 py-2 text-sm ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{message.subject}</td>
-                    <td className={`px-4 py-2 text-sm break-words ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
+                    <td className={`px-4 py-2 text-sm ${message.is_read === false ? 'font-bold' : ''} ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{message.name}</td>
+                    <td className={`px-4 py-2 text-sm ${message.is_read === false ? 'font-bold' : ''} ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{message.email}</td>
+                    <td className={`px-4 py-2 text-sm ${message.is_read === false ? 'font-bold' : ''} ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{message.subject}</td>
+                    <td className={`px-4 py-2 text-sm break-words ${message.is_read === false ? 'font-bold' : ''} ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
                       {message.message.length > 50 ? `${message.message.substring(0, 50)}...` : message.message}
                     </td>
-                    <td className={`px-4 py-2 text-sm ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
+                    <td className={`px-4 py-2 text-sm ${message.is_read === false ? 'font-bold' : ''} ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
                       {message.created_at ? new Date(message.created_at).toLocaleString('en-US') : 'N/A'}
                     </td>
                     <td className="px-4 py-2 text-sm whitespace-nowrap">
                       <button
                         className={`mr-2 ${darkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-800'}`}
-                        onClick={() => setExpandedRowId(message.id)}
+                        onClick={() => {
+                          setExpandedRowId(message.id);
+                          if (!message.is_read) {
+                            markAsRead(message.id);
+                          }
+                        }}
                       >
                         Details
                       </button>
