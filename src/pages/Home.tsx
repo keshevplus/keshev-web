@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { HomePageContent } from '../types/content';
 import '../styles/shine.css'; // Import shine effect CSS
+import PageLayout from '../components/ui/PageLayout';
 // import NeuralBackground from '../components/NeuralBackground';
 
 export default function Home() {
@@ -36,12 +37,7 @@ export default function Home() {
   }
 
   return (
-    <PageLayout
-      title={t('home.title', 'קשב פלוס - אבחון הפרעת קשב')}
-      withRtl={true}
-      background="bg-white"
-      maxWidth="md:max-w-[75%] lg:max-w-[90%]"
-    >
+    
       <div className="relative w-full overflow-x-hidden">
         {/* Neural network animated background - with reduced density and speed */}
         {/* <NeuralBackground density={4} speed={3} opacity={0.3} /> */}
