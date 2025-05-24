@@ -245,7 +245,7 @@ export const messagesService = {
             console.log(`✅ Retrieved ${response.messages.length} messages from API (with messages property)`);
             
             // Ensure each message has an is_read property (default to false if missing)
-            const normalizedMessages = response.messages.map(msg => ({
+            const normalizedMessages = response.messages.map((msg: { id: string; name: string; email: string; subject: string; message: string; created_at: string; is_read?: boolean }) => ({
               ...msg,
               is_read: typeof msg.is_read === 'boolean' ? msg.is_read : false
             }));
