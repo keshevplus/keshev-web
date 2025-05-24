@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { HomePageContent } from '../types/content';
+import PageLayout from '../components/ui/PageLayout';
 import '../styles/shine.css'; // Import shine effect CSS
 // import NeuralBackground from '../components/NeuralBackground';
 
