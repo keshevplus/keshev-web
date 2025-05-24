@@ -45,10 +45,15 @@ const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) =>
   async function fetchLeads() {
     try {
       setLoading(true);
-      const response = await leadsService.getAllLeads(page, 10, filter);
-      setLeads(response.leads);
+      const response = await leadsService.getAllLeads(page, 100, filter);
+      const leadsWithReadStatus = response.leads.map((lead: Lead) => ({
+        ...lead,
+        is_read: lead.is_read === undefined ? false : lead.is_read // Default to unread if not specified
+      }));
+      setLeads(leadsWithReadStatus);
       setPagination(response.pagination);
-      console.log('Leads loaded:', response.leads);
+      console.log('Leads loaded:', leadsWithReadStatus);
+      console.log('Unread count:', leadsWithReadStatus.filter((lead: Lead) => !lead.is_read).length);
     } catch (error) {
       console.error('Error fetching leads:', error);
     } finally {

@@ -19,6 +19,7 @@ type ResourceStatus = 'idle' | 'loading' | 'success' | 'error';
 interface ResourceState {
   status: ResourceStatus;
   count: number;
+  unreadCount: number;
   error: string | null;
   lastUpdated: Date | null;
 }
@@ -31,11 +32,11 @@ interface NavItem {
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggleDarkMode }) => {
   const [resources, setResources] = useState({
-    pages: { status: 'idle' as ResourceStatus, count: 0, error: null, lastUpdated: null },
-    services: { status: 'idle' as ResourceStatus, count: 0, error: null, lastUpdated: null },
-    forms: { status: 'idle' as ResourceStatus, count: 0, error: null, lastUpdated: null },
-    messages: { status: 'idle' as ResourceStatus, count: 0, error: null, lastUpdated: null },
-    leads: { status: 'idle' as ResourceStatus, count: 0, error: null, lastUpdated: null }
+    pages: { status: 'idle' as ResourceStatus, count: 0, unreadCount: 0, error: null, lastUpdated: null },
+    services: { status: 'idle' as ResourceStatus, count: 0, unreadCount: 0, error: null, lastUpdated: null },
+    forms: { status: 'idle' as ResourceStatus, count: 0, unreadCount: 0, error: null, lastUpdated: null },
+    messages: { status: 'idle' as ResourceStatus, count: 0, unreadCount: 0, error: null, lastUpdated: null },
+    leads: { status: 'idle' as ResourceStatus, count: 0, unreadCount: 0, error: null, lastUpdated: null }
   });
   const [messageCount, setMessageCount] = useState(0);
   const [newMessagesCount, setNewMessagesCount] = useState(0);
@@ -157,17 +158,19 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
       console.log('New message count:', newMessageCount);
       setMessageCount(newMessageCount);
 
-      // Check for unread messages
+      // Check for unread messages and leads
       const unreadMessages = messagesRes?.messages?.filter((msg: { is_read?: boolean }) => !msg.is_read)?.length || 0;
+      const unreadLeads = leadsRes?.leads?.filter((lead: { is_read?: boolean }) => !lead.is_read)?.length || 0;
       console.log('Unread messages:', unreadMessages);
+      console.log('Unread leads:', unreadLeads);
       setNewMessagesCount(unreadMessages);
 
       setResources({
-        pages: { status: 'success', count: pagesRes.length || 0, error: null, lastUpdated: new Date() },
-        services: { status: 'success', count: servicesRes.length || 0, error: null, lastUpdated: new Date() },
-        forms: { status: 'success', count: formsRes.length || 0, error: null, lastUpdated: new Date() },
-        messages: { status: 'success', count: newMessageCount, error: null, lastUpdated: new Date() },
-        leads: { status: 'success', count: leadsRes?.leads?.length || 0, error: null, lastUpdated: new Date() }
+        pages: { status: 'success', count: pagesRes.length || 0, unreadCount: 0, error: null, lastUpdated: new Date() },
+        services: { status: 'success', count: servicesRes.length || 0, unreadCount: 0, error: null, lastUpdated: new Date() },
+        forms: { status: 'success', count: formsRes.length || 0, unreadCount: 0, error: null, lastUpdated: new Date() },
+        messages: { status: 'success', count: newMessageCount, unreadCount: unreadMessages, error: null, lastUpdated: new Date() },
+        leads: { status: 'success', count: leadsRes?.leads?.length || 0, unreadCount: unreadLeads, error: null, lastUpdated: new Date() }
       });
     } catch (error) {
       console.error('Error fetching stats:', error);
@@ -385,12 +388,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
             <div className={`${darkMode ? 'bg-gray-700 text-white' : 'bg-white'} p-4 rounded-lg shadow-sm relative`}>
               <h3 className="text-sm font-medium mb-1">Messages</h3>
               <div className="flex items-center">
-                <p className="text-2xl font-bold">{resources.messages.count}</p>
-                {newMessagesCount > 0 && (
-                  <span className="ml-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-                    +{newMessagesCount} new
-                  </span>
-                )}
+                <p className="text-2xl font-bold">
+                  {resources.messages.count} 
+                  {newMessagesCount > 0 && (
+                    <span className="font-bold text-red-500">
+                      ({newMessagesCount})
+                    </span>
+                  )}
+                </p>
               </div>
               <p className={`text-xs mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                 <code>messages</code> table
@@ -399,7 +404,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
             
             <div className={`${darkMode ? 'bg-gray-700 text-white' : 'bg-white'} p-4 rounded-lg shadow-sm`}>
               <h3 className="text-sm font-medium mb-1">Leads</h3>
-              <p className="text-2xl font-bold">{resources.leads.count}</p>
+              <div className="flex items-center">
+                <p className="text-2xl font-bold">
+                  {resources.leads.count}
+                  {resources.leads.unreadCount > 0 && (
+                    <span className="font-bold text-red-500">
+                      ({resources.leads.unreadCount})
+                    </span>
+                  )}
+                </p>
+              </div>
               <p className={`text-xs mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                 <code>leads</code> table
               </p>
