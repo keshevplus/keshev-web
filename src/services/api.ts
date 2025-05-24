@@ -216,7 +216,7 @@ export const messagesService = {
     }
   },
   
-  async getAllMessages(page = 1, limit = 10, filter = '') {
+  async getAllMessages(page = 1, limit = 100, filter = '') {
     try {
       // Ensure we have the correct API endpoint format
       const messageApiUrl = `/api/messages?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`;
@@ -327,7 +327,7 @@ export const leadsService = {
     }
   },
   
-  async getAllLeads(page = 1, limit = 10, filter = '') {
+  async getAllLeads(page = 1, limit = 100, filter = '') {
     try {
       // Ensure we have the correct API endpoint format
       const leadApiUrl = `/api/leads?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`;

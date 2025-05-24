@@ -43,10 +43,15 @@ const MessagesManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false })
   async function fetchMessages() {
     try {
       setLoading(true);
-      const response = await messagesService.getAllMessages(page, 10, filter);
-      setMessages(response.messages);
+      const response = await messagesService.getAllMessages(page, 100, filter);
+      const messagesWithReadStatus = response.messages.map((msg: Message) => ({
+        ...msg,
+        is_read: msg.is_read === undefined ? false : msg.is_read // Default to unread if not specified
+      }));
+      setMessages(messagesWithReadStatus);
       setPagination(response.pagination);
-      console.log('Messages loaded:', response.messages);
+      console.log('Messages loaded:', messagesWithReadStatus);
+      console.log('Unread count:', messagesWithReadStatus.filter((msg: Message) => !msg.is_read).length);
     } catch (error) {
       console.error('Error fetching messages:', error);
     } finally {
