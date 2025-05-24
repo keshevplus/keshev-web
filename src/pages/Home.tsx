@@ -5,7 +5,7 @@ import type { HomePageContent } from '../types/content';
 import '../styles/shine.css'; // Import shine effect CSS
 // import NeuralBackground from '../components/NeuralBackground';
 
-export default function Home() {
+export default function Home(): JSX.Element {
   const [pageData, setPageData] = useState<HomePageContent | null>(null);
   const { t } = useTranslation();
 
@@ -41,55 +41,54 @@ export default function Home() {
     <div className="relative w-full overflow-x-hidden">
       {/* Main content container */}
       <div className="relative z-10 w-full">
+
         {/* Hero Section */}
         <div className="container mx-auto px-4 py-10 md:py-16 overflow-hidden">
-          {/* Logo Section */}
-          <div className="w-full text-center mb-10">
-            <img 
-              src="/assets/images/logo.png" 
-              alt="קשב פלוס" 
-              className="w-56 md:w-80 mx-auto drop-shadow-lg"
-            />
-          </div>
-          
-          {/* Content layout - On mobile: stacked with image on top */}
-          {/* On desktop: image on LEFT, text on RIGHT */}
-          <div className="flex flex-col-reverse md:flex-row align-items-center justify-between gap-8 md:gap-12">
-            {/* Image Section - LEFT side on desktop */}
-            <div className="w-full md:w-1/2 flex justify-center align-items-center">
+          {/* Top row with logo and doctor image side by side */}
+          <div className="flex flex-col md:flex-row justify-between items-center mb-10">
+            {/* Logo Section - Left on desktop */}
+            <div className="w-full md:w-1/2 text-center md:text-right mb-8 md:mb-0">
               <img 
-                src="/assets/images/doctor-hero.png" 
-                alt="רופא מקצועי" 
-                className="w-full max-w-xs sm:max-w-sm md:max-w-md h-auto rounded-3xl border-4 border-white"
+                src="/assets/images/logo.png" 
+                alt="קשב פלוס" 
+                className="w-56 md:w-64 mx-auto md:mx-0 md:ml-auto drop-shadow-lg"
               />
             </div>
             
-            {/* Text Section - RIGHT side on desktop */}
-            <div className="w-full md:w-1/2 mt-6 md:mt-0 align-items-center">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-green-800 mb-4 md:mb-6">
-                {t('home.hero.title', 'רוצה להבין מה עובר עליך? בוא לבדוק אם זו הפרעת קשב.')}
-              </h1>
-              <p className="text-lg md:text-xl mb-8 text-gray-700">
-                {t('home.hero.subtitle', 'בדיקה מקצועית, מהירה ודיסקרטית ל-ADHD - לילדים, בני נוער ומבוגרים.')}
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Link
-                  to="/about"
-                  className="inline-block bg-green-800 hover:bg-green-600 text-white px-8 py-4 rounded-md text-xl font-bold transition-colors duration-300 shadow-md hover:shadow-lg"
-                >
-                  {t('home.hero.about', 'קרא עוד עלינו')}
-                </Link>
-                <Link
-                  to="/contact"
-                  className="inline-block bg-orange-400 hover:bg-orange-600 hover:text-white text-black px-8 py-4 rounded-md text-xl font-bold transition-colors duration-300 shadow-md hover:shadow-lg"
-                >
-                  {t('home.hero.contact', 'התחילו את האבחון שלכם עכשיו')}
-                </Link>
-              </div>
+            {/* Image Section - Right on desktop */}
+            <div className="w-full md:w-1/2 flex justify-center md:justify-start">
+              <img 
+                src="/assets/images/doctor-hero.png" 
+                alt="רופא מקצועי" 
+                className="w-full max-w-xs md:max-w-sm h-auto rounded-3xl border-4 border-white"
+              />
+            </div>
+          </div>
+                
+          {/* Text Section below the top row */}
+          <div className="w-full mt-2 md:mt-4">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-green-800 mb-4 md:mb-6 text-center">
+              {t('home.hero.title', 'רוצה להבין מה עובר עליך? בוא לבדוק אם זו הפרעת קשב.')}
+            </h1>
+            <p className="text-lg md:text-xl mb-8 text-gray-700 text-center">
+              {t('home.hero.subtitle', 'בדיקה מקצועית, מהירה ודיסקרטית ל-ADHD - לילדים, בני נוער ומבוגרים.')}
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link
+                to="/about"
+                className="inline-block bg-green-800 hover:bg-green-600 text-white px-8 py-4 rounded-md text-xl font-bold transition-colors duration-300 shadow-md hover:shadow-lg"
+              >
+                {t('home.hero.about', 'קרא עוד עלינו')}
+              </Link>
+              <Link
+                to="/contact"
+                className="inline-block bg-orange-400 hover:bg-orange-600 hover:text-white text-black px-8 py-4 rounded-md text-xl font-bold transition-colors duration-300 shadow-md hover:shadow-lg"
+              >
+                {t('home.hero.contact', 'התחילו את האבחון שלכם עכשיו')}
+              </Link>
             </div>
           </div>
         </div>
-
         {/* CTA Section */}
         <div className="pt-16 pb-6 md:pt-20 md:pb-6 bg-gradient-to-b from-green-800 to-green-950 text-white">
           <div className="container mx-auto px-4 text-center max-w-screen-xl">
