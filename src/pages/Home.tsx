@@ -29,7 +29,6 @@ export default function Home() {
 
   if (!pageData) {
     return (
-  
       <div className="container mx-auto max-w-full md:max-w-[75%] py-4 loading">
         <div className="animate-pulse">Loading...</div>
       </div>
@@ -37,17 +36,15 @@ export default function Home() {
   }
 
   return (
-    <div className="relative">
+    <div className="relative w-full overflow-x-hidden">
       {/* Neural network animated background - with reduced density and speed */}
       {/* <NeuralBackground density={4} speed={3} opacity={0.3} /> */}
       
       {/* All content positioned with z-index to ensure it stays above background */}
-      <div className="relative z-10"> 
-    <div className="rtl">
-      {/* Hero Section - New Layout */}
-      
-        <div className="container mx-auto px-4 py-4 md:py-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
+      <div className="relative z-10 w-full overflow-x-hidden">
+        {/* Hero Section - New Layout */}
+        <div className="container mx-auto px-4 py-4 md:py-4 overflow-hidden">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 flex-wrap">
             {/* Hero Text Section */}
             <div className="w-full md:w-1/2 order-1 md:order-1">
               <img 
@@ -61,18 +58,20 @@ export default function Home() {
               <p className="text-lg md:text-xl mb-8 text-gray-700">
                 {t('home.hero.subtitle', 'בדיקה מקצועית, מהירה ודיסקרטית ל-ADHD - לילדים, בני נוער ומבוגרים.')}
               </p>
-              <Link
-                to="/about"
-                className="inline-block bg-green-800 hover:bg-green-600 text-white px-8 py-4 rounded-md text-xl font-bold transition-colors duration-300 shadow-md hover:shadow-lg mx-4"
-              >
-                {t('home.hero.about', 'קרא עוד עלינו')}
-              </Link>
-              <Link
-                to="/contact"
-                className="inline-block bg-orange-400 hover:bg-orange-600 hover:text-white text-black px-8 py-4 rounded-md text-xl font-bold  transition-colors duration-300 shadow-md hover:shadow-lg mx-4"
-              >
-                {t('home.hero.contact', 'התחילו את האבחון שלכם עכשיו')}
-              </Link>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Link
+                  to="/about"
+                  className="inline-block bg-green-800 hover:bg-green-600 text-white px-8 py-4 rounded-md text-xl font-bold transition-colors duration-300 shadow-md hover:shadow-lg"
+                >
+                  {t('home.hero.about', 'קרא עוד עלינו')}
+                </Link>
+                <Link
+                  to="/contact"
+                  className="inline-block bg-orange-400 hover:bg-orange-600 hover:text-white text-black px-8 py-4 rounded-md text-xl font-bold transition-colors duration-300 shadow-md hover:shadow-lg"
+                >
+                  {t('home.hero.contact', 'התחילו את האבחון שלכם עכשיו')}
+                </Link>
+              </div>
             </div>
 
             {/* Hero Image Section */}
@@ -80,38 +79,37 @@ export default function Home() {
               <img 
                 src="/assets/images/doctor-hero.png" 
                 alt="רופא מקצועי" 
-                className="w-full max-w-xs sm:max-w-sm md:max-w-[50vw] h-auto rounded-3xl border-4 border-white"
+                className="w-full max-w-xs sm:max-w-sm md:max-w-md h-auto rounded-3xl border-4 border-white"
               />
             </div>
           </div>
         </div>
-      </div>
 
-      {/* CTA Section */}
-      <div className="pt-16 pb-6 md:pt-20 md:pb-6 bg-gradient-to-b from-green-800 to-green-950 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            {t('home.cta.title', 'מוכנים להתחיל?')}
-          </h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
-            {t('home.cta.subtitle', 'פנה אלינו היום כדי לקבוע את האבחון שלך ולקחת את הצעד הראשון לקראת חיים טובים יותר.')}
-          </p>
-          
-          <div className="shine-text-container text-center" >  
-            <span className="shine-text text-2xl md:text-3xl text-white whitespace-nowrap bg-transparent hover:text-green-100 transition-all duration-300 font-semibold">
-              055-27-399-27
-            </span>
+        {/* CTA Section */}
+        <div className="pt-16 pb-6 md:pt-20 md:pb-6 bg-gradient-to-b from-green-800 to-green-950 text-white">
+          <div className="container mx-auto px-4 text-center max-w-screen-xl">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              {t('home.cta.title', 'מוכנים להתחיל?')}
+            </h2>
+            <p className="text-xl mb-8 max-w-2xl mx-auto">
+              {t('home.cta.subtitle', 'פנה אלינו היום כדי לקבוע את האבחון שלך ולקחת את הצעד הראשון לקראת חיים טובים יותר.')}
+            </p>
+            
+            <div className="shine-text-container text-center">  
+              <span className="shine-text text-2xl md:text-3xl text-white whitespace-nowrap bg-transparent hover:text-green-100 transition-all duration-300 font-semibold">
+                055-27-399-27
+              </span>
+            </div>
+
+            <Link
+              to="/contact"
+              className="inline-block bg-[#F7941D] text-black px-8 py-4 mt-4 rounded-md text-lg font-bold hover:bg-white hover:text-[#005BAA] transition-colors duration-300 shadow-lg hover:shadow-xl"
+            >
+              {t('home.cta.button', 'צרו קשר עכשיו')}
+            </Link>
           </div>
-
-          <Link
-            to="/contact"
-            className="inline-block bg-[#F7941D] text-black px-8 pb-4 rounded-md text-lg font-bold hover:bg-white hover:text-[#005BAA] transition-colors duration-300 shadow-lg hover:shadow-xl"
-          >
-            {t('home.cta.button', 'צרו קשר עכשיו')}
-          </Link>
         </div>
       </div>
-    </div>
     </div>
   );
 }
