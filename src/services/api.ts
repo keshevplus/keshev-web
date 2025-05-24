@@ -432,7 +432,7 @@ export const leadsService = {
             console.log(`✅ Retrieved ${response.length} leads from API (array format)`);
             
             // Ensure each lead has an is_read property (default to false if missing)
-            const normalizedLeads = response.map(lead => ({
+            const normalizedLeads = response.map((lead: Record<string, any>) => ({
               ...lead,
               is_read: typeof lead.is_read === 'boolean' ? lead.is_read : false
             }));
