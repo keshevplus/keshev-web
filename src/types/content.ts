@@ -1,6 +1,7 @@
 export interface HomePageContent {
   heading: string;
   subheading?: string;
+  list?: string[]; 
   body?: ContentItem[];
   heroText: string;
   ctaButtonText: string;
