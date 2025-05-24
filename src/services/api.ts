@@ -238,25 +238,79 @@ export const messagesService = {
           throw new Error('Empty response from messages API');
         }
         
-        // Return the API response (even if empty)
-        if (response && response.messages) {
-          console.log(`✅ Retrieved ${response.messages.length} messages from API`);
-          console.log('✅ First few messages:', response.messages.slice(0, 2));
-          return response;
-        } else if (Array.isArray(response)) {
-          // Handle case where response might be an array directly
-          console.log(`✅ Retrieved ${response.length} messages from API (array format)`);
-          return { 
-            messages: response, 
-            pagination: { 
-              total: response.length, 
-              page, 
-              limit, 
-              totalPages: Math.ceil(response.length / limit),
-              hasNextPage: response.length > page * limit,
-              hasPrevPage: page > 1
+        // Process and normalize the response
+        if (response && typeof response === 'object') {
+          // Case 1: Response has a messages property that is an array
+          if (response.messages && Array.isArray(response.messages)) {
+            console.log(`✅ Retrieved ${response.messages.length} messages from API (with messages property)`);
+            
+            // Ensure each message has an is_read property (default to false if missing)
+            const normalizedMessages = response.messages.map(msg => ({
+              ...msg,
+              is_read: typeof msg.is_read === 'boolean' ? msg.is_read : false
+            }));
+            
+            return {
+              messages: normalizedMessages,
+              pagination: response.pagination || {
+                total: normalizedMessages.length,
+                page,
+                limit,
+                totalPages: Math.ceil(normalizedMessages.length / limit),
+                hasNextPage: normalizedMessages.length > page * limit,
+                hasPrevPage: page > 1
+              }
+            };
+          }
+          // Case 2: Response is an array (array of messages directly)
+          else if (Array.isArray(response)) {
+            console.log(`✅ Retrieved ${response.length} messages from API (array format)`);
+            
+            // Ensure each message has an is_read property (default to false if missing)
+            const normalizedMessages = response.map(msg => ({
+              ...msg,
+              is_read: typeof msg.is_read === 'boolean' ? msg.is_read : false
+            }));
+            
+            return { 
+              messages: normalizedMessages, 
+              pagination: { 
+                total: normalizedMessages.length, 
+                page, 
+                limit, 
+                totalPages: Math.ceil(normalizedMessages.length / limit),
+                hasNextPage: normalizedMessages.length > page * limit,
+                hasPrevPage: page > 1
+              }
+            };
+          }
+          // Case 3: Response might have data in a different property
+          else {
+            // Look for any array property that might contain messages
+            for (const key of Object.keys(response)) {
+              if (Array.isArray(response[key])) {
+                console.log(`✅ Found potential messages array in property '${key}' with ${response[key].length} items`);
+                
+                // Ensure each message has an is_read property (default to false if missing)
+                const normalizedMessages = response[key].map(msg => ({
+                  ...msg,
+                  is_read: typeof msg.is_read === 'boolean' ? msg.is_read : false
+                }));
+                
+                return {
+                  messages: normalizedMessages,
+                  pagination: response.pagination || {
+                    total: normalizedMessages.length,
+                    page,
+                    limit,
+                    totalPages: Math.ceil(normalizedMessages.length / limit),
+                    hasNextPage: normalizedMessages.length > page * limit,
+                    hasPrevPage: page > 1
+                  }
+                };
+              }
             }
-          };
+          }
         } else {
           // Initialize empty response format if needed
           console.log('⚠️ No messages found in API response, returning empty array');
@@ -349,51 +403,77 @@ export const leadsService = {
           throw new Error('Empty response from leads API');
         }
         
-        // Return the API response with safer error handling
+        // Process and normalize the response
         if (response && typeof response === 'object') {
-          // Check if response has a leads property that is an array
+          // Case 1: Response has a leads property that is an array
           if (response.leads && Array.isArray(response.leads)) {
-            console.log(`✅ Retrieved ${response.leads.length} leads from API`);
-            console.log('✅ First few leads:', response.leads.slice(0, 2));
-            return response;
-          }
-          // Check if response itself is the leads data (not wrapped in a 'leads' property)
-          else if (Array.isArray(response)) {
-            console.log(`✅ Retrieved ${response.length} leads directly from API`);
+            console.log(`✅ Retrieved ${response.leads.length} leads from API (with leads property)`);
+            
+            // Ensure each lead has an is_read property (default to false if missing)
+            const normalizedLeads = response.leads.map((lead: Record<string, any>) => ({
+              ...lead,
+              is_read: typeof lead.is_read === 'boolean' ? lead.is_read : false
+            }));
+            
             return {
-              leads: response,
-              pagination: {
-                total: response.length,
+              leads: normalizedLeads,
+              pagination: response.pagination || {
+                total: normalizedLeads.length,
                 page,
                 limit,
-                totalPages: Math.ceil(response.length / limit),
-                hasNextPage: response.length > page * limit,
+                totalPages: Math.ceil(normalizedLeads.length / limit),
+                hasNextPage: normalizedLeads.length > page * limit,
                 hasPrevPage: page > 1
               }
             };
           }
-          // For other object formats, extract any array property that might contain leads
-          else {
-            // Find the first array property in the response
-            const arrayProps = Object.entries(response)
-              .filter(([_, value]) => Array.isArray(value))
-              .map(([key, value]) => ({ key, length: Array.isArray(value) ? value.length : 0 }));
+          // Case 2: Response is an array (array of leads directly)
+          else if (Array.isArray(response)) {
+            console.log(`✅ Retrieved ${response.length} leads from API (array format)`);
             
-            if (arrayProps.length > 0) {
-              // Use the first array property as leads data
-              const mainArrayProp = arrayProps[0].key;
-              console.log(`✅ Using '${mainArrayProp}' as leads data (${response[mainArrayProp].length} items)`);
-              return {
-                leads: response[mainArrayProp],
-                pagination: response.pagination || {
-                  total: response[mainArrayProp].length,
-                  page,
-                  limit,
-                  totalPages: Math.ceil(response[mainArrayProp].length / limit),
-                  hasNextPage: response[mainArrayProp].length > page * limit,
-                  hasPrevPage: page > 1
-                }
-              };
+            // Ensure each lead has an is_read property (default to false if missing)
+            const normalizedLeads = response.map(lead => ({
+              ...lead,
+              is_read: typeof lead.is_read === 'boolean' ? lead.is_read : false
+            }));
+            
+            return {
+              leads: normalizedLeads,
+              pagination: {
+                total: normalizedLeads.length,
+                page,
+                limit,
+                totalPages: Math.ceil(normalizedLeads.length / limit),
+                hasNextPage: normalizedLeads.length > page * limit,
+                hasPrevPage: page > 1
+              }
+            };
+          }
+          // Case 3: Response might have data in a different property
+          else {
+            // Loop through the response properties to find potential leads arrays
+            for (const key of Object.keys(response)) {
+              if (Array.isArray(response[key])) {
+                console.log(`✅ Found potential leads array in property '${key}' with ${response[key].length} items`);
+                
+                // Ensure each lead has an is_read property (default to false if missing)
+                const normalizedLeads = response[key].map(lead => ({
+                  ...lead,
+                  is_read: typeof lead.is_read === 'boolean' ? lead.is_read : false
+                }));
+                
+                return {
+                  leads: normalizedLeads,
+                  pagination: response.pagination || {
+                    total: normalizedLeads.length,
+                    page,
+                    limit,
+                    totalPages: Math.ceil(normalizedLeads.length / limit),
+                    hasNextPage: normalizedLeads.length > page * limit,
+                    hasPrevPage: page > 1
+                  }
+                };
+              }
             }
             // If no array properties found, create an empty response
             console.log('⚠️ No leads array found in response, returning empty leads array');
