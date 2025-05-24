@@ -29,7 +29,7 @@ const Card: React.FC<CardProps> = ({
   isRtl = false, // Default to left-to-right layout
 }) => {
   const [animate, setAnimate] = useState(false);
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true); // Set to true by default so all cards are expanded
   const [isOverflowing, setIsOverflowing] = useState(false);
   const descriptionRef = useRef<HTMLDivElement>(null);
 
