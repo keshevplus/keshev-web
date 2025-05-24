@@ -48,65 +48,63 @@ export default function Navbar() {
       }`}
     >
 
-    {!isHomePage && (
-      <div className="relative w-full bg-[url('/assets/images/bgvideogif.gif')">
-        <div className="container bg-white/70 px-4 max-w-3xl flex items-center justify-between relative backdrop-blur-sm ">
-          <Link
-            to="/"
-            className={`flex items-center transition-opacity duration-300 ${
-              isHomePage && !isScrolled ? 'opacity-0' : 'opacity-100'
-            }`}
+    <div className="relative w-full bg-[url('/assets/images/bgvideogif.gif')">
+      <div className="container bg-white/70 px-4 max-w-3xl flex items-center justify-between relative backdrop-blur-sm ">
+        <Link
+          to="/"
+          className={`flex items-center transition-opacity duration-300 ${
+            isHomePage && !isScrolled ? 'opacity-0' : 'opacity-100'
+          }`}
+        >
+          <div className="flex items-center ">
+            <img
+              src="/assets/images/logo.png"
+              alt="קשב"
+              className="object-contain w-40 transition-transform duration-300 hover:opacity-80"
+            />
+          </div>
+        </Link>
+        <div className="hidden lg:flex space-x-4 mx-4 ">
+          {navItems
+            .filter((item) => !item.mobileOnly)
+            .map((item, index) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`text-xl font-semibold ${
+                  isActive(item.path)
+                    ? 'bg-green-800 text-white'
+                    : 'bg-white/20 text-green-600 hover:bg-green-800 hover:text-white'
+                } px-4 py-2 rounded-lg ${index === 0 ? 'mx-4' : ''}`}
+              >
+                {item.text}
+              </Link>
+            ))}
+        </div>
+        <div className="flex items-center space-x-3">
+          {/* Language Switcher in Navbar */}
+          <div className="navbar-language-switcher">
+            <LanguageSwitcher />
+          </div>
+          <div className="navbar-item">
+            <a href="tel:055-27-399-27">
+            <img
+              src="/assets/images/greenphone.svg"
+              alt="Call Now"
+              className="w-12 hover:opacity-80 transition-transform duration-300"
+            />
+            <FloatingPhoneNumber />
+            </a>
+          </div>
+          <button
+            className="lg:hidden text-black"
+            onClick={() => dispatch(setIsMenuOpen(!isMenuOpen))}
           >
-            <div className="flex items-center ">
-              <img
-                src="/assets/images/logo.png"
-                alt="קשב"
-                className="object-contain w-40 transition-transform duration-300 hover:opacity-80"
-              />
-            </div>
-          </Link>
-          <div className="hidden lg:flex space-x-4 mx-4 ">
-            {navItems
-              .filter((item) => !item.mobileOnly)
-              .map((item, index) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`text-xl font-semibold ${
-                    isActive(item.path)
-                      ? 'bg-green-800 text-white'
-                      : 'bg-white/20 text-green-600 hover:bg-green-800 hover:text-white'
-                  } px-4 py-2 rounded-lg ${index === 0 ? 'mx-4' : ''}`}
-                >
-                  {item.text}
-                </Link>
-              ))}
-          </div>
-          <div className="flex items-center space-x-3">
-            {/* Language Switcher in Navbar */}
-            <div className="navbar-language-switcher">
-              <LanguageSwitcher />
-            </div>
-            <div className="navbar-item">
-              <a href="tel:055-27-399-27">
-              <img
-                src="/assets/images/greenphone.svg"
-                alt="Call Now"
-                className="w-12 hover:opacity-80 transition-transform duration-300"
-              />
-              <FloatingPhoneNumber />
-              </a>
-            </div>
-            <button
-              className="lg:hidden text-black"
-              onClick={() => dispatch(setIsMenuOpen(!isMenuOpen))}
-            >
-              {isMenuOpen ? <IoClose size={24} /> : <IoMenu size={24} />}
-            </button>
-          </div>
+            {isMenuOpen ? <IoClose size={24} /> : <IoMenu size={24} />}
+          </button>
         </div>
       </div>
-    )}
+    </div>
 
       <div
         className={`lg:hidden fixed inset-0 transition-all duration-300 ${
