@@ -54,7 +54,7 @@ export default function Home() {
           
           {/* Content layout - On mobile: stacked with image on top */}
           {/* On desktop: image on LEFT, text on RIGHT */}
-          <div className="flex flex-col-reverse md:flex-row align-items-center justify-between gap-8 md:gap-12">
+          <div className="flex flex-col md:flex-row align-items-center justify-between gap-8 md:gap-12">
             {/* Image Section - LEFT side on desktop */}
             <div className="w-full md:w-1/2 flex justify-center align-items-center">
               <img 
