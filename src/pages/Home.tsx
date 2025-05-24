@@ -44,9 +44,9 @@ export default function Home() {
       <div className="relative z-10 w-full overflow-x-hidden">
         {/* Hero Section - New Layout */}
         <div className="container mx-auto px-4 py-4 md:py-4 overflow-hidden">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 flex-wrap">
+          <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-8 md:gap-12 flex-wrap">
             {/* Hero Text Section */}
-            <div className="w-full md:w-1/2 order-1 md:order-1">
+            <div className="w-full md:w-1/2 mt-6 md:mt-0">
               <img 
                 src="/assets/images/logo.png" 
                 alt="קשב פלוס" 
@@ -74,8 +74,8 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Hero Image Section */}
-            <div className="w-full md:w-1/2 order-2 md:order-2 flex justify-center items-center">
+            {/* Hero Image Section - Positioned on left on mobile, right on desktop */}
+            <div className="w-full md:w-1/2 flex justify-center items-center">
               <img 
                 src="/assets/images/doctor-hero.png" 
                 alt="רופא מקצועי" 

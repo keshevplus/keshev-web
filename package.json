@@ -55,6 +55,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "express": "^5.1.0",
     "http-proxy-middleware": "^3.0.5",
+    "node-fetch": "^3.3.2",
     "postcss": "^8.5.3",
     "react-redux": "^9.2.0",
     "rimraf": "^4.4.0",
