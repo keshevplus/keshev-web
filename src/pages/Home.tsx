@@ -37,7 +37,7 @@ export default function Home() {
   }
 
   return (
-    <PageLayout>
+    <PageLayout title={t('home.title', 'קשב פלוס - אבחון הפרעת קשב')}>
       <div className="relative w-full overflow-x-hidden">
         {/* Neural network animated background - with reduced density and speed */}
         {/* <NeuralBackground density={4} speed={3} opacity={0.3} /> */}
