@@ -5,7 +5,7 @@ import type { HomePageContent } from '../types/content';
 import '../styles/shine.css'; // Import shine effect CSS
 // import NeuralBackground from '../components/NeuralBackground';
 
-export default function Home(): JSX.Element {
+export default function Home() {
   const [pageData, setPageData] = useState<HomePageContent | null>(null);
   const { t } = useTranslation();
 
@@ -42,7 +42,7 @@ export default function Home(): JSX.Element {
       {/* Main content container */}
       <div className="relative z-10 w-full">
         {/* Hero Section */}
-        <div className="container mx-auto px-4 py-10 md:py-16 overflow-hidden">
+        <div className="container mx-auto px-4 align-items-center py-2 md:py-12 overflow-hidden">
           {/* Logo Section */}
           <div className="w-full text-center mb-10">
             <img 
@@ -54,9 +54,9 @@ export default function Home(): JSX.Element {
           
           {/* Content layout - On mobile: stacked with image on top */}
           {/* On desktop: image on LEFT, text on RIGHT */}
-          <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-8 md:gap-12">
+          <div className="flex flex-col-reverse md:flex-row align-items-center justify-between gap-8 md:gap-12">
             {/* Image Section - LEFT side on desktop */}
-            <div className="w-full md:w-1/2 flex justify-center items-center">
+            <div className="w-full md:w-1/2 flex justify-center align-items-center">
               <img 
                 src="/assets/images/doctor-hero.png" 
                 alt="רופא מקצועי" 
@@ -65,7 +65,7 @@ export default function Home(): JSX.Element {
             </div>
             
             {/* Text Section - RIGHT side on desktop */}
-            <div className="w-full md:w-1/2 mt-6 md:mt-0">
+            <div className="w-full md:w-1/2 mt-6 md:mt-0 align-items-center justify-between">
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-green-800 mb-4 md:mb-6">
                 {t('home.hero.title', 'רוצה להבין מה עובר עליך? בוא לבדוק אם זו הפרעת קשב.')}
               </h1>
