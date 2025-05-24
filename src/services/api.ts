@@ -5,8 +5,11 @@ const IS_DEV = import.meta.env.DEV;
 const PROXY_URL = 'http://localhost:3001/api';
 
 // Choose API URL based on environment - proxy for dev, real API for production
-export const API_BASE_URL = IS_DEV ? PROXY_URL : import.meta.env.VITE_API_BASE_URL;
+export const API_BASE_URL = IS_DEV ? PROXY_URL : 'https://api.keshevplus.co.il';
 export const DEV_ADMIN_TOKEN = 'dev-admin-token-xyz'; // The token set by AuthContext for the dev admin
+
+// Log API configuration on startup
+console.log(`[API Config] Using API at: ${API_BASE_URL} (${IS_DEV ? 'Development' : 'Production'} mode)`);
 
 // Helper function for authenticated API requests
 const authenticatedRequest = async (url: string, options: RequestInit = {}) => {
@@ -200,33 +203,24 @@ export const contentService = {
 export const messagesService = {
   async markMessageAsRead(id: string) {
     try {
-      console.log('Marking message as read:', id);
-      const response = await authenticatedRequest(`/api/messages/${id}/read`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+      const response = await authenticatedRequest(`/messages/${id}/read`, {
+        method: 'PUT',
         body: JSON.stringify({ is_read: true })
       });
-      console.log('Mark as read response:', response);
+      
+      console.log('✅ Message marked as read:', id);
       return response;
     } catch (error) {
-      console.error('Error marking message as read:', error);
+      console.error('❌ Error marking message as read:', error);
       throw error;
     }
   },
   
   async getAllMessages(page = 1, limit = 100, filter = '') {
     try {
-      // Ensure we have the correct API endpoint format
-      const messageApiUrl = `/api/messages?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`;
-      console.log('📞 Making messages API request to:', messageApiUrl);
-      console.log('📞 Full URL:', API_BASE_URL + messageApiUrl);
-      
-      // Make real API call without AbortController to avoid the signal aborted error
-      console.log('📞 Calling authenticatedRequest for messages...');
+      // First attempt to fetch from the real API
       try {
-        const response = await authenticatedRequest(messageApiUrl);
+        const response = await authenticatedRequest(`/messages?page=${page}&limit=${limit}&filter=${filter}`);
         
         console.log('📈 API Response for messages:', response);
         console.log('📈 Response type:', typeof response);
@@ -349,13 +343,13 @@ export const messagesService = {
   },
 
   async getMessageById(id: string) {
-    // Fix endpoint to correctly match the backend route structure
-    return authenticatedRequest(`/api/messages/${id}`);
+    // Correct endpoint to match the backend route structure
+    return authenticatedRequest(`/messages/${id}`);
   },
 
   async deleteMessage(id: string) {
-    // Fix endpoint to correctly match the backend route structure
-    return authenticatedRequest(`/api/messages/${id}`, {
+    // Correct endpoint to match the backend route structure
+    return authenticatedRequest(`/messages/${id}`, {
       method: 'DELETE'
     });
   }
@@ -366,11 +360,8 @@ export const leadsService = {
   async markLeadAsRead(id: string) {
     try {
       console.log('Marking lead as read:', id);
-      const response = await authenticatedRequest(`/api/leads/${id}/read`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+      const response = await authenticatedRequest(`/leads/${id}/read`, {
+        method: 'PUT',
         body: JSON.stringify({ is_read: true })
       });
       console.log('Mark as read response:', response);
@@ -383,155 +374,115 @@ export const leadsService = {
   
   async getAllLeads(page = 1, limit = 100, filter = '') {
     try {
-      // Ensure we have the correct API endpoint format
-      const leadApiUrl = `/api/leads?page=${page}&limit=${limit}&filter=${encodeURIComponent(filter)}`;
-      console.log('📞 Making leads API request to:', leadApiUrl);
-      console.log('📞 Full URL:', API_BASE_URL + leadApiUrl);
+      console.log(`🔍 Fetching leads from API: page ${page}, limit ${limit}, filter: ${filter}`);
       
-      // Make API call without AbortController to avoid signal aborted errors
-      console.log('📞 Calling authenticatedRequest for leads...');
-      try {
-        const response = await authenticatedRequest(leadApiUrl);
+      const fullUrl = `/leads?page=${page}&limit=${limit}${filter ? `&filter=${encodeURIComponent(filter)}` : ''}`;
+      console.log(`🔗 Full request URL: ${fullUrl}`);
+      
+      const response = await authenticatedRequest(fullUrl);
+      console.log('📊 Raw API response:', response);
+      console.log('📈 Response structure:', Object.keys(response || {}));
+      
+      // Add debug for specific checks of the response
+      if (response === null || response === undefined) {
+        console.warn('⚠️ Leads API returned null or undefined response');
+        throw new Error('Empty response from leads API');
+      }
+      
+      // Process and normalize the response based on response structure
+      // Case 1: Response has a leads property that is an array
+      if (response.leads && Array.isArray(response.leads)) {
+        console.log(`✅ Retrieved ${response.leads.length} leads from API (with leads property)`);
         
-        console.log('📈 API Response for leads:', response);
-        console.log('📈 Response type:', typeof response);
-        console.log('📈 Response structure:', Object.keys(response || {}));
+        // Ensure each lead has an is_read property (default to false if missing)
+        const normalizedLeads = response.leads.map((lead: Record<string, any>) => ({
+          ...lead,
+          is_read: typeof lead.is_read === 'boolean' ? lead.is_read : false
+        }));
         
-        // Add debug for specific checks of the response
-        if (response === null || response === undefined) {
-          console.warn('⚠️ Leads API returned null or undefined response');
-          throw new Error('Empty response from leads API');
-        }
+        return {
+          leads: normalizedLeads,
+          pagination: response.pagination || {
+            total: normalizedLeads.length,
+            page,
+            limit,
+            totalPages: Math.ceil(normalizedLeads.length / limit),
+            hasNextPage: normalizedLeads.length > page * limit,
+            hasPrevPage: page > 1
+          }
+        };
+      }
+      
+      // Case 2: Response itself is an array of leads
+      if (Array.isArray(response)) {
+        console.log(`✅ Response is an array with ${response.length} leads`);
         
-        // Process and normalize the response
-        if (response && typeof response === 'object') {
-          // Case 1: Response has a leads property that is an array
-          if (response.leads && Array.isArray(response.leads)) {
-            console.log(`✅ Retrieved ${response.leads.length} leads from API (with leads property)`);
-            
-            // Ensure each lead has an is_read property (default to false if missing)
-            const normalizedLeads = response.leads.map((lead: Record<string, any>) => ({
-              ...lead,
-              is_read: typeof lead.is_read === 'boolean' ? lead.is_read : false
-            }));
-            
-            return {
-              leads: normalizedLeads,
-              pagination: response.pagination || {
-                total: normalizedLeads.length,
-                page,
-                limit,
-                totalPages: Math.ceil(normalizedLeads.length / limit),
-                hasNextPage: normalizedLeads.length > page * limit,
-                hasPrevPage: page > 1
-              }
-            };
+        // Ensure each lead has an is_read property (default to false if missing)
+        const normalizedLeads = response.map((lead: Record<string, any>) => ({
+          ...lead,
+          is_read: typeof lead.is_read === 'boolean' ? lead.is_read : false
+        }));
+        
+        return {
+          leads: normalizedLeads,
+          pagination: {
+            total: normalizedLeads.length,
+            page,
+            limit,
+            totalPages: Math.ceil(normalizedLeads.length / limit),
+            hasNextPage: normalizedLeads.length > page * limit,
+            hasPrevPage: page > 1
           }
-          // Case 2: Response is an array (array of leads directly)
-          else if (Array.isArray(response)) {
-            console.log(`✅ Retrieved ${response.length} leads from API (array format)`);
-            
-            // Ensure each lead has an is_read property (default to false if missing)
-            const normalizedLeads = response.map((lead: Record<string, any>) => ({
-              ...lead,
-              is_read: typeof lead.is_read === 'boolean' ? lead.is_read : false
-            }));
-            
-            return {
-              leads: normalizedLeads,
-              pagination: {
-                total: normalizedLeads.length,
-                page,
-                limit,
-                totalPages: Math.ceil(normalizedLeads.length / limit),
-                hasNextPage: normalizedLeads.length > page * limit,
-                hasPrevPage: page > 1
-              }
-            };
-          }
-          // Case 3: Response might have data in a different property
-          else {
-            // Loop through the response properties to find potential leads arrays
-            for (const key of Object.keys(response)) {
-              if (Array.isArray(response[key])) {
-                console.log(`✅ Found potential leads array in property '${key}' with ${response[key].length} items`);
-                
-                // Ensure each lead has an is_read property (default to false if missing)
-                const normalizedLeads = response[key].map(lead => ({
-                  ...lead,
-                  is_read: typeof lead.is_read === 'boolean' ? lead.is_read : false
-                }));
-                
-                return {
-                  leads: normalizedLeads,
-                  pagination: response.pagination || {
-                    total: normalizedLeads.length,
-                    page,
-                    limit,
-                    totalPages: Math.ceil(normalizedLeads.length / limit),
-                    hasNextPage: normalizedLeads.length > page * limit,
-                    hasPrevPage: page > 1
-                  }
-                };
-              }
-            }
-            // If no array properties found, create an empty response
-            console.log('⚠️ No leads array found in response, returning empty leads array');
-            return {
-              leads: [],
-              pagination: {
-                total: 0,
-                page,
-                limit,
-                totalPages: 0,
-                hasNextPage: false,
-                hasPrevPage: false
-              }
-            };
-          }
-        } else if (Array.isArray(response)) {
-          // Handle case where response might be an array directly
-          console.log(`✅ Retrieved ${response.length} leads from API (array format)`);
-          return { 
-            leads: response, 
-            pagination: { 
-              total: response.length, 
-              page, 
-              limit, 
-              totalPages: Math.ceil(response.length / limit),
-              hasNextPage: response.length > page * limit,
+        };
+      }
+      
+      // Case 3: Look for an array property in the response that might contain leads
+      for (const key of Object.keys(response)) {
+        if (Array.isArray(response[key])) {
+          console.log(`✅ Found array in response[${key}] with ${response[key].length} items`);
+          
+          // Ensure each lead has an is_read property (default to false if missing)
+          const normalizedLeads = response[key].map((lead: Record<string, any>) => ({
+            ...lead,
+            is_read: typeof lead.is_read === 'boolean' ? lead.is_read : false
+          }));
+          
+          return {
+            leads: normalizedLeads,
+            pagination: response.pagination || {
+              total: normalizedLeads.length,
+              page,
+              limit,
+              totalPages: Math.ceil(normalizedLeads.length / limit),
+              hasNextPage: normalizedLeads.length > page * limit,
               hasPrevPage: page > 1
             }
           };
-        } else {
-          // Initialize empty response format if needed
-          console.log('⚠️ No leads found in API response, returning empty array');
-          return { 
-            leads: [], 
-            pagination: { 
-              total: 0, 
-              page, 
-              limit, 
-              totalPages: 0,
-              hasNextPage: false,
-              hasPrevPage: false
-            }
-          };
         }
-      } catch (innerError) {
-        // Handle fetch errors
-        console.error('Error in leads API request:', innerError);
-        throw innerError;
       }
+      
+      // Fallback: empty response
+      console.warn('⚠️ Could not find leads data in API response');
+      return {
+        leads: [],
+        pagination: {
+          total: 0,
+          page,
+          limit,
+          totalPages: 0,
+          hasNextPage: false,
+          hasPrevPage: false
+        }
+      };
     } catch (error) {
-      console.error('Error in getAllLeads:', error);
-      // Return empty results instead of mock data
-      return { 
-        leads: [], 
-        pagination: { 
-          total: 0, 
-          page, 
-          limit, 
+      console.error('Error fetching leads:', error);
+      // Return empty results
+      return {
+        leads: [],
+        pagination: {
+          total: 0,
+          page,
+          limit,
           totalPages: 0,
           hasNextPage: false,
           hasPrevPage: false
@@ -541,16 +492,16 @@ export const leadsService = {
   },
 
   async getLeadById(id: string) {
-    // Fix endpoint to correctly match the backend route structure
-    return authenticatedRequest(`/api/leads/${id}`);
+    // Correct endpoint to match the backend route structure
+    return authenticatedRequest(`/leads/${id}`);
   },
 
   async deleteLead(id: string) {
-    // Fix endpoint to correctly match the backend route structure
-    return authenticatedRequest(`/api/leads/${id}`, {
+    // Correct endpoint to match the backend route structure
+    return authenticatedRequest(`/leads/${id}`, {
       method: 'DELETE'
     });
-  }
+  },
 };
 
 // Auth service for admin users

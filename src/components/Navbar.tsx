@@ -82,22 +82,27 @@ export default function Navbar() {
             ))}
         </div>
         <div className="flex items-center space-x-3">
-          {/* Language Switcher in Navbar */}
-          <div className="navbar-language-switcher">
-            <LanguageSwitcher />
+          {/* Controls wrapper - contains both language switcher and phone icon */}
+          <div className="flex items-center justify-center h-12">
+            {/* Language Switcher in Navbar */}
+            <div className="navbar-language-switcher flex items-center justify-center h-full mr-3">
+              <LanguageSwitcher />
+            </div>
+            {/* Phone icon wrapper */}
+            <div className="navbar-item flex items-center justify-center h-full">
+              <a href="tel:055-27-399-27" className="flex items-center justify-center h-full">
+                <img
+                  src="/assets/images/greenphone.svg"
+                  alt="Call Now"
+                  className="h-6 hover:opacity-80 transition-transform duration-300"
+                />
+                <FloatingPhoneNumber />
+              </a>
+            </div>
           </div>
-          <div className="navbar-item">
-            <a href="tel:055-27-399-27">
-            <img
-              src="/assets/images/greenphone.svg"
-              alt="Call Now"
-              className="w-12 hover:opacity-80 transition-transform duration-300 "
-            />
-            <FloatingPhoneNumber />
-            </a>
-          </div>
+          {/* Hamburger menu button */}
           <button
-            className="lg:hidden text-black"
+            className="lg:hidden text-black h-12 flex items-center justify-center"
             onClick={() => dispatch(setIsMenuOpen(!isMenuOpen))}
           >
             {isMenuOpen ? <IoClose size={24} /> : <IoMenu size={24} />}

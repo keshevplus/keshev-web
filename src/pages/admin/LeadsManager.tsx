@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { leadsService } from '../../services/api';
+import { leadsService } from '../../services/leads-api';
 
 interface Lead {
   id: string;
@@ -45,17 +45,35 @@ const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) =>
   async function fetchLeads() {
     try {
       setLoading(true);
+      console.log('Fetching leads, page:', page, 'filter:', filter);
+      
       const response = await leadsService.getAllLeads(page, 100, filter);
+      console.log('API Response:', response);
+      
+      if (!response || !response.leads) {
+        console.error('Invalid response format:', response);
+        setLeads([]);
+        setPagination({
+          total: 0,
+          page: 1,
+          limit: 10,
+          totalPages: 1
+        });
+        return;
+      }
+      
       const leadsWithReadStatus = response.leads.map((lead: Lead) => ({
         ...lead,
         is_read: lead.is_read === undefined ? false : lead.is_read // Default to unread if not specified
       }));
+      
       setLeads(leadsWithReadStatus);
       setPagination(response.pagination);
       console.log('Leads loaded:', leadsWithReadStatus);
       console.log('Unread count:', leadsWithReadStatus.filter((lead: Lead) => !lead.is_read).length);
     } catch (error) {
       console.error('Error fetching leads:', error);
+      setLeads([]);
     } finally {
       setLoading(false);
     }
