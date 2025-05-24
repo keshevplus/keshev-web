@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { HomePageContent } from '../types/content';
 import '../styles/shine.css'; // Import shine effect CSS
-import PageLayout from '../components/ui/PageLayout';
 // import NeuralBackground from '../components/NeuralBackground';
 
 export default function Home() {
@@ -36,34 +35,34 @@ export default function Home() {
     );
   }
 
+  // Set document direction to RTL for Hebrew
+  useEffect(() => {
+    document.title = t('home.title', 'קשב פלוס - אבחון הפרעת קשב');
+  }, [t]);
+
   return (
-    <PageLayout title={t('home.title', 'קשב פלוס - אבחון הפרעת קשב')}>
-      <div className="relative w-full overflow-x-hidden">
-        {/* Neural network animated background - with reduced density and speed */}
-        {/* <NeuralBackground density={4} speed={3} opacity={0.3} /> */}
-        
-        {/* All content positioned with z-index to ensure it stays above background */}
-        <div className="relative z-10 w-full overflow-x-hidden">
+    <div className="relative w-full overflow-x-hidden">
+      {/* Neural network animated background - with reduced density and speed */}
+      {/* <NeuralBackground density={4} speed={3} opacity={0.3} /> */}
+      
+      {/* All content positioned with z-index to ensure it stays above background */}
+      <div className="relative z-10 w-full overflow-x-hidden">
           {/* Hero Section - New Layout */}
-          <div className="container mx-auto px-4 py-4 md:py-4 overflow-hidden">
-            {/* On mobile: flex-row puts the image on the left */}
-            {/* On desktop (md+): flex-row keeps the normal layout with text on left, image on right */}
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-12 flex-wrap">
-              {/* Logo Section */}
-              <div className="w-full text-center mb-6">
-                <img 
-                  src="/assets/images/logo.png" 
-                  alt="קשב פלוס" 
-                  className="w-56 md:w-80 mx-auto drop-shadow-lg"
-                />
-              </div>
+          <div className="container mx-auto px-4 py-10 md:py-12 overflow-hidden">
+            {/* Logo Section */}
+            <div className="w-full text-center mb-10">
+              <img 
+                src="/assets/images/logo.png" 
+                alt="קשב פלוס" 
+                className="w-56 md:w-80 mx-auto drop-shadow-lg"
+              />
             </div>
             
             {/* For landscape mobile and tablet: flex-row to put image on left */}
             {/* For portrait mobile: flex-col-reverse to put image on top */}
-            {/* For desktop: flex-row with normal layout */}
-            <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-8 md:gap-12 flex-wrap">
-              {/* Hero Text Section */}
+            {/* For desktop: flex-row-reverse to put image on left, text on right */}
+            <div className="flex flex-col-reverse md:flex-row-reverse items-center justify-between gap-8 md:gap-12">
+              {/* Hero Text Section - On right for desktop */}
               <div className="w-full md:w-1/2 mt-6 md:mt-0">
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-green-800 mb-4 md:mb-6">
                   {t('home.hero.title', 'רוצה להבין מה עובר עליך? בוא לבדוק אם זו הפרעת קשב.')}
@@ -87,7 +86,7 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Hero Image Section - Positioned based on screen size */}
+              {/* Hero Image Section - On left for desktop */}
               <div className="w-full md:w-1/2 flex justify-center items-center">
                 <img 
                   src="/assets/images/doctor-hero.png" 
@@ -124,6 +123,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </PageLayout>
+    </div>
   );
 }
