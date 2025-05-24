@@ -1,7 +1,27 @@
 import { HomePageContent } from '../types/content';
 
 const homePageData: HomePageContent = {
-  heading: 'מרפאה לאבחון וטיפול בהפרעות קשב ופעלתנות יתר',
+  heading: 'ברוכים הבאים למרפאת "קשב פלוס"',
+  body: [
+    {
+      heading: 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז',
+      body: [
+        {
+          title: 'ילדים',
+          description: 'ילדים'
+        },
+        {
+          title: 'בני נוער',
+          description: 'בני נוער'
+        },
+        {
+          title: 'מבוגרים',
+          description: 'מבוגרים'
+        }
+      ],
+      icon: '/assets/images/icon.png'
+    }
+  ],
   subheading: 'בילדים, בני נוער ומבוגרים',
   image: '/assets/images/hero-image.jpg',
   heroText: 'מרפאה לאבחון וטיפול בהפרעות קשב ופעלתנות יתר בילדים ומבוגרים',

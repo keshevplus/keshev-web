@@ -43,17 +43,28 @@ export default function Home() {
                 alt="קשב פלוס" 
                 className="w-56 md:w-96 mb-8 mx-auto drop-shadow-lg"
               />
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-green-800 mb-4 md:mb-6">
-                {t('home.hero.title', 'רוצה להבין מה עובר עליך? בוא לבדוק אם זו הפרעת קשב.')}
+              <h1 className="text-3xl md:text-3xl lg:text-4xl font-bold text-green-800 mb-4 md:mb-6">
+                {t('home.hero.title', 'ברוכים הבאים למרפאת "\קשב פלוס\"')}
               </h1>
-              <p className="text-lg md:text-xl mb-8 text-gray-700">
-                {t('home.hero.subtitle', 'בדיקה מקצועית, מהירה ודיסקרטית ל-ADHD - לילדים, בני נוער ומבוגרים.')}
+              <p className="text-2xl md:text-2xl mb-8 text-gray-700">
+                { pageData.body?.[0]?.heading || t('home.hero.subtitle', 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז')}
               </p>
+              <ul className="flex-row text-3xl md:text-3xl mb-8 text-green-800">
+                {Array.isArray(pageData.body?.[0]?.body) && pageData.body[0].body.map((item, index) => (
+                  <li key={`body-item-${index}`} 
+                      className="inline mr-6 font-bold animate-pulse transition-opacity duration-500 ease-in-out hover:animate-none hover:opacity-100"
+                      style={{ animationDelay: `${index * 300}ms` }}
+                  >
+                    {item.title || t(`home.hero[${index}]`, index === 0 ? 'ילדים' : index === 1 ? 'בני נוער' : 'מבוגרים')}
+                  </li>
+                ))}
+              </ul>
+                               
               <Link
                 to="/about"
                 className="inline-block bg-green-800 hover:bg-green-600 text-white px-8 py-4 rounded-md text-xl font-bold transition-colors duration-300 shadow-md hover:shadow-lg mx-4"
               >
-                {t('home.hero.about', 'קרא עוד עלינו')}
+                {t('home.hero.about', 'קראו עוד עלינו')}
               </Link>
               <Link
                 to="/contact"
