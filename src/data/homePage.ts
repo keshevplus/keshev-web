@@ -4,7 +4,7 @@ const homePageData: HomePageContent = {
   heading: 'ברוכים הבאים למרפאת "קשב פלוס"',
   body: [
     {
-      heading: 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז',
+      heading: 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז ב',
       body: [
         {
           title: 'ילדים',
