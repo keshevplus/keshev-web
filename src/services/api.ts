@@ -198,6 +198,24 @@ export const contentService = {
 
 // Messages service
 export const messagesService = {
+  async markMessageAsRead(id: string) {
+    try {
+      console.log('Marking message as read:', id);
+      const response = await authenticatedRequest(`/api/messages/${id}/read`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ is_read: true })
+      });
+      console.log('Mark as read response:', response);
+      return response;
+    } catch (error) {
+      console.error('Error marking message as read:', error);
+      throw error;
+    }
+  },
+  
   async getAllMessages(page = 1, limit = 10, filter = '') {
     try {
       // Ensure we have the correct API endpoint format
@@ -291,6 +309,24 @@ export const messagesService = {
 
 // Leads service
 export const leadsService = {
+  async markLeadAsRead(id: string) {
+    try {
+      console.log('Marking lead as read:', id);
+      const response = await authenticatedRequest(`/api/leads/${id}/read`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ is_read: true })
+      });
+      console.log('Mark as read response:', response);
+      return response;
+    } catch (error) {
+      console.error('Error marking lead as read:', error);
+      throw error;
+    }
+  },
+  
   async getAllLeads(page = 1, limit = 10, filter = '') {
     try {
       // Ensure we have the correct API endpoint format

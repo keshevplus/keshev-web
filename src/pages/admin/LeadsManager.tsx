@@ -13,6 +13,7 @@ interface Lead {
   message: string;
   created_at: string;
   date_received: string;
+  is_read?: boolean;
 }
 
 interface PaginationData {
@@ -47,10 +48,23 @@ const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) =>
       const response = await leadsService.getAllLeads(page, 10, filter);
       setLeads(response.leads);
       setPagination(response.pagination);
+      console.log('Leads loaded:', response.leads);
     } catch (error) {
       console.error('Error fetching leads:', error);
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function markAsRead(id: string) {
+    try {
+      await leadsService.markLeadAsRead(id);
+      // Update local state to reflect the change without refetching
+      setLeads(leads.map(lead => 
+        lead.id === id ? { ...lead, is_read: true } : lead
+      ));
+    } catch (error) {
+      console.error('Error marking lead as read:', error);
     }
   }
 
@@ -82,7 +96,11 @@ const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) =>
 
   return (
     <div className="p-6" style={{ direction: isRtl ? 'rtl' : 'ltr' }}>
-      <h2 className={`text-2xl font-bold mb-6 ${darkMode ? 'text-white' : 'text-gray-800'}`}>Leads Management</h2>
+      <h2 className={`text-2xl font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}>ניהול לקוחות</h2>
+      <div className={`mb-4 text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+        <p>NeonDB Table: <code>leads</code></p>
+        <p>Database: <code>keshevplus_production</code></p>
+      </div>
 
       <div className="mb-4">
         <input
@@ -119,17 +137,14 @@ const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) =>
               leads.map((lead) => (
                 <React.Fragment key={lead.id}>
                   <tr className={darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-50'}>
-                    <td className={`px-4 py-2 whitespace-nowrap text-sm ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
-                      {lead.name}
+                    <td className={`px-4 py-2 text-sm ${lead.is_read === false ? 'font-bold' : ''} ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{lead.name}</td>
+                    <td className={`px-4 py-2 text-sm ${lead.is_read === false ? 'font-bold' : ''} ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{lead.email}</td>
+                    <td className={`px-4 py-2 text-sm ${lead.is_read === false ? 'font-bold' : ''} ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{lead.phone}</td>
+                    <td className={`px-4 py-2 text-sm break-words ${lead.is_read === false ? 'font-bold' : ''} ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
+                      {lead.message.length > 50 ? `${lead.message.substring(0, 50)}...` : lead.message}
                     </td>
-                    <td className={`px-4 py-2 whitespace-nowrap text-sm ${darkMode ? 'text-gray-200' : 'text-gray-500'}`}>
-                      {lead.email}
-                    </td>
-                    <td className={`px-4 py-2 whitespace-nowrap text-sm ${darkMode ? 'text-gray-200' : 'text-gray-500'}`}>
-                      {lead.phone}
-                    </td>
-                    <td className={`px-4 py-2 text-sm ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
-                      {lead.subject}
+                    <td className={`px-4 py-2 text-sm ${lead.is_read === false ? 'font-bold' : ''} ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
+                      {lead.created_at ? new Date(lead.created_at).toLocaleString() : 'N/A'}
                     </td>
                     <td className={`px-4 py-2 whitespace-nowrap text-sm ${darkMode ? 'text-gray-200' : 'text-gray-500'}`}>
                       {lead.date_received ? new Date(lead.date_received).toLocaleString('en-US') : new Date(lead.created_at).toLocaleString('en-US')}
@@ -137,7 +152,12 @@ const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) =>
                     <td className="px-4 py-2 whitespace-nowrap text-sm">
                       <button
                         className={`mr-2 ${darkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-800'}`}
-                        onClick={() => setExpandedRowId(lead.id)}
+                        onClick={() => {
+                          setExpandedRowId(lead.id);
+                          if (!lead.is_read) {
+                            markAsRead(lead.id);
+                          }
+                        }}
                       >
                         Details
                       </button>
