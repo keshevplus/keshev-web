@@ -117,7 +117,8 @@ const Admin: React.FC = () => {
         <div className="flex items-center">
           <button
             onClick={toggleDarkMode}
-            className="p-2 rounded-md focus:outline-none"
+            className="mr-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none"
+            aria-label="Toggle dark mode"
           >
             {darkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
           </button>
@@ -163,7 +164,7 @@ const Admin: React.FC = () => {
       {/* Desktop layout */}
       <div className="flex">
         {/* Desktop sidebar - hidden on mobile */}
-        <div className="hidden lg:block w-64 flex-shrink-0 border-r border-gray-200 dark:border-gray-700 h-screen">
+        <div className="hidden lg:block w-48 flex-shrink-0 border-r border-gray-200 dark:border-gray-700 h-screen">
           <div className="p-4 border-b border-gray-200 dark:border-gray-700">
             <h2 className="text-xl font-semibold">Admin Panel</h2>
           </div>
