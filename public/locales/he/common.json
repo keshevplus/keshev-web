@@ -1,34 +1,36 @@
 {
   "language": {
-    "english": "\u05d0\u05e0\u05d2\u05dc\u05d9\u05ea",
-    "hebrew": "\u05e2\u05d1\u05e8\u05d9\u05ea"
+    "english": "אנגלית",
+    "hebrew": "עברית"
   },
   "admin": {
     "admin_panel": "מערכת ניהול",
-    "dashboard": "CERV",
+    "dashboard": "לוח בקרה",
     "menu": "תפריט"
   },
   "navigation": {
-    "home": "\u05d3\u05e3 \u05d4\u05d1\u05d9\u05ea",
-    "about": "\u05d0\u05d5\u05d3\u05d5\u05ea",
-    "services": "\u05e9\u05d9\u05e8\u05d5\u05ea\u05d9\u05dd",
-    "contact": "\u05e6\u05d5\u05e8 \u05e7\u05e9\u05e8",
-    "forms": "\u05d8\u05e4\u05e1\u05d9\u05dd",
-    "blog": "\u05d1\u05dc\u05d5\u05d2",
-    "login": "\u05d4\u05ea\u05d7\u05d1\u05e8",
-    "logout": "\u05d4\u05ea\u05e0\u05e2\u05e7"
+"home": "בית",
+"about": "אודותנו",
+"services": "שירותינו",
+"adhd": "ADHD מהי?",
+"diagnosis": "תהליך האבחון",
+"forms": "שאלונים",
+"contact": "יצירת קשר",
+"blog": "בלוג",
+"login": "התחבר",
+"logout": "התנתק"
   },
   "buttons": {
-    "submit": "\u05e9\u05dc\u05d7",
-    "cancel": "\u05d1\u05d8\u05dc",
-    "read_more": "\u05e7\u05e8\u05d0 \u05e2\u05d5\u05d3",
-    "download": "\u05d4\u05d5\u05e8\u05d3",
-    "send": "\u05e9\u05dc\u05d7"
+    "submit": "שלח.י",
+    "cancel": "בטל.י",
+    "read_more": "קרא.י עוד",
+    "download": "הורד.",
+    "send": "שלח"
   },
   "footer": {
-    "rights": "\u05db\u05dc \u05d4\u05d6\u05db\u05d5\u05d9\u05d5\u05ea \u05e9\u05de\u05d5\u05e8\u05d5\u05ea \u05dc\u05e7\u05e9\u05d1 \u05e4\u05dc\u05d5\u05e1",
-    "privacy": "\u05de\u05d3\u05d9\u05e0\u05d9\u05d5\u05ea \u05e4\u05e8\u05d8\u05d9\u05d5\u05ea",
-    "terms": "\u05e0\u05d0\u05d9 \u05e9\u05d9\u05de\u05d5\u05e9",
-    "accessibility": "\u05e0\u05d2\u05d9\u05e9\u05d5\u05ea"
+    "rights": "כל הזכויות שמורות לקשב פלוס",
+    "privacy": "מדיניות פרטיות",
+    "terms": "תנאי שימוש",
+    "accessibility": "נגישות"
   }
 }

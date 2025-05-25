@@ -148,3 +148,24 @@ main {
 [style*="direction: ltr"] *:not(input):not(textarea) {
   -webkit-touch-callout: default !important;
 }
+
+/* Word cycling animation for homepage */
+@keyframes word-cycle {
+  0%, 5% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  10%, 30% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  35%, 100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.animate-word-cycle {
+  animation: word-cycle 9s infinite;
+  animation-fill-mode: forwards;
+}

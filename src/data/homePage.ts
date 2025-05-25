@@ -2,34 +2,30 @@ import { HomePageContent } from '../types/content';
 
 const homePageData: HomePageContent = {
   heading: 'ברוכים הבאים למרפאת "קשב פלוס"',
-  body: [
-    {
-      heading: 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז ב',
-      body: [
-        {
-          title: 'ילדים',
-          description: 'ילדים'
-        },
-        {
-          title: 'בני נוער',
-          description: 'בני נוער'
-        },
-        {
-          title: 'מבוגרים',
-          description: 'מבוגרים'
-        }
-      ],
-      icon: '/assets/images/icon.png'
-    }
-  ],
-  subheading: 'בילדים, בני נוער ומבוגרים',
-  image: '/assets/images/hero-image.jpg',
-  heroText: 'מרפאה לאבחון וטיפול בהפרעות קשב ופעלתנות יתר בילדים ומבוגרים',
-  ctaButtonText: 'צור קשר',
-  servicesHeading: 'השירותים שלנו',
-  servicesSubheading: 'אנו מציעים מגוון רחב של שירותים מקצועיים בתחום אבחון וטיפול בהפרעות קשב',
+  image: '/assets/images/hero-home.jpeg',
+  subheading: `
+אבחון וטיפול מקצועי בהפרעות קשב וריכוז c
+`,
+  heroText: 'ב"קשב פלוס" תקבלו אבחון מדויק ותוכנית טיפול אישית',
+  
+  heroSubText: `הצעד הראשון מתחיל כאן.`,
+  heroBody: `
+קבעו פגישת ייעוץ -ובואו לגלות את הדרך להצלחה.
+ `,
+  ctaButtonText: 'צרו קשר',
+ 
   ctaHeading: 'זימנו היום תור לפגישת ייעוץ והתאמה אישית',
-  ctaSubheading: 'צוות המומחים שלנו ישמח לעמוד לרשותכם ולסייע בכל שאלה',
+  ctaSubheading: 'אנחנו כאן בשבילכם',
+  
+  // You can use list for words if needed
+  
+  // Alternative: define a custom words object outside the HomePageContent interface
+  // words: {
+  //   kids: 'ילדים',
+  //   teens: 'בני נוער',
+  //   adults: 'מבוגרים'
+  // },
+  
   services: [
     {
       title: 'אבחון מקיף',

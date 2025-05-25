@@ -43,7 +43,7 @@ export default function Diagnosis() {
     <div className="rtl">
       <PageTitle title={pageData.heading} />
       <div className="items-center justify-center h-full">
-        <div className="container mx-auto md:max-w-[90%] lg:max-w-[70%] px-4 sm:px-6">
+        <div className="container mx-auto md:max-w-[90%] lg:max-w-[60%] px-4 sm:px-6">
           <div className="text-center">
             <h3 className="md:text-3xl font-bold mb-4">
               {pageData.body?.[0]?.title ?? ''}
@@ -51,9 +51,8 @@ export default function Diagnosis() {
             <h3 className="md:text-3xl font-bold mb-4">
               {pageData.subheading}
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 text-right">
+            <div className="grid grid-cols-1 text-right">
               <div>
-                <h4 className="md:text-2xl text-2xl mb-4">ילדים / בני נוער</h4>
                 <ul className="list-none space-y-4">
                   {pageData.body?.slice(1, 4)?.map((item, index) => (
                     <li key={item.title}>
@@ -61,7 +60,7 @@ export default function Diagnosis() {
                         bgcolor="bg-orange-400/35 hover:bg-orange-400/60"
                         textColor="text-black font-bold"
                         textSize="text-xl md:text-2xl"
-                        paraSize="text-md md:text-xl"
+                        paraSize="text-md md:text-xl whitespace-pre-line"
                         title={item.title ?? ''}
                         description={item.description ?? ''}
                         image={item.image}

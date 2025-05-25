@@ -35,31 +35,43 @@ export default function Home() {
       {/* Hero Section - New Layout */}
       
         <div className="container mx-auto px-4 py-0 md:py-0">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 md:gap-8 lg:gap-12">
             {/* Hero Text Section */}
-            <div className="w-full md:w-1/2 order-1 md:order-1">
-              <img 
+            <div className="xl:w-full md:w-2/7 order-1 px-2 sm:px-4">
+            <h1 className="lg:text-5xl md:text-4xl sm:text-3xl font-bold text-green-800 mb-4 md:whitespace-nowrap">
+                {t('home.hero.title', 'ברוכים הבאים למרפאת "קשב פלוס"')}
+              </h1>
+               <img 
                 src="/assets/images/logo.png" 
                 alt="קשב פלוס" 
-                className="w-56 md:w-96 mb-8 mx-auto drop-shadow-lg"
+                className="w-48 sm:w-96 md:w-72 lg:w-96 mb-6 md:mb-8 md:mx-auto drop-shadow-lg"
               />
-              <h1 className="text-3xl md:text-3xl lg:text-4xl font-bold text-green-800 mb-4 md:mb-6">
-                {t('home.hero.title', 'ברוכים הבאים למרפאת "\קשב פלוס\"')}
-              </h1>
-              <p className="text-2xl md:text-2xl mb-8 text-gray-700">
+            
+              <p className="flex  justify-start text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 flex-wrap text-justify leading-normal ">
                 { pageData.body?.[0]?.heading || t('home.hero.subtitle', 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז')}
+                {/* Animated text cycling through words */}
+                <span className="relative inline-block whitespace-nowrap mr-1 ">
+                  {Array.isArray(pageData.body?.[0]?.body) && pageData.body[0].body.map((item, index) => (
+                    <span 
+                      key={`body-item-${index}`}
+                      className="absolute top-0 right-0 font-bold opacity-0 animate-word-cycle"
+                      style={{ 
+                        animationDelay: `${index * 3000}ms`,
+                        animationDuration: `${(pageData.body?.[0]?.body?.length || 3) * 3000}ms`
+                      }}
+                    >
+                      {item.title || t(`home.hero[${index}]`, index === 0 ? 'ילדים' : index === 1 ? 'בני נוער' : 'מבוגרים')}
+                    </span>
+                  ))}
+                </span>
               </p>
-              <ul className="flex-row text-3xl md:text-3xl mb-8 text-green-800">
-                {Array.isArray(pageData.body?.[0]?.body) && pageData.body[0].body.map((item, index) => (
-                  <li key={`body-item-${index}`} 
-                      className="inline mr-6 font-bold animate-pulse transition-opacity duration-500 ease-in-out hover:animate-none hover:opacity-100"
-                      style={{ animationDelay: `${index * 300}ms` }}
-                  >
-                    {item.title || t(`home.hero[${index}]`, index === 0 ? 'ילדים' : index === 1 ? 'בני נוער' : 'מבוגרים')}
-                  </li>
-                ))}
-              </ul>
-                               
+              <p className="whitespace-pre-lineflex justify-start text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 text-justify leading-relaxed">              { pageData.heroText || t('home.hero.heroText', 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז')}
+              </p>
+
+              <p className="whitespace-pre-lineflex justify-start text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 text-justify leading-relaxed ">
+              { pageData.heroSubText || t('home.hero.heroSubText', 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז')}
+              </p>
+
               <Link
                 to="/about"
                 className="inline-block bg-green-800 hover:bg-green-600 text-white px-8 py-4 rounded-md text-xl font-bold transition-colors duration-300 shadow-md hover:shadow-lg mx-4"
@@ -70,12 +82,12 @@ export default function Home() {
                 to="/contact"
                 className="inline-block bg-orange-400 hover:bg-orange-600 hover:text-white text-black px-8 py-4 rounded-md text-xl font-bold  transition-colors duration-300 shadow-md hover:shadow-lg mx-4"
               >
-                {t('home.hero.contact', 'התחילו את האבחון שלכם עכשיו')}
+                {t('home.hero.contact', 'התחילו את האבחון עכשיו')}
               </Link>
             </div>
 
             {/* Hero Image Section */}
-            <div className="w-full md:w-1/2 order-2 md:order-2 flex justify-center items-center">
+            <div className="w-full md:w-1/3 lg:w-3/4 order-2 md:order-2 flex justify-center ">
               <img 
                 src="/assets/images/doctor-hero.png" 
                 alt="רופא מקצועי" 
@@ -87,13 +99,13 @@ export default function Home() {
       </div>
 
       {/* CTA Section */}
-      <div className="pt-16 pb-6 md:pt-20 md:pb-6 bg-green-800 text-white">
+      <div className="pt-4 pb-4 md:pt-10 md:pb-6 bg-gradient-to-b from-green-800 to-green-950 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             {t('home.cta.title', 'מוכנים להתחיל?')}
           </h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
-            {t('home.cta.subtitle', 'פנה אלינו היום כדי לקבוע את האבחון שלך ולקחת את הצעד הראשון לקראת חיים טובים יותר.')}
+            {t('home.cta.subtitle', 'פנה/י אלינו היום כדי לקבוע את האבחון שלך ולקחת את הצעד הראשון לקראת חיים טובים יותר.')}
           </p>
           <Link
             to="/contact"

@@ -38,11 +38,11 @@ export default function Services() {
       withRtl={true}
       maxWidth="md:max-w-[90%] lg:max-w-[85%]"
     >
-      <h3 className="text-xl md:text-4xl font-bold text-black text-center mb-8">
+      <h3 className="text-xl md:text-3xl font-bold text-black text-center mb-8">
         {pageData.subheading || 'Our Services'}
       </h3>
       <div className="rtl-container" dir="rtl">
-        <ul className="grid grid-cols-1 gap-8 w-full max-w-[50%] mx-auto">
+        <ul className="grid grid-cols-1 gap-8 w-full max-w-[60%] mx-auto">
           {/* All service cards from data */}
           {pageData.body?.map((item, index) => (
             <li key={index} className="items-start justify-start">
@@ -50,12 +50,11 @@ export default function Services() {
                 bgcolor="bg-orange-400/35 hover:bg-orange-400/60 text-right"
                 textColor="text-black font-bold"
                 textSize="text-2xl md:text-3xl" /* Bigger title font */
-                paraSize="text-sm md:text-base" /* Smaller content font */
+                paraSize="text-md md:text-md whitespace-pre-line" /* Smaller content font */
                 title={item.title || 'Untitled'}
                 description={item.description || ''}
-                image={null} /* Remove any image references to ensure only custom icon is used */
                 icon={customLeafIcon} /* Use custom green leaf icon for all cards */
-                isRtl={true} /* Enable RTL for Hebrew content */
+                // isRtl={true} /* Enable RTL for Hebrew content */
               />
             </li>
           ))}

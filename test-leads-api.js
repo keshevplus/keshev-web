@@ -29,8 +29,7 @@ async function testLeadsAPI() {
   if (!token) {
     console.error('ERROR: No authentication token provided. Please provide a token as a command line argument:');
     console.error('node test-leads-api.js YOUR_AUTH_TOKEN');
-    console.error('
-You can get a token by logging into the admin dashboard and copying it from localStorage.');
+    console.error('You can get a token by logging into the admin dashboard and copying it from localStorage.');
     process.exit(1);
   }
 
