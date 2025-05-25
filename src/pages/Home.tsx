@@ -67,15 +67,15 @@ export default function Home() {
                 </span>
               </p>
               <p className="whitespace-pre-line flex justify-center text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 text-justify leading-relaxed">
-                { pageData.subheading || t('home.hero.subheading', 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז')}
+                { pageData.subheading || t('home.hero.subheading', 'בקשב פלוס תקבלו אבחון מדויק ותוכנית טיפול אישית')}
               </p>
 
               <p className="whitespace-pre-line flex justify-center text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 text-justify leading-relaxed ">
-              { pageData.subTitle || t('home.hero.subTitle', 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז')}
+              { pageData.subTitle || t('home.hero.subTitle', 'הצעד הראשון מתחיל כאן')}
               </p>
 
               <p className="whitespace-pre-line flex justify-center text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 text-justify leading-relaxed ">
-              { pageData.heroText || t('home.hero.heroText', 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז')}
+              { pageData.heroText || t('home.hero.heroText', 'קבעו פגישת ייעוץ - בואו לגלות את הדרך להצלחה')}
               </p>
 
               <Link
