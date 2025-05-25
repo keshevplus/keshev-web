@@ -35,18 +35,18 @@ export default function About() {
       <div className="absolute inset-0 z-[-1] bg-gradient-radial from-green-900/80 via-green-800/70 to-green-950/90 animate-gradient-slow"></div>
       
       <h2 className="text-xl md:text-4xl font-bold text-black text-center mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
-        {pageData.body?.[0]?.title ?? 'קשב פלוס, נעים להכיר'}
+        {/*  Fallback text : subheading: 'קשב פלוס, נעים להכיר', */}
+        {pageData.subheading ?? 'קשב פלוס, נעים להכיר'}
       </h2>
 
       {/* Main content section */}
       <div className="grid grid-cols-1 md:grid-cols-2 items-start mb-0 md:mb-4">
+     {/*  Fallback text : pageData.body?.[0] */}
+
         {pageData.body?.[0]?.image && (
           <>
             <div className="order-2 md:order-2 flex justify-center">
               <figure className="flex flex-col items-center">
-              <figcaption className="text-green-600 italic text-lg md:text-2xl font-bold mt-2">
-                  {pageData.body[1].title}
-                </figcaption>
                 <img
                   src={pageData.body[0].image}
                   alt={pageData.body[0].title}
@@ -59,7 +59,7 @@ export default function About() {
         )}
         <div className="order-1 md:order-1 text-right">
           {/* Additional content */}
-          {pageData.body?.slice(1)?.map(
+          {pageData.body?.map(
             (
               item: {
                 title?: string;
