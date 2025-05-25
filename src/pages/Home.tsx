@@ -48,28 +48,33 @@ export default function Home() {
               />
             
               <p className="flex  justify-start text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 flex-wrap text-justify leading-normal ">
-                { pageData.subheading || 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז'}
+                { pageData.title || 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז'}
                 {/* Animated text cycling through words */}
-                <span className="relative inline-block whitespace-nowrap mr-1 ">
-                  {Array.isArray(pageData.body?.[0]?.body) && pageData.body[0].body.map((item, index) => (
+                <span className="relative inline-block whitespace-nowrap">
+                  {Array.isArray(pageData.list) && pageData.list.map((item, index) => (
                     <span 
-                      key={`body-item-${index}`}
+                      key={`list-item-${index}`}
                       className="absolute top-0 right-0 font-bold opacity-0 animate-word-cycle"
                       style={{ 
                         animationDelay: `${index * 3000}ms`,
-                        animationDuration: `${(pageData.body?.[0]?.body?.length || 3) * 3000}ms`
+                        animationDuration: `${(pageData.list?.length || 3) * 3000}ms`
                       }}
                     >
-                      {item.title || t(`home.hero[${index}]`, index === 0 ? 'ילדים' : index === 1 ? 'בני נוער' : 'מבוגרים')}
+                      {item}
                     </span>
                   ))}
                 </span>
               </p>
-              <p className="whitespace-pre-lineflex justify-start text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 text-justify leading-relaxed">              { pageData.heroText || t('home.hero.heroText', 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז')}
+              <p className="whitespace-pre-lineflex justify-start text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 text-justify leading-relaxed">
+                { pageData.subheading || t('home.hero.subheading', 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז')}
               </p>
 
               <p className="whitespace-pre-lineflex justify-start text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 text-justify leading-relaxed ">
-              { pageData.heroSubText || t('home.hero.heroSubText', 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז')}
+              { pageData.subTitle || t('home.hero.subTitle', 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז')}
+              </p>
+
+              <p className="whitespace-pre-lineflex justify-start text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 text-justify leading-relaxed ">
+              { pageData.heroText || t('home.hero.heroText', 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז')}
               </p>
 
               <Link
