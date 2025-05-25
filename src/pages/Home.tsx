@@ -39,7 +39,7 @@ export default function Home() {
             {/* Hero Text Section */}
             <div className="xl:w-full md:w-2/7 order-1 px-2 sm:px-4">
             <h1 className="lg:text-5xl md:text-4xl sm:text-3xl font-bold text-green-800 mb-4 md:whitespace-nowrap">
-                {t('home.hero.title', 'ברוכים הבאים למרפאת "קשב פלוס"')}
+                {pageData.heading || 'ברוכים הבאים למרפאת "קשב פלוס"'}
               </h1>
                <img 
                 src="/assets/images/logo.png" 
@@ -48,7 +48,7 @@ export default function Home() {
               />
             
               <p className="flex  justify-start text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 flex-wrap text-justify leading-normal ">
-                { pageData.body?.[0]?.heading || t('home.hero.subtitle', 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז')}
+                { pageData.subheading || 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז'}
                 {/* Animated text cycling through words */}
                 <span className="relative inline-block whitespace-nowrap mr-1 ">
                   {Array.isArray(pageData.body?.[0]?.body) && pageData.body[0].body.map((item, index) => (

@@ -2,10 +2,15 @@ import { HomePageContent } from '../types/content';
 
 const homePageData: HomePageContent = {
   heading: 'ברוכים הבאים למרפאת "קשב פלוס"',
-  image: '/assets/images/hero-home.jpeg',
+  image: '/assets/images/logo.png',
   subheading: `
-אבחון וטיפול מקצועי בהפרעות קשב וריכוז c
+אבחון וטיפול מקצועי בהפרעות קשב וריכוז ב
 `,
+list: [
+  'ילדים',
+  'בני נוער',
+  'מבוגרים'
+],  
   heroText: 'ב"קשב פלוס" תקבלו אבחון מדויק ותוכנית טיפול אישית',
   
   heroSubText: `הצעד הראשון מתחיל כאן.`,
