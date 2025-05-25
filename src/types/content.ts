@@ -15,7 +15,9 @@ export interface HomePageContent {
     description: string;
     icon: string;
   }[];
-  image: string; // Added the missing 'im age' property
+  image: string; // Added the missing 'image' property
+  title?: string; // Added to match homePage.ts
+  subTitle?: string; // Added to match homePage.ts
 }
 export interface ContentItem {
   heading: string;

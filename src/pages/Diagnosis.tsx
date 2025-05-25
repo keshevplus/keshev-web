@@ -40,27 +40,34 @@ export default function Diagnosis() {
   const additionalData = data[0]?.additional?.[0] || null;
 
   return (
-    <div className="rtl">
+    <div className="rtl relative overflow-hidden">
       <PageTitle title={pageData.heading} />
+      
+      {/* Gradient background */}
+      <div className="absolute inset-0 z-[-1] bg-gradient-radial from-blue-700/80 via-blue-600/60 to-blue-800/90 animate-gradient-slow"></div>
+      
+      <h2 className="text-xl md:text-4xl font-bold text-white text-center mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
+        {/* Fallback text: תהליך האבחון */}
+        {pageData.subheading ?? 'תהליך אבחון מקצועי ומקיף'}
+      </h2>
+      
       <div className="items-center justify-center h-full">
         <div className="container mx-auto md:max-w-[90%] lg:max-w-[60%] px-4 sm:px-6">
           <div className="text-center">
-            <h3 className="md:text-3xl font-bold mb-4">
-              {pageData.body?.[0]?.title ?? ''}
-            </h3>
-            <h3 className="md:text-3xl font-bold mb-4">
-              {pageData.subheading}
-            </h3>
-            <div className="grid grid-cols-1 text-right">
-              <div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-right mb-8">
+              {/* First three items - תהליך האבחון הבסיסי */}
+              <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300">
+                <h3 className="text-xl md:text-2xl font-bold text-white mb-4 border-b border-blue-300/50 pb-2">
+                  תהליך האבחון הבסיסי
+                </h3>
                 <ul className="list-none space-y-4">
-                  {pageData.body?.slice(1, 4)?.map((item, index) => (
-                    <li key={item.title}>
+                  {pageData.body?.slice(0, 3)?.map((item, index) => (
+                    <li key={item.title} className="backdrop-blur-sm bg-blue-50/10 p-4 rounded-lg shadow hover:shadow-md transition-all duration-300">
                       <Card
-                        bgcolor="bg-orange-400/35 hover:bg-orange-400/60"
-                        textColor="text-black font-bold"
-                        textSize="text-xl md:text-2xl"
-                        paraSize="text-md md:text-xl whitespace-pre-line"
+                        bgcolor="bg-transparent"
+                        textColor="text-white font-bold"
+                        textSize="text-lg md:text-xl"
+                        paraSize="text-md md:text-lg whitespace-pre-line"
                         title={item.title ?? ''}
                         description={item.description ?? ''}
                         image={item.image}
@@ -69,16 +76,20 @@ export default function Diagnosis() {
                   ))}
                 </ul>
               </div>
-              <div>
-                <h4 className="md:text-2xl text-2xl mb-4 ">מבוגרים</h4>
+              
+              {/* Last three items - שירותים נוספים */}
+              <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300">
+                <h3 className="text-xl md:text-2xl font-bold text-white mb-4 border-b border-blue-300/50 pb-2">
+                  שירותים נוספים
+                </h3>
                 <ul className="list-none space-y-4">
-                  {pageData.body?.slice(4, 7)?.map((item, index) => (
-                    <li key={item.title}>
+                  {pageData.body?.slice(3, 6)?.map((item, index) => (
+                    <li key={item.title} className="backdrop-blur-sm bg-blue-50/10 p-4 rounded-lg shadow hover:shadow-md transition-all duration-300">
                       <Card
-                        bgcolor="bg-green-800/90 hover:bg-green-900/100"
+                        bgcolor="bg-transparent"
                         textColor="text-white font-bold"
-                        textSize="text-xl md:text-2xl"
-                        paraSize="text-md md:text-xl"
+                        textSize="text-lg md:text-xl"
+                        paraSize="text-md md:text-lg"
                         title={item.title ?? ''}
                         description={item.description ?? ''}
                         image={item.image}
@@ -88,17 +99,20 @@ export default function Diagnosis() {
                 </ul>
               </div>
             </div>
-            <div className="text-center md:text-right mt-8">
-              <p className="text-2xl md:text-xl font-bold my-4">
-                {additionalData?.title}
+            <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 mt-10">
+              <h3 className="text-xl md:text-2xl font-bold text-white mb-4 border-b border-blue-300/50 pb-2 text-center">
+                {additionalData?.title || 'טיפול מקצועי מותאם אישית'}
+              </h3>
+              <p className="text-lg text-white mb-6 text-center">
+                {additionalData?.subtitle || additionalData?.description || 'לאחר האבחון ניתן להתאים תוכנית טיפול אישית שתתאים לצרכים הייחודיים שלכם'}
               </p>
-              <ul className="list-none grid grid-cols-1 md:grid-cols-2 gap-4">
+              <ul className="list-none grid grid-cols-1 md:grid-cols-3 gap-4">
                 {Array.isArray((additionalData as ContentItem)?.body) &&
                   (additionalData as ContentItem).body.map((item) => (
-                    <li key={item.title}>
+                    <li key={item.title} className="backdrop-blur-sm bg-blue-50/10 p-4 rounded-lg shadow hover:shadow-md transition-all duration-300">
                       <Card
-                        bgcolor="bg-orange-400/35 hover:bg-orange-400/60"
-                        textColor="text-black font-bold"
+                        bgcolor="bg-transparent"
+                        textColor="text-white font-bold"
                         textSize="text-lg md:text-xl"
                         paraSize="text-md md:text-lg"
                         title={item.title}

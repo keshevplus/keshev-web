@@ -54,7 +54,7 @@ export default function Home() {
                   {Array.isArray(pageData.list) && pageData.list.map((item, index) => (
                     <span 
                       key={`list-item-${index}`}
-                      className="absolute top-0 right-0 font-bold opacity-0 animate-word-cycle"
+                      className="absolute top-0 right-0 font-bold opacity-0 animate-typing"
                       style={{ 
                         animationDelay: `${index * 3000}ms`,
                         animationDuration: `${(pageData.list?.length || 3) * 3000}ms`

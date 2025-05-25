@@ -3,23 +3,22 @@ import { HomePageContent } from '../types/content';
 const homePageData: HomePageContent = {
   heading: 'ברוכים הבאים למרפאת "קשב פלוס"',
   image: '/assets/images/logo.png',
-  title: `  
-אבחון וטיפול מקצועי בהפרעות קשב וריכוז ב
-`,
-list: [
-  'ילדים',
-  'בני נוער',
-  'מבוגרים'
+  subheading: 'ב"קשב פלוס" תקבלו אבחון מדויק ותוכנית טיפול אישית',
+  list: [
+    'ילדים',
+    'בני נוער',
+    'מבוגרים'
 ],  
-  subheading: 'ב"קשב פלוס" תקבלו אבחון מדויק ותוכנית טיפול אישית.',
-  subTitle: `הצעד הראשון מתחיל כאן.`,
+  subTitle: `הצעד הראשון מתחיל כאן`,
   heroText: `
-קבעו פגישת ייעוץ - בואו לגלות את הדרך להצלחה.
+קבעו פגישת ייעוץ - בואו לגלות את הדרך להצלחה
  `,
-  ctaButtonText: 'יצירת קשר',
+  ctaButtonText: 'יצירת קשר',   
  
   ctaHeading: 'זימנו היום תור לפגישת ייעוץ והתאמה אישית',
   ctaSubheading: 'אנחנו כאן בשבילכם',
+  servicesHeading: 'השירותים שלנו',
+  servicesSubheading: 'אנו מציעים מגוון שירותים מקצועיים',
   
   // You can use list for words if needed
   

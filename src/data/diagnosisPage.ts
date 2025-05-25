@@ -2,43 +2,36 @@ import { ContentItem } from '../types/content';
 
 const diagnosisPageData: ContentItem = {
   heading: 'תהליך האבחון',	
-  subheading: 'במרפאתנו אנו מקפידים על תהליך אבחון יסודי ומעמיק, שכולל:',
+  subheading: 'תהליך אבחון מקצועי ומקיף',
   body: [
     {
-      title: 'איך מתבצע האבחון במרפאה שלנו?',
-      description: 'במרפאתנו אנו מקפידים על תהליך אבחון יסודי ומעמיק, שכולל:',
-      image: '/assets/images/icon.png',
-    },
-    {
       title: 'שיחה ראשונית',
-      description: 'הבנת הקשיים, ההיסטוריה הלימודית, ההתנהגותית והחבררתית של המטופל.',
+      description: 'מפגש אישי עם המטופל והמשפחה להבנת ההיסטוריה ההתפתחותית וההתנהגותית.',
       image: '/assets/images/icon.png',
     },
     {
       title: 'שאלונים מובנים',
-      description: 'שימוש בכלים אבחוניים בינלאומיים, כמו סולם הערכה ע"ש NICHQ Vanderbilt.',
-      image: '/assets/images/icon.png',
-    },
-
-    {
-      title: 'דו"ח אבחון מקצועי',
-      description: 'תוצאות מפורטות לצד המלצות מותאמות אישית להמשך הדרך.',
+      description: 'שימוש בכלים אבחוניים בינלאומיים מתוקפים, כמו סולם הערכה NICHQ Vanderbilt.',
       image: '/assets/images/icon.png',
     },
     {
-      title: 'שיחה ראשונית',
-      description: 'מפגש אישי עם ההורים והילד להבנת ההיסטוריה ההתפתחותית והתנהגותו.',
-      image: '/assets/images/plus.png',
-    },
-    {
-      title: 'שאלונים מובנים',
-      description: 'שימוש בכלים אבחוניים בינלאומיים, כמו סולם הערכה ע"ש NICHQ Vanderbilt.',
-      image: '/assets/images/plus.png',
-    },
-
-    {
       title: 'דו"ח אבחון מקצועי',
-      description: 'תוצאות מפורטות לצד המלצות מותאמות אישית להמשך הדרך.',
+      description: 'תוצאות מפורטות לצד המלצות מותאמות אישית להמשך הטיפול.',
+      image: '/assets/images/icon.png',
+    },
+    {
+      title: 'אבחון למבוגרים',
+      description: 'תהליך אבחון מותאם למבוגרים עם התייחסות לאתגרים הייחודיים בגיל הבוגר.',
+      image: '/assets/images/plus.png',
+    },
+    {
+      title: 'מעקב רפואי',
+      description: 'ליווי מקצועי לאורך כל הדרך ומעקב אחר יעילות הטיפול.',
+      image: '/assets/images/plus.png',
+    },
+    {
+      title: 'התאמות חינוכיות',
+      description: 'המלצות להתאמות במסגרות החינוכיות והאקדמיות.',
       image: '/assets/images/plus.png',
     },
   ],
