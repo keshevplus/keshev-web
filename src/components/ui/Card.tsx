@@ -12,7 +12,7 @@ interface CardProps {
   image?: string; // Optional image URL for the card
   icon?: ReactNode; // Optional icon or clipart to display above the text
   // Removed unused maxHeight prop
-  isRtl?: boolean; // Whether to use right-to-left layout (for Hebrew)
+  // isRtl property removed as we're using fixed RTL layout for this component
 }
 
 // Card component definition
@@ -25,8 +25,7 @@ const Card: React.FC<CardProps> = ({
   description, // Description text passed as a prop
   image, // Optional image URL passed as a prop
   icon, // Optional icon or clipart to display above the text
-  // maxHeight parameter removed
-  isRtl = false, // Default to left-to-right layout
+  // maxHeight and isRtl parameters removed as we're using fixed RTL layout
 }) => {
   const [animate, setAnimate] = useState(false);
   const descriptionRef = useRef<HTMLDivElement>(null);
@@ -47,11 +46,34 @@ const Card: React.FC<CardProps> = ({
         ${bgcolor} 
         hover:shadow-2xl hover:-translate-y-1`}
     >
-      <div className={`flex ${isRtl ? 'flex-row-reverse' : 'flex-row'} items-start justify-between w-full gap-4`}>
-        {/* Icon on one side - with RTL positioning */}
+      <div className="flex flex-row-reverse items-start justify-between w-full gap-6">
+        {/* Text content on the right in RTL context */}
+        <div className="flex-1 text-right">
+          {/* Title and content aligned together */}
+          <div className="flex flex-col items-end"> {/* For RTL content, align items to the end */}
+            {/* Title with subtle pulse animation on hover */}
+            <h4 
+              className={`font-bold ${textSize} ${textColor} transition-all duration-300 group-hover:text-green-700 text-right w-full mb-2`}
+            >
+              {title}
+            </h4>
+            
+            {/* Description directly below title with same alignment */}
+            <div
+              ref={descriptionRef}
+              className={`${textColor} font-normal ${paraSize || 'text-lg'} /* Larger font */
+                text-right w-full
+                transition-all duration-500 ease-in-out`}
+            >
+              {description}
+            </div>
+          </div>
+        </div>
+
+        {/* Icon on the left side for RTL layout */}
         <div className="flex-shrink-0">
           {icon && (
-            <div className="flex justify-center items-center transition-transform duration-300 transform group-hover:scale-110 mx-4">
+            <div className="flex justify-center items-center transition-transform duration-300 transform group-hover:scale-110 mx-2">
               {icon}
             </div>
           )}
@@ -63,26 +85,6 @@ const Card: React.FC<CardProps> = ({
               className="w-10 h-10 object-cover rounded-full group-hover:scale-125 transition-transform duration-200"
             />
           )}
-        </div>
-        
-        {/* Title and content on the same row */}
-        <div className="flex-1">
-          {/* Title with subtle pulse animation on hover */}
-          <h4 
-            className={`font-bold ${textSize} ${textColor} transition-all duration-300 group-hover:text-green-700 ${isRtl ? 'text-right' : 'text-left'} mb-2`}
-          >
-            {title}
-          </h4>
-          
-          {/* Description directly below title */}
-          <div
-            ref={descriptionRef}
-            className={`${textColor} font-normal ${paraSize || 'text-lg'} /* Larger font */
-              ${isRtl ? 'text-right' : 'text-left'} text-justify
-              transition-all duration-500 ease-in-out`}
-          >
-            {description}
-          </div>
         </div>
       </div>
       {/* Content is now displayed directly with the title */}

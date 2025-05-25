@@ -11,7 +11,7 @@ const diagnosisPageData: ContentItem = {
     },
     {
       title: 'שיחה ראשונית',
-      description: 'מפגש אישי עם ההורים והילד להבנת ההיסטוריה ההתפתחותית והתנהגותו.',
+      description: 'הבנת הקשיים, ההיסטוריה הלימודית, ההתנהגותית והחבררתית של המטופל.',
       image: '/assets/images/icon.png',
     },
     {

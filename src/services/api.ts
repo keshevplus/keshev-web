@@ -1,3 +1,14 @@
+// TypeScript declaration for Vite's import.meta.env
+declare interface ImportMeta {
+  readonly env: {
+    readonly DEV: boolean;
+    readonly PROD: boolean;
+    readonly MODE: string;
+    readonly VITE_DEV_ADMIN_EMAIL?: string;
+    [key: string]: string | boolean | undefined;
+  };
+}
+
 // In development, use the local proxy server to bypass CORS issues
 const IS_DEV = import.meta.env.DEV;
 

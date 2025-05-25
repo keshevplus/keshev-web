@@ -4,6 +4,7 @@ export interface HomePageContent {
   list?: string[]; 
   body?: ContentItem[];
   heroText: string;
+  heroSubText?: string; // Added the missing heroSubText property
   ctaButtonText: string;
   servicesHeading: string;
   servicesSubheading: string;
@@ -14,7 +15,7 @@ export interface HomePageContent {
     description: string;
     icon: string;
   }[];
-  image: string; // Added the missing 'image' property
+  image: string; // Added the missing 'im age' property
 }
 export interface ContentItem {
   heading: string;
