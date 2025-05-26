@@ -66,30 +66,36 @@ export default function Home() {
                   ))}
                 </span>
               </p>
-              <p className="whitespace-pre-line flex items-center text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 text-center leading-relaxed">
+              <p className="whitespace-pre-line flex items-center text-lg sm:text-xl md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 text-center leading-relaxed">
                 { pageData.subheading || t('home.hero.subheading', 'בקשב פלוס תקבלו אבחון מדויק ותוכנית טיפול אישית')}
               </p>
 
-              <p className="flex items-center text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 text-center leading-relaxed ">
+              <p className="flex items-center  font-bold text-3xl sm:text-xl md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 text-center leading-relaxed ">
               { pageData.subTitle || t('home.hero.subTitle', 'הצעד הראשון מתחיל כאן')}
               </p>
 
-              <p className="whitespace-pre-line flex items-center text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 text-center leading-relaxed ">
+              <p className="whitespace-pre-line flex items-center text-lg sm:text-xl md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 text-center leading-relaxed ">
               { pageData.heroText || t('home.hero.heroText', 'קבעו פגישת ייעוץ - בואו לגלות את הדרך להצלחה')}
               </p>
 
+              
+              <div className="flex justify-center flex-row ">
+
+              <Link
+                to="/contact"
+                className="md:whitespace-nowrap flex items-center justify-center   bg-green-800 hover:bg-green-600 text-white px-8 py-4 rounded-md text-xl font-bold  transition-colors duration-300 shadow-md hover:shadow-lg mx-4 w-1/2"
+              >
+                {t('home.hero.contact', 'התחל/י את האבחון עכשיו')}
+              </Link>
+              
               <Link
                 to="/about"
-                className="inline-block bg-green-800 hover:bg-green-600 text-white px-2 py-4 rounded-md text-xl font-bold transition-colors duration-300 shadow-md hover:shadow-lg mx-4"
+                className="md:whitespace-nowrap flex items-center justify-center   bg-orange-400 hover:bg-orange-600 hover:text-white text-black px-8 py-4 rounded-md text-xl font-bold  transition-colors duration-300 shadow-md hover:shadow-lg mx-4 w-1/2"
               >
                 {t('home.hero.about', 'קראו עוד עלינו')}
               </Link>
-              <Link
-                to="/contact"
-                className="inline-block bg-orange-400 hover:bg-orange-600 hover:text-white text-black px-2 py-4 rounded-md text-xl font-bold  transition-colors duration-300 shadow-md hover:shadow-lg mx-4"
-              >
-                {t('home.hero.contact', 'התחילו את האבחון עכשיו')}
-              </Link>
+              </div>
+
             </div>
 
             {/* Hero Image Section */}
