@@ -24,10 +24,10 @@ const defaultFlags: AdminFeatureFlags = {
 
 // Environment-based configuration
 const envFlags: Partial<AdminFeatureFlags> = {
-  dashboard: process.env.VITE_ADMIN_DASHBOARD !== 'false',
-  leads: process.env.VITE_ADMIN_LEADS !== 'false',
-  users: process.env.VITE_ADMIN_USERS !== 'false',
-  content: process.env.VITE_ADMIN_CONTENT !== 'false',
+  dashboard: import.meta.env.VITE_ADMIN_DASHBOARD !== 'false',
+  leads: import.meta.env.VITE_ADMIN_LEADS !== 'false',
+  users: import.meta.env.VITE_ADMIN_USERS !== 'false',
+  content: import.meta.env.VITE_ADMIN_CONTENT !== 'false',
 };
 
 // Runtime flags (can be modified during runtime for emergency disabling)
