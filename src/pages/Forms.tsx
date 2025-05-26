@@ -66,7 +66,37 @@ export default function Forms() {
                   : 'שאלון זה מיועד לדיווח עצמי ומספק תובנות על תחושות והתנהגות אישית.'
               }`}
               image={form.image}
-            />
+              />
+              
+              <div className="flex flex-row justify-center items-center space-x-4 rtl:space-x-reverse">
+              {form.file && (
+                <>
+                  <a
+                    href={`${form.file}.docx`}
+                    download
+                    className="hover:opacity-80 hover:scale-110 transition-all duration-300"
+                  >
+                    <img
+                      src="/assets/images/wordicon.svg"
+                      alt="Download Word document 💾"
+                      className="w-8 h-8 object-cover"
+                    />
+                  </a>
+                  <a
+                    href={`${form.file}.pdf`}
+                    download
+                    className="hover:opacity-80 hover:scale-110 transition-all duration-300"
+                  >
+                    <img
+                      src="/assets/images/PDFicon.svg"
+                      alt="Download PDF document 💾"
+                      className="w-8 h-8 object-cover"
+                    />
+                  </a>
+                </>
+              )}
+            </div>
+            </Card>
             {/* File Downloads Card */}
             <Card
               bgcolor="bg-white hover:bg-orange-50 w-full mt-4"
