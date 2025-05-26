@@ -1,8 +1,7 @@
 import { HomePageContent } from '../types/content';
 
 const homePageData: HomePageContent = {
-  heading: `
-  ברוכים הבאים 
+  heading: `ברוכים הבאים 
   למרפאת "קשב פלוס"
   `,
   image: '/assets/images/logo.png',
