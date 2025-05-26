@@ -72,6 +72,11 @@ export default function About() {
               index: number
             ) => (
               <div key={index} className="mt-4">
+                <h3 className="text-black text-xl md:text-3xl relative leading-none md:leading-relaxed">
+                  <span className="whitespace-pre-line text-green-800 font-semibold mb-2">
+                    {item.title}
+                  </span>
+                </h3>
                 <h3 className="text-black text-xl md:text-2xl relative leading-none md:leading-relaxed">
                   <span className="whitespace-pre-line text-green-800 font-semibold mb-2">
                     {item.subtitle}
