@@ -1,5 +1,6 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
+import { adminIsolationService } from '../utils/adminIsolation';
 
 interface Props {
   children: ReactNode;
@@ -33,6 +34,9 @@ class AdminErrorBoundary extends Component<Props, State> {
       componentStack: errorInfo.componentStack || ''
     });
     
+    // Use the isolation service to log the error safely
+    adminIsolationService.logError(error, 'AdminErrorBoundary');
+    
     // Log admin-specific errors with a special tag
     console.error('=== ADMIN ERROR BOUNDARY CAUGHT AN ERROR ===');
     console.error('Error message:', error.message);
@@ -40,7 +44,12 @@ class AdminErrorBoundary extends Component<Props, State> {
     console.error('Component stack:', errorInfo.componentStack);
     console.error('============================================');
     
-    // Here you could add admin-specific error reporting
+    // Automatically disable problematic features based on error patterns
+    if (error.message.includes('leads') || errorInfo.componentStack?.includes('LeadsManager')) {
+      adminIsolationService.disableFeature('leads');
+    }
+    
+    // Here you could add admin-specific error reporting to an external service
   }
 
   render(): ReactNode {

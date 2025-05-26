@@ -6,7 +6,12 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { FiMenu, FiX, FiLogOut, FiMoon, FiSun, FiHome, FiFileText, FiMessageSquare, FiUsers, FiSettings, FiGlobe, FiLayout } from 'react-icons/fi';
 
-// Import individual admin components
+// Import individual admin components with error isolation
+import { lazy, Suspense } from 'react';
+import SafeAdminComponentWrapper from '../../components/admin/SafeAdminComponentWrapper';
+
+// Import admin components directly - we'll handle errors with the SafeAdminComponentWrapper
+// This avoids issues with lazy loading and default exports
 import LeadsManager from './LeadsManager';
 import MessagesManager from './MessagesManager';
 import PagesManager from './PagesManager';
@@ -23,20 +28,7 @@ interface NavItem {
   icon: React.ReactNode;
 }
 
-// Define props interface for admin components
-type AdminComponentProps = {
-  darkMode: boolean;
-  toggleDarkMode?: () => void;
-}
-
-// Explicitly cast components to accept AdminComponentProps
-const LeadsManagerWithProps = LeadsManager as React.FC<AdminComponentProps>;
-const MessagesManagerWithProps = MessagesManager as React.FC<AdminComponentProps>;
-const PagesManagerWithProps = PagesManager as React.FC<AdminComponentProps>;
-const ServicesManagerWithProps = ServicesManager as React.FC<AdminComponentProps>;
-const FormsManagerWithProps = FormsManager as React.FC<AdminComponentProps>;
-const ContentManagerWithProps = ContentManager as React.FC<AdminComponentProps>;
-const TranslationsManagerWithProps = TranslationsManager as React.FC<AdminComponentProps>;
+// We're using SafeAdminComponentWrapper to isolate admin components from the frontend
 
 const Admin: React.FC = () => {
   // Use the useAuth hook to access auth context
@@ -207,14 +199,62 @@ const Admin: React.FC = () => {
         {/* Main content area with routes */}
         <div className="flex-1 overflow-auto">
           <Routes>
-            <Route path="" element={<AdminDashboard darkMode={darkMode} toggleDarkMode={toggleDarkMode} />} />
-            <Route path="/content" element={<ContentManagerWithProps darkMode={darkMode} />} />
-            <Route path="/leads" element={<LeadsManagerWithProps darkMode={darkMode} />} />
-            <Route path="/messages" element={<MessagesManagerWithProps darkMode={darkMode} />} />
-            <Route path="/pages" element={<PagesManagerWithProps darkMode={darkMode} />} />
-            <Route path="/services" element={<ServicesManagerWithProps darkMode={darkMode} />} />
-            <Route path="/forms" element={<FormsManagerWithProps darkMode={darkMode} />} />
-            <Route path="/translations" element={<TranslationsManagerWithProps darkMode={darkMode} />} />
+            <Route path="" element={
+              <SafeAdminComponentWrapper 
+                component={AdminDashboard} 
+                featureFlag="dashboard"
+                componentProps={{ darkMode, toggleDarkMode }}
+              />
+            } />
+            <Route path="/content" element={
+              <SafeAdminComponentWrapper 
+                component={ContentManager} 
+                featureFlag="content"
+                componentProps={{ darkMode }}
+              />
+            } />
+            <Route path="/leads" element={
+              <SafeAdminComponentWrapper 
+                component={LeadsManager} 
+                featureFlag="leads"
+                componentProps={{ darkMode }}
+              />
+            } />
+            <Route path="/messages" element={
+              <SafeAdminComponentWrapper 
+                component={MessagesManager} 
+                featureFlag="leads"
+                componentProps={{ darkMode }}
+              />
+            } />
+            <Route path="/pages" element={
+              <SafeAdminComponentWrapper 
+                component={PagesManager} 
+                featureFlag="content"
+                componentProps={{ darkMode }}
+              />
+            } />
+            <Route path="/services" element={
+              <SafeAdminComponentWrapper 
+                component={ServicesManager} 
+                featureFlag="content"
+                componentProps={{ darkMode }}
+              />
+            } />
+            <Route path="/forms" element={
+              <SafeAdminComponentWrapper 
+                component={FormsManager} 
+                featureFlag="content"
+                componentProps={{ darkMode }}
+              />
+            } />
+            <Route path="/translations" element={
+              <SafeAdminComponentWrapper 
+                component={TranslationsManager} 
+                featureFlag="content"
+                componentProps={{ darkMode }}
+              />
+            } />
           </Routes>
         </div>
       </div>
