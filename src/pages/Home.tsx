@@ -31,7 +31,7 @@ export default function Home() {
           <div className="container mx-auto px-4 py-0 md:py-0">
             <div className="flex flex-col md:flex-row items-center gap-4 sm:gap-6 md:gap-8 lg:gap-12">
               <div className="xl:w-full md:w-2/7 order-1 px-2 sm:px-4 flex flex-col items-center text-center whitespace-pre-line">
-                <h1 className="lg:text-5xl md:text-4xl sm:text-3xl font-bold text-green-800 mb-4">
+                <h1 className="lg:text-5xl md:text-4xl sm:text-2xl font-bold text-green-800 mb-4">
                   {pageData.heading || 'ברוכים הבאים למרפאת "קשב פלוס"'}
                 </h1>
 
@@ -41,7 +41,7 @@ export default function Home() {
                   className="w-48 sm:w-64 md:w-72 lg:w-72 mb-6 md:mb-8 drop-shadow-lg mx-auto"
                 />
 
-                <p className="flex justify-start text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 flex-wrap text-justify leading-normal line-clamp-2">
+                <p className="flex justify-start text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 flex-wrap text-center leading-tight line-clamp-2">
                   {pageData.title || 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז'}
                   <span className="relative inline-block whitespace-nowrap">
                     {Array.isArray(pageData.list) &&
@@ -65,7 +65,7 @@ export default function Home() {
                     t('home.hero.subheading', 'בקשב פלוס תקבלו אבחון מדויק ותוכנית טיפול אישית')}
                 </p>
 
-                <p className="font-bold text-3xl sm:text-xl md:text-2xl lg:text-3xl mb-3 text-gray-700 text-center leading-relaxed line-clamp-2">
+                <p className="font-bold text-2xl sm:text-2xl md:text-2xl lg:text-3xl mb-3 text-gray-700 text-center leading-relaxed line-clamp-2">
                   {pageData.subTitle || t('home.hero.subTitle', 'הצעד הראשון מתחיל כאן')}
                 </p>
 

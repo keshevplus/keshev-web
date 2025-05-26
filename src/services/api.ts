@@ -16,7 +16,7 @@ const IS_DEV = import.meta.env.DEV;
 const PROXY_URL = 'http://localhost:3001/api';
 
 // Choose API URL based on environment - proxy for dev, real API for production
-export const API_BASE_URL = IS_DEV ? PROXY_URL : 'https://api.keshevplus.co.il';
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
 export const DEV_ADMIN_TOKEN = 'dev-admin-token-xyz'; // The token set by AuthContext for the dev admin
 
 // Log API configuration on startup
