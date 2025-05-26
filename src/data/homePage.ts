@@ -2,7 +2,8 @@ import { HomePageContent } from '../types/content';
 
 const homePageData: HomePageContent = {
   heading: `
-  ברוכים הבאים <br />למרפאת "קשב פלוס"
+  ברוכים הבאים 
+  למרפאת "קשב פלוס"
   `,
   image: '/assets/images/logo.png',
   subheading: 'ב"קשב פלוס" תקבלו אבחון מדויק ותוכנית טיפול אישית',

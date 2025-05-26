@@ -37,8 +37,8 @@ export default function Home() {
         <div className="container mx-auto px-4 py-0 md:py-0">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 md:gap-8 lg:gap-12">
             {/* Hero Text Section */}
-            <div className="xl:w-full md:w-2/7 order-1 px-2 sm:px-4 flex flex-col items-center justify-center">
-            <h1 className="lg:text-5xl md:text-4xl sm:text-3xl font-bold text-green-800 mb-4 whitespace-pre-line text-center">
+            <div className="xl:w-full md:w-2/7 order-1 px-2 sm:px-4 flex flex-col items-center justify-center whitespace-pre-line">
+            <h1 className="lg:text-5xl md:text-4xl sm:text-3xl font-bold text-green-800 mb-4  text-center">
                 {pageData.heading || 'ברוכים הבאים למרפאת "קשב פלוס"'}
               </h1>
                <img 
