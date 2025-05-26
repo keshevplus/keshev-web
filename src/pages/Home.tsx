@@ -35,16 +35,16 @@ export default function Home() {
       {/* Hero Section - New Layout */}
       
         <div className="container mx-auto px-4 py-0 md:py-0">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 md:gap-8 lg:gap-12">
+          <div className="flex flex-col md:flex-row items-center  gap-4 sm:gap-6 md:gap-8 lg:gap-12">
             {/* Hero Text Section */}
-            <div className="xl:w-full md:w-2/7 order-1 px-2 sm:px-4 flex flex-col items-center justify-center whitespace-pre-line">
-            <h1 className="lg:text-5xl md:text-4xl sm:text-3xl font-bold text-green-800 mb-4  text-center">
+            <div className="xl:w-full md:w-2/7 order-1 px-2 sm:px-4 flex flex-col items-center  text-center whitespace-pre-line">
+            <h1 className="lg:text-5xl md:text-4xl sm:text-3xl font-bold text-green-800 mb-4">
                 {pageData.heading || 'ברוכים הבאים למרפאת "קשב פלוס"'}
               </h1>
                <img 
                 src="/assets/images/logo.png" 
                 alt="קשב פלוס" 
-                className="w-48 sm:w-64 md:w-72 lg:w-72 mb-6 md:mb-8 drop-shadow-lg mx-auto"
+                className="w-48  sm:w-64 md:w-72 lg:w-72 mb-6 md:mb-8 drop-shadow-lg mx-auto"
               />
             
               <p className="flex  justify-start text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 flex-wrap text-justify leading-normal ">
