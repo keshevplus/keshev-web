@@ -9,12 +9,17 @@ const homePageData: HomePageContent = {
     'בני נוער',
     'מבוגרים'
 ],  
+  body: [
+    {
+      heading: 'קשב פלוס',
+      title: 'קשב פלוס',
+      description: 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז',
+      image: '/assets/images/doctor-hero.png'
+    }
+  ],
   subTitle: `הצעד הראשון מתחיל כאן`,
-  heroText: `
-קבעו פגישת ייעוץ - בואו לגלות את הדרך להצלחה
- `,
+  heroText: `קבעו פגישת ייעוץ - בואו לגלות את הדרך להצלחה`,
   ctaButtonText: 'יצירת קשר',   
- 
   ctaHeading: 'זימנו היום תור לפגישת ייעוץ והתאמה אישית',
   ctaSubheading: 'אנחנו כאן בשבילכם',
   servicesHeading: 'השירותים שלנו',

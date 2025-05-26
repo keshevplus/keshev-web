@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
+import { Suspense, lazy } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 // No Animation
@@ -14,10 +15,10 @@ import Forms from './pages/Forms';
 import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
 
-// admin routes
-import Admin from './pages/admin/Admin';
-import AdminLogin from './pages/admin/AdminLogin';
-import RegisterAdmin from './pages/admin/RegisterAdmin';
+// admin routes - lazy loaded to prevent them from affecting the public site
+const Admin = lazy(() => import('./pages/admin/Admin'));
+const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
+const RegisterAdmin = lazy(() => import('./pages/admin/RegisterAdmin'));
 
 import { AuthProvider } from './contexts/AuthContext';
 import ScrollToTop from './components/ui/ScrollToTop';
@@ -44,11 +45,13 @@ function App() {
               {/* Admin routes - isolated with specialized admin error boundary */}
               <Route path="/admin/*" element={
                 <AdminErrorBoundary>
-                  <Routes>
-                    <Route path="/login" element={<AdminLogin />} />
-                    <Route path="/register" element={<RegisterAdmin />} />
-                    <Route path="/*" element={<Admin />} />
-                  </Routes>
+                  <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading admin dashboard...</div>}>
+                    <Routes>
+                      <Route path="/login" element={<AdminLogin />} />
+                      <Route path="/register" element={<RegisterAdmin />} />
+                      <Route path="/*" element={<Admin />} />
+                    </Routes>
+                  </Suspense>
                 </AdminErrorBoundary>
               } />
               {/* Public routes */}
