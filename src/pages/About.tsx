@@ -73,7 +73,12 @@ export default function About() {
             ) => (
               <div key={index} className="mt-4">
                 <h3 className="text-black text-xl md:text-2xl relative leading-none md:leading-relaxed">
-                <span className="whitespace-pre-line text-green-800 font-semibold mb-2">
+                  <span className="whitespace-pre-line text-green-800 font-semibold mb-2">
+                    {item.subtitle}
+                  </span>
+                </h3>
+                <h3 className="text-black text-xl md:text-2xl relative leading-none md:leading-relaxed">
+                  <span className="whitespace-pre-line text-green-800 font-semibold mb-2">
                     {item.description}
                   </span>
                 </h3>
