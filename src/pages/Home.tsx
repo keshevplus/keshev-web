@@ -44,7 +44,7 @@ export default function Home() {
                <img 
                 src="/assets/images/logo.png" 
                 alt="קשב פלוס" 
-                className="w-42 sm:w-96 md:w-72 lg:w-pnpm72 mb-6 md:mb-8 drop-shadow-lg mx-auto"
+                className="w-42 sm:w-96 md:w-72 lg:w-72 mb-6 md:mb-8 drop-shadow-lg mx-auto"
               />
             
               <p className="flex  justify-start text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 flex-wrap text-justify leading-normal ">
