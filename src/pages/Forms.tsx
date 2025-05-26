@@ -6,6 +6,42 @@ import { setIsScrolled } from '../store/sharedStateSlice';
 import Card from '../components/ui/Card';
 import PageLayout from '../components/ui/PageLayout';
 
+const extraDescriptions: string[] = [
+  'שאלון זה מיועד להורים ומספק תובנות על התנהגות הילד בבית ובסביבה המשפחתית.',
+  'שאלון זה מיועד למורים ומספק תובנות על התנהגות הילד בכיתה ובסביבה החינוכית.',
+  'שאלון זה מיועד לדיווח עצמי ומספק תובנות על תחושות והתנהגות אישית.',
+];
+
+const FileDownloadIcons = ({ file }: { file?: string }) => {
+  if (!file) return null;
+  return (
+    <div className="flex flex-row justify-center items-center space-x-4 rtl:space-x-reverse">
+      <a
+        href={`${file}.docx`}
+        download
+        className="hover:opacity-80 hover:scale-110 transition-all duration-300"
+      >
+        <img
+          src="/assets/images/wordicon.svg"
+          alt="Download Word document 💾"
+          className="w-8 h-8 object-cover"
+        />
+      </a>
+      <a
+        href={`${file}.pdf`}
+        download
+        className="hover:opacity-80 hover:scale-110 transition-all duration-300"
+      >
+        <img
+          src="/assets/images/PDFicon.svg"
+          alt="Download PDF document 💾"
+          className="w-8 h-8 object-cover"
+        />
+      </a>
+    </div>
+  );
+};
+
 export default function Forms() {
   const { data, isLoading, error } = usePageData('forms');
   const dispatch = useDispatch();
@@ -58,45 +94,11 @@ export default function Forms() {
               textSize="text-xl md:text-2xl"
               paraSize="text-md md:text-lg"
               title={form.title || ''}
-              description={`${form.description || ''} ${
-                index === 0
-                  ? 'שאלון זה מיועד להורים ומספק תובנות על התנהגות הילד בבית ובסביבה המשפחתית.'
-                  : index === 1
-                  ? 'שאלון זה מיועד למורים ומספק תובנות על התנהגות הילד בכיתה ובסביבה החינוכית.'
-                  : 'שאלון זה מיועד לדיווח עצמי ומספק תובנות על תחושות והתנהגות אישית.'
-              }`}
+              description={`${form.description || ''} ${extraDescriptions[index] || ''}`}
               image={form.image}
             />
 
-            {/* File Downloads Card */}
-            <div className="flex flex-row justify-center items-center space-x-4 rtl:space-x-reverse">
-              {form.file && (
-                <>
-                  <a
-                    href={`${form.file}.docx`}
-                    download
-                    className="hover:opacity-80 hover:scale-110 transition-all duration-300"
-                  >
-                    <img
-                      src="/assets/images/wordicon.svg"
-                      alt="Download Word document 💾"
-                      className="w-8 h-8 object-cover"
-                    />
-                  </a>
-                  <a
-                    href={`${form.file}.pdf`}
-                    download
-                    className="hover:opacity-80 hover:scale-110 transition-all duration-300"
-                  >
-                    <img
-                      src="/assets/images/PDFicon.svg"
-                      alt="Download PDF document 💾"
-                      className="w-8 h-8 object-cover"
-                    />
-                  </a>
-                </>
-              )}
-            </div>
+
             {/* File Downloads Card */}
             <Card
               bgcolor="bg-white hover:bg-orange-50 w-full mt-4"
@@ -104,37 +106,7 @@ export default function Forms() {
               textSize="text-lg md:text-xl"
               paraSize="text-md md:text-lg"
               title="קבצים להורדה"
-              description={
-                <div className="flex flex-row justify-center items-center space-x-4 rtl:space-x-reverse">
-                  {form.file && (
-                    <>
-                      <a
-                        href={`${form.file}.docx`}
-                        download
-                        className="hover:opacity-80 hover:scale-110 transition-all duration-300"
-                      >
-                        <img
-                          src="/assets/images/wordicon.svg"
-                          alt="Download Word document 💾"
-                          className="w-8 h-8 object-cover"
-                        />
-                      </a>
-                      <a
-                        href={`${form.file}.pdf`}
-                        download
-                        className="hover:opacity-80 hover:scale-110 transition-all duration-300"
-                      >
-                        <img
-                          src="/assets/images/PDFicon.svg"
-                          alt="Download PDF document 💾"
-                          className="w-8 h-8 object-cover"
-                        />
-                      </a>
-                    </>
-                  )}
-                </div>
-              }
-              
+              description={<FileDownloadIcons file={form.file} />}
             />
           </div>
           
