@@ -5,7 +5,9 @@ const homePageData: HomePageContent = {
   למרפאת "קשב פלוס"
   `,
   image: '/assets/images/logo.png',
-  subheading: 'ב"קשב פלוס" תקבלו אבחון מדויק ותוכנית טיפול אישית',
+  subheading: ` ב"קשב פלוס" תקבלו אבחון מדויק
+  ותוכנית טיפול אישית
+  `,
   list: [
     'ילדים',
     'בני נוער',
