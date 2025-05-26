@@ -66,27 +66,27 @@ export default function Home() {
                   ))}
                 </span>
               </p>
-              <p className="whitespace-pre-line flex justify-center text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 text-justify leading-relaxed">
+              <p className="whitespace-pre-line flex items-center text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 text-justify leading-relaxed">
                 { pageData.subheading || t('home.hero.subheading', 'בקשב פלוס תקבלו אבחון מדויק ותוכנית טיפול אישית')}
               </p>
 
-              <p className="whitespace-pre-line flex justify-center text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 text-justify leading-relaxed ">
+              <p className="whitespace-pre-line flex items-center text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 text-justify leading-relaxed ">
               { pageData.subTitle || t('home.hero.subTitle', 'הצעד הראשון מתחיל כאן')}
               </p>
 
-              <p className="whitespace-pre-line flex justify-center text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 text-justify leading-relaxed ">
+              <p className="whitespace-pre-line flex items-center text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 text-justify leading-relaxed ">
               { pageData.heroText || t('home.hero.heroText', 'קבעו פגישת ייעוץ - בואו לגלות את הדרך להצלחה')}
               </p>
 
               <Link
                 to="/about"
-                className="inline-block bg-green-800 hover:bg-green-600 text-white px-8 py-4 rounded-md text-xl font-bold transition-colors duration-300 shadow-md hover:shadow-lg mx-4"
+                className="inline-block bg-green-800 hover:bg-green-600 text-white px-2 py-4 rounded-md text-xl font-bold transition-colors duration-300 shadow-md hover:shadow-lg mx-4"
               >
                 {t('home.hero.about', 'קראו עוד עלינו')}
               </Link>
               <Link
                 to="/contact"
-                className="inline-block bg-orange-400 hover:bg-orange-600 hover:text-white text-black px-8 py-4 rounded-md text-xl font-bold  transition-colors duration-300 shadow-md hover:shadow-lg mx-4"
+                className="inline-block bg-orange-400 hover:bg-orange-600 hover:text-white text-black px-2 py-4 rounded-md text-xl font-bold  transition-colors duration-300 shadow-md hover:shadow-lg mx-4"
               >
                 {t('home.hero.contact', 'התחילו את האבחון עכשיו')}
               </Link>
