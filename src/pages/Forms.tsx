@@ -66,9 +66,10 @@ export default function Forms() {
                   : 'שאלון זה מיועד לדיווח עצמי ומספק תובנות על תחושות והתנהגות אישית.'
               }`}
               image={form.image}
-              />
-              
-              <div className="flex flex-row justify-center items-center space-x-4 rtl:space-x-reverse">
+            />
+
+            {/* File Downloads Card */}
+            <div className="flex flex-row justify-center items-center space-x-4 rtl:space-x-reverse">
               {form.file && (
                 <>
                   <a
@@ -96,7 +97,6 @@ export default function Forms() {
                 </>
               )}
             </div>
-            </Card>
             {/* File Downloads Card */}
             <Card
               bgcolor="bg-white hover:bg-orange-50 w-full mt-4"
@@ -134,8 +134,10 @@ export default function Forms() {
                   )}
                 </div>
               }
+              
             />
           </div>
+          
         ))}
       </div>
     </PageLayout>
