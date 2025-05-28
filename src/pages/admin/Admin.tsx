@@ -6,20 +6,26 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { FiMenu, FiX, FiLogOut, FiMoon, FiSun, FiHome, FiFileText, FiMessageSquare, FiUsers, FiSettings, FiGlobe, FiLayout } from 'react-icons/fi';
 
-// Import individual admin components with error isolation
+// Import with lazy loading for code splitting
 import { lazy, Suspense } from 'react';
 import SafeAdminComponentWrapper from '../../components/admin/SafeAdminComponentWrapper';
 
-// Import admin components directly - we'll handle errors with the SafeAdminComponentWrapper
-// This avoids issues with lazy loading and default exports
-import LeadsManager from './LeadsManager';
-import MessagesManager from './MessagesManager';
-import PagesManager from './PagesManager';
-import ServicesManager from './ServicesManager';
-import FormsManager from './FormsManager';
-import AdminDashboard from './AdminDashboard';
-import ContentManager from './ContentManager';
-import TranslationsManager from './TranslationsManager';
+// Lazy load admin components for better performance and isolation
+const AdminDashboard = lazy(() => import('./AdminDashboard'));
+const ContentManager = lazy(() => import('./ContentManager'));
+const LeadsManager = lazy(() => import('./LeadsManager'));
+const MessagesManager = lazy(() => import('./MessagesManager'));
+const PagesManager = lazy(() => import('./PagesManager'));
+const ServicesManager = lazy(() => import('./ServicesManager'));
+const FormsManager = lazy(() => import('./FormsManager'));
+const TranslationsManager = lazy(() => import('./TranslationsManager'));
+
+// Define a loading fallback component
+const LoadingFallback = () => (
+  <div className="flex justify-center items-center h-full p-8">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+  </div>
+);
 
 // Define navigation item structure
 interface NavItem {
@@ -200,60 +206,76 @@ const Admin: React.FC = () => {
         <div className="flex-1 overflow-auto">
           <Routes>
             <Route path="" element={
-              <SafeAdminComponentWrapper 
-                component={AdminDashboard} 
-                featureFlag="dashboard"
-                componentProps={{ darkMode, toggleDarkMode }}
-              />
+              <Suspense fallback={<LoadingFallback />}>
+                <SafeAdminComponentWrapper 
+                  component={AdminDashboard} 
+                  featureFlag="dashboard"
+                  componentProps={{ darkMode, toggleDarkMode }}
+                />
+              </Suspense>
             } />
             <Route path="/content" element={
-              <SafeAdminComponentWrapper 
-                component={ContentManager} 
-                featureFlag="content"
-                componentProps={{ darkMode }}
-              />
+              <Suspense fallback={<LoadingFallback />}>
+                <SafeAdminComponentWrapper 
+                  component={ContentManager} 
+                  featureFlag="content"
+                  componentProps={{ darkMode }}
+                />
+              </Suspense>
             } />
             <Route path="/leads" element={
-              <SafeAdminComponentWrapper 
-                component={LeadsManager} 
-                featureFlag="leads"
-                componentProps={{ darkMode }}
-              />
+              <Suspense fallback={<LoadingFallback />}>
+                <SafeAdminComponentWrapper 
+                  component={LeadsManager} 
+                  featureFlag="leads"
+                  componentProps={{ darkMode }}
+                />
+              </Suspense>
             } />
             <Route path="/messages" element={
-              <SafeAdminComponentWrapper 
-                component={MessagesManager} 
-                featureFlag="leads"
-                componentProps={{ darkMode }}
-              />
+              <Suspense fallback={<LoadingFallback />}>
+                <SafeAdminComponentWrapper 
+                  component={MessagesManager} 
+                  featureFlag="leads"
+                  componentProps={{ darkMode }}
+                />
+              </Suspense>
             } />
             <Route path="/pages" element={
-              <SafeAdminComponentWrapper 
-                component={PagesManager} 
-                featureFlag="content"
-                componentProps={{ darkMode }}
-              />
+              <Suspense fallback={<LoadingFallback />}>
+                <SafeAdminComponentWrapper 
+                  component={PagesManager} 
+                  featureFlag="content"
+                  componentProps={{ darkMode }}
+                />
+              </Suspense>
             } />
             <Route path="/services" element={
-              <SafeAdminComponentWrapper 
-                component={ServicesManager} 
-                featureFlag="content"
-                componentProps={{ darkMode }}
-              />
+              <Suspense fallback={<LoadingFallback />}>
+                <SafeAdminComponentWrapper 
+                  component={ServicesManager} 
+                  featureFlag="content"
+                  componentProps={{ darkMode }}
+                />
+              </Suspense>
             } />
             <Route path="/forms" element={
-              <SafeAdminComponentWrapper 
-                component={FormsManager} 
-                featureFlag="content"
-                componentProps={{ darkMode }}
-              />
+              <Suspense fallback={<LoadingFallback />}>
+                <SafeAdminComponentWrapper 
+                  component={FormsManager} 
+                  featureFlag="content"
+                  componentProps={{ darkMode }}
+                />
+              </Suspense>
             } />
             <Route path="/translations" element={
-              <SafeAdminComponentWrapper 
-                component={TranslationsManager} 
-                featureFlag="content"
-                componentProps={{ darkMode }}
-              />
+              <Suspense fallback={<LoadingFallback />}>
+                <SafeAdminComponentWrapper 
+                  component={TranslationsManager} 
+                  featureFlag="content"
+                  componentProps={{ darkMode }}
+                />
+              </Suspense>
             } />
           </Routes>
         </div>
