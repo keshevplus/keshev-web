@@ -2,40 +2,22 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { leadsService } from '../../services/leads-api-new';
+import { leadsService } from '../../services/LeadService';
+import { ILead } from '../../models/interfaces/ILead';
+import { IPagination } from '../../models/interfaces/IPagination';
 import { FiCheck, FiEye, FiTrash2, FiFilter, FiSearch, FiRefreshCw } from 'react-icons/fi';
 
-interface Lead {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  subject: string;
-  message: string;
-  created_at: string;
-  date_received: string;
-  is_read?: boolean;
-}
-
-interface PaginationData {
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-  hasNextPage: boolean;
-  hasPrevPage: boolean;
-}
-
+// Define table limit constant
 const limit = 10;
 
 const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) => {
-  const [leads, setLeads] = useState<Lead[]>([]);
+  const [leads, setLeads] = useState<ILead[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState('');
   const [sortField, setSortField] = useState<string>('date_received');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
-  const [pagination, setPagination] = useState<PaginationData>({
+  const [pagination, setPagination] = useState<IPagination>({
     total: 0,
     page: 1,
     limit,
@@ -54,14 +36,14 @@ const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) =>
     return [...leads].sort((a, b) => {
       // Handle date fields
       if (sortField === 'date_received' || sortField === 'created_at') {
-        const dateA = new Date(a[sortField as keyof Lead] as string).getTime();
-        const dateB = new Date(b[sortField as keyof Lead] as string).getTime();
+        const dateA = new Date(a[sortField as keyof ILead] as string).getTime();
+        const dateB = new Date(b[sortField as keyof ILead] as string).getTime();
         return sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
       }
 
       // Handle string fields
-      const valueA = String(a[sortField as keyof Lead] || '');
-      const valueB = String(b[sortField as keyof Lead] || '');
+      const valueA = String(a[sortField as keyof ILead] || '');
+      const valueB = String(b[sortField as keyof ILead] || '');
       return sortDirection === 'asc'
         ? valueA.localeCompare(valueB)
         : valueB.localeCompare(valueA);
@@ -105,7 +87,7 @@ const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) =>
             hasPrevPage: false
           });
         } else {
-          const leadsWithReadStatus = response.leads.map((lead: Lead) => ({
+          const leadsWithReadStatus = response.leads.map((lead: ILead) => ({
             ...lead,
             is_read: lead.is_read === undefined ? false : lead.is_read // Default to unread if not specified
           }));
@@ -115,7 +97,7 @@ const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) =>
           console.log('Leads loaded:', leadsWithReadStatus);
 
           // Update local unread count if API call fails
-          const localUnreadCount = leadsWithReadStatus.filter((lead: Lead) => !lead.is_read).length;
+          const localUnreadCount = leadsWithReadStatus.filter((lead: ILead) => !lead.is_read).length;
           console.log('Local unread count:', localUnreadCount);
 
           // Only update if unreadCountResponse failed
