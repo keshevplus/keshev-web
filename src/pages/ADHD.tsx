@@ -16,13 +16,13 @@ export default function ADHD() {
 
   if (isLoading)
     return (
-      <div className="container mx-auto max-w-full md:max-w-[85%] py-8 loading">
+      <div className="container mx-auto py-8 loading">
         <div className="animate-pulse">Loading...</div>
       </div>
     );
   if (error)
     return (
-      <div className="container mx-auto max-w-full md:max-w-[85%] py-8 error">
+      <div className="container mx-auto  py-8 error">
         <div className="text-red-600">Error: {error}</div>
       </div>
     );
@@ -66,7 +66,7 @@ export default function ADHD() {
         </div>
 
         {/* Symptoms Grid Container */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 w-full mb-4">
+        <div className="grid grid-flow-col offset-md-4 gap-4 sm:gap-68 md:gap-8 w-full mb-4">
           {pageData.additional?.map((item, index) => (
             <Card
               key={index}

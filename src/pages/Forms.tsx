@@ -6,11 +6,6 @@ import { setIsScrolled } from '../store/sharedStateSlice';
 import Card from '../components/ui/Card';
 import PageLayout from '../components/ui/PageLayout';
 
-const extraDescriptions: string[] = [
-  'שאלון זה מיועד להורים ומספק תובנות על התנהגות הילד בבית ובסביבה המשפחתית.',
-  'שאלון זה מיועד למורים ומספק תובנות על התנהגות הילד בכיתה ובסביבה החינוכית.',
-  'שאלון זה מיועד לדיווח עצמי ומספק תובנות על תחושות והתנהגות אישית.',
-];
 
 const FileDownloadIcons = ({ file }: { file?: string }) => {
   if (!file) return null;
@@ -81,7 +76,7 @@ export default function Forms() {
       <h3 className="text-xl md:text-4xl font-bold text-black text-center mb-8">
         {pageData.subheading}
       </h3>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 ">
         {(pageData.body ?? []).map((form, index) => (
           <div
             key={index}
@@ -91,22 +86,15 @@ export default function Forms() {
             <Card
               bgcolor="bg-orange-400/35 hover:bg-orange-400/60 w-full"
               textColor="text-black font-bold"
-              textSize="text-xl md:text-2xl"
+              textSize="text-lg md:text-xl py-2"
               paraSize="text-md md:text-lg"
               title={form.title || ''}
-              description={`${form.description || ''} ${extraDescriptions[index] || ''}`}
+              description={form.description || ''}
               image={form.image}
+              subtitle="קבצים להורדה"
+              files={<FileDownloadIcons file={form.file} />}
             />
-     
-            {/* File Downloads Card */}
-            <Card
-              bgcolor="bg-white hover:bg-orange-50 w-full mt-4"
-              textColor="text-green-900 font-bold"
-              textSize="text-lg md:text-xl"
-              paraSize="text-md md:text-lg"
-              title="קבצים להורדה"
-              description={<FileDownloadIcons file={form.file} />}
-            />
+    
           </div>
  
         ))}

@@ -1,4 +1,5 @@
 // Importing necessary libraries and components
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom'; // For navigation and location tracking
 import { IoMenu, IoClose } from 'react-icons/io5'; // Icons for menu toggle
 import { useDispatch, useSelector } from 'react-redux'; // Redux hooks for state management
@@ -8,9 +9,9 @@ import {
   setIsScrolled,
   setIsHomePage,
 } from '../store/sharedStateSlice'; // Redux actions for shared state
-import { useEffect } from 'react'; // React hook for side effects
 import LanguageSwitcher from './LanguageSwitcher'; // Language Switcher component
 import FloatingPhoneNumber from './FloatingPhoneNumber';
+import { useTranslation } from 'react-i18next';
 
 export const navItems = [
   { path: '/', text: 'בית', mobileOnly: true },
@@ -22,11 +23,15 @@ export const navItems = [
   { path: '/contact', text: 'יצירת קשר' },
 ];
 
-export default function Navbar() {
+const Navbar: React.FC = () => {
   const dispatch = useDispatch();
-  const { isHomePage, isScrolled, isMenuOpen } = useSelector(
-    (state: RootState) => state.sharedState
-  );
+  
+  // Replace the destructuring with safe access to prevent errors when sharedState is undefined
+  const sharedState = useSelector((state: RootState) => state.sharedState);
+  const isHomePage = sharedState?.isHomePage || false;
+  const isScrolled = sharedState?.isScrolled || false;
+  const isMenuOpen = sharedState?.isMenuOpen || false;
+  
   const location = useLocation();
 
   useEffect(() => {
@@ -40,6 +45,26 @@ export default function Navbar() {
   }, [location.pathname, dispatch]);
 
   const isActive = (path: string) => location.pathname === path;
+
+  // Wrap authentication checks in a safe try/catch
+  const checkAuthentication = async () => {
+    try {
+      // Use a safe check that doesn't rely on authenticatedRequest being available
+      const token = localStorage.getItem('token');
+      const isLoggedIn = !!token; // Simple check based on token presence
+    } catch (error) {
+      console.error("Error checking authentication status:", error);
+    }
+  };
+
+  useEffect(() => {
+    // Call authentication check after a slight delay to ensure services are initialized
+    const timer = setTimeout(() => {
+      checkAuthentication();
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <nav
@@ -164,4 +189,6 @@ export default function Navbar() {
 
     </nav>
   );
-}
+};
+
+export default Navbar;
