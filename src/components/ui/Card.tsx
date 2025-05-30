@@ -11,6 +11,8 @@ interface CardProps {
   description: ReactNode; // Description text of the card (can be string or React element)
   image?: string; // Optional image URL for the card
   icon?: ReactNode; // Optional icon or clipart to display above the text
+  subtitle?: string; // Optional subtitle for the card
+  files?: ReactNode; // Optional files or download links to display
   // Removed unused maxHeight prop
   // isRtl property removed as we're using fixed RTL layout for this component
 }
@@ -25,6 +27,8 @@ const Card: React.FC<CardProps> = ({
   description, // Description text passed as a prop
   image, // Optional image URL passed as a prop
   icon, // Optional icon or clipart to display above the text
+  subtitle, // Optional subtitle for the card
+  files, // Optional files or download links to display
   // maxHeight and isRtl parameters removed as we're using fixed RTL layout
 }) => {
   const [animate, setAnimate] = useState(false);
@@ -58,6 +62,8 @@ const Card: React.FC<CardProps> = ({
               {title}
             </h4>
             
+   
+
             {/* Description directly below title with same alignment */}
             <div
               ref={descriptionRef}
@@ -67,6 +73,18 @@ const Card: React.FC<CardProps> = ({
             >
               {description}
             </div>
+             {/* Title with subtle pulse animation on hover */}
+             <h4 
+              className={`font-bold ${textSize} ${textColor} transition-all duration-300 group-hover:text-green-700 text-right w-full mb-2`}
+            >
+              {subtitle}
+            </h4>              {/* Title with subtle pulse animation on hover */}
+             <h4 
+              className={`font-bold ${textSize} ${textColor} transition-all duration-300 group-hover:text-green-700 text-right w-full mb-2`}
+            >
+              {files}
+            </h4> 
+            
           </div>
         </div>
 
@@ -86,9 +104,12 @@ const Card: React.FC<CardProps> = ({
             />
           )}
         </div>
+  
+            </div>
+
       </div>
-      {/* Content is now displayed directly with the title */}
-    </div>
+
+
   );
 };
 

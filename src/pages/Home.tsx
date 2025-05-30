@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { HomePageContent } from '../types/content';
+import { getPageContent } from '../services/contentService';
 // import NeuralBackground from '../components/NeuralBackground';
 
 export default function Home() {
@@ -10,9 +11,20 @@ export default function Home() {
 
   useEffect(() => {
     document.documentElement.dir = 'rtl';
-    import('../data/homePage').then(module => {
-      setPageData(module.default);
-    });
+
+    const fetchContent = async () => {
+      try {
+        const content = await getPageContent('home');
+        if (content) {
+          // Fix: Use type assertion with "as unknown" first
+          setPageData(content as unknown as HomePageContent);
+        }
+      } catch (err) {
+        console.error('Failed to load home page content:', err);
+      }
+    };
+
+    fetchContent();
   }, []);
 
   if (!pageData) {
@@ -28,20 +40,20 @@ export default function Home() {
       {/* <NeuralBackground density={4} speed={3} opacity={0.3} /> */}
       <div className="relative z-10">
         <div className="rtl">
-          <div className="container mx-auto px-4 py-0 md:py-0">
+          <div className="container mx-auto py-0 md:py-0">
             <div className="flex flex-col md:flex-row items-center gap-4 sm:gap-6 md:gap-8 lg:gap-12">
               <div className="xl:w-full md:w-2/7 order-1 px-2 sm:px-4 flex flex-col items-center text-center whitespace-pre-line">
-                <h1 className="lg:text-5xl md:text-4xl sm:text-2xl font-bold text-green-800 mb-4">
+                <h1 className=" text-3xl sm:text-xl font-bold text-green-800 mb-4  ">
                   {pageData.heading || 'ברוכים הבאים למרפאת "קשב פלוס"'}
                 </h1>
 
                 <img
                   src="/assets/images/logo.png"
                   alt="קשב פלוס"
-                  className="w-48 sm:w-64 md:w-72 lg:w-72 mb-6 md:mb-8 drop-shadow-lg mx-auto"
+                  className="w-48 sm:w-64 md:w-72 lg:w-72 mb-2 md:mb-2 drop-shadow-lg mx-auto"
                 />
 
-                <p className="flex justify-start text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 flex-wrap text-center leading-tight line-clamp-2">
+                <p className="flex justify-start text-lg sm:text-lg md:text-2xl lg:text-3xl mb-3 md:mb-3 text-gray-700 flex-wrap text-center leading-3 ">
                   {pageData.title || 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז'}
                   <span className="relative inline-block whitespace-nowrap">
                     {Array.isArray(pageData.list) &&
@@ -60,16 +72,16 @@ export default function Home() {
                   </span>
                 </p>
 
-                <p className="whitespace-pre-line text-lg sm:text-xl md:text-2xl lg:text-3xl mb-3 text-gray-700 text-center leading-relaxed line-clamp-2">
+                <p className="whitespace-pre-line text-lg sm:text-xl md:text-2xl lg:text-3xl mb-3 text-gray-700 text-center">
                   {pageData.subheading ||
                     t('home.hero.subheading', 'בקשב פלוס תקבלו אבחון מדויק ותוכנית טיפול אישית')}
                 </p>
 
-                <p className="font-bold text-2xl sm:text-2xl md:text-2xl lg:text-3xl mb-3 text-gray-700 text-center leading-relaxed line-clamp-2">
+                <p className="font-bold text-xl sm:text-2xl md:text-2xl lg:text-3xl mb-3 text-gray-700 text-center leading-relaxed">
                   {pageData.subTitle || t('home.hero.subTitle', 'הצעד הראשון מתחיל כאן')}
                 </p>
 
-                <p className="whitespace-pre-line text-lg sm:text-xl md:text-2xl lg:text-3xl mb-3 text-gray-700 text-center leading-relaxed line-clamp-2">
+                <p className="whitespace-pre-line text-lg sm:text-xl md:text-2xl lg:text-3xl mb-3 text-gray-700 text-center ">
                   {pageData.heroText ||
                     t('home.hero.heroText', 'קבעו פגישת ייעוץ - בואו לגלות את הדרך להצלחה')}
                 </p>

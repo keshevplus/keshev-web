@@ -6,25 +6,30 @@ const formsPageData: ContentItem = {
   body: [
     {
       title: 'שאלון להורים',
-      // subtitle: 'למילוי על ידי הורה',
-      description: 'שאלון להערכת ADHD. - NICHQ Vanderbilt',
+      description: 'שאלון זה מיועד להורים ומספק תובנות על התנהגות הילד בבית ובסביבה המשפחתית.',
       image: '/assets/images/icon.png',
+      subtitle: 'קבצים להורדה',
       file: '/assets/forms/vanderbilt_parent_form'
     },
     {
       title: 'שאלון למורה',
       // subtitle: 'למילוי על ידי מורה',
-      description: 'שאלון להערכת ADHD. - NICHQ Vanderbilt',
+      description: 'שאלון זה מיועד למורים ומספק תובנות על התנהגות הילד בכיתה ובסביבה החינוכית.',
       image: '/assets/images/icon.png',
+      subtitle: 'קבצים להורדה',
       file: '/assets/forms/vanderbilt_teacher_form'
     },
     {
       title: 'שאלון דיווח עצמי',
       // subtitle: 'למילוי על ידי ילד או מבוגר',
-      description: 'שאלון להערכת ADHD - NICHQ Vanderbilt',
+      description: 'שאלון זה מיועד למורים ומספק תובנות על התנהגות הילד בכיתה ובסביבה החינוכית.',
       image: '/assets/images/icon.png',
+      subtitle: 'קבצים להורדה',
       file: '/assets/forms/vanderbilt_self_form'
     }
+
+
+
     // Uncomment the following block if you want to include the SCARED form
     // 
     // {

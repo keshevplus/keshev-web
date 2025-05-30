@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import React, { useState } from 'react';
-
+import ContactInfoModal from '../components/ui/ContactInfoModal';
 
 const formSchema = z.object({
   name: z.string().min(2, 'השם חייב להכיל לפחות 2 תווים'),
@@ -22,95 +22,10 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-
-// Modal component for displaying additional contact information
-interface ContactInfoModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-const ContactInfoModal: React.FC<ContactInfoModalProps> = ({ isOpen, onClose }) => {
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6 relative max-h-[90vh] overflow-y-auto">
-        <button
-          onClick={onClose}
-          className="absolute top-4 left-4 text-gray-500 hover:text-gray-700"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-        
-        <h2 className="text-2xl font-bold text-green-800 mb-4 text-right">פרטי התקשרות נוספים</h2>
-        
-        <div className="space-y-6 text-right">
-          <div>
-          <div>
-            <h3 className="text-lg font-semibold text-green-700">מידע נוסף:</h3>
-            <p>לקביעת פגישות יש להתקשר מראש</p>
-          </div> 
-            <h3 className="text-lg font-semibold text-green-700">שעות פעילות:</h3>
-            <p>ימים א'-ה': 9:00-18:00</p>
-            <p>יום ו': 9:00-13:00</p>
-          </div>
-          
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-green-700 flex items-center">
-              <span className="ml-2">🚗</span> אפשרויות חניה באזור:
-            </h3>
-            <ul className="space-y-3 mt-2">
-              <li>
-                <strong>חניון אורחים מגדלי אלון</strong> - כניסה דרך מגדל אלון 1 בצד הצפוני
-                <p className="text-sm mt-1">חניות אורחים מסומנות באור ירוק ושלט מגדל"הראל</p>
-                <a href="https://waze.com/ul/hsv8wrvb38" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm">מגדלי אלון- כניסה צפונית Waze</a>
-              </li>
-              <li>
-                <strong>חניון אושר"עד"</strong> - ממש ברחוב המקביל אלינו
-                <a href="https://waze.com/ul/hsv8wrv8y2" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm">Waze לחניון אושר עד</a>
-              </li>
-              <li>
-                <strong>חניון אחוזת חוף</strong> - ליד מגדל טויוטה (חניון הסינרמה, יגאל אלון 63)
-                <p className="text-sm mt-1">כניסה מהצד הדרומי</p>
-                <a href="https://waze.com/ul/hsv8wrtx41" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm">Waze לחניון אחוזת חוף</a>
-              </li>
-              <li>
-                <strong>כחול לבן</strong> באזור (זמין בעיקר בבוקר ובערב)
-              </li>
-            </ul>
-            
-            <div className="mt-4">
-              <p className="flex items-center">
-                <span className="ml-2">🚌</span>
-                <strong>לבאים ברכבת</strong> - מרחק הליכה מתחנת השלום (עזריאלי)
-              </p>
-            </div>
-            
-            <div className="mt-4 bg-yellow-50 p-2 rounded">
-              <p className="flex-row items-center justify-end font-medium">
-                <strong>טיפ:</strong>
-                <span className="mr-2">💡</span>
-              </p>
-              <p className="font-medium">
-                אפשר להימנע מכניסה עם רכב לת"א ולחנות בחינם בחניון הנתיב המהיר, ולהגיע עם שאטל לתחנת רכבת השלום ללא עלות!
-              </p>
-            </div>
-          </div>
-          
-
-        </div>
-      </div>
-    </div>
-  );
-};
-
 export default function Contact() {
   const { data: pageData } = usePageData('contact');
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
 
   const {
     register,
@@ -138,29 +53,30 @@ export default function Contact() {
   }
 
   // --- On submit ---
-const onSubmit = async (data: FormValues, event: any) => {
+  const onSubmit = async (data: FormValues, event: any) => {
     event?.preventDefault?.();
     const loadingToastId = toast.loading('שולח את הטופס...', { position: 'top-center' });
-    
+
     try {
       // Always save locally as backup
       saveMessageLocally(data);
       console.log('Form data being submitted:', data);
-      
+
       // Determine if we're in development or production
       const isProduction = import.meta.env.PROD;
       const apiBaseUrl = isProduction
-        ? (import.meta.env.VITE_API_BASE_URL || 'https://api.keshevplus.co.il/api')
-        : 'http://localhost:3001/api';
+        ? (import.meta.env.VITE_API_BASE_URL || 'https://api.keshevplus.co.il')
+        : 'http://localhost:3001';
 
       console.log(`Using API base URL: ${apiBaseUrl} (${isProduction ? 'Production' : 'Development'} mode)`);
-      
+
       // Submit data to BOTH endpoints to ensure it appears in both admin panels
       const endpoints = ['messages', 'leads'];
       const submissionPromises = endpoints.map(endpoint => {
+        // Use direct path instead of /api prefix
         const url = `${apiBaseUrl}/${endpoint}`;
         console.log(`Submitting to ${endpoint} endpoint at: ${url}`);
-        
+
         return fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -171,24 +87,35 @@ const onSubmit = async (data: FormValues, event: any) => {
             return true;
           } else {
             console.warn(`${endpoint} submission failed with status: ${response.status}`);
-            return false;
+            // Try fallback with /api prefix if main call fails
+            return fetch(`${apiBaseUrl}/api/${endpoint}`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data),
+            }).then(fallbackResponse => {
+              if (fallbackResponse.ok) {
+                console.log(`${endpoint} fallback submission successful`);
+                return true;
+              }
+              return false;
+            }).catch(() => false);
           }
         }).catch(error => {
           console.error(`${endpoint} submission error:`, error);
           return false;
         });
       });
-      
+
       // Wait for all submissions to complete
       const results = await Promise.all(submissionPromises);
-      
+
       // Continue even if some submissions failed (we saved locally as backup)
       if (results.some(result => result === true)) {
         console.log('At least one submission endpoint succeeded');
       } else {
         console.warn('All submission endpoints failed, using local storage backup');
       }
-      
+
       // Show success message regardless of API result since we saved locally
       toast.dismiss(loadingToastId);
       toast.success('הטופס נשלח בהצלחה!');
@@ -202,7 +129,7 @@ const onSubmit = async (data: FormValues, event: any) => {
         subject: data.subject,
         message: data.message.substring(0, 20) + '...' // Truncate for logging
       });
-      
+
       // Redirect after success
       setTimeout(() => navigate('/'), 1500);
     } catch (err) {
@@ -218,10 +145,11 @@ const onSubmit = async (data: FormValues, event: any) => {
     const tryResend = async () => {
       const queue = getUnsentMessages();
       if (queue.length === 0) return;
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://api.keshevplus.co.il';
       for (let i = 0; i < queue.length; i++) {
         try {
-          const response = await fetch(`${apiBaseUrl}/api/contact`, {
+          // Use direct path instead of /api/contact
+          const response = await fetch(`${apiBaseUrl}/contact`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(queue[i]),
@@ -230,6 +158,18 @@ const onSubmit = async (data: FormValues, event: any) => {
             removeSentMessage(i);
             i--; // adjust index after removal
             toast.success('הודעה שנשמרה נשלחה בהצלחה!');
+          } else {
+            // Try fallback with /api prefix
+            const fallbackResponse = await fetch(`${apiBaseUrl}/api/contact`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(queue[i]),
+            });
+            if (fallbackResponse.ok) {
+              removeSentMessage(i);
+              i--; // adjust index after removal
+              toast.success('הודעה שנשמרה נשלחה בהצלחה!');
+            }
           }
         } catch (err) {
           console.log('Error resending message:', err);
@@ -241,13 +181,17 @@ const onSubmit = async (data: FormValues, event: any) => {
   }, []);
 
   return (
-    <PageLayout title={pageData[0]?.heading || ''} background="bg-white" maxWidth="md:max-w-3xl">
-      <h3 className="text-2xl md:text-xl font-bold text-green-800 text-right mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
+    <PageLayout title={pageData[0]?.heading || ''} background="bg-white" maxWidth="md:max-w-4xl">
+
+      <div className="grid grid-cols-2 md:grid-cols-2 gap-1 items-start">
+
+        {/* Contact Form - Now first */}
+
+        <div>
+        <h3 className="text-2xl md:text-xl col-span-2 font-bold text-green-800 text-right mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
         {pageData[0]?.subheading}
       </h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-        {/* Contact Form - Now first */}
-        <form
+      <form
           className="bg-orange-400/65 p-6 rounded-lg shadow-lg w-full"
           onSubmit={(e) => {
             e.preventDefault(); // Explicitly prevent default form submission
@@ -272,7 +216,7 @@ const onSubmit = async (data: FormValues, event: any) => {
                 )}
               </div>
             ))}
-            
+
             {/* Subject dropdown */}
             <div className="relative">
               <select
@@ -281,12 +225,9 @@ const onSubmit = async (data: FormValues, event: any) => {
                 defaultValue=""
               >
                 <option value="" disabled>אנא בחר נושא פנייה</option>
-                <option value="זימון תור">זימון תור</option>
-                <option value="שאלות כלליות">שאלות כלליות</option>
-                <option value="המלצה">המלצה</option>
-                <option value="בדיקות MOXO">מידע על בדיקות MOXO</option>
-                <option value="אבחון">אבחון</option>
-                <option value="תרפיה">תרפיה</option>
+                <option value="זימון תור לאבחון מלא">זימון תור לאבחון מלא</option>
+                <option value="זימון תור למבחן MOXO">זימון תור למבחן MOXO</option>
+
                 <option value="אחר">אחר</option>
               </select>
               {errors.subject && (
@@ -310,62 +251,70 @@ const onSubmit = async (data: FormValues, event: any) => {
             )}
           </div>
           <div className="flex justify-between mt-4">
-  <button
-    type="submit"
-    disabled={isSubmitting}
-    className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors duration-300 disabled:bg-gray-400"
-  >
-    {isSubmitting ? 'שולח...' : 'שלח הודעה'}
-  </button>
-  <button
-    type="button"
-    className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors duration-300 mr-2"
-    onClick={() => reset()}
-  >
-    ניקוי טופס
-  </button>
-</div>
-        </form>
-        
-        {/* Contact Details - Now second */}
-        <div className="bg-white p-6 rounded-lg shadow-lg text-right">
-          <h3 className="text-xl font-bold text-green-800 mb-4">פרטי התקשרות</h3>
-          
-          <div className="mb-4">
-            <div className="font-bold text-lg">כתובת:</div>
-            <div className="mb-2">יגאל אלון 94, תל אביב (וויביז)</div>
-            <a
-              href="https://maps.google.com/?q=יגאל אלון 94 תל אביב"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-green-700 underline hover:text-green-900"
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors duration-300 disabled:bg-gray-400"
             >
-              פתח במפות גוגל
-            </a>
+              {isSubmitting ? 'שולח...' : 'שלח הודעה'}
+            </button>
+            <button
+              type="button"
+              className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors duration-300 mr-2"
+              onClick={() => reset()}
+            >
+              ניקוי טופס
+            </button>
           </div>
-          
-          <div className="mb-4">
-            <div className="font-bold text-lg">טלפון:</div>
+        </form>
+        </div>
+      
+
+        {/* Contact Details - Now second */}
+        <div className="rounded-lg px-6 shadow-lg flex flex-col items-center justify-center ">
+          <h3 className="text-xl font-bold text-green-800 mb-4">פרטי התקשרות</h3>
+
+          <div>
+            <div className="font-bold text-lg">כתובת
+              <span className="text-green-700">:</span>
+            </div>
+            <div className="text-gray-700 mb-2">
+              <span className="text-green-700">מגדלי אלון 1, קומה 12, משרד 1202</span>
+              <br />
+              יגאל אלון 94, תל אביב (וויביז)
+            </div>
+  
+          </div>
+          <div className="font-bold text-lg">אימייל:
+          </div>
+          <span className="text-gray-700 mb-2">
+          <a href="mailto:dr@keshevplus.co.il" className="text-green-700 hover:text-green-900">
+          dr@keshevplus.co.il   
+          </a>
+          </span>
+            <div className="font-bold text-lg">טלפון:
             <a href="tel:055-27-399-27" className="text-green-700 hover:text-green-900">
               055-27-399-27
             </a>
-          </div>
-          
+            </div>
+
           <button
             onClick={() => setIsModalOpen(true)}
             className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors mt-2 mb-4"
           >
-            לפרטים נוספים
-          </button>
-          
+            דרכי הגעה ואפשרויות חניה
+            </button>
+
           <div className="mt-4">
             <GoogleMap />
           </div>
         </div>
-      </div>
-      
+
       {/* Modal */}
+
       <ContactInfoModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      </div>
+
     </PageLayout>
   );
 }
