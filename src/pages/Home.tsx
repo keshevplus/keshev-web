@@ -45,12 +45,15 @@ export default function Home() {
         {pageData.subheading}
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {pageData.body.map((item) => (
+        {pageData.body?.map((item) => (
           <Card
             key={item.title}
             image={item.image}
-            title={item.title}
+            title={item.title || 'Default Title'}
             description={item.description}
+            bgcolor="bg-gray-100" // Default background color
+            textColor="text-black" // Default text color
+            textSize="text-base" // Default text size
           />
         ))}
       </div>
