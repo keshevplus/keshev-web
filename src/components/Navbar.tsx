@@ -9,7 +9,9 @@ import {
   setIsScrolled,
   setIsHomePage,
 } from '../store/sharedStateSlice'; // Redux actions for shared state
-import LanguageSwitcher from './LanguageSwitcher'; // Language Switcher component
+
+// import LanguageSwitcher from './LanguageSwitcher'; // Language Switcher component
+
 import FloatingPhoneNumber from './FloatingPhoneNumber';
 // import { useTranslation } from 'react-i18next';
 
@@ -110,9 +112,11 @@ const Navbar: React.FC = () => {
           {/* Controls wrapper - contains both language switcher and phone icon */}
           <div className="flex items-center justify-center h-12">
             {/* Language Switcher in Navbar */}
+            {/*
             <div className="navbar-language-switcher flex items-center justify-center h-full mr-3">
               <LanguageSwitcher />
             </div>
+            */}
             {/* Phone icon wrapper */}
             <div className="navbar-item flex items-center justify-center h-full">
               <a href="tel:055-27-399-27" className="flex items-center justify-center h-full">
