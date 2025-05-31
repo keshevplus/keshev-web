@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { HomePageContent } from '../types/content';
 import { getPageContent } from '../services/contentService';
-// import NeuralBackground from '../components/NeuralBackground';
 
 export default function Home() {
   const [pageData, setPageData] = useState<HomePageContent | null>(null);
@@ -37,7 +36,7 @@ export default function Home() {
 
   return (
     <div className="relative">
-      {/* <NeuralBackground density={4} speed={3} opacity={0.3} /> */}
+
       <div className="relative z-10">
         <div className="rtl">
           <div className="container mx-auto py-0 md:py-0">
