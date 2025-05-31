@@ -1,28 +1,14 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-// import { useTranslation } from 'react-i18next';  // i18n disabled
+import { useEffect } from 'react';
 import type { HomePageContent } from '../types/content';
 import { usePageData } from '../hooks/usePageData';
 
 export default function Home() {
-  const [pageData, setPageData] = useState<HomePageContent | null>(null);
-  // const { t } = useTranslation();  // i18n disabled
+  // directly call the page‐data hook
+  const pageData = usePageData('home') as unknown as HomePageContent | null;
 
   useEffect(() => {
     document.documentElement.dir = 'rtl';
-
-    const fetchContent = async () => {
-      try {
-        const content = usePageData('home');
-        if (content) {
-          setPageData(content as unknown as HomePageContent);
-        }
-      } catch (err) {
-        console.error('Failed to load home page content:', err);
-      }
-    };
-
-    fetchContent();
   }, []);
 
   if (!pageData) {
