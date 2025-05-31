@@ -36,7 +36,6 @@ export class LeadService extends BaseApiService {
         subject: lead.subject || '',
         message: lead.message || '',
         created_at: lead.created_at || lead.createdAt || new Date().toISOString(),
-        date_received: lead.date_received || lead.dateReceived || lead.created_at || lead.createdAt || new Date().toISOString(),
         is_read: typeof lead.is_read === 'boolean' ? lead.is_read : false,
         user_id: lead.user_id || null,
         previous_message_count: lead.previous_message_count || 0

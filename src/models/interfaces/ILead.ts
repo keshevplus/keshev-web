@@ -11,7 +11,6 @@ export interface ILead {
   subject: string;
   message: string;
   created_at: string;
-  date_received: string;
   is_read?: boolean;
   user_id?: string | null;
   previous_message_count?: number;

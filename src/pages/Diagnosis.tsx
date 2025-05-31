@@ -44,7 +44,7 @@ export default function Diagnosis() {
       <PageTitle title={pageData.heading} />
       
       {/* Gradient background */}
-      <div className="absolute inset-0 z-[-1] bg-gradient-radial from-blue-700/80 via-blue-600/60 to-blue-800/90 animate-gradient-slow"></div>
+      <div className="absolute inset-0 z-[-1] bg-gradient-radial from-green-700/80 via-green-600/60 to-green-800/90 animate-gradient-slow"></div>
 
       
       <div className="rtl-container" dir="rtl">
@@ -82,7 +82,7 @@ export default function Diagnosis() {
             </div>
 
             {/* <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg  hover:shadow-2xl transition-all duration-300 mt-10">
-              <h3 className="text-xl md:text-2xl font-bold text-white mb-4 border-b border-blue-300/50 pb-2 text-center">
+              <h3 className="text-xl md:text-2xl font-bold text-white mb-4 border-b border-green-300/50 pb-2 text-center">
                 {additionalData?.title || 'טיפול מקצועי מותאם אישית'}
               </h3>
               <p className="text-lg text-white mb-6 text-center">
