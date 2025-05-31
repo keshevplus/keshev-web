@@ -119,13 +119,18 @@ const Navbar: React.FC = () => {
             */}
             {/* Phone icon wrapper */}
             <div className="navbar-item flex items-center justify-center h-full">
-              <a href="tel:055-27-399-27" className="flex items-center justify-center h-full">
+              <a
+                href="tel:055-27-399-27"
+                className="flex items-center justify-center h-full text-green-600 font-bold"
+              >
                 <img
                   src="/assets/images/greenphone.svg"
                   alt="Call Now"
                   className="h-6 hover:opacity-80 transition-transform duration-300"
                 />
-                <FloatingPhoneNumber />
+                <span className="ml-2 whitespace-nowrap">
+                  <FloatingPhoneNumber />
+                </span>
               </a>
             </div>
           </div>
