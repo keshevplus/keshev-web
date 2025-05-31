@@ -11,7 +11,6 @@ export interface Lead {
   subject: string;
   message: string;
   created_at: string;
-  date_received: string;
   is_read?: boolean;
 }
 
@@ -170,7 +169,6 @@ class LeadService {
         subject: lead.subject || '',
         message: lead.message || '',
         created_at: lead.created_at || lead.createdAt || new Date().toISOString(),
-        date_received: lead.date_received || lead.dateReceived || lead.created_at || lead.createdAt || new Date().toISOString(),
         is_read: typeof lead.is_read === 'boolean' ? lead.is_read : false
       });
       

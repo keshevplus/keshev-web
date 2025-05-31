@@ -3,14 +3,12 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { usePageData } from '../hooks/usePageData';
 import PageLayout from '../components/ui/PageLayout';
+import GoogleMap from '../components/GoogleMap';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
-import React, { useState, Suspense, lazy } from 'react';
-
-// lazy load heavy UI pieces
-const GoogleMap = lazy(() => import('../components/GoogleMap'));
-const ContactInfoModal = lazy(() => import('../components/ui/ContactInfoModal'));
+import React, { useState } from 'react';
+import ContactInfoModal from '../components/ui/ContactInfoModal';
 
 const formSchema = z.object({
   name: z.string().min(2, 'השם חייב להכיל לפחות 2 תווים'),
@@ -308,17 +306,13 @@ export default function Contact() {
             </button>
 
           <div className="mt-4">
-            <Suspense fallback={<div>Loading map…</div>}>
-              <GoogleMap />
-            </Suspense>
+            <GoogleMap />
           </div>
         </div>
 
       {/* Modal */}
 
-      <Suspense fallback={null}>
-        <ContactInfoModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-      </Suspense>
+      <ContactInfoModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       </div>
 
     </PageLayout>

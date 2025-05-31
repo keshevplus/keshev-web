@@ -87,7 +87,7 @@ export default function Home() {
                 </p>
 
                 {/* Buttons: stacked on small screens, aligned on tablet+, equal height/width */}
-                <div className="flex flex-col md:flex-row justify-center items-stretch gap-4 w-full mt-4">
+                <div className="flex flex-col md:flex-row justify-center items-stretch gap-4 w-full my-4">
                   <Link
                     to="/contact"
                     className="w-full md:w-1/2 bg-green-800 hover:bg-green-600 text-white px-6 py-4 rounded-md text-xl font-bold text-center transition-colors duration-300 shadow-md hover:shadow-lg flex items-center justify-center"

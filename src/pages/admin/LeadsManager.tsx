@@ -15,7 +15,8 @@ const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) =>
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState('');
-  const [sortField, setSortField] = useState<string>('date_received');
+  const [sortField, setSortField] = useState<string>('created_at'); // Default sort by created_at
+  // Default sort direction is descending for date fields, ascending for text fields
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [pagination, setPagination] = useState<IPagination>({
     total: 0,
@@ -35,7 +36,7 @@ const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) =>
   const sortedLeads = useMemo(() => {
     return [...leads].sort((a, b) => {
       // Handle date fields
-      if (sortField === 'date_received' || sortField === 'created_at') {
+      if (sortField === 'create_at') {
         const dateA = new Date(a[sortField as keyof ILead] as string).getTime();
         const dateB = new Date(b[sortField as keyof ILead] as string).getTime();
         return sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
@@ -253,11 +254,11 @@ const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) =>
                 </div>
               </th>
               <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                onClick={() => handleSort('date_received')}
+                onClick={() => handleSort('created_at')}
               >
                 <div className="flex items-center justify-end">
-                  {t('admin.dateReceived', 'Date Received')}
-                  <SortIndicator field="date_received" />
+                  {t('admin.createdAt', 'Created At')}
+                  <SortIndicator field="created_at" />
                 </div>
               </th>
               <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -281,7 +282,7 @@ const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) =>
                     <td className={`px-4 py-2 text-sm ${lead.is_read === false ? 'font-bold' : ''} ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{lead.phone}</td>
                     <td className={`px-4 py-2 text-sm break-words ${lead.is_read === false ? 'font-bold' : ''} ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{lead.message.length > 50 ? `${lead.message.substring(0, 50)}...` : lead.message}</td>
                     <td className={`px-4 py-2 text-sm ${lead.is_read === false ? 'font-bold' : ''} ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{lead.created_at ? new Date(lead.created_at).toLocaleString() : 'N/A'}</td>
-                    <td className={`px-4 py-2 whitespace-nowrap text-sm ${darkMode ? 'text-gray-200' : 'text-gray-500'}`}>{lead.date_received ? new Date(lead.date_received).toLocaleString('en-US') : new Date(lead.created_at).toLocaleString('en-US')}</td>
+                    <td className={`px-4 py-2 whitespace-nowrap text-sm ${darkMode ? 'text-gray-200' : 'text-gray-500'}`}>{lead.created_at ? new Date(lead.created_at).toLocaleString('en-US') : new Date(lead.created_at).toLocaleString('en-US')}</td>
                     <td className="px-4 py-2 whitespace-nowrap text-sm">
                       <button
                         aria-label={t('admin.viewDetails', 'View details')}
@@ -311,7 +312,7 @@ const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) =>
                           <div><strong>Phone:</strong> {lead.phone}</div>
                           <div><strong>Subject:</strong> {lead.subject}</div>
                           <div className="col-span-3"><strong>Message:</strong> {lead.message}</div>
-                          <div><strong>Received:</strong> {lead.date_received ? new Date(lead.date_received).toLocaleString('en-US') : new Date(lead.created_at).toLocaleString('en-US')}</div>
+                          <div><strong>Received:</strong> {lead.created_at ? new Date(lead.created_at).toLocaleString('en-US') : new Date(lead.created_at).toLocaleString('en-US')}</div>
                         </div>
                         <button
                           className={`mt-2 ${darkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-800'}`}

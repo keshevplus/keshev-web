@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.keshevplus.co.il';
+const API_BASE_URL = import.meta.env.DEV ? '/api' : 'https://api.keshevplus.co.il';
 const TRANSLATIONS_API = `${API_BASE_URL}/translations`;
 
 // Interface for language data
@@ -49,7 +49,7 @@ export const fetchTranslations = async (language: string, namespace: string): Pr
  * @param namespaces Array of namespace names
  */
 export const fetchMultipleNamespaces = async (
-  language: string, 
+  language: string,
   namespaces: string[]
 ): Promise<Record<string, Record<string, string>>> => {
   try {
@@ -99,34 +99,34 @@ export const initializeTranslations = async (
   try {
     // Try to fetch from API first
     const apiTranslations = await fetchMultipleNamespaces(language, namespaces);
-    
+
     // Check if we got actual translations (not just empty objects)
     const hasTranslations = Object.values(apiTranslations).some(
       ns => Object.keys(ns).length > 0
     );
-    
+
     if (hasTranslations) {
       return apiTranslations;
     }
-    
+
     // If API fails or returns empty, fallback to offline files
     console.log('Falling back to offline translations');
     const offlineTranslations: Record<string, Record<string, string>> = {};
-    
+
     for (const namespace of namespaces) {
       offlineTranslations[namespace] = await getOfflineTranslations(language, namespace);
     }
-    
+
     return offlineTranslations;
   } catch (error) {
     console.error('Error initializing translations:', error);
-    
+
     // Last resort fallback
     const fallbackTranslations: Record<string, Record<string, string>> = {};
     for (const namespace of namespaces) {
       fallbackTranslations[namespace] = {};
     }
-    
+
     return fallbackTranslations;
   }
 };

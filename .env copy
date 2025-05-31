@@ -1,0 +1,25 @@
+VITE_DATABASE_URL=postgresql://neondb_owner:npg_tYJvA94QMXLK@ep-icy-forest-a4rpjd22-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require
+VITE_ENVIRONMENT=development
+# VITE_ENVIRONMENT=production
+
+# Environment variables for Keshev Plus web application
+# This file is used to set environment variables for the frontend application.
+# Frontend-only environment variables (all prefixed with VITE_)
+# VITE_API_BASE_URL=https://api.keshevplus.co.il/api
+VITE_API_BASE_URL=http://localhost:5000
+
+VITE_APP_TITLE=Keshev Plus
+VITE_BASE_URL=http://localhost:5173
+
+# Development-only variables
+VITE_ADMIN_EMAIL=dr@keshevplus.co.il
+VITE_ADMIN_PASSWORD=changeme
+
+VITE_DEV_ADMIN_ID=simple.admin@keshevplus.co.il
+VITE_DEV_ADMIN_USERNAME=Admin
+VITE_DEV_ADMIN_EMAIL=simple.admin@keshevplus.co.il
+
+
+
+DATABASE_URL=postgresql://neondb_owner:npg_tYJvA94QMXLK@ep-icy-forest-a4rpjd22-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require
+STORAGE_DATABASE_URL=postgresql://neondb_owner:npg_tYJvA94QMXLK@ep-icy-forest-a4rpjd22-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require
