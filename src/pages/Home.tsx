@@ -1,13 +1,12 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';  // i18n disabled
 import type { HomePageContent } from '../types/content';
 import { usePageData } from '../hooks/usePageData';
-// import { getPageContent } from '../services/contentService';
 
 export default function Home() {
   const [pageData, setPageData] = useState<HomePageContent | null>(null);
-  const { t } = useTranslation();
+  // const { t } = useTranslation();  // i18n disabled
 
   useEffect(() => {
     document.documentElement.dir = 'rtl';
@@ -16,7 +15,6 @@ export default function Home() {
       try {
         const content = usePageData('home');
         if (content) {
-          // Fix: Use type assertion with "as unknown" first
           setPageData(content as unknown as HomePageContent);
         }
       } catch (err) {
@@ -74,16 +72,16 @@ export default function Home() {
 
                 <p className="whitespace-pre-line text-lg sm:text-xl md:text-2xl lg:text-3xl mb-3 text-gray-700 text-center">
                   {pageData.subheading ||
-                    t('home.hero.subheading', 'בקשב פלוס תקבלו אבחון מדויק ותוכנית טיפול אישית')}
+                    'בקשב פלוס תקבלו אבחון מדויק ותוכנית טיפול אישית'}
                 </p>
 
                 <p className="font-bold text-xl sm:text-2xl md:text-2xl lg:text-3xl mb-3 text-gray-700 text-center leading-relaxed">
-                  {pageData.subTitle || t('home.hero.subTitle', 'הצעד הראשון מתחיל כאן')}
+                  {pageData.subTitle || 'הצעד הראשון מתחיל כאן'}
                 </p>
 
                 <p className="whitespace-pre-line text-lg sm:text-xl md:text-2xl lg:text-3xl mb-3 text-gray-700 text-center ">
                   {pageData.heroText ||
-                    t('home.hero.heroText', 'קבעו פגישת ייעוץ - בואו לגלות את הדרך להצלחה')}
+                    'קבעו פגישת ייעוץ - בואו לגלות את הדרך להצלחה'}
                 </p>
 
                 {/* Buttons: stacked on small screens, aligned on tablet+, equal height/width */}
@@ -92,14 +90,14 @@ export default function Home() {
                     to="/contact"
                     className="w-full md:w-1/2 bg-green-800 hover:bg-green-600 text-white px-6 py-4 rounded-md text-xl font-bold text-center transition-colors duration-300 shadow-md hover:shadow-lg flex items-center justify-center"
                   >
-                    {t('home.hero.contact', 'התחל/י את האבחון עכשיו')}
+                    {'התחל/י את האבחון עכשיו'}
                   </Link>
 
                   <Link
                     to="/about"
                     className="w-full md:w-1/2 bg-orange-400 hover:bg-orange-600 hover:text-white text-black px-6 py-4 rounded-md text-xl font-bold text-center transition-colors duration-300 shadow-md hover:shadow-lg flex items-center justify-center"
                   >
-                    {t('home.hero.about', 'קראו עוד עלינו')}
+                    {'קראו עוד עלינו'}
                   </Link>
                 </div>
               </div>
@@ -119,19 +117,16 @@ export default function Home() {
         <div className="pt-4 pb-4 md:pt-10 md:pb-6 bg-gradient-to-b from-green-800 to-green-950 text-white">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              {t('home.cta.title', 'מוכנים להתחיל?')}
+              {'מוכנים להתחיל?'}
             </h2>
             <p className="text-xl mb-8 max-w-2xl mx-auto">
-              {t(
-                'home.cta.subtitle',
-                'פנה/י אלינו היום כדי לקבוע את האבחון שלך ולקחת את הצעד הראשון לקראת חיים טובים יותר.'
-              )}
+              {'פנה/י אלינו היום כדי לקבוע את האבחון שלך ולקחת את הצעד הראשון לקראת חיים טובים יותר.'}
             </p>
             <Link
               to="/contact"
               className="inline-block bg-[#F7941D] text-black px-8 py-4 rounded-md text-lg font-bold hover:bg-white hover:text-[#005BAA] transition-colors duration-300 shadow-lg hover:shadow-xl"
             >
-              {t('home.cta.button', 'צרו קשר עכשיו')}
+              {'צרו קשר עכשיו'}
             </Link>
           </div>
         </div>
