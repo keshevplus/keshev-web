@@ -200,6 +200,12 @@ The project uses the following deployment workflow:
 4. **Push:** `git push`
 5. **Deploy:** `vercel --prod` (or use the Vercel dashboard)
 
+### Viewing Logs
+- Access runtime logs via the Vercel UI:  
+  https://keshev-1d7sd1kqd-keshev-web.vercel.app/_logs  
+- Or from your terminal run:  
+  `vercel logs keshev-1d7sd1kqd-keshev-web.vercel.app`
+
 Both client and server must be deployed for full functionality.
 
 ---

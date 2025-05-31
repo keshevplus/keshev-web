@@ -1,7 +1,7 @@
-import React from 'react';
+363import React from 'react';
 import { usePageData } from '../hooks/usePageData';
-import PageLayout from '../components/PageLayout';
-import PageTitle from '../components/PageTitle';
+import PageLayout from '../components/ui/PageLayout';
+import PageTitle from '../components/ui/PageTitle'; // Adjusted path to match the correct location
 import Card from '../components/ui/Card';
 
 // Define the type for the additional items
