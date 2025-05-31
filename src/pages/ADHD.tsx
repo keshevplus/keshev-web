@@ -1,5 +1,7 @@
+import React from 'react';
 import { usePageData } from '../hooks/usePageData';
-import PageLayout from '../components/ui/PageLayout';
+import PageLayout from '../components/PageLayout';
+import PageTitle from '../components/PageTitle';
 import Card from '../components/ui/Card';
 
 // Define the type for the additional items
@@ -11,7 +13,7 @@ interface AdditionalItem {
   icon?: string;
 }
 
-export default function ADHD() {
+const ADHDPage: React.FC = () => {
   const { data, isLoading, error } = usePageData('adhd');
 
   if (isLoading)
@@ -40,11 +42,8 @@ export default function ADHD() {
   };
 
   return (
-    <PageLayout 
-      title={pageData.heading} 
-      maxWidth="md:max-w-[95%] lg:max-w-[70%]"
-      background="bg-white"
-    >
+    <PageLayout>
+      <PageTitle title="ADHD" />
       <div className="flex flex-col items-center justify-center">
         <div className="text-right items-start w-full">
           <h2 className="md:whitespace-nowrap text-2xl md:text-2xl font-bold text-black text-center mb-2">
@@ -97,4 +96,6 @@ export default function ADHD() {
       </div>
     </PageLayout>
   );
-}
+};
+
+export default ADHDPage;
