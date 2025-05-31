@@ -14,7 +14,7 @@ interface CardProps {
   subtitle?: string; // Optional subtitle for the card
   files?: ReactNode; // Optional files or download links to display
   // Removed unused maxHeight prop
-  // isRtl property removed as we're using fixed RTL layout for this component
+  isRtl?: boolean; // Indicates if the card should be displayed in RTL layout
 }
 
 // Card component definition
@@ -57,7 +57,7 @@ const Card: React.FC<CardProps> = ({
           <div className="flex flex-col items-end"> {/* For RTL content, align items to the end */}
             {/* Title with subtle pulse animation on hover */}
             <h4 
-              className={`font-bold ${textSize} ${textColor} transition-all duration-300 group-hover:text-green-700 text-right w-full mb-2`}
+              className={`font-bold ${textSize} ${textColor} transition-all duration-300 group-hover:text-green-500 text-right w-full mb-2`}
             >
               {title}
             </h4>
