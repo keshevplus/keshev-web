@@ -9,6 +9,7 @@ const Login = () => {
     navigate('/admin/login', { replace: true });
   }, [navigate]);
   
+  
   return null;
 };
 
