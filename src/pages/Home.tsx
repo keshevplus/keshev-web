@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { HomePageContent } from '../types/content';
-import { getPageContent } from '../services/contentService';
+import { usePageData } from '../hooks/usePageData';
+// import { getPageContent } from '../services/contentService';
 
 export default function Home() {
   const [pageData, setPageData] = useState<HomePageContent | null>(null);
@@ -13,7 +14,7 @@ export default function Home() {
 
     const fetchContent = async () => {
       try {
-        const content = await getPageContent('home');
+        const content = usePageData('home');
         if (content) {
           // Fix: Use type assertion with "as unknown" first
           setPageData(content as unknown as HomePageContent);
