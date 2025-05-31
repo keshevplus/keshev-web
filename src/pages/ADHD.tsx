@@ -1,4 +1,4 @@
-363import React from 'react';
+import React from 'react';
 import { usePageData } from '../hooks/usePageData';
 import PageLayout from '../components/ui/PageLayout';
 import PageTitle from '../components/ui/PageTitle'; // Adjusted path to match the correct location
@@ -43,56 +43,39 @@ const ADHDPage: React.FC = () => {
 
   return (
     <PageLayout>
-      <PageTitle title="ADHD" />
-      <div className="flex flex-col items-center justify-center">
-        <div className="text-right items-start w-full">
-          <h2 className="md:whitespace-nowrap text-2xl md:text-2xl font-bold text-black text-center mb-2">
-            {pageData.subheading}
-          </h2>
-          <p className="text-gray-700 text-lg md:text-lg mb-4">
-            {pageData.body[0].description}
-          </p>
-        </div>
-
-        {/* Symptoms Title */}
-        <div className="w-full text-center mb-4">
-          <h4 className="text-2xl md:text-2xl font-bold text-black">
-            {pageData.body[1].title}
-          </h4>
-          <p className="text-gray-700 text-xl md:text-xl mb-2">
-            {pageData.body[1].description}
-          </p>
-        </div>
-
-        {/* Symptoms Grid Container */}
-        <div className="grid grid-flow-col offset-md-4 gap-4 sm:gap-68 md:gap-8 w-full mb-4">
-          {pageData.additional?.map((item, index) => (
+      <PageTitle title={pageData.heading} />
+      <div className="container mx-auto px-4 py-8">
+        <p className="text-xl text-gray-700 mb-6 text-center">
+          {pageData.subheading}
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          {pageData.body.map((item, idx) => (
             <Card
-              key={index}
-              bgcolor="bg-orange-400/35 hover:bg-orange-400/60"
-              textColor="text-black font-bold"
-              textSize="text-2xl md:text-2xl"
+              key={idx}
+              bgcolor="bg-white"
+              textColor="text-black"
+              textSize="text-lg"
               title={item.title}
               description={item.description}
               image={item.image}
             />
           ))}
         </div>
-
-        {/* Additional content in a grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 text-right gap-4 w-full">
-          {pageData.body.slice(3).map((item, index) => (
-            <Card
-              key={index}
-              bgcolor="bg-green-800"
-              textColor="text-white"
-              textSize="text-xl md:text-2xl"
-              title={item.title}
-              description={item.description}
-              image={item.image}
-            />
-          ))}
-        </div>
+        {pageData.additional && pageData.additional.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {pageData.additional.map((item, idx) => (
+              <Card
+                key={idx}
+                bgcolor="bg-orange-400/35 hover:bg-orange-400/60"
+                textColor="text-black font-bold"
+                textSize="text-2xl"
+                title={item.title}
+                description={item.description}
+                image={item.image}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </PageLayout>
   );
