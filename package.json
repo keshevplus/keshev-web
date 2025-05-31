@@ -5,7 +5,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "proxy-server": "node server/proxy-server.js",
+    "dev": "concurrently \"pnpm run server\" \"pnpm run proxy-server\" \"vite\"",
     "start": "vite",
     "reinstall": "pnpm install --no-frozen-lockfile && pnpm run build && mkdir -p dist",
     "build": "rimraf dist && vite build",
@@ -48,6 +49,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.21",
     "bcryptjs": "^3.0.2",
+    "concurrently": "^7.6.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "eslint": "^8.57.0",
