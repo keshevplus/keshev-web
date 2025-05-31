@@ -5,7 +5,7 @@ import { usePageData } from '../hooks/usePageData';
 
 export default function Home() {
   // directly call the page‐data hook
-  const pageData = usePageData('home') as unknown as HomePageContent | null;
+  const pageData = usePageData('home') as HomePageContent | null;
 
   useEffect(() => {
     document.documentElement.dir = 'rtl';
