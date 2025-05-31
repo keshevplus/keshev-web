@@ -42,7 +42,7 @@ export default function Services() {
         {pageData.subheading || 'Our Services'}
       </h3>
       <div className="rtl-container" dir="rtl">
-        <ul className="grid grid-cols-1 gap-8 w-full max-w-[60%] mx-auto">
+        <ul className="grid grid-cols-1 gap-8 w-full max-w-full md:max-w-[60%] mx-auto">
           {/* All service cards from data */}
           {pageData.body?.map((item, index) => (
             <li key={index} className="items-start justify-start">
