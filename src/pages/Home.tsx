@@ -1,150 +1,98 @@
-import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getPageContent } from '../services/contentService';
+import type { HomePageContent } from '../types/content';
+// import NeuralBackground from '../components/NeuralBackground';
 
-const Home: React.FC = () => {
+export default function Home() {
+  const [pageData, setPageData] = useState<HomePageContent | null>(null);
   const { t } = useTranslation();
-  const [pageData, setPageData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
 
-  // Fetch content when component mounts
   useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        setLoading(true);
-        // Add a timeout to limit how long we wait
-        const content = await getPageContent('home');
-        setPageData(content);
-      } catch (err) {
-        console.error('Failed to load home page content:', err);
-        setError(err instanceof Error ? err : new Error('Unknown error'));
-      } finally {
-        // Always stop loading, even if there was an error
-        setLoading(false);
-      }
-    };
-
-    fetchContent();
+    document.documentElement.dir = 'rtl';
+    import('../data/homePage').then(module => {
+      setPageData(module.default);
+    });
   }, []);
 
-  // Hardcoded fallback content if there's an error or API fails
-  const fallbackContent = {
-    hero: {
-      title: "ברוכים הבאים למרפאת 'קשב פלוס'",
-      subtitle: "אבחון וטיפול בהפרעות קשב וריכוז",
-      description: "במרפאת קשב פלוס תקבלו אבחון מקצועי ותוכנית טיפול מותאמת אישית",
-      cta: "צרו קשר"
-    }
-  };
-
-  // Use fallback content if needed
-  const content = pageData || fallbackContent;
-
-  if (loading) {
-    // Show skeleton loader while content is loading
+  if (!pageData) {
     return (
-      <div className="animate-pulse">
-        <div className="h-64 bg-gray-200 rounded-lg mb-8"></div>
-        <div className="h-8 bg-gray-200 rounded-lg w-1/2 mb-4"></div>
-        <div className="h-6 bg-gray-200 rounded-lg w-3/4 mb-8"></div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="h-48 bg-gray-200 rounded-lg"></div>
-          <div className="h-48 bg-gray-200 rounded-lg"></div>
-          <div className="h-48 bg-gray-200 rounded-lg"></div>
-        </div>
+  
+      <div className="container mx-auto max-w-full md:max-w-[75%] py-4 loading">
+        <div className="animate-pulse">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="home-page">
-      {/* Hero Section */}
-      <section className="hero-section bg-gradient-to-r from-blue-50 to-green-50 py-12 md:py-24 rounded-lg mb-12">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center">
-            <div className="md:w-1/2 mb-8 md:mb-0">
-              <h1 className="text-3xl md:text-5xl font-bold text-gray-800 mb-4">
-                {content.hero.title}
+    <div className="relative">
+      {/* Neural network animated background - with reduced density and speed */}
+      {/* <NeuralBackground density={4} speed={3} opacity={0.3} /> */}
+      
+      {/* All content positioned with z-index to ensure it stays above background */}
+      <div className="relative z-10"> 
+    <div className="rtl">
+      {/* Hero Section - New Layout */}
+      
+        <div className="container mx-auto px-4 py-4 md:py-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
+            {/* Hero Text Section */}
+            <div className="w-full md:w-1/2 order-1 md:order-1">
+              <img 
+                src="/assets/images/logo.png" 
+                alt="קשב פלוס" 
+                className="w-56 md:w-96 mb-8 mx-auto drop-shadow-lg"
+              />
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-green-800 mb-4 md:mb-6">
+                {t('home.hero.title', 'רוצה להבין מה עובר עליך? בוא לבדוק אם זו הפרעת קשב.')}
               </h1>
-              <p className="text-xl md:text-2xl text-gray-600 mb-6">
-                {content.hero.subtitle}
-              </p>
-              <p className="text-gray-700 mb-8">
-                {content.hero.description}
+              <p className="text-lg md:text-xl mb-8 text-gray-700">
+                {t('home.hero.subtitle', 'בדיקה מקצועית, מהירה ודיסקרטית ל-ADHD - לילדים, בני נוער ומבוגרים.')}
               </p>
               <Link
-                to="/contact"
-                className="bg-green-700 hover:bg-green-800 text-white font-bold py-3 px-6 rounded-lg transition"
+                to="/about"
+                className="inline-block bg-green-800 hover:bg-green-600 text-white px-8 py-4 rounded-md text-xl font-bold transition-colors duration-300 shadow-md hover:shadow-lg mx-4"
               >
-                {content.hero.cta || "צרו קשר"}
+                {t('home.hero.about', 'קרא עוד עלינו')}
+              </Link>
+              <Link
+                to="/contact"
+                className="inline-block bg-orange-400 hover:bg-orange-600 hover:text-white text-black px-8 py-4 rounded-md text-xl font-bold  transition-colors duration-300 shadow-md hover:shadow-lg mx-4"
+              >
+                {t('home.hero.contact', 'התחילו את האבחון שלכם עכשיו')}
               </Link>
             </div>
-            <div className="md:w-1/2 flex justify-center">
-              <img
-                src="/assets/images/hero-image.jpg"
-                alt="אבחון וטיפול בהפרעות קשב"
-                className="rounded-lg shadow-xl max-w-full h-auto"
+
+            {/* Hero Image Section */}
+            <div className="w-full md:w-1/2 order-2 md:order-2 flex justify-center items-center">
+              <img 
+                src="/assets/images/doctor-hero.png" 
+                alt="רופא מקצועי" 
+                className="w-full max-w-xs sm:max-w-sm md:max-w-[50vw] h-auto rounded-3xl border-4 border-white"
               />
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Services Section */}
-      <section className="services-section py-12">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl md:text-4xl font-bold text-center mb-12">
-            {t('home.services.title', 'השירותים שלנו')}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Use static fallback services if API services aren't available */}
-            {(content.services || [
-              {
-                id: 1,
-                title: 'אבחון מקיף',
-                description: 'אבחון מקצועי הכולל הערכה מקיפה של היכולות והקשיים',
-                icon: '🔍'
-              },
-              {
-                id: 2,
-                title: 'טיפול תרופתי',
-                description: 'טיפול תרופתי מותאם אישית בליווי רופא מומחה',
-                icon: '💊'
-              },
-              {
-                id: 3,
-                title: 'הדרכת הורים',
-                description: 'ליווי והדרכה להורים להתמודדות עם אתגרי הפרעות קשב',
-                icon: '👨‍👩‍👧‍👦'
-              }
-            ]).map((service) => (
-              <div key={service.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
-                <div className="text-3xl mb-4">{service.icon}</div>
-                <h3 className="text-xl font-bold mb-3">{service.title}</h3>
-                <p className="text-gray-600">{service.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      
-      {/* Call to Action Section */}
-      <section className="bg-green-700 text-white py-12 rounded-lg mt-12">
+      {/* CTA Section */}
+      <div className="pt-16 pb-6 md:pt-20 md:pb-6 bg-green-800 text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">מוכנים להתחיל?</h2>
-          <p className="mb-6">צרו איתנו קשר עוד היום ונשמח לעזור לכם בדרך לטיפול נכון ויעיל.</p>
-          <Link 
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            {t('home.cta.title', 'מוכנים להתחיל?')}
+          </h2>
+          <p className="text-xl mb-8 max-w-2xl mx-auto">
+            {t('home.cta.subtitle', 'פנה אלינו היום כדי לקבוע את האבחון שלך ולקחת את הצעד הראשון לקראת חיים טובים יותר.')}
+          </p>
+          <Link
             to="/contact"
-            className="bg-white text-green-700 hover:bg-gray-100 font-bold py-3 px-6 rounded-lg transition"
+            className="inline-block bg-[#F7941D] text-black px-8 py-4 rounded-md text-lg font-bold hover:bg-white hover:text-[#005BAA] transition-colors duration-300 shadow-lg hover:shadow-xl"
           >
-            צור קשר
+            {t('home.cta.button', 'צרו קשר עכשיו')}
           </Link>
         </div>
-      </section>
+      </div>
+    </div>
     </div>
   );
-};
-
-export default Home;
+}
