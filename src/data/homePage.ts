@@ -1,8 +1,8 @@
 import { HomePageContent } from '../types/content';
 
 const homePageData: HomePageContent = {
-  heading: `ברוכים הבאים 
-  למרפאת "קשב פלוס"
+  heading: `
+  ברוכים הבאים למרפאת
   `,
   image: '/assets/images/logo.png',
   subheading: ` ב"קשב פלוס" תקבלו אבחון מדויק
@@ -12,7 +12,7 @@ const homePageData: HomePageContent = {
     'ילדים',
     'בני נוער',
     'מבוגרים'
-],  
+  ],
   body: [
     {
       heading: 'קשב פלוס',
@@ -23,21 +23,21 @@ const homePageData: HomePageContent = {
   ],
   subTitle: `הצעד הראשון מתחיל כאן`,
   heroText: `קבעו פגישת ייעוץ - בואו לגלות את הדרך להצלחה`,
-  ctaButtonText: 'יצירת קשר',   
+  ctaButtonText: 'יצירת קשר',
   ctaHeading: 'זימנו היום תור לפגישת ייעוץ והתאמה אישית',
   ctaSubheading: 'אנחנו כאן בשבילכם',
   servicesHeading: 'השירותים שלנו',
   servicesSubheading: 'אנו מציעים מגוון שירותים מקצועיים',
-  
+
   // You can use list for words if needed
-  
+
   // Alternative: define a custom words object outside the HomePageContent interface
   // words: {
   //   kids: 'ילדים',
   //   teens: 'בני נוער',
   //   adults: 'מבוגרים'
   // },
-  
+
   services: [
     {
       title: 'אבחון מקיף',

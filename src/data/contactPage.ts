@@ -91,7 +91,7 @@ export interface FormField {
 // Default contact page data with proper DB-based structure
 export const defaultContactPage: ContactPageData = {
   id: 'contact-page',
-  title: 'יצירת קשר',
+  title: 'צור קשר',
   subtitle: 'נשמח לענות על כל שאלה',
   sections: [
     {
@@ -117,6 +117,9 @@ export const defaultContactPage: ContactPageData = {
     }
   ],
   contactInfo: {
+    address: 'רחוב הבנים 5, הוד השרון',
+    phone: '03-1234567',
+    email: 'contact@keshevplus.co.il',
     whatsapp: '972501234567',
     workingHours: {
       sunday: '09:00 - 18:00',
