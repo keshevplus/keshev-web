@@ -26,6 +26,7 @@ export default function Contact() {
   const { data: pageData } = usePageData('contact');
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hasUnsentMessages, setHasUnsentMessages] = useState(false);
 
   const {
     register,
@@ -42,6 +43,7 @@ export default function Contact() {
     const queue = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
     queue.push(message);
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(queue));
+    setHasUnsentMessages(true);
   }
   function getUnsentMessages(): FormValues[] {
     return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
@@ -50,6 +52,12 @@ export default function Contact() {
     const queue = getUnsentMessages();
     queue.splice(index, 1);
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(queue));
+    setHasUnsentMessages(queue.length > 0);
+  }
+  function clearUnsentMessages() {
+    localStorage.removeItem(LOCAL_STORAGE_KEY);
+    setHasUnsentMessages(false);
+    toast.success('כל ההודעות שלא נשלחו נמחקו');
   }
 
   // --- On submit ---
@@ -180,6 +188,12 @@ export default function Contact() {
     tryResend();
   }, []);
 
+  // Check if there are unsent messages when component mounts
+  React.useEffect(() => {
+    const queue = getUnsentMessages();
+    setHasUnsentMessages(queue.length > 0);
+  }, []);
+
   return (
     <PageLayout title={pageData[0]?.heading || ''} background="bg-white" maxWidth="md:max-w-4xl">
 
@@ -190,6 +204,19 @@ export default function Contact() {
           <h3 className="text-2xl md:text-xl font-bold text-green-800 text-right mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
             {pageData[0]?.subheading}
           </h3>
+          {/* Add button to clear unsent messages if they exist */}
+          {hasUnsentMessages && (
+            <div className="mb-4 bg-yellow-50 p-3 rounded-lg border border-yellow-200">
+              <p className="text-yellow-800 mb-2">יש הודעות שלא נשלחו בזיכרון המקומי</p>
+              <button
+                type="button"
+                onClick={clearUnsentMessages}
+                className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition-colors text-sm"
+              >
+                מחק את כל ההודעות שלא נשלחו
+              </button>
+            </div>
+          )}
           <form
             className="bg-orange-400/65 p-6 rounded-lg shadow-lg w-full"
             onSubmit={(e) => {
