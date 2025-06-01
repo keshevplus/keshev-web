@@ -156,7 +156,7 @@ export default function Contact() {
           });
           if (response.ok) {
             removeSentMessage(i);
-            i--; // adjust index after removal
+            i=0; // adjust index after removal
             toast.success('הודעה שנשמרה נשלחה בהצלחה!');
           } else {
             // Try fallback with /api prefix
@@ -167,7 +167,7 @@ export default function Contact() {
             });
             if (fallbackResponse.ok) {
               removeSentMessage(i);
-              i--; // adjust index after removal
+              i=0; // adjust index after removal
               toast.success('הודעה שנשמרה נשלחה בהצלחה!');
             }
           }
