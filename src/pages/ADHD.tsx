@@ -42,8 +42,7 @@ const ADHDPage: React.FC = () => {
   };
 
   return (
-    <PageLayout>
-      <PageTitle title={pageData.heading} />
+    <PageLayout  title={pageData.heading}>
       <div className="container mx-auto px-4 py-8">
         <p className="text-xl text-gray-700 mb-6 text-center">
           {pageData.subheading}
