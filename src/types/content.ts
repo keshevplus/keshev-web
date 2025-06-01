@@ -1,7 +1,7 @@
 export interface HomePageContent {
   heading: string;
   subheading?: string;
-  list?: string[]; 
+  list?: string[];
   body?: ContentItem[];
   heroText: string;
   heroSubText?: string; // Added the missing heroSubText property
@@ -27,21 +27,21 @@ export interface ContentItem {
     subtitle?: string;
     description: string;
     image?: string;
-    icon?: string; 
+    icon?: string;
     file?: string;
   }[];
   title?: string;
   subtitle?: string;
   description?: string;
   image?: string;
-  icon?: string; 
+  icon?: string;
   file?: string;
   additional?: Array<ContentItem | {
     title: string;
     subtitle?: string;
     description: string;
     image?: string;
-    icon?: string; 
+    icon?: string;
     file?: string;
   }>;
 }

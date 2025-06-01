@@ -66,7 +66,7 @@ export default function Contact() {
       const isProduction = import.meta.env.PROD;
       const apiBaseUrl = isProduction
         ? (import.meta.env.VITE_API_BASE_URL || 'https://api.keshevplus.co.il')
-        : 'http://localhost:3001';
+        : 'http://localhost:3000';
 
       console.log(`Using API base URL: ${apiBaseUrl} (${isProduction ? 'Production' : 'Development'} mode)`);
 
@@ -167,7 +167,7 @@ export default function Contact() {
             });
             if (fallbackResponse.ok) {
               removeSentMessage(i);
-              i--; // adjust index after removal
+              i = 0; // adjust index after removal
               toast.success('הודעה שנשמרה נשלחה בהצלחה!');
             }
           }
