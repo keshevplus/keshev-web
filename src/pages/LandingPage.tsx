@@ -62,7 +62,7 @@ const LandingPage: React.FC = () => {
       setSuccess(true);
       setTimeout(() => {
         navigate('/contact');
-      }, 3000);
+      }, 3001);
     } catch (error) {
       console.error('Error submitting form:', error);
     } finally {
