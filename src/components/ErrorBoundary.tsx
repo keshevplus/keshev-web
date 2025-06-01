@@ -1,20 +1,22 @@
-import { Component, ErrorInfo, ReactNode } from 'react';
+import React, { Component, ErrorInfo, ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
+  fallback?: ReactNode;
 }
 
 interface State {
   hasError: boolean;
-  error?: Error;
-  errorInfo?: ErrorInfo;
-  componentStack?: string;
+  error: Error | null;
 }
 
 class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { hasError: false };
+    this.state = {
+      hasError: false,
+      error: null
+    };
   }
 
   static getDerivedStateFromError(error: Error): State {
@@ -23,55 +25,25 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    // Capture additional error information
-    this.setState({
-      errorInfo,
-      componentStack: errorInfo.componentStack || ''
-    });
-    
-    // Log the error to console with detailed information
-    console.error('=== ERROR CAUGHT BY ERROR BOUNDARY ===');
-    console.error('Error message:', error.message);
-    console.error('Error stack:', error.stack);
-    console.error('Component stack:', errorInfo.componentStack);
-    console.error('=======================================');
-    
-    // You could also send to an error reporting service here
+    // You can log the error to an error reporting service
+    console.error('ErrorBoundary caught an error:', error, errorInfo);
   }
 
   render(): ReactNode {
     if (this.state.hasError) {
-      // Custom fallback UI
-      return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 rtl">
-          <div className="max-w-lg w-full bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-bold text-red-600 mb-4 text-center">אופס! משהו השתבש</h2>
-            <p className="text-gray-700 mb-4 text-center">אנו מתנצלים על אי הנוחות. אנא נסו שוב מאוחר יותר.</p>
-            
-            {process.env.NODE_ENV === 'development' && this.state.error && (
-              <div className="mt-4 p-4 bg-gray-100 rounded text-left overflow-auto max-h-64 text-xs font-mono">
-                <p className="font-bold mb-2">Error: {this.state.error.toString()}</p>
-                {this.state.componentStack && (
-                  <pre className="whitespace-pre-wrap">{this.state.componentStack}</pre>
-                )}
-              </div>
-            )}
-            
-            <div className="flex justify-center mt-6">
-              <button
-                className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors mr-2"
-                onClick={() => window.location.href = '/'}
-              >
-                חזרה לדף הבית
-              </button>
-              <button
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-                onClick={() => window.location.reload()}
-              >
-                טען מחדש את הדף
-              </button>
-            </div>
-          </div>
+      // You can render any custom fallback UI
+      return this.props.fallback || (
+        <div className="p-6 bg-red-50 border border-red-200 rounded-lg shadow-sm">
+          <h2 className="text-lg font-semibold text-red-800 mb-2">Component Error</h2>
+          <p className="text-red-700 mb-4">
+            This component encountered an error and has been temporarily disabled to prevent affecting other parts of the site.
+          </p>
+          <details className="text-sm text-gray-700 bg-white p-2 rounded border">
+            <summary>Technical Details</summary>
+            <p className="mt-2 font-mono text-xs overflow-auto p-2 bg-gray-100 rounded">
+              {this.state.error?.toString()}
+            </p>
+          </details>
         </div>
       );
     }
