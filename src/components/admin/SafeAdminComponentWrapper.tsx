@@ -48,10 +48,8 @@ const SafeAdminComponentWrapper: React.FC<SafeAdminComponentWrapperProps> = ({
   const handleError = (error: Error): void => {
     console.error(`Error in admin component (${featureFlag}):`, error);
     setHasError(true);
-    adminIsolationService.logError(error, `AdminComponent:${featureFlag}`);
-    
-    // Automatically disable the problematic component
-    adminIsolationService.disableFeature(featureFlag);
+    // Commented out so admin pages won’t stay disabled:
+    // adminIsolationService.disableFeature(featureFlag);
   };
   
   // If this feature is disabled, show disabled message

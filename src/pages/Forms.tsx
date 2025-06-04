@@ -68,15 +68,16 @@ export default function Forms() {
   const pageData: ContentItem = data[0];
 
   return (
-    <PageLayout 
-      title={pageData.heading}
+    <PageLayout
+      title={pageData.title || 'שאלונים'}
       background="bg-white"
       maxWidth="max-w-[95%] lg:max-w-[80%]"
     >
-      <h3 className="text-xl md:text-4xl font-bold text-black text-center mb-8">
-        {pageData.subheading}
+      <h3 className="text-xl md:text-3xl font-bold text-black text-center mb-8">
+        {pageData.heading || 'שירותינו במרפאה'}
       </h3>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 ">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-8 px-4 md:px-8 lg:px-12">
+        {/* Render each form as a card */}
         {(pageData.body ?? []).map((form, index) => (
           <div
             key={index}
@@ -84,19 +85,19 @@ export default function Forms() {
           >
             {/* Form Details Card */}
             <Card
-              bgcolor="bg-orange-400/35 hover:bg-orange-400/60 w-full"
+              bgcolor={form.bgColor || "bg-orange-400/35 hover:bg-orange-400/60 w-full"}
               textColor="text-black font-bold"
-              textSize="text-lg md:text-xl py-2"
-              paraSize="text-md md:text-lg"
+              textSize="text-lg md:text-lg py-2"
+              paraSize="text-md md:text-md"
               title={form.title || ''}
               description={form.description || ''}
               image={form.image}
               subtitle="קבצים להורדה"
               files={<FileDownloadIcons file={form.file} />}
             />
-    
+
           </div>
- 
+
         ))}
       </div>
     </PageLayout>

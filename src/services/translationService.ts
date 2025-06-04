@@ -1,32 +1,36 @@
 // Translation service to fetch translations from the API
 
 import axios from 'axios';
+import { Language, TranslationKey } from '../models/...';
 
-const API_BASE_URL = import.meta.env.DEV ? '/api' : 'https://api.keshevplus.co.il';
-const TRANSLATIONS_API = `${API_BASE_URL}/translations`;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') || '';
 
-// Interface for language data
-export interface Language {
-  id: number;
-  code: string;
-  name: string;
-  native_name: string;
-  rtl: boolean;
-  is_default: boolean;
+export async function fetchAvailableLanguages(): Promise<Language[]> {
+  try {
+    const response = await axios.get<Language[]>(`${API_BASE_URL}/translations/languages`);
+    return response.data;
+  } catch (err) {
+    console.error('Error fetching available languages:', err);
+    throw err;
+  }
 }
 
-/**
- * Fetch available languages from the API
- */
-export const fetchAvailableLanguages = async (): Promise<Language[]> => {
-  try {
-    const response = await axios.get(`${TRANSLATIONS_API}/languages`);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching available languages:', error);
-    return [];
-  }
-};
+export async function fetchTranslationKeys(namespace: string): Promise<TranslationKey[]> {
+  const response = await axios.get<TranslationKey[]>(`${API_BASE_URL}/translations/${namespace}`);
+  return response.data;
+}
+
+export async function saveTranslation(
+  key: TranslationKey,
+  languageCode: string
+): Promise<void> {
+  await axios.post(`${API_BASE_URL}/translations/update`, {
+    languageCode,
+    namespace: key.namespace,
+    key: key.key,
+    translation: key.translations[languageCode]
+  });
+}
 
 /**
  * Fetch translations for a specific language and namespace
@@ -35,7 +39,7 @@ export const fetchAvailableLanguages = async (): Promise<Language[]> => {
  */
 export const fetchTranslations = async (language: string, namespace: string): Promise<Record<string, string>> => {
   try {
-    const response = await axios.get(`${TRANSLATIONS_API}/resources/${language}/${namespace}`);
+    const response = await axios.get(`${API_BASE_URL}/translations/resources/${language}/${namespace}`);
     return response.data;
   } catch (error) {
     console.error(`Error fetching translations for ${language}/${namespace}:`, error);
@@ -54,7 +58,7 @@ export const fetchMultipleNamespaces = async (
 ): Promise<Record<string, Record<string, string>>> => {
   try {
     const response = await axios.get(
-      `${TRANSLATIONS_API}/resources/${language}?namespaces=${namespaces.join(',')}`
+      `${API_BASE_URL}/translations/resources/${language}?namespaces=${namespaces.join(',')}`
     );
     return response.data;
   } catch (error) {

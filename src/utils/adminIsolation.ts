@@ -14,7 +14,7 @@ export interface AdminFeatureFlags {
   readonly content: boolean;
 }
 
-// Default configuration
+// Default configuration - set all to true to enable admin features
 const defaultFlags: AdminFeatureFlags = {
   dashboard: true,
   leads: true,
@@ -22,7 +22,7 @@ const defaultFlags: AdminFeatureFlags = {
   content: true,
 };
 
-// Environment-based configuration
+// Environment-based configuration (from .env)
 const envFlags: Partial<AdminFeatureFlags> = {
   dashboard: import.meta.env.VITE_ADMIN_DASHBOARD !== 'false',
   leads: import.meta.env.VITE_ADMIN_LEADS !== 'false',
@@ -45,14 +45,14 @@ export const adminIsolationService = {
     if (feature in runtimeFlags) {
       return runtimeFlags[feature];
     }
-    
+
     if (feature in envFlags && envFlags[feature] !== undefined) {
       return envFlags[feature] as boolean;
     }
-    
+
     return defaultFlags[feature];
   },
-  
+
   /**
    * Disable an admin feature at runtime (for emergency situations)
    */
@@ -60,7 +60,7 @@ export const adminIsolationService = {
     runtimeFlags[feature as string] = false;
     console.warn(`Admin feature '${feature}' has been disabled at runtime`);
   },
-  
+
   /**
    * Re-enable an admin feature
    */
@@ -68,7 +68,7 @@ export const adminIsolationService = {
     runtimeFlags[feature as string] = true;
     console.info(`Admin feature '${feature}' has been re-enabled`);
   },
-  
+
   /**
    * Get all admin feature flags
    */
@@ -80,7 +80,7 @@ export const adminIsolationService = {
       content: adminIsolationService.isFeatureEnabled('content')
     };
   },
-  
+
   /**
    * Log admin errors without affecting the main site
    */

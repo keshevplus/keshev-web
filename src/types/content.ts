@@ -1,5 +1,7 @@
 export interface HomePageContent {
-  heading: string;
+  title: string;
+  subTitle?: string;
+  heading?: string;
   subheading?: string;
   list?: string[];
   body?: ContentItem[];
@@ -16,33 +18,19 @@ export interface HomePageContent {
     icon: string;
   }[];
   image: string; // Added the missing 'image' property
-  title?: string; // Added to match homePage.ts
-  subTitle?: string; // Added to match homePage.ts
 }
 export interface ContentItem {
-  heading: string;
-  subheading?: string;
-  body?: ContentItem[] | {
-    title: string;
-    subtitle?: string;
-    description: string;
-    image?: string;
-    icon?: string;
-    file?: string;
-  }[];
-  title?: string;
+  title: string;
   subtitle?: string;
-  description?: string;
+  heading?: string;
+  subheading?: string;
+  description: string;
   image?: string;
   icon?: string;
   file?: string;
-  additional?: Array<ContentItem | {
+  subItems?: Array<{
     title: string;
-    subtitle?: string;
     description: string;
-    image?: string;
-    icon?: string;
-    file?: string;
   }>;
 }
 

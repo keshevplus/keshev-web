@@ -1,13 +1,15 @@
 import { ContentItem } from '../types/content';
 
 const formsPageData: ContentItem = {
-  heading: 'שאלונים',
-  subheading: 'טפסים ושאלוני הערכה',
+  title: 'שאלונים',
+  heading: 'טפסים ושאלוני הערכשאלונים לזיהוי סימנים של הפרעת קשב וריכוז (ADHD)',
   body: [
     {
       title: 'שאלון להורים',
       description: 'שאלון זה מיועד להורים ומספק תובנות על התנהגות הילד בבית ובסביבה המשפחתית.',
       image: '/assets/images/icon.png',
+      bgColor: 'bg-orange-400/15 hover:bg-orange-400/40 text-right',
+      textColor: 'text-black font-bold',
       subtitle: 'קבצים להורדה',
       file: '/assets/forms/vanderbilt_parent_form'
     },
@@ -16,14 +18,18 @@ const formsPageData: ContentItem = {
       // subtitle: 'למילוי על ידי מורה',
       description: 'שאלון זה מיועד למורים ומספק תובנות על התנהגות הילד בכיתה ובסביבה החינוכית.',
       image: '/assets/images/icon.png',
+      bgColor: 'bg-orange-400/15 hover:bg-orange-400/40 text-right',
+      textColor: 'text-black font-bold',
       subtitle: 'קבצים להורדה',
-      file: '/assets/forms/vanderbilt_teacher_form'
+      file: '/assets/forms/vanderbilt_teacher_form',
     },
     {
       title: 'שאלון דיווח עצמי',
       // subtitle: 'למילוי על ידי ילד או מבוגר',
-      description: 'שאלון זה מיועד למורים ומספק תובנות על התנהגות הילד בכיתה ובסביבה החינוכית.',
+      description: 'שאלון זה מיועד למילוי על ידי מבוגר מעל גיל 18 להערכת קשב וריכוז.',
       image: '/assets/images/icon.png',
+      bgColor: 'bg-orange-400/15 hover:bg-orange-400/40 text-right',
+      textColor: 'text-black font-bold',
       subtitle: 'קבצים להורדה',
       file: '/assets/forms/vanderbilt_self_form'
     }

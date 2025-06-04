@@ -1,18 +1,23 @@
 import { ContentItem } from '../types/content';
 
 const diagnosisPageData: ContentItem = {
-  heading: 'תהליך האבחון והטיפול',
+  title: 'תהליך האבחון והטיפול',
+  heading: 'כך מאבחנים ADHD – שלב אחר שלב',
   subheading: 'תהליך אבחון מקצועי ומקיף',
   body: [
     {
       title: 'שיחה ראשונית',
       description: 'מפגש אישי עם המטופל והמשפחה להבנת ההיסטוריה ההתפתחותית וההתנהגותית.',
       image: '/assets/images/icon.png',
+      bgColor: 'bg-orange-400/15 hover:bg-orange-400/40 text-right',
+      textColor: 'text-black font-bold',
     },
     {
       title: 'שאלונים מובנים',
       description: 'שאלוני קשב הם כלים מובנים להערכת תסמינים',
       image: '/assets/images/icon.png',
+      bgColor: 'bg-orange-400/15 hover:bg-orange-400/40 text-right',
+      textColor: 'text-black font-bold',
     },
     {
       title: 'מבחן ממוחשב (MOXO)',
@@ -20,6 +25,8 @@ const diagnosisPageData: ContentItem = {
       מבחן MOXO הוא מבחן ממוחשב להערכת תפקודי קשב, אשר נמצא בשימוש נרחב בישראל ובעולם. המבחן משמש ככלי תומך לאבחון. החו מספק מידע אובייקטיבי להערכת תפקודי הקשב
       `,
       image: '/assets/images/icon.png',
+      bgColor: 'bg-orange-400/15 hover:bg-orange-400/40 text-right',
+      textColor: 'text-black font-bold',
     }
 
     // {
