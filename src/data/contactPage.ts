@@ -8,6 +8,7 @@ export interface ContactPageData {
   id: string;
   title: string;
   subtitle?: string;
+  heading?: string;
   description?: string;
   sections: ContactPageSection[];
   metaTitle?: string;
@@ -28,20 +29,8 @@ export interface ContactInfo {
   phone: string;
   email: string;
   whatsapp?: string;
-  workingHours: WorkingHours;
   socialMedia?: SocialMedia;
   location?: GeoLocation;
-}
-
-export interface WorkingHours {
-  sunday?: string;
-  monday?: string;
-  tuesday?: string;
-  wednesday?: string;
-  thursday?: string;
-  friday?: string;
-  saturday?: string;
-  note?: string;
 }
 
 export interface SocialMedia {
@@ -63,7 +52,8 @@ export interface GeoLocation {
  */
 export interface ContactFormConfig {
   id: string;
-  title?: string;
+  title: string;
+  heading?: string;
   subtitle?: string;
   fields: FormField[];
   submitButtonText: string;
@@ -91,13 +81,14 @@ export interface FormField {
 // Default contact page data with proper DB-based structure
 export const defaultContactPage: ContactPageData = {
   id: 'contact-page',
-  title: 'צור קשר',
+  title: 'יצירת קשר',
   subtitle: 'נשמח לענות על כל שאלה',
   sections: [
     {
       id: 'contact-hero',
       type: 'hero',
-      title: 'צור קשר עם קשב פלוס',
+      title: 'יצירת קשר',
+      subtitle: 'אנחנו כאן כדי לעזור לכם',
       content: 'אנחנו כאן כדי לענות על כל שאלה ולעזור לכם בכל נושא.',
       display_order: 1
     },
@@ -117,28 +108,20 @@ export const defaultContactPage: ContactPageData = {
     }
   ],
   contactInfo: {
-    address: 'רחוב הבנים 5, הוד השרון',
-    phone: '03-1234567',
-    email: 'contact@keshevplus.co.il',
-    whatsapp: '972501234567',
-    workingHours: {
-      sunday: '09:00 - 18:00',
-      monday: '09:00 - 18:00',
-      tuesday: '09:00 - 18:00',
-      wednesday: '09:00 - 18:00',
-      thursday: '09:00 - 18:00',
-      friday: '09:00 - 13:00',
-      saturday: 'סגור'
-    },
+    address: 'יגאל אלון 94 , מגדלי אלון 1, קומה 12, משרד 1202 תל אביב - יפו',
+    phone: '055-27-399-27',
+    email: 'dr@keshevplus.co.il',
+    whatsapp: '972552739927',
+
     location: {
-      lat: 32.1558,
-      lng: 34.8996,
+      lat: 32.0688715,
+      lng: 34.7939972,
       zoom: 15
     }
   },
   formConfig: {
     id: 'contact-form',
-    title: 'צור קשר',
+    title: 'יצירת קשר',
     fields: [
       {
         id: 'name',
@@ -153,7 +136,7 @@ export const defaultContactPage: ContactPageData = {
         name: 'email',
         label: 'דואר אלקטרוני',
         type: 'email',
-        placeholder: 'your@email.com',
+        placeholder: 'דוא״ל שלך@דוגמה.com',
         required: true
       },
       {
@@ -173,8 +156,8 @@ export const defaultContactPage: ContactPageData = {
         required: true
       }
     ],
-    submitButtonText: 'שלח',
-    successMessage: 'ההודעה נשלחה בהצלחה!',
-    errorMessage: 'אירעה שגיאה בשליחת ההודעה. אנא נסה שנית.'
+    submitButtonText: 'שלח פנייה',
+    successMessage: 'ההודעה נשלחה בהצלחה! נחזור אליך בהקדם האפשרי',
+    errorMessage: 'אירעה שגיאה בשליחת ההודעה. אנא נסה שנית או התקשר אלינו ישירות'
   }
 };

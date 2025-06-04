@@ -13,6 +13,7 @@ import ADHD from './pages/ADHD';
 import Diagnosis from './pages/Diagnosis';
 import Forms from './pages/Forms';
 import Contact from './pages/Contact';
+import AccessibilityPage from './pages/AccessibilityPage'; // Import global styles
 import NotFound from './pages/NotFound';
 
 // admin routes - lazy loaded to prevent them from affecting the public site
@@ -34,10 +35,10 @@ import AccessibilityWidget from './components/acc/AccessibilityWidget';
 function App() {
   return (
     <Provider store={store}>
-        <AuthProvider>
-          <ScrollToTop />
-          <ToastContainer position="top-center" />
-          <ErrorBoundary>
+      <AuthProvider>
+        <ScrollToTop />
+        <ToastContainer position="top-center" />
+        <ErrorBoundary>
           <div id="main-container" className="flex flex-col min-h-screen scrollbar overflow">
             {/* Accessibility Widget - Israeli Standard 5568 compliant */}
             <AccessibilityWidget />
@@ -69,25 +70,26 @@ function App() {
                         <Route path="/diagnosis" element={<Diagnosis />} />
                         <Route path="/forms" element={<Forms />} />
                         <Route path="/contact" element={<Contact />} />
+                        <Route path="/accessibility" element={<AccessibilityPage />} /> {/* Accessibility route */}
                         <Route path="*" element={<NotFound />} />
                       </Routes>
                     </main>
-                    
+
                     {/* AnimatedFooter only shown on non-home pages */}
                     {/* <Routes>
                       <Route path="/" element={null} />
                       <Route path="*" element={<AnimatedFooter />} />
                     </Routes> */}
-                    
+
                     <Footer />
                   </>
                 }
               />
             </Routes>
-            <SpeedInsights /> 
+            <SpeedInsights />
           </div>
         </ErrorBoundary>
-        </AuthProvider>
+      </AuthProvider>
     </Provider>
   );
 }

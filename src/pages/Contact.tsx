@@ -153,7 +153,10 @@ export default function Contact() {
     const tryResend = async () => {
       const queue = getUnsentMessages();
       if (queue.length === 0) return;
+
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://api.keshevplus.co.il';
+      let successCount = 0;
+
       for (let i = 0; i < queue.length; i++) {
         try {
           // Use direct path instead of /api/contact
@@ -162,10 +165,11 @@ export default function Contact() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(queue[i]),
           });
+
           if (response.ok) {
             removeSentMessage(i);
             i--; // adjust index after removal
-            toast.success('הודעה שנשמרה נשלחה בהצלחה!');
+            successCount++;
           } else {
             // Try fallback with /api prefix
             const fallbackResponse = await fetch(`${apiBaseUrl}/api/contact`, {
@@ -173,10 +177,11 @@ export default function Contact() {
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(queue[i]),
             });
+
             if (fallbackResponse.ok) {
               removeSentMessage(i);
-              i = 0; // adjust index after removal
-              toast.success('הודעה שנשמרה נשלחה בהצלחה!');
+              i--; // adjust index after removal
+              successCount++;
             }
           }
         } catch (err) {
@@ -184,7 +189,17 @@ export default function Contact() {
           // Still failing, keep in queue
         }
       }
+
+      // Show a single toast notification at the end
+      if (successCount > 0) {
+        toast.success(
+          successCount === 1
+            ? 'הודעה שנשמרה נשלחה בהצלחה!'
+            : `${successCount} הודעות שנשמרו נשלחו בהצלחה!`
+        );
+      }
     };
+
     tryResend();
   }, []);
 
@@ -195,14 +210,22 @@ export default function Contact() {
   }, []);
 
   return (
-    <PageLayout title={pageData[0]?.heading || ''} background="bg-white" maxWidth="md:max-w-4xl">
-
+    <PageLayout
+      title={pageData?.[0]?.title || 'יצירת קשר'}
+      background="bg-white"
+      maxWidth="md:max-w-4xl"
+    >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-
         {/* Contact Form */}
         <div>
+          <div className="mb-8">
+
+            <p className="text-lg text-gray-700 mb-4 text-right">
+              אנו כאן לענות על כל שאלה. מלאו את הטופס ואחד מהנציגים שלנו יחזור אליכם בהקדם.
+            </p>
+          </div>
           <h3 className="text-2xl md:text-xl font-bold text-green-800 text-right mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
-            {pageData[0]?.subheading}
+            {pageData?.subheading}
           </h3>
           {/* Add button to clear unsent messages if they exist */}
           {hasUnsentMessages && (
@@ -250,12 +273,14 @@ export default function Contact() {
                   className={`w-full p-3 rounded-lg border text-right ${errors.subject ? 'border-red-700 border-2' : 'border-gray-300 focus:border-green-500'}`}
                   defaultValue=""
                 >
-                  <option value="" disabled>אנא בחר נושא פנייה</option>
+                  <option value="" disabled className="text-gray">אנא בחר נושא פנייה</option>
                   <option value="זימון תור לאבחון מלא">זימון תור לאבחון מלא</option>
                   <option value="זימון תור למבחן MOXO">זימון תור למבחן MOXO</option>
+                  <option value="נושאים אחרים">נושאים אחרים</option>
+ 
 
-                  <option value="אחר">אחר</option>
                 </select>
+
                 {errors.subject && (
                   <span className="absolute left-0 text-red-700 font-bold text-sm m-2">
                     {errors.subject.message}
@@ -294,51 +319,58 @@ export default function Contact() {
             </div>
           </form>
         </div>
-      
+
         {/* Contact Details */}
         <div className="rounded-lg px-6 shadow-lg flex flex-col items-center justify-center py-6">
           <h3 className="text-xl font-bold text-green-800 mb-4">פרטי התקשרות</h3>
 
           <div>
-            <div className="font-bold text-lg">כתובת
-              <span className="text-green-700">:</span>
+            <div className="font-bold text-lg">
+              כתובת:
+
+              <p className="text-gray-700 mb-2">
+                <span className="text-green-700">מגדלי אלון 1, קומה 12, משרד 1202
+                  <br />
+                  יגאל אלון 94, תל אביב (וויביז)
+                </span>
+              </p>
+
             </div>
-            <div className="text-gray-700 mb-2">
-              <span className="text-green-700">מגדלי אלון 1, קומה 12, משרד 1202</span>
-              <br />
-              יגאל אלון 94, תל אביב (וויביז)
+
+
+          </div>
+          <div>
+            <div className="font-bold text-lg">אימייל:
+              <p className="text-gray-700 mb-2">
+                <a href="mailto:dr@keshevplus.co.il" className="text-green-700 hover:text-green-900">
+                  dr@keshevplus.co.il
+                </a>
+              </p>
             </div>
-  
           </div>
-          <div className="font-bold text-lg">אימייל:
-          </div>
-          <span className="text-gray-700 mb-2">
-          <a href="mailto:dr@keshevplus.co.il" className="text-green-700 hover:text-green-900">
-          dr@keshevplus.co.il   
-          </a>
-          </span>
-            <div className="font-bold text-lg">טלפון:
+
+          <div className="font-bold text-lg">טלפון:
             <a href="tel:055-27-399-27" className="text-green-700 hover:text-green-900">
               055-27-399-27
             </a>
-            </div>
+          </div>
 
           <button
             onClick={() => setIsModalOpen(true)}
             className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors mt-2 mb-4"
           >
             דרכי הגעה ואפשרויות חניה
-            </button>
+          </button>
 
           <div className="mt-4 w-full">
             <GoogleMap />
           </div>
         </div>
 
-      {/* Modal */}
-      <ContactInfoModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-      </div>
+        {/* Modal */}
+        <ContactInfoModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      </div >
 
-    </PageLayout>
+    </PageLayout >
   );
 }

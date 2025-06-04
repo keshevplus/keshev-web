@@ -9,9 +9,9 @@ const homePageData: HomePageContent = {
   ותוכנית טיפול אישית
   `,
   list: [
-    'ילדים',
-    'בני נוער',
-    'מבוגרים'
+    'בילדים',
+    'בבני נוער',
+    'במבוגרים'
   ],
   body: [
     {
@@ -28,15 +28,6 @@ const homePageData: HomePageContent = {
   ctaSubheading: 'אנחנו כאן בשבילכם',
   servicesHeading: 'השירותים שלנו',
   servicesSubheading: 'אנו מציעים מגוון שירותים מקצועיים',
-
-  // You can use list for words if needed
-
-  // Alternative: define a custom words object outside the HomePageContent interface
-  // words: {
-  //   kids: 'ילדים',
-  //   teens: 'בני נוער',
-  //   adults: 'מבוגרים'
-  // },
 
   services: [
     {

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { navItems } from './Navbar';
+import { usePageData } from '../hooks/usePageData';
 
 export default function Footer() {
   return (
@@ -17,7 +18,7 @@ export default function Footer() {
           </div>
 
           {/* Column 2: Navigation links */}
-          <div className="text-center md:text-right">
+          <div className="md:text-right">
             <h3 className="text-xl font-bold mb-2">תפריט ניווט</h3>
             <nav aria-label="Footer navigation">
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-3 gap-y-1 text-right">
@@ -35,17 +36,25 @@ export default function Footer() {
           </div>
 
           {/* Column 3: Contact info */}
-          <div className="text-center md:text-right">
-            <h3 className="text-xl font-bold mb-2">צור קשר</h3>
+          <div className="md:text-right">
+            <h3 className="text-xl font-bold mb-2">פרטי התקשרות</h3>
             <div className="flex flex-wrap justify-center md:justify-end gap-x-6">
-              <a href="tel:055-27-399-27" className="text-white hover:text-orange-400">
+              <Link
+                to="tel:055-27-399-27"
+                className="text-sm md:text-base text-white hover:text-orange-400 transition-colors"
+              >
                 טלפון: 055-27-399-27
-              </a>
-              <a href="/contact" className="text-white hover:text-orange-400">
-                דף יצירת קשר
-              </a>
+              </Link>
+              דוא"ל:
+              <Link
+                to="mailto:dr@keshevplus.co.il"
+                className="text-sm md:text-base text-white hover:text-orange-400 transition-colors"
+              >
+                dr@keshevplus.co.il
+              </Link>
             </div>
           </div>
+
         </div>
       </div>
     </footer>

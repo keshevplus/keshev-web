@@ -4,7 +4,7 @@ import { IPagination } from './IPagination';
  * Lead model representing a customer inquiry
  */
 export interface ILead {
-  id: string;
+  id: number;
   name: string;
   email: string;
   phone: string;
@@ -12,7 +12,7 @@ export interface ILead {
   message: string;
   created_at: string;
   is_read?: boolean;
-  user_id?: string | null;
+  user_id?: number | null;
   previous_message_count?: number;
 }
 

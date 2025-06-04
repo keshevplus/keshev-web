@@ -2,15 +2,7 @@ import React from 'react';
 import { usePageData } from '../hooks/usePageData';
 import PageLayout from '../components/ui/PageLayout';
 import Card from '../components/ui/Card';
-
-// Define the type for the additional items
-interface AdditionalItem {
-  title: string;
-  subtite?: string;
-  description: string;
-  image?: string;
-  icon?: string;
-}
+import { ContentItem } from '../types/content';
 
 const ADHDPage: React.FC = () => {
   const { data, isLoading, error } = usePageData('adhd');
@@ -29,51 +21,50 @@ const ADHDPage: React.FC = () => {
     );
   if (!data || !data.length) return null;
 
-  const pageData = data[0] as {
+  const pageData = data[0] as ContentItem & {
+    // Extend the ContentItem type to include additional properties specific to this page
     heading: string;
     subheading: string;
     body: {
       image: any;
       title: string;
       description: string;
+      subItems?: {
+        title: string;
+        description: string;
+      }[];
+      textColor?: string; // Add textColor property
+      bgColor?: string; // Add bgColor property
     }[];
-    additional?: AdditionalItem[];
   };
 
   return (
-    <PageLayout  title={pageData.heading}>
+    <PageLayout
+      title={pageData.title || 'מהי ADHD?'}
+      background="bg-white"
+      withRtl={true}
+      maxWidth="md:max-w-[90%] lg:max-w-[55%]"
+    >
       <div className="container mx-auto px-4 py-8">
-        <p className="text-xl text-gray-700 mb-6 text-center">
-          {pageData.subheading}
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <h3 className="text-xl md:text-3xl font-bold text-black text-center mb-8">
+          {pageData.heading || 'שירותינו במרפאה'}
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-1 gap-8 mb-8">
           {pageData.body.map((item, idx) => (
             <Card
               key={idx}
-              bgcolor="bg-white"
-              textColor="text-black"
-              textSize="text-lg"
+              bgcolor={item.bgColor || ""}
+              textColor={item.textColor || "text-black"}
+              textSize="text-xl md:text-2xl" /* Bigger title font */
+              paraSize='text-md md:text-lg whitespace-pre-line' /* Smaller content font */
               title={item.title}
               description={item.description}
               image={item.image}
+              subItems={item.subItems} // Pass subItems here
             />
           ))}
         </div>
-        {pageData.additional && pageData.additional.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {pageData.additional.map((item, idx) => (
-              <Card
-                key={idx}
-                bgcolor="bg-orange-400/35 hover:bg-orange-400/60"
-                textColor="text-black font-bold"
-                textSize="text-2xl"
-                title={item.title}
-                description={item.description}
-                image={item.image}
-              />
-            ))}
-          </div>
-        )}
+
       </div>
     </PageLayout>
   );

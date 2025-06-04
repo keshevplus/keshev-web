@@ -41,44 +41,31 @@ export default function Diagnosis() {
 
   return (
     <div className="rtl relative overflow-hidden">
-      <PageTitle title={pageData.heading} />
-      
+      <PageTitle title={pageData.title} />
+
       {/* Gradient background */}
       <div className="absolute inset-0 z-[-1] bg-gradient-radial from-green-700/80 via-green-600/60 to-green-800/90 animate-gradient-slow"></div>
 
-      
       <div className="rtl-container" dir="rtl">
         <div className="container mx-auto sm:max-w-[90%] lg:max-w-[60%] px-4 sm:px-6">
           <div className="text-center">
-      
-            <div className="grid grid-cols-1 gap-3 text-right mb-8">
-              {/* First three items - תהליך האבחון הבסיסי */}
-              <div className="bg-white p-6 rounded-lg transition-all duration-300">
-       
-                <ul className="list-none space-y-4">
-                  {pageData.body?.slice(0, 3)?.map((item, index) => (
-                    <li key={item.title} className="backdrop-blur-sm rounded-lg transition-all duration-300">
-                      <Card
-                        bgcolor="bg-orange-400/35 hover:bg-orange-400/60 w-full"
-                        textColor="text-black font-bold"
-                        textSize="text-lg md:text-xl"
-                        paraSize="text-md md:text-lg"
-                        title={item.title ?? ''}
-                        description={item.description ?? ''}
-                        image={item.image}
-                      />
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              
-              {/* Last three items - שירותים נוספים */}
-              <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg transition-all duration-300">
-                <h3 className="text-xl md:text-2xl font-bold text-white mb-4 pb-2">
-                  שירותים נוספים
-                </h3>
-       
-              </div>
+            <h3 className="text-xl md:text-3xl font-bold text-black text-center mb-8">
+              {pageData.heading || 'שירותינו במרפאה'}
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-1 gap-8 mb-8">
+              {pageData.body.map((item, idx) => (
+                <Card
+                  key={idx}
+                  bgcolor={item.bgColor || ""}
+                  textColor={item.textColor || "text-black"}
+                  textSize="text-xl md:text-2xl" /* Bigger title font */
+                  paraSize='text-md md:text-lg whitespace-pre-line' /* Smaller content font */
+                  title={item.title}
+                  description={item.description}
+                  image={item.image}
+                  subItems={item.subItems} // Pass subItems here
+                />
+              ))}
             </div>
 
             {/* <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg  hover:shadow-2xl transition-all duration-300 mt-10">

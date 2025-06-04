@@ -1,7 +1,16 @@
 :root {
   --logo-green: #166534; /* Same as Tailwind's green-800 */
 }
-
+*{
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  color: #000;
+  text-decoration: none;
+}
 /* Then use this variable for your phone SVG */
 .phone-icon {
   fill: var(--logo-green);

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { leadsService } from '../../services/LeadService';
 import { ILead } from '../../models/interfaces/ILead';
 import { IPagination } from '../../models/interfaces/IPagination';
-import { FiCheck, FiEye, FiTrash2, FiFilter, FiSearch, FiRefreshCw } from 'react-icons/fi';
+import { FiEye, FiTrash2, FiFilter, FiSearch, FiRefreshCw } from 'react-icons/fi';
 
 // Define table limit constant
 const limit = 10;
@@ -16,7 +16,6 @@ const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) =>
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState('');
   const [sortField, setSortField] = useState<string>('created_at'); // Default sort by created_at
-  // Default sort direction is descending for date fields, ascending for text fields
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [pagination, setPagination] = useState<IPagination>({
     total: 0,
@@ -36,7 +35,7 @@ const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) =>
   const sortedLeads = useMemo(() => {
     return [...leads].sort((a, b) => {
       // Handle date fields
-      if (sortField === 'create_at') {
+      if (sortField === 'created_at') {
         const dateA = new Date(a[sortField as keyof ILead] as string).getTime();
         const dateB = new Date(b[sortField as keyof ILead] as string).getTime();
         return sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
@@ -159,12 +158,11 @@ const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) =>
   // Function to handle sorting when a column header is clicked
   const handleSort = (field: string) => {
     if (sortField === field) {
-      // Toggle direction if same field
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     } else {
-      // Set new field and default to descending for dates, ascending for text
       setSortField(field);
-      setSortDirection(field.includes('date') ? 'desc' : 'asc');
+      // default desc for dates, asc otherwise
+      setSortDirection(field === 'created_at' ? 'desc' : 'asc');
     }
   };
 
@@ -182,6 +180,15 @@ const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) =>
       </span>
     );
   };
+
+  // Show spinner while initial load
+  if (loading && leads.length === 0) {
+    return (
+      <div className="p-6 flex justify-center">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6" dir={isRtl ? 'rtl' : 'ltr'}>
@@ -229,7 +236,7 @@ const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) =>
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead className={darkMode ? 'bg-gray-700' : 'bg-gray-100'}>
             <tr>
-              <th className={`px-4 py-3 text-right text-xs font-medium uppercase tracking-wider cursor-pointer ${sortField === 'name' ? 'bg-blue-100 dark:bg-blue-900' : ''}`}
+              <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider cursor-pointer"
                 onClick={() => handleSort('name')}
               >
                 <div className="flex items-center justify-end">
@@ -253,6 +260,9 @@ const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) =>
                   <SortIndicator field="subject" />
                 </div>
               </th>
+              <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                {t('admin.message', 'Message')}
+              </th>
               <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
                 onClick={() => handleSort('created_at')}
               >
@@ -269,20 +279,24 @@ const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) =>
           <tbody className={`${darkMode ? 'bg-gray-800 divide-gray-700' : 'bg-white divide-gray-200'} divide-y`}>
             {leads.length === 0 ? (
               <tr>
-                <td colSpan={7} className={`px-6 py-4 text-center ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>
+                <td colSpan={6} className={`px-6 py-4 text-center ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>
                   No leads found
                 </td>
               </tr>
             ) : (
-              leads.map((lead) => (
+              // use sortedLeads instead of raw leads
+              sortedLeads.map((lead) => (
                 <React.Fragment key={lead.id}>
                   <tr className={darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-50'}>
                     <td className={`px-4 py-2 text-sm ${lead.is_read === false ? 'font-bold' : ''} ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{lead.name}</td>
-                    <td className={`px-4 py-2 text-sm ${lead.is_read === false ? 'font-bold' : ''} ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{lead.email}</td>
-                    <td className={`px-4 py-2 text-sm ${lead.is_read === false ? 'font-bold' : ''} ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{lead.phone}</td>
-                    <td className={`px-4 py-2 text-sm break-words ${lead.is_read === false ? 'font-bold' : ''} ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{lead.message.length > 50 ? `${lead.message.substring(0, 50)}...` : lead.message}</td>
+                    <td className={`px-4 py-2 text-sm ${lead.is_read === false ? 'font-bold' : ''} ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
+                      {lead.email}{lead.phone ? ` / ${lead.phone}` : ''}
+                    </td>
+                    <td className={`px-4 py-2 text-sm ${lead.is_read === false ? 'font-bold' : ''} ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{lead.subject}</td>
+                    <td className={`px-4 py-2 text-sm break-words ${lead.is_read === false ? 'font-bold' : ''} ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
+                      {lead.message.length > 50 ? `${lead.message.substring(0, 50)}...` : lead.message}
+                    </td>
                     <td className={`px-4 py-2 text-sm ${lead.is_read === false ? 'font-bold' : ''} ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{lead.created_at ? new Date(lead.created_at).toLocaleString() : 'N/A'}</td>
-                    <td className={`px-4 py-2 whitespace-nowrap text-sm ${darkMode ? 'text-gray-200' : 'text-gray-500'}`}>{lead.created_at ? new Date(lead.created_at).toLocaleString('en-US') : new Date(lead.created_at).toLocaleString('en-US')}</td>
                     <td className="px-4 py-2 whitespace-nowrap text-sm">
                       <button
                         aria-label={t('admin.viewDetails', 'View details')}
@@ -305,14 +319,19 @@ const LeadsManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false }) =>
                   </tr>
                   {expandedRowId === lead.id && (
                     <tr>
-                      <td colSpan={7} className={`p-4 ${darkMode ? 'bg-gray-700 text-gray-200' : 'bg-gray-50 text-gray-800'}`}>
+                      <td colSpan={6} className={`p-4 ${darkMode ? 'bg-gray-700 text-gray-200' : 'bg-gray-50 text-gray-800'}`}>
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
                           <div><strong>Name:</strong> {lead.name}</div>
                           <div><strong>Email:</strong> {lead.email}</div>
                           <div><strong>Phone:</strong> {lead.phone}</div>
                           <div><strong>Subject:</strong> {lead.subject}</div>
                           <div className="col-span-3"><strong>Message:</strong> {lead.message}</div>
-                          <div><strong>Received:</strong> {lead.created_at ? new Date(lead.created_at).toLocaleString('en-US') : new Date(lead.created_at).toLocaleString('en-US')}</div>
+                          <div>
+                            <strong>Received:</strong>{' '}
+                            {lead.created_at
+                              ? new Date(lead.created_at).toLocaleString('en-US')
+                              : 'N/A'}
+                          </div>
                         </div>
                         <button
                           className={`mt-2 ${darkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-800'}`}

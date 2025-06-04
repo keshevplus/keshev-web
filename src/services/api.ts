@@ -13,7 +13,7 @@ declare interface ImportMeta {
 const IS_DEV = import.meta.env.DEV;
 
 // Local proxy server that forwards requests to the real API but bypasses CORS issues
-const PROXY_URL = 'http://localhost:3001/api';
+const PROXY_URL = import.meta.env.VITE_PROXY_URL || 'http://localhost:3000/api';
 
 // Choose API URL based on environment - proxy for dev, real API for production
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string;

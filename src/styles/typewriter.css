@@ -1,0 +1,42 @@
+.typewriter-container {
+  min-height: 1.5em;
+  display: inline-flex;
+  align-items: center;
+}
+
+.typewriter-text {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: transparent;
+  animation: typing 3s steps(40, end);
+  min-width: 1ch;
+  color: #15803d; /* green-700 */
+  font-weight: bold;
+}
+
+.typewriter-cursor {
+  color: #15803d; /* green-700 */
+  font-weight: bold;
+  margin-left: 2px;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink {
+  from, to { opacity: 1 }
+  50% { opacity: 0 }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: #15803d; }
+}
+
+/* Add this for RTL support */
+[dir="rtl"] .typewriter-text {
+  text-align: right;
+}

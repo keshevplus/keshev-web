@@ -24,7 +24,7 @@ export default function Services() {
 
   if (!data?.length)
     return (
-      <div className="container mx-auto max-w-full md:max-w-[85%] py-8 error">
+      <div className="container mx-auto py-8 error">
         <div className="text-red-600">No services data found.</div>
       </div>
     );
@@ -33,28 +33,28 @@ export default function Services() {
 
   return (
     <PageLayout
-      title={pageData.heading || 'Services'}
+      title={pageData.title || 'Services'}
       background="bg-white"
       withRtl={true}
       maxWidth="md:max-w-[90%] lg:max-w-[85%]"
     >
       <h3 className="text-xl md:text-3xl font-bold text-black text-center mb-8">
-        {pageData.subheading || 'Our Services'}
+        {pageData.heading || 'שירותינו במרפאה'}
       </h3>
       <div className="rtl-container" dir="rtl">
-        <ul className="grid grid-cols-1 gap-8 w-full max-w-full md:max-w-[60%] mx-auto">
+        <ul className="grid grid-cols-1 gap-8 w-full max-w-full md:max-w-[75%] mx-auto">
           {/* All service cards from data */}
           {pageData.body?.map((item, index) => (
             <li key={index} className="items-start justify-start">
               <Card
-                bgcolor="bg-orange-400/35 hover:bg-orange-400/60 text-right"
+                bgcolor={item.bgColor || "bg-orange-400/35 hover:bg-orange-400/60 text-right"}
                 textColor="text-black font-bold"
-                textSize="text-2xl md:text-3xl" /* Bigger title font */
-                paraSize="text-md md:text-md whitespace-pre-line" /* Smaller content font */
-                title={item.title || 'Untitled'}
-                description={item.description || ''}
+                textSize="text-xl md:text-2xl" /* Bigger title font */
+                paraSize="text-md md:text-lg whitespace-pre-line" /* Smaller content font */
+                title={item.title || 'מקיף אבחון'}
+                description={item.description || 'הליך האבחון'}
                 icon={customLeafIcon} /* Use custom green leaf icon for all cards */
-                // isRtl={true} /* Enable RTL for Hebrew content */
+              // isRtl={true} /* Enable RTL for Hebrew content */
               />
             </li>
           ))}
