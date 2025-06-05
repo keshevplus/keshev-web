@@ -58,12 +58,12 @@ const MessagesManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false })
       setLoading(false);
     }
   }
-  
+
   async function markAsRead(id: string) {
     try {
       await messagesService.markMessageAsRead(id);
       // Update local state to reflect the change without refetching
-      setMessages(messages.map(msg => 
+      setMessages(messages.map(msg =>
         msg.id === id ? { ...msg, is_read: true } : msg
       ));
     } catch (error) {
@@ -81,7 +81,7 @@ const MessagesManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false })
       }
     }
   }
-  
+
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilter(e.target.value);
     setPage(1); // Reset to first page when filter changes
@@ -111,9 +111,8 @@ const MessagesManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false })
           placeholder="Search by name, email, or subject"
           value={filter}
           onChange={handleFilterChange}
-          className={`w-full md:w-1/2 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-            darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300 text-gray-800'
-          }`}
+          className={`w-full md:w-1/2 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300 text-gray-800'
+            }`}
         />
       </div>
 
@@ -200,26 +199,24 @@ const MessagesManager: React.FC<{ darkMode?: boolean }> = ({ darkMode = false })
           <button
             onClick={() => setPage(p => Math.max(1, p - 1))}
             disabled={page === 1}
-            className={`px-4 py-2 rounded-lg disabled:opacity-50 ${
-              darkMode 
-                ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 disabled:bg-gray-800' 
+            className={`px-4 py-2 rounded-lg disabled:opacity-50 ${darkMode
+                ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 disabled:bg-gray-800'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
+              }`}
           >
             Previous
           </button>
           <span className={darkMode ? 'text-gray-200' : 'text-gray-600'}>
-            Page {pagination.page} of {pagination.totalPages} 
+            Page {pagination.page} of {pagination.totalPages}
             {pagination.total > 0 && <span className="text-sm ml-2">({pagination.total} messages total)</span>}
           </span>
           <button
             onClick={() => setPage(p => p + 1)}
             disabled={page >= pagination.totalPages}
-            className={`px-4 py-2 rounded-lg disabled:opacity-50 ${
-              darkMode 
-                ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 disabled:bg-gray-800' 
+            className={`px-4 py-2 rounded-lg disabled:opacity-50 ${darkMode
+                ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 disabled:bg-gray-800'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
+              }`}
           >
             Next
           </button>

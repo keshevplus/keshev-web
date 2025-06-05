@@ -57,7 +57,7 @@ export default function Contact() {
   function clearUnsentMessages() {
     localStorage.removeItem(LOCAL_STORAGE_KEY);
     setHasUnsentMessages(false);
-    toast.success('כל ההודעות שלא נשלחו נמחקו');
+    console.log('כל ההודעות שלא נשלחו נמחקו');
   }
 
   // --- On submit ---
@@ -231,147 +231,148 @@ export default function Contact() {
           </h3>
           {/* Add button to clear unsent messages if they exist */}
           {hasUnsentMessages && (
-            <div className="mb-4 bg-yellow-50 p-3 rounded-lg border border-yellow-200">
-              <p className="text-yellow-800 mb-2">יש הודעות שלא נשלחו בזיכרון המקומי</p>
-              <button
-                type="button"
-                onClick={clearUnsentMessages}
-                className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition-colors text-sm"
-              >
-                מחק את כל ההודעות שלא נשלחו
-              </button>
-            </div>
+            console.log('Unsent messages found in local storage');
+            // <div className="mb-4 bg-yellow-50 p-3 rounded-lg border border-yellow-200">
+            //   <p className="text-yellow-800 mb-2">יש הודעות שלא נשלחו בזיכרון המקומי</p>
+            //   <button
+            //     type="button"
+            //     onClick={clearUnsentMessages}
+            //     className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition-colors text-sm"
+            //   >
+            //     מחק את כל ההודעות שלא נשלחו
+            //   </button>
+            // </div>
           )}
-          <form
-            className="bg-orange-400/65 p-6 rounded-lg shadow-lg w-full"
-            onSubmit={(e) => {
-              e.preventDefault(); // Explicitly prevent default form submission
-              handleSubmit(onSubmit)(e);
-            }}
-            noValidate
-          >
-            <div className="grid grid-cols-1 gap-4 mb-4">
-              {/* Name, Email, Phone fields */}
-              {[{ name: 'name', label: 'שם' }, { name: 'email', label: 'אימייל', type: 'email' }, { name: 'phone', label: 'טלפון', type: 'tel' }].map(({ name, label, type = 'text' }) => (
-                <div key={name} className="relative">
-                  <input
-                    {...register(name as keyof FormValues)}
-                    type={type}
-                    placeholder={label}
-                    className={`w-full p-3 rounded-lg border text-right ${errors[name as keyof FormValues] ? 'border-red-700 border-2' : 'border-gray-300 focus:border-green-500'}`}
-                  />
-                  {errors[name as keyof FormValues] && (
-                    <span className="absolute left-0 text-red-700 font-bold text-sm m-2">
-                      {errors[name as keyof FormValues]?.message}
-                    </span>
-                  )}
-                </div>
-              ))}
-
-              {/* Subject dropdown */}
-              <div className="relative">
-                <select
-                  {...register('subject')}
-                  className={`w-full p-3 rounded-lg border text-right ${errors.subject ? 'border-red-700 border-2' : 'border-gray-300 focus:border-green-500'}`}
-                  defaultValue=""
-                >
-                  <option value="" disabled className="text-gray">אנא בחר נושא פנייה</option>
-                  <option value="זימון תור לאבחון מלא">זימון תור לאבחון מלא</option>
-                  <option value="זימון תור למבחן MOXO">זימון תור למבחן MOXO</option>
-                  <option value="נושאים אחרים">נושאים אחרים</option>
-
-
-                </select>
-
-                {errors.subject && (
+        <form
+          className="bg-orange-400/65 p-6 rounded-lg shadow-lg w-full"
+          onSubmit={(e) => {
+            e.preventDefault(); // Explicitly prevent default form submission
+            handleSubmit(onSubmit)(e);
+          }}
+          noValidate
+        >
+          <div className="grid grid-cols-1 gap-4 mb-4">
+            {/* Name, Email, Phone fields */}
+            {[{ name: 'name', label: 'שם' }, { name: 'email', label: 'אימייל', type: 'email' }, { name: 'phone', label: 'טלפון', type: 'tel' }].map(({ name, label, type = 'text' }) => (
+              <div key={name} className="relative">
+                <input
+                  {...register(name as keyof FormValues)}
+                  type={type}
+                  placeholder={label}
+                  className={`w-full p-3 rounded-lg border text-right ${errors[name as keyof FormValues] ? 'border-red-700 border-2' : 'border-gray-300 focus:border-green-500'}`}
+                />
+                {errors[name as keyof FormValues] && (
                   <span className="absolute left-0 text-red-700 font-bold text-sm m-2">
-                    {errors.subject.message}
+                    {errors[name as keyof FormValues]?.message}
                   </span>
                 )}
               </div>
-            </div>
-            <div className="relative mb-4">
-              <textarea
-                {...register('message')}
-                rows={3}
-                placeholder="הודעה"
-                className={`w-full p-3 rounded-lg border text-right ${errors.message ? 'border-red-700 border-2' : 'border-gray-300 focus:border-green-500'}`}
-              />
-              {errors.message && (
+            ))}
+
+            {/* Subject dropdown */}
+            <div className="relative">
+              <select
+                {...register('subject')}
+                className={`w-full p-3 rounded-lg border text-right ${errors.subject ? 'border-red-700 border-2' : 'border-gray-300 focus:border-green-500'}`}
+                defaultValue=""
+              >
+                <option value="" disabled className="text-gray">אנא בחר נושא פנייה</option>
+                <option value="זימון תור לאבחון מלא">זימון תור לאבחון מלא</option>
+                <option value="זימון תור למבחן MOXO">זימון תור למבחן MOXO</option>
+                <option value="נושאים אחרים">נושאים אחרים</option>
+
+
+              </select>
+
+              {errors.subject && (
                 <span className="absolute left-0 text-red-700 font-bold text-sm m-2">
-                  {errors.message.message}
+                  {errors.subject.message}
                 </span>
               )}
             </div>
-            <div className="flex justify-between mt-4">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors duration-300 disabled:bg-gray-400"
-              >
-                {isSubmitting ? 'שולח...' : 'שלח הודעה'}
-              </button>
-              <button
-                type="button"
-                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors duration-300 mr-2"
-                onClick={() => reset()}
-              >
-                ניקוי טופס
-              </button>
-            </div>
-          </form>
+          </div>
+          <div className="relative mb-4">
+            <textarea
+              {...register('message')}
+              rows={3}
+              placeholder="הודעה"
+              className={`w-full p-3 rounded-lg border text-right ${errors.message ? 'border-red-700 border-2' : 'border-gray-300 focus:border-green-500'}`}
+            />
+            {errors.message && (
+              <span className="absolute left-0 text-red-700 font-bold text-sm m-2">
+                {errors.message.message}
+              </span>
+            )}
+          </div>
+          <div className="flex justify-between mt-4">
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors duration-300 disabled:bg-gray-400"
+            >
+              {isSubmitting ? 'שולח...' : 'שלח הודעה'}
+            </button>
+            <button
+              type="button"
+              className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors duration-300 mr-2"
+              onClick={() => reset()}
+            >
+              ניקוי טופס
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {/* Contact Details */}
+      <div className="rounded-lg px-6 shadow-lg flex flex-col items-center justify-center py-6">
+        <h3 className="text-xl font-bold text-green-800 mb-4">פרטי התקשרות</h3>
+
+        <div>
+          <div className="font-bold text-lg">
+            כתובת:
+
+            <p className="text-gray-700 mb-2">
+              <span className="text-green-700">מגדלי אלון 1, קומה 12, משרד 1202
+                <br />
+                יגאל אלון 94, תל אביב (וויביז)
+              </span>
+            </p>
+
+          </div>
+
+
         </div>
-
-        {/* Contact Details */}
-        <div className="rounded-lg px-6 shadow-lg flex flex-col items-center justify-center py-6">
-          <h3 className="text-xl font-bold text-green-800 mb-4">פרטי התקשרות</h3>
-
-          <div>
-            <div className="font-bold text-lg">
-              כתובת:
-
-              <p className="text-gray-700 mb-2">
-                <span className="text-green-700">מגדלי אלון 1, קומה 12, משרד 1202
-                  <br />
-                  יגאל אלון 94, תל אביב (וויביז)
-                </span>
-              </p>
-
-            </div>
-
-
-          </div>
-          <div>
-            <div className="font-bold text-lg">אימייל:
-              <p className="text-gray-700 mb-2">
-                <a href="mailto:dr@keshevplus.co.il" className="text-green-700 hover:text-green-900">
-                  dr@keshevplus.co.il
-                </a>
-              </p>
-            </div>
-          </div>
-
-          <div className="font-bold text-lg">טלפון:
-            <a href="tel:055-27-399-27" className="text-green-700 hover:text-green-900">
-              055-27-399-27
-            </a>
-          </div>
-
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors mt-2 mb-4"
-          >
-            דרכי הגעה ואפשרויות חניה
-          </button>
-
-          <div className="mt-4 w-full">
-            <GoogleMap />
+        <div>
+          <div className="font-bold text-lg">אימייל:
+            <p className="text-gray-700 mb-2">
+              <a href="mailto:dr@keshevplus.co.il" className="text-green-700 hover:text-green-900">
+                dr@keshevplus.co.il
+              </a>
+            </p>
           </div>
         </div>
 
-        {/* Modal */}
-        <ContactInfoModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-      </div >
+        <div className="font-bold text-lg">טלפון:
+          <a href="tel:055-27-399-27" className="text-green-700 hover:text-green-900">
+            055-27-399-27
+          </a>
+        </div>
+
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors mt-2 mb-4"
+        >
+          דרכי הגעה ואפשרויות חניה
+        </button>
+
+        <div className="mt-4 w-full">
+          <GoogleMap />
+        </div>
+      </div>
+
+      {/* Modal */}
+      <ContactInfoModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </div >
 
     </PageLayout >
   );

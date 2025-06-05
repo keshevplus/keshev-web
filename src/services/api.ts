@@ -28,5 +28,4 @@ export * from './services/ServicesService';
 export * from './services/FormsService';
 export * from './services/ContentService';
 export * from './services/MessagesService';
-export * from './services/LeadsService';
 export * from './services/AuthService';

@@ -1,9 +1,9 @@
 import { API_BASE_URL } from './api';
 
 /**
- * Lead model representing a customer inquiry
+ * Message model representing a customer inquiry
  */
-export interface Lead {
+export interface Message {
   id: string;
   name: string;
   email: string;
@@ -15,9 +15,9 @@ export interface Lead {
 }
 
 /**
- * Data required to create a new lead
+ * Data required to create a new message
  */
-export interface CreateLeadDto {
+export interface CreateMessageDto {
   name: string;
   email: string;
   phone: string;
@@ -26,9 +26,9 @@ export interface CreateLeadDto {
 }
 
 /**
- * Data for updating an existing lead
+ * Data for updating an existing message
  */
-export interface UpdateLeadDto {
+export interface UpdateMessageDto {
   name?: string;
   email?: string;
   phone?: string;
@@ -38,7 +38,7 @@ export interface UpdateLeadDto {
 }
 
 /**
- * Pagination data structure for leads
+ * Pagination data structure for messages
  */
 export interface PaginationData {
   total: number;
@@ -50,10 +50,10 @@ export interface PaginationData {
 }
 
 /**
- * Response format for paginated lead data
+ * Response format for paginated message data
  */
-export interface LeadsResponse {
-  leads: Lead[];
+export interface MessagesResponse {
+  messages: Message[];
   pagination: PaginationData;
 }
 
@@ -65,7 +65,7 @@ export interface LeadsResponse {
 const authenticatedRequest = async <T>(url: string, options: RequestInit = {}): Promise<T> => {
   const token = localStorage.getItem('token');
   
-  console.log(`[Leads API] Request to ${url} with token: ${token ? token.substring(0, 10) + '...' : 'none'}`);
+  console.log(`[Messages API] Request to ${url} with token: ${token ? token.substring(0, 10) + '...' : 'none'}`);
 
   if (!token) {
     // Redirect to login if no token
@@ -140,13 +140,13 @@ const authenticatedRequest = async <T>(url: string, options: RequestInit = {}): 
 };
 
 /**
- * LeadService - ORM-like interface for working with lead data
+ * MessageService - ORM-like interface for working with message data
  */
-class LeadService {
+class MessageService {
   /**
-   * Get all leads with pagination and optional filtering
+   * Get all messages with pagination and optional filtering
    */
-  async getAllLeads(page = 1, limit = 100, filter = ''): Promise<LeadsResponse> {
+  async getAllMessages(page = 1, limit = 100, filter = ''): Promise<MessagesResponse> {
     try {
       // Construct the URL with query parameters
       const queryParams = new URLSearchParams();
@@ -154,22 +154,22 @@ class LeadService {
       queryParams.append('limit', limit.toString());
       if (filter) queryParams.append('filter', filter);
       
-      const url = `leads?${queryParams.toString()}`;
-      console.log(`Fetching leads with URL: ${url}`);
+      const url = `messages?${queryParams.toString()}`;
+      console.log(`Fetching messages with URL: ${url}`);
       
       const response = await authenticatedRequest<any>(url);
-      console.log('Received leads response:', response);
+      console.log('Received messages response:', response);
       
       // Helper function for normalizing data
-      const normalizeLead = (lead: Record<string, any>): Lead => ({
-        id: lead.id || '',
-        name: lead.name || '',
-        email: lead.email || '',
-        phone: lead.phone || '',
-        subject: lead.subject || '',
-        message: lead.message || '',
-        created_at: lead.created_at || lead.createdAt || new Date().toISOString(),
-        is_read: typeof lead.is_read === 'boolean' ? lead.is_read : false
+      const normalizeMessage = (message: Record<string, any>): Message => ({
+        id: message.id || '',
+        name: message.name || '',
+        email: message.email || '',
+        phone: message.phone || '',
+        subject: message.subject || '',
+        message: message.message || '',
+        created_at: message.created_at || message.createdAt || new Date().toISOString(),
+        is_read: typeof message.is_read === 'boolean' ? message.is_read : false
       });
       
       // Create default pagination if needed
@@ -184,71 +184,71 @@ class LeadService {
       
       // Handle different response formats
       
-      // Case 1: response has 'leads' property
-      if (response && response.leads) {
-        console.log(`✅ Found ${response.leads.length} leads in response.leads`);
-        const normalizedLeads = response.leads.map(normalizeLead);
+      // Case 1: response has 'messages' property
+      if (response && response.messages) {
+        console.log(`✅ Found ${response.messages.length} messages in response.messages`);
+        const normalizedMessages = response.messages.map(normalizeMessage);
         
         return {
-          leads: normalizedLeads,
-          pagination: response.pagination || createDefaultPagination(normalizedLeads.length)
+          messages: normalizedMessages,
+          pagination: response.pagination || createDefaultPagination(normalizedMessages.length)
         };
       }
       
       // Case 2: response has 'data' property (common REST API format)
       if (response && response.data) {
         const data = Array.isArray(response.data) ? response.data : [response.data];
-        console.log(`✅ Found ${data.length} leads in response.data`);
-        const normalizedLeads = data.map(normalizeLead);
+        console.log(`✅ Found ${data.length} messages in response.data`);
+        const normalizedMessages = data.map(normalizeMessage);
         
         return {
-          leads: normalizedLeads,
-          pagination: response.pagination || response.meta || createDefaultPagination(normalizedLeads.length)
+          messages: normalizedMessages,
+          pagination: response.pagination || response.meta || createDefaultPagination(normalizedMessages.length)
         };
       }
       
-      // Case 3: response itself is an array of leads
+      // Case 3: response itself is an array of messages
       if (Array.isArray(response)) {
-        console.log(`✅ Response is an array with ${response.length} leads`);
-        const normalizedLeads = response.map(normalizeLead);
+        console.log(`✅ Response is an array with ${response.length} messages`);
+        const normalizedMessages = response.map(normalizeMessage);
         
         return {
-          leads: normalizedLeads,
-          pagination: createDefaultPagination(normalizedLeads.length)
+          messages: normalizedMessages,
+          pagination: createDefaultPagination(normalizedMessages.length)
         };
       }
       
-      // Case 4: response has other array properties that might contain leads
+      // Case 4: response has other array properties that might contain messages
       if (response) {
         for (const key of Object.keys(response)) {
           if (Array.isArray(response[key])) {
             console.log(`✅ Found array in response[${key}] with ${response[key].length} items`);
-            const normalizedLeads = response[key].map(normalizeLead);
+            const normalizedMessages = response[key].map(normalizeMessage);
             
             return {
-              leads: normalizedLeads,
-              pagination: response.pagination || createDefaultPagination(normalizedLeads.length)
+              messages: normalizedMessages,
+              pagination: response.pagination || createDefaultPagination(normalizedMessages.length)
             };
           }
         }
       }
       
-      // Case 5: Response is a single lead object
+      // Case 5: Response is a single message object
       if (response && typeof response === 'object' && !Array.isArray(response) &&
           (response.name || response.email || response.message)) {
-        console.log('✅ Response appears to be a single lead object');
-        const normalizedLead = normalizeLead(response);
+        console.log('✅ Response appears to be a single message object');
+        const normalizedMessage = normalizeMessage(response);
         
         return {
-          leads: [normalizedLead],
+          messages: [normalizedMessage],
           pagination: createDefaultPagination(1)
         };
       }
       
       // Fallback: empty response
-      console.warn('⚠️ Could not find leads data in API response:', response);
+      console.warn('⚠️ Could not find messages data in API response:', response);
       return {
-        leads: [],
+        messages: [],
         pagination: {
           total: 0,
           page,
@@ -259,10 +259,10 @@ class LeadService {
         }
       };
     } catch (error) {
-      console.error('Error fetching leads:', error);
+      console.error('Error fetching messages:', error);
       // Return empty results
       return {
-        leads: [],
+        messages: [],
         pagination: {
           total: 0,
           page,
@@ -276,99 +276,99 @@ class LeadService {
   }
 
   /**
-   * Get a single lead by ID
+   * Get a single message by ID
    */
-  async getLeadById(id: string): Promise<Lead | null> {
+  async getMessageById(id: string): Promise<Message | null> {
     try {
-      console.log(`Getting lead details for id: ${id}`);
-      const lead = await authenticatedRequest<Lead>(`leads/${id}`);
-      return lead || null;
+      console.log(`Getting message details for id: ${id}`);
+      const message = await authenticatedRequest<Message>(`messages/${id}`);
+      return message || null;
     } catch (error) {
-      console.error(`Error fetching lead ${id}:`, error);
+      console.error(`Error fetching message ${id}:`, error);
       return null;
     }
   }
 
   /**
-   * Create a new lead
+   * Create a new message
    */
-  async createLead(leadData: CreateLeadDto): Promise<Lead | null> {
+  async createMessage(messageData: CreateMessageDto): Promise<Message | null> {
     try {
-      const response = await authenticatedRequest<Lead>('leads', {
+      const response = await authenticatedRequest<Message>('messages', {
         method: 'POST',
-        body: JSON.stringify(leadData)
+        body: JSON.stringify(messageData)
       });
       return response;
     } catch (error) {
-      console.error('Error creating lead:', error);
+      console.error('Error creating message:', error);
       return null;
     }
   }
 
   /**
-   * Update an existing lead
+   * Update an existing message
    */
-  async updateLead(id: string, leadData: UpdateLeadDto): Promise<Lead | null> {
+  async updateMessage(id: string, messageData: UpdateMessageDto): Promise<Message | null> {
     try {
-      const response = await authenticatedRequest<Lead>(`leads/${id}`, {
+      const response = await authenticatedRequest<Message>(`messages/${id}`, {
         method: 'PUT',
-        body: JSON.stringify(leadData)
+        body: JSON.stringify(messageData)
       });
       return response;
     } catch (error) {
-      console.error(`Error updating lead ${id}:`, error);
+      console.error(`Error updating message ${id}:`, error);
       return null;
     }
   }
 
   /**
-   * Mark a lead as read
+   * Mark a message as read
    */
-  async markLeadAsRead(id: string): Promise<Lead | null> {
+  async markMessageAsRead(id: string): Promise<Message | null> {
     try {
-      console.log('Marking lead as read:', id);
-      const response = await authenticatedRequest<Lead>(`leads/${id}/read`, {
+      console.log('Marking message as read:', id);
+      const response = await authenticatedRequest<Message>(`messages/${id}/read`, {
         method: 'PUT',
         body: JSON.stringify({ is_read: true })
       });
       console.log('Mark as read response:', response);
       return response;
     } catch (error) {
-      console.error('Error marking lead as read:', error);
+      console.error('Error marking message as read:', error);
       return null;
     }
   }
 
   /**
-   * Delete a lead
+   * Delete a message
    */
-  async deleteLead(id: string): Promise<boolean> {
+  async deleteMessage(id: string): Promise<boolean> {
     try {
-      console.log(`Deleting lead with id: ${id}`);
-      const response = await authenticatedRequest<{ success: boolean }>(`leads/${id}`, {
+      console.log(`Deleting message with id: ${id}`);
+      const response = await authenticatedRequest<{ success: boolean }>(`messages/${id}`, {
         method: 'DELETE'
       });
       return response?.success || false;
     } catch (error) {
-      console.error(`Error deleting lead ${id}:`, error);
+      console.error(`Error deleting message ${id}:`, error);
       return false;
     }
   }
 
   /**
-   * Get count of unread leads
+   * Get count of unread messages
    */
   async getUnreadCount(): Promise<number> {
     try {
-      const response = await authenticatedRequest<{ count: number }>('leads/unread-count');
+      const response = await authenticatedRequest<{ count: number }>('messages/unread-count');
       return response?.count || 0;
     } catch (error) {
-      console.error('Error getting unread lead count:', error);
+      console.error('Error getting unread message count:', error);
       return 0;
     }
   }
 }
 
 // Create and export a singleton instance
-export const leadsService = new LeadService();
-export default leadsService;
+export const messagesService = new MessageService();
+export default messagesService;
