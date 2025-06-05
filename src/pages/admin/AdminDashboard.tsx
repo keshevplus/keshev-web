@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { FiHome, FiFileText, FiMessageSquare, FiUsers, FiSettings, FiGlobe, FiLayout } from 'react-icons/fi';
 import LanguageSwitcher from '../../components/ui/LanguageSwitcher';
 import { useAuth } from '../../contexts/AuthContext';
+import { messagesService as messagesServiceNew } from '../../services/messages-api-new';
 
 interface AdminDashboardProps {
   darkMode?: boolean;
@@ -30,12 +31,18 @@ interface NavItem {
   icon: React.ReactNode;
 }
 
+interface Message {
+  id: string;
+  name: string;
+  subject: string;
+  is_read: boolean;
+}
+
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggleDarkMode }) => {
   const [resources, setResources] = useState({
     pages: { status: 'idle' as ResourceStatus, count: 0, unreadCount: 0, error: null, lastUpdated: null },
     services: { status: 'idle' as ResourceStatus, count: 0, unreadCount: 0, error: null, lastUpdated: null },
     forms: { status: 'idle' as ResourceStatus, count: 0, unreadCount: 0, error: null, lastUpdated: null },
-    messages: { status: 'idle' as ResourceStatus, count: 0, unreadCount: 0, error: null, lastUpdated: null },
     messages: { status: 'idle' as ResourceStatus, count: 0, unreadCount: 0, error: null, lastUpdated: null }
   });
   const [messageCount, setMessageCount] = useState(0);
@@ -48,6 +55,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
   const navigate = useNavigate();
   const { logout } = useAuth();
   const isRtl = i18n.language === 'he';
+
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [msgsLoading, setMsgsLoading] = useState(false);
 
   // Timer ref for periodic message checking
   const messageCheckIntervalRef = useRef<number | null>(null);
@@ -173,8 +183,20 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
     }
   }
 
+  async function fetchMessages() {
+    setMsgsLoading(true);
+    try {
+      const res = await messagesServiceNew.getAllMessages(1, 5, '');
+      setMessages(res.messages);
+    } catch (err) {
+      console.error('Error loading messages:', err);
+    } finally {
+      setMsgsLoading(false);
+    }
+  }
+
   useEffect(() => {
-    fetchStats();
+    fetchMessages();
   }, []);
 
   // Navigate to different admin sections
@@ -387,25 +409,31 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
                 <code>messages</code> table
               </p>
             </div>
-
-            <div className={`${darkMode ? 'bg-gray-700 text-white' : 'bg-white'} p-4 rounded-lg shadow-sm`}>
-              <h3 className="text-sm font-medium mb-1">Messages</h3>
-              <div className="flex items-center">
-                <p className="text-2xl font-bold">
-                  {resources.messages.count}
-                  {resources.messages.unreadCount > 0 && (
-                    <span className="font-bold text-red-500">
-                      ({resources.messages.unreadCount})
-                    </span>
-                  )}
-                </p>
-              </div>
-              <p className={`text-xs mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                <code>messages</code> table
-              </p>
-            </div>
           </div>
         )}
+
+        {/* Recent Messages */}
+        <section className="mt-8 p-4 bg-white rounded shadow">
+          <h3 className="text-xl font-semibold mb-4">Recent Messages</h3>
+          {msgsLoading ? (
+            <div>Loading messages...</div>
+          ) : (
+            <ul className="space-y-2">
+              {messages.map(msg => (
+                <li key={msg.id} className="flex justify-between items-center p-2 border rounded">
+                  <div>
+                    <p className="font-bold">{msg.name}</p>
+                    <p className="text-sm">{msg.subject}</p>
+                  </div>
+                  <span className={`text-xs ${msg.is_read ? 'text-gray-500' : 'text-red-500'}`}>
+                    {msg.is_read ? 'Read' : 'Unread'}
+                  </span>
+                </li>
+              ))}
+              {messages.length === 0 && <li className="text-sm text-gray-500">No messages found</li>}
+            </ul>
+          )}
+        </section>
       </div>
     </div>
   );
