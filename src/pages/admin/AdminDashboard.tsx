@@ -1,7 +1,7 @@
 // AdminDashboard.tsx
 
 import React, { useEffect, useState, useRef } from 'react';
-import { pagesService, servicesService, formsService, messagesService, leadsService } from '../../services/api';
+import { pagesService, servicesService, formsService, messagesService } from '../../services/api';
 import { useTranslation } from 'react-i18next';
 import { FiRefreshCw, FiAlertTriangle, FiCheckCircle, FiMenu, FiX, FiLogOut, FiMoon, FiSun } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
@@ -36,7 +36,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
     services: { status: 'idle' as ResourceStatus, count: 0, unreadCount: 0, error: null, lastUpdated: null },
     forms: { status: 'idle' as ResourceStatus, count: 0, unreadCount: 0, error: null, lastUpdated: null },
     messages: { status: 'idle' as ResourceStatus, count: 0, unreadCount: 0, error: null, lastUpdated: null },
-    leads: { status: 'idle' as ResourceStatus, count: 0, unreadCount: 0, error: null, lastUpdated: null }
+    messages: { status: 'idle' as ResourceStatus, count: 0, unreadCount: 0, error: null, lastUpdated: null }
   });
   const [messageCount, setMessageCount] = useState(0);
   const [newMessagesCount, setNewMessagesCount] = useState(0);
@@ -57,8 +57,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
     { title: t('admin.dashboard', 'Dashboard'), path: '/admin', icon: <FiHome size={16} /> },
     { title: t('admin.pages', 'Pages'), path: '/admin/pages', icon: <FiLayout size={16} /> },
     { title: t('admin.services', 'Services'), path: '/admin/services', icon: <FiSettings size={16} /> },
-    { title: t('admin.messages', 'Messages'), path: '/admin/messages', icon: <FiMessageSquare size={16} /> },
-    { title: t('admin.leads', 'Leads'), path: '/admin/leads', icon: <FiUsers size={16} /> },
+    { title: t('admin.messages', 'Messages'), path: '/admin/messages', icon: <FiUsers size={16} /> },
     { title: t('admin.forms', 'Forms'), path: '/admin/forms', icon: <FiFileText size={16} /> },
     { title: t('admin.translations', 'Translations'), path: '/admin/translations', icon: <FiGlobe size={16} /> }
   ];
@@ -135,42 +134,36 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
         servicesService.getAllServices(),
         formsService.getAllForms(),
         messagesService.getAllMessages(),
-        leadsService.getAllLeads(),
       ]);
 
       console.log('Stats fetch results:', results);
 
       // Extract results safely
-      const [pagesResult, servicesResult, formsResult, messagesResult, leadsResult] = results;
+      const [pagesResult, servicesResult, formsResult, messagesResult, messagesResult] = results;
 
       // Get data from successful requests or use fallbacks for failed ones
       const pagesRes = pagesResult.status === 'fulfilled' ? pagesResult.value : [];
       const servicesRes = servicesResult.status === 'fulfilled' ? servicesResult.value : [];
       const formsRes = formsResult.status === 'fulfilled' ? formsResult.value : [];
       const messagesRes = messagesResult.status === 'fulfilled' ? messagesResult.value : { messages: [] };
-      const leadsRes = leadsResult.status === 'fulfilled' ? leadsResult.value : { leads: [] };
 
       console.log('Messages response:', messagesRes);
-      console.log('Leads response:', leadsRes);
 
       // Update message count for notification badge
       const newMessageCount = messagesRes?.messages?.length || 0;
       console.log('New message count:', newMessageCount);
       setMessageCount(newMessageCount);
 
-      // Check for unread messages and leads
-      const unreadMessages = messagesRes?.messages?.filter((msg: { is_read?: boolean }) => !msg.is_read)?.length || 0;
-      const unreadLeads = leadsRes?.leads?.filter((lead: { is_read?: boolean }) => !lead.is_read)?.length || 0;
+      // Check for unread messages and messages
+      const unreadMessages = messagesRes?.messages?.filter((message: { is_read?: boolean }) => !message.is_read)?.length || 0;
       console.log('Unread messages:', unreadMessages);
-      console.log('Unread leads:', unreadLeads);
       setNewMessagesCount(unreadMessages);
 
       setResources({
         pages: { status: 'success', count: pagesRes.length || 0, unreadCount: 0, error: null, lastUpdated: new Date() },
         services: { status: 'success', count: servicesRes.length || 0, unreadCount: 0, error: null, lastUpdated: new Date() },
         forms: { status: 'success', count: formsRes.length || 0, unreadCount: 0, error: null, lastUpdated: new Date() },
-        messages: { status: 'success', count: newMessageCount, unreadCount: unreadMessages, error: null, lastUpdated: new Date() },
-        leads: { status: 'success', count: leadsRes?.leads?.length || 0, unreadCount: unreadLeads, error: null, lastUpdated: new Date() }
+        messages: { status: 'success', count: messagesRes?.messages?.length || 0, unreadCount: unreadMessages, error: null, lastUpdated: new Date() }
       });
     } catch (error) {
       console.error('Error fetching stats:', error);
@@ -241,8 +234,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
                 <button
                   onClick={() => handleNavigation(item.path)}
                   className={`w-full text-left flex items-center justify-between px-3 py-2 text-xs ${darkMode
-                      ? 'hover:bg-gray-700'
-                      : 'hover:bg-gray-100'
+                    ? 'hover:bg-gray-700'
+                    : 'hover:bg-gray-100'
                     } transition-colors duration-200`}
                 >
                   <div className="flex items-center">
@@ -278,8 +271,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
               <button
                 onClick={handleLogout}
                 className={`w-full text-left flex items-center px-3 py-2 text-xs ${darkMode
-                    ? 'hover:bg-gray-700 text-red-400 hover:text-red-300'
-                    : 'hover:bg-gray-100 text-red-600 hover:text-red-700'
+                  ? 'hover:bg-gray-700 text-red-400 hover:text-red-300'
+                  : 'hover:bg-gray-100 text-red-600 hover:text-red-700'
                   } transition-colors duration-200`}
               >
                 <span className="mr-3"><FiLogOut size={16} /></span>
@@ -292,8 +285,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
               <button
                 onClick={toggleDarkMode}
                 className={`w-full text-left flex items-center px-3 py-2 text-xs ${darkMode
-                    ? 'hover:bg-gray-700 text-yellow-300'
-                    : 'hover:bg-gray-100 text-gray-600'
+                  ? 'hover:bg-gray-700 text-yellow-300'
+                  : 'hover:bg-gray-100 text-gray-600'
                   } transition-colors duration-200`}
               >
                 <span className="mr-3">{darkMode ? <FiSun size={16} /> : <FiMoon size={16} />}</span>
@@ -328,8 +321,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
           <button
             onClick={() => window.location.reload()}
             className={`hidden md:flex items-center text-sm px-3 py-1 rounded ${darkMode
-                ? 'bg-gray-700 hover:bg-gray-600 text-white'
-                : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+              ? 'bg-gray-700 hover:bg-gray-600 text-white'
+              : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
               } transition-colors duration-200`}
           >
             <FiRefreshCw size={14} className="mr-1" />
@@ -396,19 +389,19 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
             </div>
 
             <div className={`${darkMode ? 'bg-gray-700 text-white' : 'bg-white'} p-4 rounded-lg shadow-sm`}>
-              <h3 className="text-sm font-medium mb-1">Leads</h3>
+              <h3 className="text-sm font-medium mb-1">Messages</h3>
               <div className="flex items-center">
                 <p className="text-2xl font-bold">
-                  {resources.leads.count}
-                  {resources.leads.unreadCount > 0 && (
+                  {resources.messages.count}
+                  {resources.messages.unreadCount > 0 && (
                     <span className="font-bold text-red-500">
-                      ({resources.leads.unreadCount})
+                      ({resources.messages.unreadCount})
                     </span>
                   )}
                 </p>
               </div>
               <p className={`text-xs mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                <code>leads</code> table
+                <code>messages</code> table
               </p>
             </div>
           </div>
