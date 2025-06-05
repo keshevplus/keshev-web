@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setIsScrolled } from '../store/sharedStateSlice';
 import Card from '../components/ui/Card';
-import PageLayout from '../components/ui/PageLayout';
+import PageLayout from '../layouts/PageLayout';
 
 
 const FileDownloadIcons = ({ file }: { file?: string }) => {
@@ -74,14 +74,14 @@ export default function Forms() {
       maxWidth="max-w-[95%] lg:max-w-[80%]"
     >
       <h3 className="text-xl md:text-3xl font-bold text-black text-center mb-8">
-        {pageData.heading || 'שירותינו במרפאה'}
+        {pageData.heading || 'שאלונים להורדה'}
       </h3>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-8 px-4 md:px-8 lg:px-12">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-2  px-4  ">
         {/* Render each form as a card */}
         {(pageData.body ?? []).map((form, index) => (
           <div
             key={index}
-            className="bg-white rounded-lg shadow-md p-4 flex flex-col"
+            className=" p-4 flex flex-col"
           >
             {/* Form Details Card */}
             <Card

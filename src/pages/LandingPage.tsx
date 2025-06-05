@@ -48,8 +48,8 @@ const LandingPage: React.FC = () => {
         ? (import.meta.env.VITE_API_BASE_URL || 'https://api.keshevplus.co.il/api')
         : 'http://localhost:3001/api';
 
-      // Submit as a lead
-      await fetch(`${apiBaseUrl}/leads`, {
+      // Submit as a message
+      await fetch(`${apiBaseUrl}/messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -120,7 +120,7 @@ const LandingPage: React.FC = () => {
               </div>
             </div>
             
-            {/* Lead Form Section */}
+            {/* Message Form Section */}
             <div className="w-full md:w-5/12 order-2">
               <div className="bg-white text-gray-800 p-6 rounded-xl shadow-xl">
                 <h2 className="text-2xl font-bold text-green-800 mb-4 text-center">

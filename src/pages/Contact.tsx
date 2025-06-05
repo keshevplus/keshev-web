@@ -2,8 +2,8 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { usePageData } from '../hooks/usePageData';
-import PageLayout from '../components/ui/PageLayout';
-import GoogleMap from '../components/GoogleMap';
+import PageLayout from '../layouts/PageLayout';
+import GoogleMap from '../components/ui/GoogleMap';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
@@ -78,8 +78,8 @@ export default function Contact() {
 
       console.log(`Using API base URL: ${apiBaseUrl} (${isProduction ? 'Production' : 'Development'} mode)`);
 
-      // Submit data to BOTH endpoints to ensure it appears in both admin panels
-      const endpoints = ['messages', 'leads'];
+      // Submit data to ensure it reaches the admin panel
+      const endpoints = ['messages'];
       const submissionPromises = endpoints.map(endpoint => {
         // Use direct path instead of /api prefix
         const url = `${apiBaseUrl}/${endpoint}`;
@@ -141,10 +141,8 @@ export default function Contact() {
       // Redirect after success
       setTimeout(() => navigate('/'), 1500);
     } catch (err) {
-      // Overall error handling
       toast.dismiss(loadingToastId);
-      toast.error('הטופס נשמר באופן מקומי');
-      console.error('Contact form processing error:', err);
+      console.log('Contact form could not be sent, saved locally:', err);
     }
   };
 
@@ -191,13 +189,17 @@ export default function Contact() {
       }
 
       // Show a single toast notification at the end
+      // if (successCount > 0) {
+      //   toast.success(
+      //     successCount === 1
+      //       ? 'הודעה שנשמרה נשלחה בהצלחה!'
+      //       : `${successCount} הודעות שנשמרו נשלחו בהצלחה!`
+      //   );
+      // }
       if (successCount > 0) {
-        toast.success(
-          successCount === 1
-            ? 'הודעה שנשמרה נשלחה בהצלחה!'
-            : `${successCount} הודעות שנשמרו נשלחו בהצלחה!`
-        );
+        console.log(`Resent ${successCount} unsent messages from local storage`);
       }
+
     };
 
     tryResend();
@@ -225,7 +227,7 @@ export default function Contact() {
             </p>
           </div>
           <h3 className="text-2xl md:text-xl font-bold text-green-800 text-right mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
-            {pageData?.subheading}
+            {pageData?.[0]?.heading}
           </h3>
           {/* Add button to clear unsent messages if they exist */}
           {hasUnsentMessages && (
@@ -277,7 +279,7 @@ export default function Contact() {
                   <option value="זימון תור לאבחון מלא">זימון תור לאבחון מלא</option>
                   <option value="זימון תור למבחן MOXO">זימון תור למבחן MOXO</option>
                   <option value="נושאים אחרים">נושאים אחרים</option>
- 
+
 
                 </select>
 

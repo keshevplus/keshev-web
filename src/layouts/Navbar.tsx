@@ -12,7 +12,7 @@ import {
 
 // import LanguageSwitcher from './LanguageSwitcher'; // Language Switcher component
 
-import FloatingPhoneNumber from './FloatingPhoneNumber';
+import FloatingPhoneNumber from '../components/ui/FloatingPhoneNumber';
 // import { useTranslation } from 'react-i18next';
 
 export const navItems = [
@@ -107,8 +107,9 @@ const Navbar: React.FC = () => {
           </div>
           <div className="flex items-center space-x-3">
             {/* Controls wrapper - contains both language switcher and phone icon */}
-            <div className="flex items-center justify-center h-12">
-              {/* Language Switcher in Navbar */}
+            <div className="flex items-center justify-center h-12 mx-4">
+
+              {/* Language Switcher in Navbar  - CURRENTLY DISABLED  */}
               {/*
             <div className="navbar-language-switcher flex items-center justify-center h-full mr-3">
               <LanguageSwitcher />

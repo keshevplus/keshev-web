@@ -13,7 +13,7 @@ import SafeAdminComponentWrapper from '../../components/admin/SafeAdminComponent
 // Lazy load admin components for better performance and isolation
 const AdminDashboard = lazy(() => import('./AdminDashboard'));
 const ContentManager = lazy(() => import('./ContentManager'));
-const LeadsManager = lazy(() => import('./LeadsManager'));
+// const MessagesManager = lazy(() => import('./MessagesManager'));
 const MessagesManager = lazy(() => import('./MessagesManager'));
 const PagesManager = lazy(() => import('./PagesManager'));
 const ServicesManager = lazy(() => import('./ServicesManager'));
@@ -46,14 +46,14 @@ const Admin: React.FC = () => {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const isRtl = i18n.language === 'he';
-  
+
   // Navigation items for the admin menu
   const navItems: NavItem[] = [
     { title: t('admin.dashboard', 'Dashboard'), path: '/admin', icon: <FiHome size={16} /> },
     { title: t('admin.pages', 'Pages'), path: '/admin/pages', icon: <FiLayout size={16} /> },
     { title: t('admin.services', 'Services'), path: '/admin/services', icon: <FiSettings size={16} /> },
     { title: t('admin.messages', 'Messages'), path: '/admin/messages', icon: <FiMessageSquare size={16} /> },
-    { title: t('admin.leads', 'Leads'), path: '/admin/leads', icon: <FiUsers size={16} /> },
+    // { title: t('admin.messages', 'Messages'), path: '/admin/messages', icon: <FiUsers size={16} /> },
     { title: t('admin.forms', 'Forms'), path: '/admin/forms', icon: <FiFileText size={16} /> },
     { title: t('admin.translations', 'Translations'), path: '/admin/translations', icon: <FiGlobe size={16} /> }
   ];
@@ -63,7 +63,7 @@ const Admin: React.FC = () => {
       navigate('/admin/login');
     }
   }, [isAuthenticated, navigate]);
-  
+
   // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -87,7 +87,7 @@ const Admin: React.FC = () => {
       document.documentElement.classList.remove('dark');
     }
   };
-  
+
   const handleNavigation = (path: string) => {
     navigate(path);
     setMobileMenuOpen(false); // Close mobile menu after navigation
@@ -131,7 +131,7 @@ const Admin: React.FC = () => {
       </div>
 
       {/* Mobile sidebar */}
-      <div 
+      <div
         ref={menuRef}
         className={`lg:hidden fixed inset-y-0 left-0 z-50 transform ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 ease-in-out ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'}`}
       >
@@ -141,7 +141,7 @@ const Admin: React.FC = () => {
             <FiX size={20} />
           </button>
         </div>
-        
+
         <nav className="mt-4">
           <ul>
             {navItems.map((item, index) => (
@@ -158,7 +158,7 @@ const Admin: React.FC = () => {
           </ul>
         </nav>
       </div>
-      
+
       {/* Desktop layout */}
       <div className="flex">
         {/* Desktop sidebar - hidden on mobile */}
@@ -166,7 +166,7 @@ const Admin: React.FC = () => {
           <div className="p-4 border-b border-gray-200 dark:border-gray-700">
             <h2 className="text-xl font-semibold">Admin Panel</h2>
           </div>
-          
+
           <nav className="mt-4">
             <ul>
               {navItems.map((item, index) => (
@@ -182,7 +182,7 @@ const Admin: React.FC = () => {
               ))}
             </ul>
           </nav>
-          
+
           <div className="absolute bottom-0  border-t border-gray-200 dark:border-gray-700 p-4">
             <div className="flex items-center justify-between">
               <button
@@ -201,14 +201,14 @@ const Admin: React.FC = () => {
             </div>
           </div>
         </div>
-        
+
         {/* Main content area with routes */}
         <div className="flex-1 overflow-auto">
           <Routes>
             <Route path="" element={
               <Suspense fallback={<LoadingFallback />}>
-                <SafeAdminComponentWrapper 
-                  component={AdminDashboard} 
+                <SafeAdminComponentWrapper
+                  component={AdminDashboard}
                   featureFlag="dashboard"
                   componentProps={{ darkMode, toggleDarkMode }}
                 />
@@ -216,35 +216,35 @@ const Admin: React.FC = () => {
             } />
             <Route path="/content" element={
               <Suspense fallback={<LoadingFallback />}>
-                <SafeAdminComponentWrapper 
-                  component={ContentManager} 
+                <SafeAdminComponentWrapper
+                  component={ContentManager}
                   featureFlag="content"
-                  componentProps={{ darkMode }}
-                />
-              </Suspense>
-            } />
-            <Route path="/leads" element={
-              <Suspense fallback={<LoadingFallback />}>
-                <SafeAdminComponentWrapper 
-                  component={LeadsManager} 
-                  featureFlag="leads"
                   componentProps={{ darkMode }}
                 />
               </Suspense>
             } />
             <Route path="/messages" element={
               <Suspense fallback={<LoadingFallback />}>
-                <SafeAdminComponentWrapper 
-                  component={MessagesManager} 
-                  featureFlag="leads"
+                <SafeAdminComponentWrapper
+                  component={MessagesManager}
+                  featureFlag="messages"
+                  componentProps={{ darkMode }}
+                />
+              </Suspense>
+            } />
+            <Route path="/messages" element={
+              <Suspense fallback={<LoadingFallback />}>
+                <SafeAdminComponentWrapper
+                  component={MessagesManager}
+                  featureFlag="messages"
                   componentProps={{ darkMode }}
                 />
               </Suspense>
             } />
             <Route path="/pages" element={
               <Suspense fallback={<LoadingFallback />}>
-                <SafeAdminComponentWrapper 
-                  component={PagesManager} 
+                <SafeAdminComponentWrapper
+                  component={PagesManager}
                   featureFlag="content"
                   componentProps={{ darkMode }}
                 />
@@ -252,8 +252,8 @@ const Admin: React.FC = () => {
             } />
             <Route path="/services" element={
               <Suspense fallback={<LoadingFallback />}>
-                <SafeAdminComponentWrapper 
-                  component={ServicesManager} 
+                <SafeAdminComponentWrapper
+                  component={ServicesManager}
                   featureFlag="content"
                   componentProps={{ darkMode }}
                 />
@@ -261,8 +261,8 @@ const Admin: React.FC = () => {
             } />
             <Route path="/forms" element={
               <Suspense fallback={<LoadingFallback />}>
-                <SafeAdminComponentWrapper 
-                  component={FormsManager} 
+                <SafeAdminComponentWrapper
+                  component={FormsManager}
                   featureFlag="content"
                   componentProps={{ darkMode }}
                 />
@@ -270,8 +270,8 @@ const Admin: React.FC = () => {
             } />
             <Route path="/translations" element={
               <Suspense fallback={<LoadingFallback />}>
-                <SafeAdminComponentWrapper 
-                  component={TranslationsManager} 
+                <SafeAdminComponentWrapper
+                  component={TranslationsManager}
                   featureFlag="content"
                   componentProps={{ darkMode }}
                 />

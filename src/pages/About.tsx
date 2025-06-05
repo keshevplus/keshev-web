@@ -1,4 +1,4 @@
-import PageLayout from '../components/ui/PageLayout';
+import PageLayout from '../layouts/PageLayout';
 import { usePageData } from '../hooks/usePageData';
 import { ContentItem } from '../types/content';
 
@@ -25,15 +25,15 @@ export default function About() {
   const pageData: ContentItem = data[0];
 
   return (
-    <PageLayout 
-      title={pageData.heading} 
-      background="bg-white" 
+    <PageLayout
+      title={pageData.heading}
+      background="bg-white"
       withRtl={true}
       maxWidth="sm:max-w-[90%] lg:max-w-[75%]"
     >
       {/* Animated background gradient */}
       <div className="absolute inset-0 z-[-1] bg-gradient-radial from-green-900/80 via-green-800/70 to-green-950/90 animate-gradient-slow"></div>
-      
+
       <h2 className="text-xl md:text-4xl font-bold text-black text-center mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
         {/*  Fallback text : subheading: 'קשב פלוס, נעים להכיר', */}
         {pageData.subheading ?? 'קשב פלוס, נעים להכיר'}
@@ -41,7 +41,7 @@ export default function About() {
 
       {/* Main content section */}
       <div className="grid grid-cols-1 md:grid-cols-2 items-start mb-0 md:mb-4">
-     {/*  Fallback text : pageData.body?.[0] */}
+        {/*  Fallback text : pageData.body?.[0] */}
 
         {pageData.body?.[0]?.image && (
           <>
@@ -52,7 +52,7 @@ export default function About() {
                   alt={pageData.body[0].title}
                   className="max-w-xs h-auto rounded-full shadow-xl transition-all duration-300 hover:shadow-2xl"
                 />
-               
+
               </figure>
             </div>
           </>
@@ -92,7 +92,7 @@ export default function About() {
           ) ?? null
           }
         </div>
-        
+
       </div>
     </PageLayout>
   );

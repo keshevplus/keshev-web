@@ -1,6 +1,6 @@
 import React from 'react';
 import { usePageData } from '../hooks/usePageData';
-import PageLayout from '../components/ui/PageLayout';
+import PageLayout from '../layouts/PageLayout';
 import Card from '../components/ui/Card';
 import { ContentItem } from '../types/content';
 

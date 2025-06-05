@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 // Use the correct import for EventSource
 import * as EventSourceModule from 'eventsource';
 // @ts-ignore - Handle the module import differences
@@ -19,7 +20,7 @@ interface NeonEventStreamProps {
 
 const NeonEventStream: React.FC<NeonEventStreamProps> = ({
   endpoint = 'https://mcp.neon.tech/sse',
-  onEvent
+  onEvent // Removed the trailing comma
 }) => {
   const [events, setEvents] = useState<NeonEvent[]>([]);
   const [connected, setConnected] = useState(false);
@@ -28,7 +29,7 @@ const NeonEventStream: React.FC<NeonEventStreamProps> = ({
   useEffect(() => {
     // Create a new EventSource connection to the Neon MCP SSE endpoint
     const eventSource = new EventSource(endpoint);
-    
+
     // Handle connection open
     eventSource.onopen = () => {
       console.log('Connected to Neon MCP SSE endpoint');
@@ -56,7 +57,7 @@ const NeonEventStream: React.FC<NeonEventStreamProps> = ({
         };
 
         setEvents((prevEvents) => [newEvent, ...prevEvents].slice(0, 100)); // Keep last 100 events
-        
+
         // Call the onEvent callback if provided
         if (onEvent) {
           onEvent(newEvent);
@@ -90,7 +91,7 @@ const NeonEventStream: React.FC<NeonEventStreamProps> = ({
           <span className="disconnected" aria-label="Disconnected">Disconnected</span>
         )}
       </div>
-      
+
       {error && (
         <div className="error-message" role="alert">
           Error: {error}

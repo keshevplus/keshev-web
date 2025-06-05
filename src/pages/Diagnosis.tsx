@@ -1,5 +1,5 @@
 import { usePageData } from '../hooks/usePageData';
-import PageTitle from '../components/ui/PageTitle';
+import PageTitle from '../layouts/PageTitle';
 import { useEffect } from 'react';
 import Card from '../components/ui/Card';
 

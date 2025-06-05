@@ -1,9 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 // Import our custom translation hook for consistent i18n implementation
-import { useTranslations } from '../hooks/useTranslations';
+import { useTranslations } from '../../hooks/useTranslations';
 // Import translation keys for type safety and consistency
-import { TRANSLATION_KEYS } from '../i18n/translations';
+import { TRANSLATION_KEYS } from '../../i18n/translations';
 
 interface Particle {
   x: number;
