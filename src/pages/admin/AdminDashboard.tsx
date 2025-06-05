@@ -139,7 +139,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
       console.log('Stats fetch results:', results);
 
       // Extract results safely
-      const [pagesResult, servicesResult, formsResult, messagesResult, messagesResult] = results;
+      const [pagesResult, servicesResult, formsResult, messagesResult] = results;
 
       // Get data from successful requests or use fallbacks for failed ones
       const pagesRes = pagesResult.status === 'fulfilled' ? pagesResult.value : [];
