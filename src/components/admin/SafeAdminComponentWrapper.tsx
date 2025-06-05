@@ -11,7 +11,7 @@ import { adminIsolationService } from '../../utils/adminIsolation';
 
 interface SafeAdminComponentWrapperProps {
   component: ComponentType<any>;
-  featureFlag: 'dashboard' | 'leads' | 'users' | 'content';
+  featureFlag: 'dashboard' | 'messages' | 'users' | 'content';
   fallback?: React.ReactNode;
   componentProps?: Record<string, any>;
 }

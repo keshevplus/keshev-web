@@ -1,6 +1,6 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { adminIsolationService } from '../utils/adminIsolation';
+import { adminIsolationService } from '../../utils/adminIsolation';
 
 interface Props {
   children: ReactNode;
@@ -33,22 +33,22 @@ class AdminErrorBoundary extends Component<Props, State> {
       errorInfo,
       componentStack: errorInfo.componentStack || ''
     });
-    
+
     // Use the isolation service to log the error safely
     adminIsolationService.logError(error, 'AdminErrorBoundary');
-    
+
     // Log admin-specific errors with a special tag
     console.error('=== ADMIN ERROR BOUNDARY CAUGHT AN ERROR ===');
     console.error('Error message:', error.message);
     console.error('Error stack:', error.stack);
     console.error('Component stack:', errorInfo.componentStack);
     console.error('============================================');
-    
+
     // Automatically disable problematic features based on error patterns
-    if (error.message.includes('leads') || errorInfo.componentStack?.includes('LeadsManager')) {
-      adminIsolationService.disableFeature('leads');
+    if (error.message.includes('messages') || errorInfo.componentStack?.includes('MessagesManager')) {
+      adminIsolationService.disableFeature('messages');
     }
-    
+
     // Here you could add admin-specific error reporting to an external service
   }
 
@@ -60,7 +60,7 @@ class AdminErrorBoundary extends Component<Props, State> {
           <div className="max-w-lg w-full bg-gray-900 rounded-lg shadow-lg p-6">
             <h2 className="text-2xl font-bold text-red-500 mb-4 text-center">Admin Dashboard Error</h2>
             <p className="text-gray-300 mb-4 text-center">There was a problem with the admin dashboard. This error has been logged.</p>
-            
+
             {/* Always show error details for admin users */}
             <div className="mt-4 p-4 bg-gray-800 rounded text-left overflow-auto max-h-64 text-xs font-mono border border-gray-700">
               <p className="font-bold mb-2 text-red-400">Error: {this.state.error?.toString()}</p>
@@ -68,9 +68,9 @@ class AdminErrorBoundary extends Component<Props, State> {
                 <pre className="whitespace-pre-wrap text-gray-400">{this.state.componentStack}</pre>
               )}
             </div>
-            
+
             <div className="flex justify-center mt-6">
-              <Link 
+              <Link
                 to="/"
                 className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors mr-2"
               >

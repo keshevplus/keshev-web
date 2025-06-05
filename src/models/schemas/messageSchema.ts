@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 /**
- * Validation schema for creating a new lead
+ * Validation schema for creating a new message
  */
 export const createLeadSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters long'),
@@ -12,9 +12,9 @@ export const createLeadSchema = z.object({
 });
 
 /**
- * Validation schema for updating a lead
+ * Validation schema for updating a message
  */
-export const updateLeadSchema = z.object({
+export const updateMessageSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters long').optional(),
   email: z.string().email('Invalid email format').optional(),
   phone: z.string().optional(),
@@ -26,10 +26,10 @@ export const updateLeadSchema = z.object({
 /**
  * Type definitions based on the schemas
  */
-export type CreateLeadInput = z.infer<typeof createLeadSchema>;
-export type UpdateLeadInput = z.infer<typeof updateLeadSchema>;
+export type CreateMessageInput = z.infer<typeof createMessageSchema>;
+export type UpdateMessageInput = z.infer<typeof updateMessageSchema>;
 
 export default {
-  createLeadSchema,
-  updateLeadSchema
+  createMessageSchema,
+  updateMessageSchema
 };

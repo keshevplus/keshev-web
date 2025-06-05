@@ -1,9 +1,9 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import { useAuth } from "../../contexts/AuthContext"; 
-import { useNavigate } from "react-router-dom"; 
+import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
-import LanguageSwitcher from '../../components/LanguageSwitcher';
+import LanguageSwitcher from '../../components/ui/LanguageSwitcher';
 
 const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -11,19 +11,19 @@ const AdminLogin: React.FC = () => {
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { login } = useAuth(); 
-  const navigate = useNavigate(); 
-  const { t, i18n } = useTranslation(['forms']); 
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const { t, i18n } = useTranslation(['forms']);
   const isRTL = i18n.language === 'he';
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
-    
+
     try {
-      await login(email, password); 
-      navigate('/admin'); 
+      await login(email, password);
+      navigate('/admin');
     } catch (err: any) {
       setError(err.message || 'An unknown error occurred');
       setIsLoading(false);
@@ -43,11 +43,11 @@ const AdminLogin: React.FC = () => {
             className="h-24 w-auto object-contain"
           />
         </div>
-        
+
         <h2 className="mb-6 text-center text-2xl font-bold text-gray-900">
           {t('forms:admin.title')}
         </h2>
-        
+
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="email" className={`block text-sm font-medium ${isRTL ? 'text-right' : 'text-left'} text-gray-700 mb-1`}>
@@ -63,7 +63,7 @@ const AdminLogin: React.FC = () => {
               className={`w-full px-3 py-2 ${isRTL ? 'text-right' : 'text-left'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent`}
             />
           </div>
-          
+
           <div>
             <label htmlFor="password" className={`block text-sm font-medium ${isRTL ? 'text-right' : 'text-left'} text-gray-700 mb-1`}>
               {t('forms:admin.password')}
@@ -87,13 +87,13 @@ const AdminLogin: React.FC = () => {
               </button>
             </div>
           </div>
-          
+
           {error && (
             <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded text-right">
               {error}
             </div>
           )}
-          
+
           <button
             type="submit"
             disabled={isLoading}
@@ -102,11 +102,11 @@ const AdminLogin: React.FC = () => {
             {isLoading ? t('forms:admin.logging_in') : t('forms:admin.login')}
           </button>
         </form>
-        
+
         <p className="mt-4 text-center text-sm text-gray-500">
           {t('forms:admin.authorized_only')}
         </p>
-        
+
         <div className="mt-4 text-center">
           <a href="/admin/register" className="text-sm text-green-600 hover:text-green-800">
             Create Test Admin Account

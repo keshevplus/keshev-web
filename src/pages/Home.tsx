@@ -4,14 +4,14 @@ import type { HomePageContent } from '../types/content';
 import { usePageData } from '../hooks/usePageData';
 
 export default function Home() {
-  // directly call the page‐data hook
-  const pageData = usePageData('home') as unknown as HomePageContent | null;
+  const { data: pages, isLoading } = usePageData<HomePageContent>('home');
+  const pageData = pages?.[0] || null;
 
   useEffect(() => {
     document.documentElement.dir = 'rtl';
   }, []);
 
-  if (!pageData) {
+  if (isLoading || !pageData) {
     return (
       <div className="container mx-auto max-w-full md:max-w-[75%] py-4 loading">
         <div className="animate-pulse">Loading...</div>
@@ -26,9 +26,9 @@ export default function Home() {
         <div className="rtl">
           <div className="container mx-auto py-0 md:py-0">
             <div className="flex flex-col md:flex-row items-center gap-4 sm:gap-6 md:gap-8 lg:gap-12">
-              <div className="xl:w-full md:w-2/7 order-1 px-2 sm:px-4 flex flex-col items-center text-center whitespace-pre-line">
-                <h1 className=" text-3xl sm:text-xl font-bold text-green-800 mb-4  ">
-                  {pageData.heading || 'ברוכים הבאים למרפאת "קשב פלוס"'}
+              <div className="xl:w-full md:w-2/7 order-1 px-2 sm:px-4 flex flex-col items-center text-center">
+                <h1 className="text-2xl md:text-4xl font-bold text-green-800 mb-4 whitespace-pre-line ">
+                  {pageData.title || 'ברוכים הבאים לקשב פלוס'}
                 </h1>
 
                 <img

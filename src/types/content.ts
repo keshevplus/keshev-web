@@ -21,16 +21,15 @@ export interface HomePageContent {
 }
 export interface ContentItem {
   title: string;
-  subtitle?: string;
-  heading?: string;
-  subheading?: string;
-  description: string;
-  image?: string;
-  icon?: string;
-  file?: string;
-  subItems?: Array<{
+  heading: string;
+  body?: Array<{
     title: string;
     description: string;
+    image: string;
+    bgColor: string;
+    textColor: string;
+    subtitle: string;
+    file: string;
   }>;
 }
 

@@ -1,11 +1,9 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Outlet } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-// No Animation
-// import AnimatedFooter from './components/AnimatedFooter';
+import Navbar from './layouts/Navbar';
+import Footer from './layouts/Footer';
 
-// pages routes
+// pages
 import Home from './pages/Home';
 import About from './pages/About';
 import Services from './pages/Services';
@@ -13,10 +11,11 @@ import ADHD from './pages/ADHD';
 import Diagnosis from './pages/Diagnosis';
 import Forms from './pages/Forms';
 import Contact from './pages/Contact';
-import AccessibilityPage from './pages/AccessibilityPage'; // Import global styles
+import AccessibilityPage from './pages/AccessibilityPage';
 import NotFound from './pages/NotFound';
+// import NeonStreamPage from './pages/NeonStreamPage';
 
-// admin routes - lazy loaded to prevent them from affecting the public site
+// admin (lazy-loaded)
 const Admin = lazy(() => import('./pages/admin/Admin'));
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
 const RegisterAdmin = lazy(() => import('./pages/admin/RegisterAdmin'));
@@ -28,8 +27,8 @@ import store from './store/store';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ErrorBoundary from './components/ErrorBoundary';
-import AdminErrorBoundary from './components/AdminErrorBoundary';
-import { SpeedInsights } from "@vercel/speed-insights/react";
+import AdminErrorBoundary from './components/admin/AdminErrorBoundary';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import AccessibilityWidget from './components/acc/AccessibilityWidget';
 
 function App() {
@@ -40,57 +39,55 @@ function App() {
         <ToastContainer position="top-center" />
         <ErrorBoundary>
           <div id="main-container" className="flex flex-col min-h-screen scrollbar overflow">
-            {/* Accessibility Widget - Israeli Standard 5568 compliant */}
             <AccessibilityWidget />
             <Routes>
-              {/* Admin routes - isolated with specialized admin error boundary */}
-              <Route path="/admin/*" element={
-                <AdminErrorBoundary>
-                  <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading admin dashboard...</div>}>
-                    <Routes>
-                      <Route path="/login" element={<AdminLogin />} />
-                      <Route path="/register" element={<RegisterAdmin />} />
-                      <Route path="/*" element={<Admin />} />
-                    </Routes>
-                  </Suspense>
-                </AdminErrorBoundary>
-              } />
-              {/* Public routes */}
+              {/* Admin Routes */}
               <Route
-                path="*"
+                path="/admin/*"
                 element={
-                  <>
-                    <Navbar />
-                    <main className="flex-grow p-0">
+                  <AdminErrorBoundary>
+                    <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading admin...</div>}>
                       <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/about" element={<About />} />
-                        <Route path="/services" element={<Services />} />
-                        <Route path="/adhd" element={<ADHD />} />
-                        <Route path="/diagnosis" element={<Diagnosis />} />
-                        <Route path="/forms" element={<Forms />} />
-                        <Route path="/contact" element={<Contact />} />
-                        <Route path="/accessibility" element={<AccessibilityPage />} /> {/* Accessibility route */}
-                        <Route path="*" element={<NotFound />} />
+                        <Route path="login" element={<AdminLogin />} />
+                        <Route path="register" element={<RegisterAdmin />} />
+                        <Route path="*" element={<Admin />} />
                       </Routes>
-                    </main>
-
-                    {/* AnimatedFooter only shown on non-home pages */}
-                    {/* <Routes>
-                      <Route path="/" element={null} />
-                      <Route path="*" element={<AnimatedFooter />} />
-                    </Routes> */}
-
-                    <Footer />
-                  </>
+                    </Suspense>
+                  </AdminErrorBoundary>
                 }
               />
+
+              {/* Public Routes */}
+              <Route path="/" element={<Layout />}>
+                <Route index element={<Home />} />
+                <Route path="about" element={<About />} />
+                <Route path="services" element={<Services />} />
+                <Route path="adhd" element={<ADHD />} />
+                <Route path="diagnosis" element={<Diagnosis />} />
+                <Route path="forms" element={<Forms />} />
+                <Route path="contact" element={<Contact />} />
+                <Route path="accessibility" element={<AccessibilityPage />} />
+                {/* <Route path="neon-stream" element={<NeonStreamPage />} /> */}
+                <Route path="*" element={<NotFound />} />
+              </Route>
             </Routes>
             <SpeedInsights />
           </div>
         </ErrorBoundary>
       </AuthProvider>
     </Provider>
+  );
+}
+
+function Layout() {
+  return (
+    <>
+      <Navbar />
+      <main className="flex-grow p-0">
+        <Outlet />
+      </main>
+      <Footer />
+    </>
   );
 }
 

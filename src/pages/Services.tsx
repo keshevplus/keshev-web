@@ -1,5 +1,5 @@
 import { usePageData } from '../hooks/usePageData';
-import PageLayout from '../components/ui/PageLayout';
+import PageLayout from '../layouts/PageLayout';
 import Card from '../components/ui/Card';
 
 // Custom leaf icon image for all service cards

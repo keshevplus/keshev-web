@@ -2,7 +2,7 @@ import { ContentItem } from '../types/content';
 
 const formsPageData: ContentItem = {
   title: 'שאלונים',
-  heading: 'טפסים ושאלוני הערכשאלונים לזיהוי סימנים של הפרעת קשב וריכוז (ADHD)',
+  heading: 'שאלונים לזיהוי סימנים של הפרעת קשב וריכוז (ADHD)',
   body: [
     {
       title: 'שאלון להורים',
@@ -26,7 +26,7 @@ const formsPageData: ContentItem = {
     {
       title: 'שאלון דיווח עצמי',
       // subtitle: 'למילוי על ידי ילד או מבוגר',
-      description: 'שאלון זה מיועד למילוי על ידי מבוגר מעל גיל 18 להערכת קשב וריכוז.',
+      description: 'שאלון זה מיועד למילוי על ידי מבוגר מעל גיל 18 להערכת הפרעות קשב ופעלתנות יתר.',
       image: '/assets/images/icon.png',
       bgColor: 'bg-orange-400/15 hover:bg-orange-400/40 text-right',
       textColor: 'text-black font-bold',

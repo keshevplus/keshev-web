@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './LanguageSwitcher.css';
-import { fetchAvailableLanguages, Language } from '../services/translationService';
+import { fetchAvailableLanguages, Language } from '../../services/translationService';
 
 const LanguageSwitcher: React.FC = () => {
   const { i18n, t } = useTranslation('common');
   const [languages, setLanguages] = useState<Language[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  
+
   // Load available languages from API
   useEffect(() => {
     const loadLanguages = async () => {
@@ -34,10 +34,10 @@ const LanguageSwitcher: React.FC = () => {
         setLoading(false);
       }
     };
-    
+
     loadLanguages();
   }, []);
-  
+
   // Initialize language on component mount
   useEffect(() => {
     const savedLanguage = localStorage.getItem('i18nextLng');
@@ -50,17 +50,17 @@ const LanguageSwitcher: React.FC = () => {
     if (i18n.language !== lng) { // Only change if different
       console.log(`Language changed from ${i18n.language} to ${lng}`);
       i18n.changeLanguage(lng);
-      
+
       // Get language info to determine RTL
       const langInfo = languages.find(l => l.code === lng);
       const isRtl = langInfo ? langInfo.rtl : lng === 'he';
-      
+
       // Set document direction based on language RTL property
       document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
-      
+
       // Store language preference in localStorage
       localStorage.setItem('i18nextLng', lng);
-      
+
       // Reload the page to ensure all components reflect the new language
       window.location.reload();
     }

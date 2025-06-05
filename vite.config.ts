@@ -38,6 +38,9 @@ export default defineConfig(({ mode }) => {
         },
       },
       historyApiFallback: true, // Handle client-side routing
+      hmr: {
+        overlay: false, // Prevent crashes due to missing files
+      },
     },
     resolve: {
       alias: {
