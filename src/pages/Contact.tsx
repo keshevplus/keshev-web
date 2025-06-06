@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import React, { useState } from 'react';
 import ContactInfoModal from '../components/ui/ContactInfoModal';
+import { Link } from 'react-router-dom';
 
 const formSchema = z.object({
   name: z.string().min(2, 'השם חייב להכיל לפחות 2 תווים'),
@@ -229,9 +230,13 @@ export default function Contact() {
           <h3 className="text-2xl md:text-xl font-bold text-green-800 text-right mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
             {pageData?.[0]?.heading}
           </h3>
-          {/* Add button to clear unsent messages if they exist */}
+
           {hasUnsentMessages && (
-            console.log('Unsent messages found in local storage'))}
+            <>
+              {clearUnsentMessages()}
+              {console.log('Unsent messages found in local storage')}
+            </>
+          )}
           {/*           
             <div className="mb-4 bg-yellow-50 p-3 rounded-lg border border-yellow-200">
                <p className="text-yellow-800 mb-2">יש הודעות שלא נשלחו בזיכרון המקומי</p>
@@ -345,17 +350,17 @@ export default function Contact() {
           <div>
             <div className="font-bold text-lg">אימייל:
               <p className="text-gray-700 mb-2">
-                <a href="mailto:dr@keshevplus.co.il" className="text-green-700 hover:text-green-900">
+                <Link to="mailto:dr@keshevplus.co.il" className="text-green-700 hover:text-green-900">
                   dr@keshevplus.co.il
-                </a>
+                </Link>
               </p>
             </div>
           </div>
 
           <div className="font-bold text-lg">טלפון:
-            <a href="tel:055-27-399-27" className="text-green-700 hover:text-green-900">
+            <Link to="tel:055-27-399-27" className="text-green-700 hover:text-green-900">
               055-27-399-27
-            </a>
+            </Link>
           </div>
 
           <button

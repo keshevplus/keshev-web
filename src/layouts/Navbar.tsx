@@ -1,5 +1,5 @@
 // Importing necessary libraries and components
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom'; // For navigation and location tracking
 import { IoMenu, IoClose } from 'react-icons/io5'; // Icons for menu toggle
 import { useDispatch, useSelector } from 'react-redux'; // Redux hooks for state management
@@ -117,8 +117,8 @@ const Navbar: React.FC = () => {
             */}
               {/* Phone icon wrapper */}
               <div className="navbar-item flex items-center justify-center h-full">
-                <a
-                  href="tel:055-27-399-27"
+                <Link
+                  to="tel:055-27-399-27"
                   className="flex items-center justify-center h-full text-green-600 font-bold"
                 >                <span className="ml-2 whitespace-nowrap">
                     <FloatingPhoneNumber />
@@ -130,7 +130,7 @@ const Navbar: React.FC = () => {
                     className="h-6 hover:opacity-80 transition-transform duration-300"
                   />
 
-                </a>
+                </Link>
               </div>
             </div>
             {/* Hamburger menu button */}
@@ -186,9 +186,9 @@ const Navbar: React.FC = () => {
 
           {/* Footer area */}
           <div className="bg-green-900 py-4 px-6 text-center">
-            <a href="tel:055-27-399-27" className="text-white text-lg font-semibold">
+            <Link to="tel:055-27-399-27" className="text-white text-lg font-semibold">
               התקשרו: 055-27-399-27
-            </a>
+            </Link>
           </div>
         </div>
       </div>

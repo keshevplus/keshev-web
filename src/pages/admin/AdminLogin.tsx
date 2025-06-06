@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '../../components/ui/LanguageSwitcher';
@@ -108,9 +108,9 @@ const AdminLogin: React.FC = () => {
         </p>
 
         <div className="mt-4 text-center">
-          <a href="/admin/register" className="text-sm text-green-600 hover:text-green-800">
+          <Link to="/admin/register" className="text-sm text-green-600 hover:text-green-800">
             Create Test Admin Account
-          </a>
+          </Link>
         </div>
       </div>
     </div>

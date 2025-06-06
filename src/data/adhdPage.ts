@@ -3,7 +3,7 @@ export interface ContentItem {
   description?: string;
   heading: string; // Added heading property
   subheading?: string;
-  body: Array<{
+  sections: Array<{
     title: string;
     description: string;
     image: string;
@@ -21,7 +21,7 @@ export const adhdPageData: ContentItem = {
   title: 'מהי הפרעת קשב וריכוז ?',
   heading: 'ADHD = Attention Deficit Hyperactivity Disorder',
   subheading: 'הפרעת קשב ופעלתנות יתר (ADHD) היא הפרעה נוירולוגית המשפיעה על יכולת הריכוז וההתנהגות',
-  body: [
+  sections: [
     {
       title: 'מהי הפרעת קשב ופעלתנות יתר (ADHD)',
       description: `הפרעת קשב ופעלתנות יתר היא מצב נוירולוגי המשפיע על יכולת הריכוז, השליטה העצמית וההתנהגות

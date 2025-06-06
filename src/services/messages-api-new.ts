@@ -4,14 +4,14 @@ import { API_BASE_URL } from './api';
  * Message model representing a customer inquiry
  */
 export interface Message {
-  id: string;
+  id: number;
   name: string;
   email: string;
   phone: string;
   subject: string;
   message: string;
+  is_read: boolean; // Ensure this is consistent
   created_at: string;
-  is_read?: boolean;
 }
 
 /**
@@ -162,7 +162,7 @@ class MessageService {
       
       // Helper function for normalizing data
       const normalizeMessage = (message: Record<string, any>): Message => ({
-        id: message.id || '',
+        id: message.id || 0,
         name: message.name || '',
         email: message.email || '',
         phone: message.phone || '',

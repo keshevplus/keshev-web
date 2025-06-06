@@ -3,9 +3,18 @@ import { useTranslation } from 'react-i18next';
 import './LanguageSwitcher.css';
 import { fetchAvailableLanguages, Language } from '../../services/translationService';
 
+export interface LocalLanguage {
+  id: number;
+  code: string;
+  name: string;
+  native_name: string;
+  is_default: boolean;
+  rtl: boolean;
+}
+
 const LanguageSwitcher: React.FC = () => {
   const { i18n, t } = useTranslation('common');
-  const [languages, setLanguages] = useState<Language[]>([]);
+  const [languages, setLanguages] = useState<LocalLanguage[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   // Load available languages from API
@@ -13,9 +22,16 @@ const LanguageSwitcher: React.FC = () => {
     const loadLanguages = async () => {
       try {
         setLoading(true);
-        const langData = await fetchAvailableLanguages();
+        const langData: Language[] = await fetchAvailableLanguages(); // Use the 'Language' type here
         if (langData.length > 0) {
-          setLanguages(langData);
+          setLanguages(langData.map(lang => ({
+            id: 0, // Provide a default value since 'id' is not part of the Language type
+            code: lang.code,
+            name: lang.name,
+            native_name: lang.native_name || lang.name, // Fallback to name if native_name is missing
+            is_default: lang.is_default || false, // Provide a default value if is_default is missing
+            rtl: lang.rtl || false // Provide a default value if rtl is missing
+          })));
         } else {
           // Fallback if API fails
           setLanguages([

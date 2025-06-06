@@ -11,7 +11,7 @@ import ADHD from './pages/ADHD';
 import Diagnosis from './pages/Diagnosis';
 import Forms from './pages/Forms';
 import Contact from './pages/Contact';
-import AccessibilityPage from './pages/AccessibilityPage';
+import AccessibilityStatementPage from './pages/AccessibilityStatement.tsx'; // Ensure this file exists in the './pages' directory
 import NotFound from './pages/NotFound';
 // import NeonStreamPage from './pages/NeonStreamPage';
 
@@ -66,7 +66,7 @@ function App() {
                 <Route path="diagnosis" element={<Diagnosis />} />
                 <Route path="forms" element={<Forms />} />
                 <Route path="contact" element={<Contact />} />
-                <Route path="accessibility" element={<AccessibilityPage />} />
+                <Route path="accessibility" element={<AccessibilityStatementPage />} />
                 {/* <Route path="neon-stream" element={<NeonStreamPage />} /> */}
                 <Route path="*" element={<NotFound />} />
               </Route>
