@@ -1,5 +1,5 @@
-import { ContentItem } from '../types/content';
-import { PageSection } from '../types/pages';
+import { PageSection } from '../types/pages'; // Verify '../types/pages.ts' exists or adjust the path to the correct location
+// If the file does not exist, create it and define the 'PageSection' type.
 
 /**
  * Contact page data model
@@ -18,7 +18,12 @@ export interface ContactPageData {
 }
 
 export interface ContactPageSection extends PageSection {
+  id: string;
   type: 'hero' | 'form' | 'map' | 'info' | 'faq';
+  title?: string;
+  subtitle?: string;
+  content?: string;
+  display_order?: number;
 }
 
 /**
@@ -79,7 +84,7 @@ export interface FormField {
 }
 
 // Default contact page data with proper DB-based structure
-export const defaultContactPage: ContactPageData = {
+const defaultContactPage: ContactPageData = {
   id: 'contact-page',
   title: 'יצירת קשר',
   subtitle: 'נשמח לענות על כל שאלה',
@@ -161,3 +166,5 @@ export const defaultContactPage: ContactPageData = {
     errorMessage: 'אירעה שגיאה בשליחת ההודעה. אנא נסה שנית או התקשר אלינו ישירות'
   }
 };
+
+export default defaultContactPage;

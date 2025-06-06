@@ -3,7 +3,7 @@ import { z } from 'zod';
 /**
  * Validation schema for creating a new message
  */
-export const createLeadSchema = z.object({
+export const createMesssageSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters long'),
   email: z.string().email('Invalid email format'),
   phone: z.string().optional(),
@@ -26,10 +26,10 @@ export const updateMessageSchema = z.object({
 /**
  * Type definitions based on the schemas
  */
-export type CreateMessageInput = z.infer<typeof createMessageSchema>;
+export type CreateMessageInput = z.infer<typeof createMesssageSchema>;
 export type UpdateMessageInput = z.infer<typeof updateMessageSchema>;
 
 export default {
-  createMessageSchema,
+  createMesssageSchema,
   updateMessageSchema
 };

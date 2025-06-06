@@ -1,11 +1,10 @@
 import { ContentItem } from '../types/content';
 
 const aboutPageData: ContentItem = {
-    heading: 'אודותינו',
-    subheading: 'קשב פלוס, נעים להכיר',
+    title: 'אודותנו',
+    heading: 'קשב פלוס, נעים להכיר',
     body: [
         {
-
             title: "דר' איירין כוכב-רייפמן",
             subtitle: "רופאה מומחית בתחום האבחון והטיפול של הפרעות קשב וריכוז",
             description: `
@@ -13,6 +12,9 @@ const aboutPageData: ContentItem = {
             במהלך השנים ליוותה ד"ר כוכב-רייפמן מטופלים רבים במסע להגשמה אישית, תפקוד יומיומי מיטבי ושיפור איכות החיים
             `,
             image: '/assets/images/hero-about.jpeg',
+            bgColor: '#ffffff',
+            textColor: '#000000',
+            file: '/assets/files/sample.pdf',
         }
         // {
             // title: "דר' איירין כוכב-רייפמן",

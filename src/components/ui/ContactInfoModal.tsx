@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface ContactInfoModalProps {
   isOpen: boolean;
@@ -19,12 +20,12 @@ const ContactInfoModal: React.FC<ContactInfoModalProps> = ({ isOpen, onClose }) 
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
-        
+
         <h2 className="text-2xl font-bold text-green-800 mb-4 text-right">
-            דרכי הגעה ואפשרויות חניה
-        </h2>        
+          דרכי הגעה ואפשרויות חניה
+        </h2>
         <div className="space-y-6 text-right">
-         
+
           <div className="bg-gray-50 p-4 rounded-lg">
             <h3 className="text-lg font-semibold text-green-700 flex items-center">
               <span className="ml-2">🚗</span> אפשרויות חניה באזור:
@@ -33,25 +34,26 @@ const ContactInfoModal: React.FC<ContactInfoModalProps> = ({ isOpen, onClose }) 
               <li>
                 <strong>חניון אורחים מגדלי אלון</strong> - כניסה דרך מגדל אלון 1 בצד הצפוני
                 <p className="text-sm mt-1">חניות אורחים מסומנות באור ירוק ושלט מגדל"הראל</p>
-                <a href="https://waze.com/ul/hsv8wrvb38" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm">מגדלי אלון- כניסה צפונית Waze</a>
+                <Link to="https://waze.com/ul/hsv8wrvb38" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm">מגדלי אלון- כניסה צפונית Waze
+                </Link>
               </li>
               <li>
                 <strong>חניון "אושר עד"</strong> - ממש ברחוב המקביל אלינו
                 <br />
-                <a href="https://waze.com/ul/hsv8wrv8y2" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm">
-                Waze לחניון אושר עד
-                </a>
+                <Link to="https://waze.com/ul/hsv8wrv8y2" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm">
+                  Waze לחניון אושר עד
+                </Link>
               </li>
               <li>
                 <strong>חניון אחוזת חוף</strong> - ליד מגדל טויוטה (חניון הסינרמה, יגאל אלון 63)
                 <p className="text-sm mt-1">כניסה מהצד הדרומי</p>
-                <a href="https://waze.com/ul/hsv8wrtx41" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm">Waze לחניון אחוזת חוף</a>
+                <Link to="https://waze.com/ul/hsv8wrtx41" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm">Waze לחניון אחוזת חוף</Link>
               </li>
               <li>
                 <strong>כחול לבן</strong> באזור (זמין בעיקר בבוקר ובערב)
               </li>
             </ul>
-            
+
             <div className="mt-4">
               <p className="flex items-center">
                 <span className="ml-2">🚌</span>

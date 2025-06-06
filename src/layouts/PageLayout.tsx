@@ -3,6 +3,7 @@ import PageTitle from './PageTitle';
 
 interface PageLayoutProps {
   title: string;
+  description?: string;
   children: ReactNode;
   maxWidth?: string;
   withRtl?: boolean;
@@ -27,7 +28,7 @@ export default function PageLayout({
 
   return (
     <div className={`${withRtl ? 'rtl' : ''} flex flex-col pb-10`}>
-      <PageTitle title={title} />
+      <PageTitle title={title}  />
       <div
         className={`${background} flex-grow pb-0 ${withAnimation ? 'animate-slide-in' : ''}`}
         style={withAnimation ? {

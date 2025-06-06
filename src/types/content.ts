@@ -1,3 +1,47 @@
+export interface PageItem {
+  heading: string;
+  text: string;
+  image?: string;
+  alt?: string;
+  bgColor?: string;     // Added for card background
+  textColor?: string;   // Added for card text styling
+}
+
+export interface ContentItem {
+  title: string;
+  subtitle?: string;
+  heading?: string;
+  subheading?: string;
+  description?: string;
+  image?: string;
+
+  sections?: Array<{
+    heading: string;
+    text: string;
+    image?: string;
+    alt?: string;
+    bgColor?: string;
+    textColor?: string;
+  }>;
+
+  body?: Array<{
+    title?: string;
+    subtitle?: string;
+    description?: string;
+    image?: string;
+    icon?: string;
+    file?: string;
+    subItems?: Array<{
+      title: string;
+      description: string;
+    }>;
+    bgColor?: string;
+    textColor?: string;
+  }>;
+
+  additional?: Array<any>;
+}
+
 export interface HomePageContent {
   title: string;
   subTitle?: string;
@@ -18,19 +62,6 @@ export interface HomePageContent {
     icon: string;
   }[];
   image: string; // Added the missing 'image' property
-}
-export interface ContentItem {
-  title: string;
-  heading: string;
-  body?: Array<{
-    title: string;
-    description: string;
-    image: string;
-    bgColor: string;
-    textColor: string;
-    subtitle: string;
-    file: string;
-  }>;
 }
 
 import aboutPageData from '../data/aboutPage';

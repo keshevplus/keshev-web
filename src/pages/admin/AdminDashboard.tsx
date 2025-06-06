@@ -3,9 +3,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { pagesService, servicesService, formsService, messagesService } from '../../services/api';
 import { useTranslation } from 'react-i18next';
-import { FiRefreshCw, FiAlertTriangle, FiCheckCircle, FiMenu, FiX, FiLogOut, FiMoon, FiSun } from 'react-icons/fi';
+import { FiRefreshCw, FiAlertTriangle, FiMenu, FiX, FiLogOut, FiMoon, FiSun } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
-import { FiHome, FiFileText, FiMessageSquare, FiUsers, FiSettings, FiGlobe, FiLayout } from 'react-icons/fi';
+import { FiHome, FiFileText, FiUsers, FiSettings, FiGlobe, FiLayout } from 'react-icons/fi';
 import LanguageSwitcher from '../../components/ui/LanguageSwitcher';
 import { useAuth } from '../../contexts/AuthContext';
 import { messagesService as messagesServiceNew } from '../../services/messages-api-new';
@@ -22,7 +22,7 @@ interface ResourceState {
   count: number;
   unreadCount: number;
   error: string | null;
-  lastUpdated: Date | null;
+  lastUpdated: Date;
 }
 
 interface NavItem {
@@ -39,11 +39,16 @@ interface Message {
 }
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggleDarkMode }) => {
-  const [resources, setResources] = useState({
-    pages: { status: 'idle' as ResourceStatus, count: 0, unreadCount: 0, error: null, lastUpdated: null },
-    services: { status: 'idle' as ResourceStatus, count: 0, unreadCount: 0, error: null, lastUpdated: null },
-    forms: { status: 'idle' as ResourceStatus, count: 0, unreadCount: 0, error: null, lastUpdated: null },
-    messages: { status: 'idle' as ResourceStatus, count: 0, unreadCount: 0, error: null, lastUpdated: null }
+  const [resources, setResources] = useState<{
+    pages: ResourceState;
+    services: ResourceState;
+    forms: ResourceState;
+    messages: ResourceState;
+  }>({
+    pages: { status: 'idle', count: 0, unreadCount: 0, error: null, lastUpdated: new Date() },
+    services: { status: 'idle', count: 0, unreadCount: 0, error: null, lastUpdated: new Date() },
+    forms: { status: 'idle', count: 0, unreadCount: 0, error: null, lastUpdated: new Date() },
+    messages: { status: 'idle', count: 0, unreadCount: 0, error: null, lastUpdated: new Date() },
   });
   const [messageCount, setMessageCount] = useState(0);
   const [newMessagesCount, setNewMessagesCount] = useState(0);
@@ -152,7 +157,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
       const [pagesResult, servicesResult, formsResult, messagesResult] = results;
 
       // Get data from successful requests or use fallbacks for failed ones
-      const pagesRes = pagesResult.status === 'fulfilled' ? pagesResult.value : [];
+      const pagesRes = pagesResult.status === 'fulfilled' ? (pagesResult.value as { length: number }) : { length: 0 };
       const servicesRes = servicesResult.status === 'fulfilled' ? servicesResult.value : [];
       const formsRes = formsResult.status === 'fulfilled' ? formsResult.value : [];
       const messagesRes = messagesResult.status === 'fulfilled' ? messagesResult.value : { messages: [] };
@@ -170,9 +175,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
       setNewMessagesCount(unreadMessages);
 
       setResources({
-        pages: { status: 'success', count: pagesRes.length || 0, unreadCount: 0, error: null, lastUpdated: new Date() },
-        services: { status: 'success', count: servicesRes.length || 0, unreadCount: 0, error: null, lastUpdated: new Date() },
-        forms: { status: 'success', count: formsRes.length || 0, unreadCount: 0, error: null, lastUpdated: new Date() },
+        pages: { status: 'success', count: (pagesRes?.length || 0), unreadCount: 0, error: null, lastUpdated: new Date() },
+        services: { status: 'success', count: Array.isArray(servicesRes) ? servicesRes.length : 0, unreadCount: 0, error: null, lastUpdated: new Date() },
+        forms: { status: 'success', count: Array.isArray(formsRes) ? formsRes.length : 0, unreadCount: 0, error: null, lastUpdated: new Date() },
         messages: { status: 'success', count: messagesRes?.messages?.length || 0, unreadCount: unreadMessages, error: null, lastUpdated: new Date() }
       });
     } catch (error) {
