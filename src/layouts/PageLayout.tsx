@@ -1,44 +1,23 @@
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
+import type { PageType } from '../types/pages';
 import PageTitle from './PageTitle';
-
-interface PageLayoutProps {
-  title: string;
-  description?: string;
-  children: ReactNode;
-  maxWidth?: string;
-  withRtl?: boolean;
-  withAnimation?: boolean;
-  background?: string;
-}
+// import Footer from './Footer';
 
 export default function PageLayout({
+  page,
   title,
-  children,
-  maxWidth = 'md:max-w-[75%] lg:max-w-[90%]',
-  withRtl = true,
-  withAnimation = true,
-  background = 'bg-white',
-}: PageLayoutProps) {
-  // Set RTL direction for the document if needed
-  useEffect(() => {
-    if (withRtl) {
-      document.documentElement.dir = 'rtl';
-    }
-  }, [withRtl]);
-
+  children
+}: {
+  page: PageType;
+  title: string;
+  children: ReactNode;
+}) {
   return (
-    <div className={`${withRtl ? 'rtl' : ''} flex flex-col pb-10`}>
-      <PageTitle title={title}  />
-      <div
-        className={`${background} flex-grow pb-0 ${withAnimation ? 'animate-slide-in' : ''}`}
-        style={withAnimation ? {
-          animation: 'slideUp 0.8s ease-out',
-          minHeight: 'calc(100vh - 180px)' // Ensure content area is tall enough to maintain scroll position
-        } : {
-          minHeight: 'calc(100vh - 180px)' // Same min-height without animation
-        }}
-      >
-        <div className={`container mx-auto px-8 pb-4 ${maxWidth}`}>{children}</div>
+    <div className={`page-layout page-${page}`}>
+      {/* Always show page title except on home page */}
+      {page !== 'home' && <PageTitle title={title} />}
+      <div className="px-4 py-2">
+        {children}
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './LanguageSwitcher.css';
-import { fetchAvailableLanguages, Language } from '../../services/translationService';
+import { fetchAvailableLanguages } from '../../services/translationService';
 
 export interface LocalLanguage {
   id: number;
@@ -12,9 +12,15 @@ export interface LocalLanguage {
   rtl: boolean;
 }
 
+// Default fallback languages
+const fallbackLanguages = [
+  { id: 1, code: 'he', name: 'Hebrew', native_name: 'עברית', rtl: true, is_default: true },
+  { id: 2, code: 'en', name: 'English', native_name: 'English', rtl: false, is_default: false }
+];
+
 const LanguageSwitcher: React.FC = () => {
   const { i18n, t } = useTranslation('common');
-  const [languages, setLanguages] = useState<LocalLanguage[]>([]);
+  const [languages, setLanguages] = useState<LocalLanguage[]>(fallbackLanguages);
   const [loading, setLoading] = useState<boolean>(true);
 
   // Load available languages from API
@@ -22,8 +28,10 @@ const LanguageSwitcher: React.FC = () => {
     const loadLanguages = async () => {
       try {
         setLoading(true);
-        const langData: Language[] = await fetchAvailableLanguages(); // Use the 'Language' type here
-        if (langData.length > 0) {
+        const langData = await fetchAvailableLanguages();
+
+        // Check if langData is an array and has items
+        if (Array.isArray(langData) && langData.length > 0) {
           setLanguages(langData.map(lang => ({
             id: 0, // Provide a default value since 'id' is not part of the Language type
             code: lang.code,
@@ -33,19 +41,14 @@ const LanguageSwitcher: React.FC = () => {
             rtl: lang.rtl || false // Provide a default value if rtl is missing
           })));
         } else {
-          // Fallback if API fails
-          setLanguages([
-            { id: 1, code: 'he', name: 'Hebrew', native_name: 'עברית', rtl: true, is_default: true },
-            { id: 2, code: 'en', name: 'English', native_name: 'English', rtl: false, is_default: false }
-          ]);
+          // Use fallback languages if API returns invalid data
+          console.log('Using fallback languages because API returned invalid data');
+          setLanguages(fallbackLanguages);
         }
       } catch (error) {
         console.error('Error loading languages:', error);
         // Fallback languages if API fails
-        setLanguages([
-          { id: 1, code: 'he', name: 'Hebrew', native_name: 'עברית', rtl: true, is_default: true },
-          { id: 2, code: 'en', name: 'English', native_name: 'English', rtl: false, is_default: false }
-        ]);
+        setLanguages(fallbackLanguages);
       } finally {
         setLoading(false);
       }

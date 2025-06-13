@@ -1,76 +1,60 @@
-import { ContentItem } from '../types/content';
+import { BasePageContent } from '../types/content';
 
-const diagnosisPageData: ContentItem = {
+const diagnosisPageData: BasePageContent = {
   title: 'תהליך האבחון והטיפול',
+  description: 'תהליך אבחון הפרעת קשב מקצועי ואיכותי',
+  image: '/assets/images/diagnosis-hero.jpg',
   sections: [
     {
+      id: 'first-meeting',
       heading: 'שיחה ראשונית',
-      text: `
-        מפגש אישי עם המטופל והמשפחה להבנת ההיסטוריה ההתפתחותית וההתנהגותית.
-      `,
+      text: 'מפגש אישי עם המטופל והמשפחה להבנת ההיסטוריה ההתפתחותית וההתנהגותית.',
       image: '/assets/images/icon.png',
-      alt: 'שיחה ראשונית',
-      bgColor: 'bg-orange-400/15 hover:bg-orange-400/40 text-right',
-      textColor: 'text-black font-bold'
+      bgColor: 'bg-orange-50',
+      textColor: 'text-black'
     },
     {
+      id: 'questionnaires',
       heading: 'שאלונים מובנים',
-      text: `
-        שאלוני קשב הם כלים מובנים להערכת תסמינים.
-      `,
+      text: 'איסוף מידע באמצעות שאלונים מתוקפים להורים, למורים ולמטופל.',
       image: '/assets/images/icon.png',
-      alt: 'שאלונים מובנים',
-      bgColor: 'bg-orange-400/15 hover:bg-orange-400/40 text-right',
-      textColor: 'text-black font-bold'
+      bgColor: 'bg-blue-50',
+      textColor: 'text-black'
     },
     {
-      heading: 'מבחן ממוחשב (MOXO)',
-      text: `
-        מבחן MOXO הוא מבחן ממוחשב להערכת תפקודי קשב, אשר נמצא בשימוש נרחב בישראל ובעולם.
-        המבחן משמש ככלי תומך לאבחון ומספק מידע אובייקטיבי להערכת תפקודי הקשב.
-      `,
+      id: 'testing',
+      heading: 'בדיקות ממוחשבות',
+      text: 'ביצוע מבחני קשב ממוחשבים להערכה אובייקטיבית של יכולות הקשב והריכוז.',
       image: '/assets/images/icon.png',
-      alt: 'מבחן ממוחשב (MOXO)',
-      bgColor: 'bg-orange-400/15 hover:bg-orange-400/40 text-right',
-      textColor: 'text-black font-bold'
+      bgColor: 'bg-green-50',
+      textColor: 'text-black'
     },
     {
-      heading: 'לאחר האבחון',
-      text: `
-        לאחר האבחון נציע תוכנית טיפול אישית שתתאים לצרכים הייחודיים של ילדכם.
-      `,
+      id: 'diagnosis',
+      heading: 'אבחנה וסיכום',
+      text: 'פגישת סיכום והסברת האבחנה, כולל המלצות טיפוליות מותאמות אישית.',
       image: '/assets/images/icon.png',
-      alt: 'לאחר האבחון',
-      bgColor: 'bg-orange-400/15 hover:bg-orange-400/40 text-right',
-      textColor: 'text-black font-bold',
-      cards: [
-        {
-          heading: 'ייעוץ והדרכה להורים',
-          text: 'כלים שיעזרו לכם להבין ולתמוך בילדכם.',
-          image: '/assets/images/icon.png',
-          alt: 'ייעוץ להורים',
-          bgColor: 'bg-green-400/15 hover:bg-green-400/40 text-right',
-          textColor: 'text-black font-bold'
-        },
-        {
-          heading: 'טיפול תרופתי',
-          text: 'תרופות שיכולות לסייע לייצוב הריכוז והפחתת הפעלתנות.',
-          image: '/assets/images/icon.png',
-          alt: 'טיפול תרופתי',
-          bgColor: 'bg-green-400/15 hover:bg-green-400/40 text-right',
-          textColor: 'text-black font-bold'
-        },
-        {
-          heading: 'טיפול התנהגותי',
-          text: 'סיוע לילד לרכוש כלים להתמודדות יומיומית.',
-          image: '/assets/images/icon.png',
-          alt: 'טיפול התנהגותי',
-          bgColor: 'bg-green-400/15 hover:bg-green-400/40 text-right',
-          textColor: 'text-black font-bold'
-        }
-      ]
+      bgColor: 'bg-purple-50',
+      textColor: 'text-black'
+    },
+    {
+      id: 'treatment',
+      heading: 'תכנית טיפול',
+      text: 'בניית תכנית טיפול מקיפה הכוללת התערבות תרופתית, פסיכולוגית, חינוכית והתנהגותית לפי הצורך.',
+      image: '/assets/images/icon.png',
+      bgColor: 'bg-yellow-50',
+      textColor: 'text-black'
+    },
+    {
+      id: 'cta',
+      heading: 'מעוניינים לקבוע פגישה?',
+      text: 'צרו קשר עוד היום לקביעת פגישת אבחון מקיפה',
+      ctaButtonText: 'צרו קשר עכשיו',
+      bgColor: 'bg-green-100',
+      textColor: 'text-green-800'
     }
   ]
 };
 
 export default diagnosisPageData;
+

@@ -13,9 +13,10 @@ interface CardProps {
   icon?: ReactNode; // Optional icon or clipart to display above the text
   subtitle?: string; // Optional subtitle for the card
   files?: ReactNode; // Optional files or download links to display
-  isRtl?: boolean; // Indicates if the card should be displayed in RTL layout
   subItems?: { title: string; description: string }[]; // SubItems array
   customClass?: string; // Optional customClass for the root element
+  widthClass?: string; // Tailwind width classes
+  // Removed unused isRtl prop
 }
 
 // Card component definition
@@ -32,8 +33,9 @@ const Card: React.FC<CardProps> = ({
   subtitle,
   files,
   subItems,
-  customClass = 'text-center', // Default to center text if no custom class is provided
-  isRtl = false, // Default to LTR layout if not specified
+  widthClass = 'w-full', // Default width class
+  customClass, // Optional custom class for additional styling
+
 }) => {
   const [animate, setAnimate] = useState(false);
   const descriptionRef = useRef<HTMLDivElement>(null);
@@ -45,7 +47,7 @@ const Card: React.FC<CardProps> = ({
 
   return (
     <div
-      className={`flex flex-col rounded-3xl shadow-xl group px-4 py-4 transition-all duration-500 mb-2 
+      className={`flex flex-col ${widthClass} rounded-3xl shadow-xl group px-4 py-2 transition-all duration-500 mb-2 
         ${animate ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'} 
         ${bgColor} 
         hover:shadow-2xl hover:-translate-y-1 ${customClass}`}
@@ -79,7 +81,7 @@ const Card: React.FC<CardProps> = ({
               </h4>
             )}
             {/* Render subItems as nested mini-cards */}
-            {subItems?.length > 0 && (
+            {(subItems ?? []).length > 0 && (
               <div className="grid grid-cols-1 gap-4 mt-4">
                 {(subItems ?? []).map((item, i) => (
                   <Card

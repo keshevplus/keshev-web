@@ -36,6 +36,9 @@ const Navbar: React.FC = () => {
 
   const location = useLocation();
 
+  // Function to check if the current path matches the nav item path
+  const isActive = (path: string) => location.pathname === path;
+
   useEffect(() => {
     dispatch(setIsHomePage(location.pathname === '/'));
     const handleScroll = () => {
@@ -46,14 +49,10 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [location.pathname, dispatch]);
 
-  const isActive = (path: string) => location.pathname === path;
-
   // Wrap authentication checks in a safe try/catch
   const checkAuthentication = async () => {
     try {
-      // Use a safe check that doesn't rely on authenticatedRequest being available
-      const token = localStorage.getItem('token');
-      const isLoggedIn = !!token; // Simple check based on token presence
+      // simple token presence check (no variable assignment needed)
     } catch (error) {
       console.error("Error checking authentication status:", error);
     }
@@ -83,9 +82,10 @@ const Navbar: React.FC = () => {
           >
             <div className="flex items-center ">
               <img
-                src="/assets/images/logo.png"
+                src="/assets/images/logoSVG.svg"
                 alt="קשב"
-                className="object-contain w-40 transition-transform duration-300 hover:opacity-80"
+                className={`object-contain w-40 transition-all duration-700 hover:opacity-80 ${isHomePage && isScrolled ? 'opacity-0' : 'opacity-100'
+                  }`}
               />
             </div>
           </Link>
@@ -96,10 +96,10 @@ const Navbar: React.FC = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`text-xl font-semibold ${isActive(item.path)
-                    ? 'bg-green-800 text-white'
-                    : 'bg-white/20 text-green-600 hover:bg-green-800 hover:text-white'
-                    } px-4 py-2 rounded-lg ${index === 0 ? 'mx-4' : ''}`}
+                  className={`text-xl font-semibold px-4 py-2 rounded-lg transition-colors duration-200 ${isActive(item.path)
+                    ? 'bg-green-600 text-white' // Active link has green background and white text
+                    : 'text-green-800 hover:text-white hover:bg-green-600' // Inactive link behavior
+                    } ${index === 0 ? 'mx-4' : ''}`}
                 >
                   {item.text}
                 </Link>
@@ -110,7 +110,7 @@ const Navbar: React.FC = () => {
             <div className="flex items-center justify-center h-12 mx-4">
 
               {/* Language Switcher in Navbar  - CURRENTLY DISABLED  */}
-              {/*
+              {/* 
             <div className="navbar-language-switcher flex items-center justify-center h-full mr-3">
               <LanguageSwitcher />
             </div>
@@ -166,15 +166,15 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Menu items - flex-grow to take remaining height */}
-          <div className="flex-grow bg-green-800/95 overflow-y-auto py-6 px-6">
+          <div className="flex-grow bg-green-800/95 overflow-y-auto px-6">
             <div className="flex flex-col space-y-4">
               {navItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
                   className={`text-xl font-semibold py-3 px-4 rounded-lg transition-colors duration-200 ${isActive(item.path)
-                    ? 'bg-white text-green-800'
-                    : 'text-white hover:bg-white/10'
+                    ? 'bg-green-500 text-white' // Active link in mobile menu
+                    : 'text-white hover:bg-green-600'
                     }`}
                   onClick={() => dispatch(setIsMenuOpen(false))}
                 >

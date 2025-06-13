@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '../api';
+import { API_URL } from '../../config/constants';
 
 /**
  * Base class for all API services with authentication support
@@ -6,7 +6,7 @@ import { API_BASE_URL } from '../api';
 export class BaseApiService {
   protected baseUrl: string;
 
-  constructor(baseUrl = API_BASE_URL) {
+  constructor(baseUrl = API_URL) {
     this.baseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
   }
   
@@ -50,7 +50,7 @@ export class BaseApiService {
         ...options,
         headers
       });
-
+      
       console.log(`Response status: ${response.status} ${response.statusText}`);
 
       if (!response.ok) {
@@ -69,6 +69,7 @@ export class BaseApiService {
             window.location.href = '/admin/login'; 
           }
         }
+        
         throw new Error(errorData.message || `API request failed with status ${response.status}`);
       }
       

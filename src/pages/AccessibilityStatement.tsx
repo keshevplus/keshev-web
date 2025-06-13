@@ -1,11 +1,13 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import PageLayout from '../layouts/PageLayout';
+import PageTitle from '../layouts/PageTitle';
+import accessibilityStatementPageData from '../data/accessibilityStatementPage';
 
-const AccessibilityPage: React.FC = () => {
+export default function AccessibilityPage() {
     return (
-        <PageLayout title="הצהרת נגישות - קשב פלוס" description="קשב פלוס מחויבת להנגשת האתר לכלל האוכלוסייה, כולל אנשים עם מוגבלויות. הצהרת נגישות זו מפרטת את ההתאמות שביצענו ואת דרכי הפנייה אלינו בנוגע לנגישות.">
-            <div className="accessibilityPage container mx-auto px-4 py-8 bg-gray-50" dir="rtl">
+        <>
+            <PageTitle title={accessibilityStatementPageData.title} />
+
+            <div className="accessibility-statement container mx-auto px-4 py-8 bg-gray-50" dir="rtl">
                 <h2 className="text-4xl font-bold text-center mb-8 text-green-700">הצהרת נגישות</h2>
                 <p className="text-lg mb-6 leading-relaxed">
                     אנו ב-<strong>קשב פלוס</strong> מחויבים להנגשת האתר שלנו לכלל האוכלוסייה, כולל אנשים עם מוגבלויות. אנו רואים חשיבות רבה במתן שירות שוויוני לכלל המשתמשים, ולכן השקענו מאמצים רבים בהנגשת האתר בהתאם לתקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), התשע"ג-2013.
@@ -49,8 +51,6 @@ const AccessibilityPage: React.FC = () => {
                     הצהרת הנגישות עודכנה לאחרונה בתאריך: <strong>3 ביוני 2025</strong>.
                 </p>
             </div>
-        </PageLayout>
+        </>
     );
-};
-
-export default AccessibilityPage;
+}

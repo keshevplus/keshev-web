@@ -1,44 +1,28 @@
-import React from 'react';
-import PageLayout from '../layouts/PageLayout';
-import Card from '../components/ui/Card';
+import { useEffect } from 'react';
 import { usePageData } from '../hooks/usePageData';
+import { useErrorHandler } from '../hooks/useErrorHandler';
+import type { BasePageContent } from '../types/content';
+import diagnosisPageData from '../data/diagnosisPage';
+import PageRenderer from '../components/PageRenderer';
+import PageTitle from '../layouts/PageTitle';
 
-const Diagnosis: React.FC = () => {
-  const [data] = usePageData('diagnosis');
-  if (!data) return null;
+export default function Diagnosis() {
+  const { data, isLoading } = usePageData<BasePageContent>('diagnosis');
+  const { error, handleError } = useErrorHandler();
+  const content = Array.isArray(data) ? data[0] : data || diagnosisPageData;
+
+  useEffect(() => {
+    handleError(() => { document.documentElement.dir = 'rtl'; });
+  }, [handleError]);
+
+  if (isLoading) return <div className="container mx-auto py-8 loading"><div className="animate-pulse">Loading...</div></div>;
+  if (error) return <div className="container mx-auto py-8 error text-red-600">Error: {error}</div>;
 
   return (
-    <PageLayout
-      title={data.title}
-      background="rgb(255, 255, 255, 0.9) bg-opacity-90 backdrop-blur-sm"
-      description={data.description}
-      withRtl
-      maxWidth="max-w-[95%] lg:max-w-[75%]"
-    >
-      {/* subtitle/intro text */}
-      {data.subheading && (
-        <p className="text-center text-white mb-6">{data.subheading}</p>
-      )}
-
-      {/* grid of cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data.sections?.map((section, idx) => (
-          <Card
-            key={idx}
-            bgcolor={section.bgColor || 'defaultColor'}
-            textColor={section.textColor || 'defaultTextColor'}
-            textSize="text-lg"
-            paraSize="text-md"
-            title={section.heading}
-            description={section.text}
-            image={section.image}
-            alt={section.alt}
-            customClass={section.heading === 'לאחר האבחון' ? 'lg:col-span-3' : undefined} // Pass custom class conditionally
-          />
-        ))}
-      </div>
-    </PageLayout>
+    <>
+      {/* Add PageTitle with exact title from diagnosisPageData */}
+      <PageTitle title={content.title} />
+      <PageRenderer content={{ ...content, description: content.description }} className="absolute inset-0 z-[-1]" />
+    </>
   );
-};
-
-export default Diagnosis;
+}

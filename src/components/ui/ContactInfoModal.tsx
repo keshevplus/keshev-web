@@ -54,7 +54,7 @@ const ContactInfoModal: React.FC<ContactInfoModalProps> = ({ isOpen, onClose }) 
               </li>
             </ul>
 
-            <div className="mt-4">
+            <div className="mt-0">
               <p className="flex items-center">
                 <span className="ml-2">🚌</span>
                 <strong>לבאים ברכבת</strong> - מרחק הליכה מתחנת השלום (עזריאלי)

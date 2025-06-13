@@ -12,13 +12,13 @@ import SafeAdminComponentWrapper from '../../components/admin/SafeAdminComponent
 
 // Lazy load admin components for better performance and isolation
 const AdminDashboard = lazy(() => import('./AdminDashboard'));
-const ContentManager = lazy(() => import('./ContentManager'));
-// const MessagesManager = lazy(() => import('./MessagesManager'));
-const MessagesManager = lazy(() => import('./MessagesManager'));
-const PagesManager = lazy(() => import('./PagesManager'));
-const ServicesManager = lazy(() => import('./ServicesManager'));
-const FormsManager = lazy(() => import('./FormsManager'));
-const TranslationsManager = lazy(() => import('./TranslationsManager'));
+const AdminContentManager = lazy(() => import('./AdminContentManager'));
+const AdminMessagesManager = lazy(() => import('./AdminMessagesManager'));
+const AdminPagesManager = lazy(() => import('./AdminPagesManager'));
+const AdminServicesManager = lazy(() => import('./AdminServicesManager'));
+const AdminFormsManager = lazy(() => import('./AdminFormsManager'));
+const AdminTranslationsManager = lazy(() => import('./AdminTranslationsManager'));
+const AdminUsersManager = lazy(() => import('./AdminUsersManager'));
 
 // Define a loading fallback component
 const LoadingFallback = () => (
@@ -53,9 +53,10 @@ const Admin: React.FC = () => {
     { title: t('admin.pages', 'Pages'), path: '/admin/pages', icon: <FiLayout size={16} /> },
     { title: t('admin.services', 'Services'), path: '/admin/services', icon: <FiSettings size={16} /> },
     { title: t('admin.messages', 'Messages'), path: '/admin/messages', icon: <FiMessageSquare size={16} /> },
-    // { title: t('admin.messages', 'Messages'), path: '/admin/messages', icon: <FiUsers size={16} /> },
     { title: t('admin.forms', 'Forms'), path: '/admin/forms', icon: <FiFileText size={16} /> },
-    { title: t('admin.translations', 'Translations'), path: '/admin/translations', icon: <FiGlobe size={16} /> }
+    { title: t('admin.translations', 'Translations'), path: '/admin/translations', icon: <FiGlobe size={16} /> },
+    { title: t('admin.users', 'Users'), path: '/admin/users', icon: <FiUsers size={16} /> }
+
   ];
 
   useEffect(() => {
@@ -217,17 +218,17 @@ const Admin: React.FC = () => {
             <Route path="/content" element={
               <Suspense fallback={<LoadingFallback />}>
                 <SafeAdminComponentWrapper
-                  component={ContentManager}
+                  component={AdminContentManager}
                   featureFlag="content"
                   componentProps={{ darkMode }}
                 />
               </Suspense>
             } />
-            <Route path="/messages" element={
+            <Route path="/users" element={
               <Suspense fallback={<LoadingFallback />}>
                 <SafeAdminComponentWrapper
-                  component={MessagesManager}
-                  featureFlag="messages"
+                  component={AdminUsersManager}
+                  featureFlag="users"
                   componentProps={{ darkMode }}
                 />
               </Suspense>
@@ -235,7 +236,7 @@ const Admin: React.FC = () => {
             <Route path="/messages" element={
               <Suspense fallback={<LoadingFallback />}>
                 <SafeAdminComponentWrapper
-                  component={MessagesManager}
+                  component={AdminMessagesManager}
                   featureFlag="messages"
                   componentProps={{ darkMode }}
                 />
@@ -244,7 +245,7 @@ const Admin: React.FC = () => {
             <Route path="/pages" element={
               <Suspense fallback={<LoadingFallback />}>
                 <SafeAdminComponentWrapper
-                  component={PagesManager}
+                  component={AdminPagesManager}
                   featureFlag="content"
                   componentProps={{ darkMode }}
                 />
@@ -253,7 +254,7 @@ const Admin: React.FC = () => {
             <Route path="/services" element={
               <Suspense fallback={<LoadingFallback />}>
                 <SafeAdminComponentWrapper
-                  component={ServicesManager}
+                  component={AdminServicesManager}
                   featureFlag="content"
                   componentProps={{ darkMode }}
                 />
@@ -262,7 +263,7 @@ const Admin: React.FC = () => {
             <Route path="/forms" element={
               <Suspense fallback={<LoadingFallback />}>
                 <SafeAdminComponentWrapper
-                  component={FormsManager}
+                  component={AdminFormsManager}
                   featureFlag="content"
                   componentProps={{ darkMode }}
                 />
@@ -271,7 +272,7 @@ const Admin: React.FC = () => {
             <Route path="/translations" element={
               <Suspense fallback={<LoadingFallback />}>
                 <SafeAdminComponentWrapper
-                  component={TranslationsManager}
+                  component={AdminTranslationsManager}
                   featureFlag="content"
                   componentProps={{ darkMode }}
                 />

@@ -1,19 +1,18 @@
 import { useState, useEffect } from 'react';
-import { contentService } from '../types/content';
-import { ContentItem } from '../types/content';
+import type { PageType } from '../types/pages';
 
-export function usePageData(page: string): [ContentItem | null, boolean, Error?] {
-  const [data, setData] = useState<ContentItem | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error>();
+export function usePageData<T = any>(endpoint: PageType) {
+  const [data, setData] = useState<T[]|null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string|null>(null);
 
   useEffect(() => {
-    contentService
-      .getPageContent(page)
-      .then(items => setData(items[0] ?? null))
-      .catch(err => setError(err))
-      .finally(() => setLoading(false));
-  }, [page]);
+    setIsLoading(true);
+    fetch(`/content/page/${endpoint}`)
+      .then(res => res.json())
+      .then(json => { setData(json); setIsLoading(false); })
+      .catch(e => { setError(e.message); setIsLoading(false); });
+  }, [endpoint]);
 
-  return [data, loading, error];
+  return { data, isLoading, error };
 }

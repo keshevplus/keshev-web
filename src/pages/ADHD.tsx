@@ -1,73 +1,32 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { usePageData } from '../hooks/usePageData';
-import PageLayout from '../layouts/PageLayout';
-import Card from '../components/ui/Card';
-import { ContentItem } from '../types/content';
+import { useErrorHandler } from '../hooks/useErrorHandler';
+import type { BasePageContent } from '../types/content';
+import adhdPageData from '../data/adhdPage';
+import PageRenderer from '../components/PageRenderer';
+import PageTitle from '../layouts/PageTitle';
 
-const ADHDPage: React.FC = () => {
-  const { data, isLoading, error } = usePageData('adhd');
+export default function ADHD() {
+  const { data, isLoading } = usePageData<BasePageContent>('adhd');
+  const { error, handleError } = useErrorHandler();
+  const content = data || adhdPageData;
 
-  if (isLoading)
-    return (
-      <div className="container mx-auto py-8 loading">
-        <div className="animate-pulse">Loading...</div>
-      </div>
-    );
-  if (error)
-    return (
-      <div className="container mx-auto  py-8 error">
-        <div className="text-red-600">Error: {error}</div>
-      </div>
-    );
-  if (!data || !data.length) return null;
+  useEffect(() => {
+    handleError(() => { document.documentElement.dir = 'rtl'; });
+  }, [handleError]);
 
-  const pageData = data[0] as ContentItem & {
-    // Extend the ContentItem type to include additional properties specific to this page
-    heading: string;
-    subheading: string;
-    body: {
-      image: any;
-      title: string;
-      description: string;
-      subItems?: {
-        title: string;
-        description: string;
-      }[];
-      textColor?: string; // Add textColor property
-      bgColor?: string; // Add bgColor property
-    }[];
-  };
+  if (isLoading) return <div className="container mx-auto py-8 loading"><div className="animate-pulse">Loading...</div></div>;
+  if (error) return <div className="container mx-auto py-8 error text-red-600">Error: {error}</div>;
 
   return (
-    <PageLayout
-      title={pageData.title || 'מהי ADHD?'}
-      background="bg-white"
-      withRtl={true}
-      maxWidth="md:max-w-[90%] lg:max-w-[55%]"
-    >
-      <div className="container mx-auto px-4 py-8">
-        <h3 className="text-xl md:text-3xl font-bold text-black text-center mb-8">
-          {pageData.heading || 'שירותינו במרפאה'}
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-1 gap-8 mb-8">
-          {pageData.body.map((item, idx) => (
-            <Card
-              key={idx}
-              bgcolor={item.bgColor || ""}
-              textColor={item.textColor || "text-black"}
-              textSize="text-xl md:text-2xl" /* Bigger title font */
-              paraSize='text-md md:text-lg whitespace-pre-line' /* Smaller content font */
-              title={item.title}
-              description={item.description}
-              image={item.image}
-              subItems={item.subItems} // Pass subItems here
-            />
-          ))}
-        </div>
+    <div className="adhd-page bg-white">
+      {/* Use PageTitle component with animation for non-homepage pages */}
+      {Array.isArray(content) ? null : <PageTitle title={content.title} />}
 
+      {/* Content area with leaf bullet points in lists */}
+      <div className="py-8">
+        {Array.isArray(content) ? null : <PageRenderer content={content} className="bg-white pt-0" />}
       </div>
-    </PageLayout>
+    </div>
   );
-};
-
-export default ADHDPage;
+}
