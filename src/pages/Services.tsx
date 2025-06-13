@@ -1,65 +1,30 @@
+import { useEffect } from 'react';
 import { usePageData } from '../hooks/usePageData';
-import PageLayout from '../layouts/PageLayout';
-import Card from '../components/ui/Card';
-
-// Custom leaf icon image for all service cards
-const customLeafIcon = <img src="/assets/images/green-leaf-icon.png" alt="Green Leaf" className="w-12 h-auto" />;
+import { useErrorHandler } from '../hooks/useErrorHandler';
+import type { BasePageContent } from '../types/content';
+import servicesPageData from '../data/servicesPage';
+import PageRenderer from '../components/PageRenderer';
+import PageTitle from '../layouts/PageTitle'; // Adjusted the path to point to the correct location
 
 export default function Services() {
-  const { data, isLoading, error } = usePageData('services');
+  const { data, isLoading } = usePageData<BasePageContent>('services');
+  const { error, handleError } = useErrorHandler();
+  const content = Array.isArray(data) ? data[0] : data || servicesPageData;
 
-  if (isLoading)
-    return (
-      <div className="container mx-auto max-w-full md:max-w-[75%] py-8 loading">
-        <div className="animate-pulse">Loading...</div>
-      </div>
-    );
+  useEffect(() => {
+    handleError(() => { document.documentElement.dir = 'rtl'; });
+  }, [handleError]);
 
-  if (error)
-    return (
-      <div className="container mx-auto max-w-full md:max-w-[85%] py-8 error">
-        <div className="text-red-600">Error: {error}</div>
-      </div>
-    );
-
-  if (!data?.length)
-    return (
-      <div className="container mx-auto py-8 error">
-        <div className="text-red-600">No services data found.</div>
-      </div>
-    );
-
-  const pageData = data[0];
+  if (isLoading) return <div className="container mx-auto py-8 loading"><div className="animate-pulse">Loading...</div></div>;
+  if (error) return <div className="container mx-auto py-8 error text-red-600">Error: {error}</div>;
 
   return (
-    <PageLayout
-      title={pageData.title || 'Services'}
-      background="bg-white"
-      withRtl={true}
-      maxWidth="md:max-w-[90%] lg:max-w-[85%]"
-    >
-      <h3 className="text-xl md:text-3xl font-bold text-black text-center mb-8">
-        {pageData.heading || 'שירותינו במרפאה'}
-      </h3>
-      <div className="rtl-container" dir="rtl">
-        <ul className="grid grid-cols-1 gap-8 w-full max-w-full md:max-w-[75%] mx-auto">
-          {/* All service cards from data */}
-          {pageData.body?.map((item, index) => (
-            <li key={index} className="items-start justify-start">
-              <Card
-                bgcolor={item.bgColor || "bg-orange-400/35 hover:bg-orange-400/60 text-right"}
-                textColor="text-black font-bold"
-                textSize="text-xl md:text-2xl" /* Bigger title font */
-                paraSize="text-md md:text-lg whitespace-pre-line" /* Smaller content font */
-                title={item.title || 'מקיף אבחון'}
-                description={item.description || 'הליך האבחון'}
-                icon={customLeafIcon} /* Use custom green leaf icon for all cards */
-              // isRtl={true} /* Enable RTL for Hebrew content */
-              />
-            </li>
-          ))}
-        </ul>
+    <>
+      {/* Use exact title from servicesPage data */}
+      <PageTitle title={content.title} />
+      <div style={{ paddingTop: '120px' }}>
+        <PageRenderer content={{ ...content, description: content.description }} className="absolute inset-0 z-[-1]" />
       </div>
-    </PageLayout>
+    </>
   );
 }

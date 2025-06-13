@@ -165,7 +165,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
       console.log('Messages response:', messagesRes);
 
       // Update message count for notification badge
-      const newMessageCount = messagesRes?.messages?.length || 0;
+      const newMessageCount = 'pagination' in messagesRes && messagesRes.pagination
+        ? messagesRes.pagination.total
+        : messagesRes.messages.length;
+
       console.log('New message count:', newMessageCount);
       setMessageCount(newMessageCount);
 
@@ -178,7 +181,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
         pages: { status: 'success', count: (pagesRes?.length || 0), unreadCount: 0, error: null, lastUpdated: new Date() },
         services: { status: 'success', count: Array.isArray(servicesRes) ? servicesRes.length : 0, unreadCount: 0, error: null, lastUpdated: new Date() },
         forms: { status: 'success', count: Array.isArray(formsRes) ? formsRes.length : 0, unreadCount: 0, error: null, lastUpdated: new Date() },
-        messages: { status: 'success', count: messagesRes?.messages?.length || 0, unreadCount: unreadMessages, error: null, lastUpdated: new Date() }
+        messages: { status: 'success', count: newMessageCount, unreadCount: unreadMessages, error: null, lastUpdated: new Date() }
       });
     } catch (error) {
       console.error('Error fetching stats:', error);
@@ -192,7 +195,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ darkMode = false, toggl
     setMsgsLoading(true);
     try {
       const res = await messagesServiceNew.getAllMessages(1, 5, '');
-      setMessages(res.messages);
+      // normalize message IDs to string
+      const normalized = res.messages.map(msg => ({
+        ...msg,
+        id: msg.id.toString(),
+      }));
+      setMessages(normalized);
     } catch (err) {
       console.error('Error loading messages:', err);
     } finally {

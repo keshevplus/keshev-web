@@ -42,72 +42,64 @@ export interface ContentItem {
   additional?: Array<any>;
 }
 
-export interface HomePageContent {
+// Create a consistent base interface for all page content types
+export interface BasePageContent {
   title: string;
-  subTitle?: string;
-  heading?: string;
-  subheading?: string;
-  list?: string[];
-  body?: ContentItem[];
-  heroText: string;
-  heroSubText?: string; // Added the missing heroSubText property
-  ctaButtonText: string;
-  servicesHeading: string;
-  servicesSubheading: string;
-  ctaHeading: string;
-  ctaSubheading: string;
-  services: {
-    title: string;
-    description: string;
-    icon: string;
-  }[];
-  image: string; // Added the missing 'image' property
+  description?: string;
+  image?: string;
+  sections: Array<{
+    id: string;
+    heading: string;
+    text?: string;
+    content?: string | string[];
+    image?: string;
+    ctaButtonText?: string;
+    bgColor?: string;
+    textColor?: string;
+  }>;
 }
 
-import aboutPageData from '../data/aboutPage';
-import servicesPageData from '../data/servicesPage';
-import diagnosisPageData from '../data/diagnosisPage';
-import formsPageData from '../data/formsPage';
-import contactPageData from '../data/contactPage';
-import adhdPageData from '../data/adhdPage';
+export interface HomePageContent {
+  title: string;
+  image: string; // Hero image or logo for homepage
+  description?: string;
+  sections: Array<{ // Section definitions for homepage content
+    id: string;
+    heading: string;
+    text?: string;
+    content?: string | string[];
+    image?: string;
+    ctaButtonText?: string;
+    bgColor?: string;
+    textColor?: string;
+  }>;
+}
+
+
+// Dynamic import of page data files for lazy loading
+const pageModules = import.meta.glob('../data/*Page.ts');
 
 export const contentService = {
-  async getPageContent(page: string): Promise<ContentItem[]> {
-    // This could be replaced with real API calls later
-    switch (page) {
-      case 'about':
-        return [aboutPageData];
-      case 'services':
-        return [servicesPageData];
-      case 'adhd':
-        return [adhdPageData];
-      case 'diagnosis':
-        return [diagnosisPageData];
-      case 'forms':
-        return [formsPageData];
-      case 'contact':
-        return [contactPageData];
-      default:
-        throw new Error(`Unknown page: ${page}`);
+  /**
+   * Lazily loads page content module matching the page key.
+   * Drop a new data file in src/data named <page>Page.ts to auto-register.
+   */
+  async getPageContent(page: string): Promise<ContentItem[] | any> {
+    const modulePath = `../data/${page}Page.ts`;
+    const loader = pageModules[modulePath];
+    if (!loader) {
+      throw new Error(`Unknown page: ${page}`);
     }
+    const mod = await loader();
+    // default export should be the page's data object or array
+    const data = (mod as { default: any }).default;
+    // Ensure array return for consistency
+    return Array.isArray(data) ? data : [data];
   }
 };
 
-export function getPageContent(page: string): ContentItem[] {
-  switch (page) {
-    case 'about':
-      return [aboutPageData];
-    case 'services':
-      return [servicesPageData];
-    case 'adhd':
-      return [adhdPageData];
-    case 'diagnosis':
-      return [diagnosisPageData];
-    case 'forms':
-      return [formsPageData];
-    case 'contact':
-      return [contactPageData];
-    default:
-      return [];
-  }
+// Deprecated synchronous loader, use contentService.getPageContent instead
+export function getPageContent(): ContentItem[] {
+  console.warn('getPageContent is deprecated, use contentService.getPageContent');
+  return [];
 }

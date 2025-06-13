@@ -1,50 +1,58 @@
-import { HomePageContent } from '../types/content';
+
+export interface HomePageContent {
+  title: string;
+  image: string;  
+  sections: {
+    id: string;
+    heading: string;
+    text?: string;
+    content?: string | string[];
+    image?: string;
+    ctaButtonText?: string;
+    bgColor?: string;
+    textColor?: string;
+  }[];
+}
 
 const homePageData: HomePageContent = {
-  title: `ברוכים הבאים למרפאת
-   "קשב פלוס"`,
-  heading: 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז',
-  
-  image: '/assets/images/logo.png',
-  subheading: ` ב"קשב פלוס" תקבלו אבחון מדויק
-  ותוכנית טיפול אישית
-  `,
-  list: [
-    'בילדים',
-    'בבני נוער',
-    'במבוגרים'
-  ],
-  body: [
+  title: `ברוכים הבאים למרפאת "קשב פלוס"`,        //    pd.title
+  image: '/assets/images/logoSVG.svg',              // Hero logo  pd.image
+  sections: [
     {
-      heading: 'קשב פלוס',
-      title: 'קשב פלוס',
-      description: 'אבחון וטיפול מקצועי בהפרעות קשב וריכוז',
-      image: '/assets/images/doctor-hero.png'
-    }
-  ],
-  subTitle: `הצעד הראשון מתחיל כאן`,
-  heroText: `קבעו פגישת ייעוץ - בואו לגלות את הדרך להצלחה`,
-  ctaButtonText: 'יצירת קשר',
-  ctaHeading: 'זימנו היום תור לפגישת ייעוץ והתאמה אישית',
-  ctaSubheading: 'אנחנו כאן בשבילכם',
-  servicesHeading: 'השירותים שלנו',
-  servicesSubheading: 'אנו מציעים מגוון שירותים מקצועיים',
+      id: 'intro',
+      heading: `ד"ר איירין כוכב רייפמן   
+             מומחית לאבחון וטיפול בהפרעות קשב וריכוז`,
+      text: `בקשב פלוס, תקבלו אבחון מדויק ותוכנית טיפול אישית`
+    },
+    {
+      id: 'hero',
+      heading: `הצעד הראשון מתחיל כאן`,
+      text:`
+       קבעו פגישת ייעוץ - ובואו לגלות את הדרך להצלחה
+      `,      image: '/assets/images/doctor-hero.png', // Image for the hero section
 
-  services: [
+    },
+ 
     {
-      title: 'אבחון מקיף',
-      description: 'אבחון מקיף של הפרעות קשב ופעלתנות יתר',
-      icon: '🔍',
+      id: 'contact-cta', // Call-to-action: contact
+      heading: 'התחל/י את האבחון ',
+      bgColor: 'bg-green-800 hover:bg-green-600', // Background color for the section
+      textColor: 'text-white', // Text color for the section
     },
     {
-      title: 'טיפול מותאם',
-      description: 'טיפול תרופתי מותאם למטופל, יחד עם שיתוף עפ פסיכולוגי פרטני ומשפחתי',
-      icon: '💭',
+      id: 'about-cta', // Call-to-action: about
+      heading: 'קרא/י עוד עלינו',
+      bgColor: 'bg-orange-200 hover:bg-orange-500', // Background color for the section
+      textColor: 'text-black', // Text color for the section
     },
     {
-      title: 'הדרכת הורים',
-      description: 'הדרכה וכלים להתמודדות עם אתגרי ההורות',
-      icon: '👨‍👩‍👧‍👦',
+      id: 'list',
+      heading: 'ב"קשב פלוס" תקבלו אבחון מדויק ותוכנית טיפול אישית',
+      content: [
+        'בילדים',
+        'בנוער',
+        'במבוגרים'
+      ]
     },
   ],
 };

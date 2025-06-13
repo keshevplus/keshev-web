@@ -30,12 +30,17 @@ export default defineConfig(({ mode }) => {
       strictPort: true,
       open: true,
       proxy: {
-        // Forward API requests to your local Express server in development
+        // Forward API requests to your local backend server in development
         '/api': {
-          target: 'http://localhost:3001',  // your express proxy
+          target: env.VITE_API_BASE_URL_DEV,  // local backend for API calls
           changeOrigin: true,
           secure: false,
         },
+        '/content': {
+          target: env.VITE_API_BASE_URL_DEV, // local backend for content API),
+          changeOrigin: true,
+          secure: false,
+        }
       },
       historyApiFallback: true, // Handle client-side routing
       hmr: {

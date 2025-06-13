@@ -1,170 +1,52 @@
-import { PageSection } from '../types/pages'; // Verify '../types/pages.ts' exists or adjust the path to the correct location
-// If the file does not exist, create it and define the 'PageSection' type.
+import { BasePageContent } from '../types/content';
 
-/**
- * Contact page data model
- */
-export interface ContactPageData {
-  id: string;
-  title: string;
-  subtitle?: string;
-  heading?: string;
-  description?: string;
-  sections: ContactPageSection[];
-  metaTitle?: string;
-  metaDescription?: string;
-  contactInfo: ContactInfo;
-  formConfig: ContactFormConfig;
-}
-
-export interface ContactPageSection extends PageSection {
-  id: string;
-  type: 'hero' | 'form' | 'map' | 'info' | 'faq';
-  title?: string;
-  subtitle?: string;
-  content?: string;
-  display_order?: number;
-}
-
-/**
- * Contact information structure
- */
+// Simple contact info interface - only what's actually needed
 export interface ContactInfo {
   address: string;
   phone: string;
   email: string;
   whatsapp?: string;
-  socialMedia?: SocialMedia;
-  location?: GeoLocation;
-}
-
-export interface SocialMedia {
-  facebook?: string;
-  instagram?: string;
-  twitter?: string;
-  linkedin?: string;
-  youtube?: string;
-}
-
-export interface GeoLocation {
-  lat: number;
-  lng: number;
-  zoom?: number;
-}
-
-/**
- * Contact form configuration
- */
-export interface ContactFormConfig {
-  id: string;
-  title: string;
-  heading?: string;
-  subtitle?: string;
-  fields: FormField[];
-  submitButtonText: string;
-  successMessage: string;
-  errorMessage: string;
-  redirect?: string;
-}
-
-export interface FormField {
-  id: string;
-  name: string;
-  label: string;
-  type: 'text' | 'email' | 'tel' | 'textarea' | 'select' | 'checkbox' | 'radio';
-  placeholder?: string;
-  required: boolean;
-  options?: { value: string; label: string }[];
-  validation?: {
-    pattern?: string;
-    minLength?: number;
-    maxLength?: number;
-    message?: string;
+  location?: {
+    lat: number;
+    lng: number;
+    zoom?: number;
   };
 }
 
-// Default contact page data with proper DB-based structure
-const defaultContactPage: ContactPageData = {
-  id: 'contact-page',
+// Contact page following the same pattern as other pages
+const contactPageData: BasePageContent = {
   title: 'יצירת קשר',
-  subtitle: 'נשמח לענות על כל שאלה',
+  description: 'נשמח לענות על כל שאלה ולעזור לכם בכל נושא',
   sections: [
     {
       id: 'contact-hero',
-      type: 'hero',
-      title: 'יצירת קשר',
-      subtitle: 'אנחנו כאן כדי לעזור לכם',
-      content: 'אנחנו כאן כדי לענות על כל שאלה ולעזור לכם בכל נושא.',
-      display_order: 1
+      heading: 'יצירת קשר',
+      text: 'אנחנו כאן כדי לענות על כל שאלה ולעזור לכם בכל נושא.',
     },
     {
       id: 'contact-form',
-      type: 'form',
-      title: 'שלחו לנו הודעה',
-      content: 'מלאו את הטופס ונחזור אליכם בהקדם.',
-      display_order: 2
+      heading: 'שלחו לנו הודעה',
+      text: 'מלאו את הטופס ונחזור אליכם בהקדם.',
     },
     {
-      id: 'contact-map',
-      type: 'map',
-      title: 'המיקום שלנו',
-      content: '',
-      display_order: 3
+      id: 'contact-info',
+      heading: 'פרטי התקשרות',
+      text: 'יגאל אלון 94, מגדלי אלון 1, קומה 12, משרד 1202, תל אביב - יפו',
     }
-  ],
-  contactInfo: {
-    address: 'יגאל אלון 94 , מגדלי אלון 1, קומה 12, משרד 1202 תל אביב - יפו',
-    phone: '055-27-399-27',
-    email: 'dr@keshevplus.co.il',
-    whatsapp: '972552739927',
+  ]
+};
 
-    location: {
-      lat: 32.0688715,
-      lng: 34.7939972,
-      zoom: 15
-    }
-  },
-  formConfig: {
-    id: 'contact-form',
-    title: 'יצירת קשר',
-    fields: [
-      {
-        id: 'name',
-        name: 'name',
-        label: 'שם מלא',
-        type: 'text',
-        placeholder: 'הכנס/י שם מלא',
-        required: true
-      },
-      {
-        id: 'email',
-        name: 'email',
-        label: 'דואר אלקטרוני',
-        type: 'email',
-        placeholder: 'דוא״ל שלך@דוגמה.com',
-        required: true
-      },
-      {
-        id: 'phone',
-        name: 'phone',
-        label: 'טלפון',
-        type: 'tel',
-        placeholder: '050-1234567',
-        required: true
-      },
-      {
-        id: 'message',
-        name: 'message',
-        label: 'תוכן הפנייה',
-        type: 'textarea',
-        placeholder: 'הכנס/י את תוכן הפנייה כאן...',
-        required: true
-      }
-    ],
-    submitButtonText: 'שלח פנייה',
-    successMessage: 'ההודעה נשלחה בהצלחה! נחזור אליך בהקדם האפשרי',
-    errorMessage: 'אירעה שגיאה בשליחת ההודעה. אנא נסה שנית או התקשר אלינו ישירות'
+// Contact info data
+export const contactInfo: ContactInfo = {
+  address: 'יגאל אלון 94, מגדלי אלון 1, קומה 12, משרד 1202, תל אביב - יפו',
+  email: 'dr@keshevplus.co.il',
+  phone: '055-27-399-27',
+  whatsapp: '972552739927',
+  location: {
+    lat: 32.0688715,
+    lng: 34.7939972,
+    zoom: 15
   }
 };
 
-export default defaultContactPage;
+export default contactPageData;

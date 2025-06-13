@@ -1,101 +1,90 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-export default function PageTitle({ title }: { title: string }) {
-  // Track both scroll state (for animation) and scroll percentage (for smooth transition)
-  const [isScrolledPast, setIsScrolledPast] = useState(false);
+export interface IPageTitleProps {
+  title: string;
+  className?: string;
+  isHomePage?: boolean;
+}
+
+/**
+ * PageTitle component with scroll animation for all pages
+ * Shows a gradient title bar with green background and white text for non-homepage pages
+ */
+export default function PageTitle({ title, isHomePage = false, className = '' }: IPageTitleProps) {
+  const titleRef = useRef<HTMLDivElement>(null);
   const [scrollPercentage, setScrollPercentage] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Check if device is mobile based on screen width
-    const checkIfMobile = () => {
-      setIsMobile(window.innerWidth < 768); // Standard mobile breakpoint
-    };
-
-    // Initial check
-    checkIfMobile();
-
-    // Listen for resize events
-    window.addEventListener('resize', checkIfMobile);
-    return () => window.removeEventListener('resize', checkIfMobile);
-  }, []);
-
-  useEffect(() => {
-    // Handle scroll event with viewport percentage-based thresholds
     const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-
-      // Use a very small threshold - just enough to detect intentional scrolling
-      const threshold = 50; // Fixed at 50px regardless of device
-      const transitionRange = 100; // Short transition range for quick effect
-
-      // Calculate scroll percentage for smooth transitions (0 to 1)
-      let percentage = 0;
-      if (scrollPosition > threshold) {
-        percentage = Math.min((scrollPosition - threshold) / transitionRange, 1);
-        setIsScrolledPast(true);
-      } else {
-        setIsScrolledPast(false);
-      }
+      const scrolled = window.scrollY;
+      // Use a lower threshold for the homepage to make the title appear earlier
+      const maxScroll = isHomePage ? 1 : 300;
+      const percentage = Math.min(scrolled / maxScroll, 1);
       setScrollPercentage(percentage);
-
-      console.log(`[PageTitle] Scroll: ${scrollPosition}px, Mobile: ${isMobile}, Threshold: ${threshold}px, Percentage: ${(percentage * 100).toFixed(0)}%, Shrunk: ${scrollPosition > threshold}`);
     };
 
-    // Add scroll event listener
     window.addEventListener('scroll', handleScroll);
-
-    // Initial check on mount
+    // Trigger once on mount to get the initial state
     handleScroll();
 
-    // Clean up the event listener on component unmount
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isHomePage]);
 
-  // Calculate styles based on scroll percentage for smooth transitions
-  const navbarHeight = 70; // Approximate height of navbar in pixels
+  // Calculate styles based on scroll percentage
+  const headerHeight = 0 - (scrollPercentage * 40); // shrink from 120px to 80px
+  const fontSize = 2.5 - (scrollPercentage * 0.5); // shrink from 3rem to 2.5rem
+  const opacity = Math.max(1 - scrollPercentage * 1.5, 0.7); // fade a bit on scroll
 
-  // Calculate styles based on scroll percentage and device type
-  // Use fixed height with flexbox for vertical centering instead of padding
-  const heightValue = isScrolledPast
-    ? isMobile ? '50px' : '50px' // Fixed height when scrolled (smaller)
-    : isMobile ? '80px' : '100px'; // Fixed height when not scrolled (larger)
+  // Different background for homepage vs other pages
+  const backgroundClass = isHomePage
+    ? 'bg-white'
+    : 'bg-gradient-to-r from-green-800 to-green-700';
 
-  // Text size should be one level smaller when shrunk
-  const fontSize = isScrolledPast
-    ? isMobile ? '0.9rem' : '1.5rem' // Fixed smaller size when scrolled (down one level)
-    : isMobile ? '1.5rem' : '2.2rem';
-
-  // Always position right below the navbar to ensure phone number visibility
-  const top = isScrolledPast
-    ? `${navbarHeight + 5}px` // Add 5px extra padding at the top when fixed
-    : '0';
+  const textColorClass = isHomePage ? 'text-green-800' : 'text-white';
+  const leafBrightness = isHomePage ? '' : 'brightness-0 invert';
 
   return (
-    <div className="text-center font-bold mb-6 relative">
-      {/* Placeholder div to prevent content jump when title becomes fixed */}
-      <div
-        className={`w-full transition-all duration-300`}
-        style={{ height: isScrolledPast ? `${navbarHeight + (isMobile ? 50 : 80)}px` : '0' }}
-      />
+    <div
+      ref={titleRef}
+      className={`text-center w-full ${backgroundClass} relative z-40 left-0 right-0 transition-all duration-300 ${className}`}
+      style={{
+        height: `${headerHeight}px`,
+        transition: 'height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        boxShadow: scrollPercentage > 0.1 ? '0 4px 6px -1px rgba(0, 0, 0, 0.1)' : 'none',
+        width: '100vw' // Ensure it spans full width
+      }}
+    >
+      <div className="max-w-full h-full flex items-center justify-center px-6">
+        <div className="flex items-center rtl:space-x-reverse">
+          {/* Leaf icon that rotates slightly on scroll */}
+          <img
+            src="/assets/images/leaf.png"
+            alt=""
+            className={`h-8 w-auto ${leafBrightness} opacity-90 ml-0 mr-3 rtl:mr-0 rtl:ml-3`}
+            style={{
+              transform: `rotate(${scrollPercentage * 20}deg)`,
+              transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+            }}
+          />
 
-      <h1
-        id="pageTitleBg"
-        style={{
-          height: heightValue,
-          fontSize: fontSize,
-          top: top,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-        className={`bg-gradient-to-b from-green-800 to-green-950 text-white transition-all duration-300 ease-in-out ${isScrolledPast
-            ? 'fixed left-0 right-0 w-full shadow-md z-40 mt-3' // Added mt-4 to create top margin when shrunk
-            : 'relative shadow-md'
-          }`}
-      >
-        {title}
-      </h1>
+          {/* Title and subtitle with smooth transitions */}
+          <div className="flex flex-col items-start rtl:items-start">
+            <h1
+              className={`${textColorClass} font-bold leading-tight`}
+              style={{
+                fontSize: `${fontSize}rem`,
+                opacity,
+                transition: 'font-size 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              }}
+            >
+              {title}
+            </h1>
+          </div>
+          {/* */}
+        </div>
+      </div>
     </div>
+
   );
 }
+

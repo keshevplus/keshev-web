@@ -55,15 +55,7 @@
   }
 }
 
-/* Particle float animation */
-@keyframes particle-float {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: 100px 100px;
-  }
-}
+
 
 /* Logo rotation animation */
 @keyframes logo-rotate {

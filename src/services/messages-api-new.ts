@@ -1,4 +1,4 @@
-import { API_BASE_URL } from './api';
+import { API_URL } from '../config/constants';
 
 /**
  * Message model representing a customer inquiry
@@ -78,7 +78,7 @@ const authenticatedRequest = async <T>(url: string, options: RequestInit = {}): 
 
   // Ensure correct API endpoint construction
   const urlPath = url.startsWith('/') ? url.substring(1) : url;
-  const baseUrl = API_BASE_URL.endsWith('/') ? API_BASE_URL.slice(0, -1) : API_BASE_URL;
+  const baseUrl = API_URL; // Use the imported API_URL constant
   const fullUrl = url.startsWith('http') ? url : `${baseUrl}/${urlPath}`;
 
   try {
@@ -104,6 +104,11 @@ const authenticatedRequest = async <T>(url: string, options: RequestInit = {}): 
     if (!response.ok) {
       let errorData = { message: `HTTP error! status: ${response.status}` };
       try {
+        // Check if the response is likely HTML (often error pages)
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('text/html')) {
+          throw new Error('Received HTML response instead of JSON');
+        }
         errorData = await response.json();
       } catch (e) {
         errorData.message = response.statusText || errorData.message;
@@ -126,8 +131,14 @@ const authenticatedRequest = async <T>(url: string, options: RequestInit = {}): 
     
     // Parse the JSON response with better error handling
     try {
+      // Check if the response is likely HTML before parsing
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('text/html')) {
+        console.warn('Received HTML response instead of JSON');
+        return { success: false, message: 'Invalid response format (HTML)' } as unknown as T;
+      }
+      
       const data = await response.json();
-      console.log('Response data structure:', Object.keys(data));
       return data as T;
     } catch (e) {
       console.error('Failed to parse JSON response:', e);
@@ -158,7 +169,23 @@ class MessageService {
       console.log(`Fetching messages with URL: ${url}`);
       
       const response = await authenticatedRequest<any>(url);
-      console.log('Received messages response:', response);
+      console.log('Received messages response:', typeof response);
+      
+      // Check if the response indicates an error or invalid format
+      if (response && response.success === false) {
+        console.warn('API indicated failure:', response.message);
+        return {
+          messages: [],
+          pagination: {
+            total: 0,
+            page,
+            limit,
+            totalPages: 0,
+            hasNextPage: false,
+            hasPrevPage: false
+          }
+        };
+      }
       
       // Helper function for normalizing data
       const normalizeMessage = (message: Record<string, any>): Message => ({
@@ -187,7 +214,9 @@ class MessageService {
       // Case 1: response has 'messages' property
       if (response && response.messages) {
         console.log(`✅ Found ${response.messages.length} messages in response.messages`);
-        const normalizedMessages = response.messages.map(normalizeMessage);
+        const normalizedMessages = Array.isArray(response.messages) 
+          ? response.messages.map(normalizeMessage)
+          : [];
         
         return {
           messages: normalizedMessages,
@@ -219,7 +248,7 @@ class MessageService {
       }
       
       // Case 4: response has other array properties that might contain messages
-      if (response) {
+      if (response && typeof response === 'object') {
         for (const key of Object.keys(response)) {
           if (Array.isArray(response[key])) {
             console.log(`✅ Found array in response[${key}] with ${response[key].length} items`);

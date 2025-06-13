@@ -10,17 +10,66 @@ export const contentService = {
   async getPageContent(page: string): Promise<ContentItem[]> {
     switch (page) {
       case 'about':
-        return [aboutPageData];
+        return [
+          {
+            ...aboutPageData,
+            sections: aboutPageData.sections.map(section => ({
+              ...section,
+              text: section.text || ''
+            }))
+          }
+        ];
       case 'services':
-        return [servicesPageData];
+        return [
+          {
+            ...servicesPageData,
+            sections: servicesPageData.sections.map(section => ({
+              ...section,
+              text: section.text || ''
+            }))
+          }
+        ];
       case 'adhd':
-        return [adhdPageData];
+        return [
+          {
+            ...adhdPageData,
+            sections: adhdPageData.sections.map(section => ({
+              ...section,
+              text: section.text || ''
+            }))
+          }
+        ];
       case 'diagnosis':
-        return [diagnosisPageData];
+        return [
+          {
+            ...diagnosisPageData,
+            sections: diagnosisPageData.sections.map(section => ({
+              ...section,
+              text: section.text || ''
+            }))
+          }
+        ];
       case 'forms':
-        return [formsPageData];
+        return [
+          {
+            ...formsPageData,
+            sections: formsPageData.sections.map(section => ({
+              ...section,
+              text: section.text || ''
+            }))
+          }
+        ];
       case 'contact':
-        return [contactPageData];
+        return [
+          {
+            ...contactPageData,
+            sections: contactPageData.sections.map(section => ({
+              ...section,
+              heading: section.heading || '',
+              text: section.text || '',
+            }))
+          }
+        ];
       default:
         throw new Error(`Unknown page: ${page}`);
     }

@@ -65,7 +65,7 @@ export const loadAvailableLanguages = async () => {
   try {
     const languages = await fetchAvailableLanguages();
     // Update supportedLngs dynamically based on what's available
-    if (languages.length > 0) {
+    if (languages && Array.isArray(languages) && languages.length > 0) {
       const langCodes = languages.map(lang => lang.code);
       i18n.options.supportedLngs = langCodes;
       
@@ -76,6 +76,8 @@ export const loadAvailableLanguages = async () => {
       }
       
       console.log('Supported languages updated:', langCodes);
+    } else {
+      console.log('No languages returned from API or invalid format, using defaults');
     }
   } catch (err) {
     console.error('Error loading available languages:', err);

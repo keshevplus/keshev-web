@@ -259,3 +259,45 @@ VITE_PNPM_HOME=C:\Users\<user>\AppData\Local\pnpm
 Remove any unused or legacy variables (such as `VITE_SUPABASE_URL`) from your `.env` and codebase.
 
 For more details, see the documentation for [Vite](https://vitejs.dev/), [Vercel](https://vercel.com/docs), and [Neon](https://neon.tech/docs/introduction/).
+
+
+/**
+ * The `Home` component serves as the main landing page for the application.
+ * It dynamically renders content based on the `HomePageContent` data fetched
+ * from the backend and provides a responsive, RTL-friendly layout.
+ *
+ * @component
+ *
+ * @description
+ * - Fetches page data using the `usePageData` hook.
+ * - Handles errors using the `useErrorHandler` hook.
+ * - Dynamically maps sections by their IDs for easier access and rendering.
+ * - Displays a loading spinner while data is being fetched.
+ * - Renders error messages with a reload button in case of errors.
+ * - Supports RTL layout and adjusts styles accordingly.
+ * - Includes a hero section, intro text, rotating list, and CTA buttons.
+ * - Dynamically renders additional sections with alternating background colors.
+ *
+ * @returns {JSX.Element} The rendered `Home` component.
+ *
+ * @example
+ * ```tsx
+ * import Home from './Home';
+ * function App() {
+ *   return <Home />;
+ * }
+ * ```
+ *
+ * @dependencies
+ * - `usePageData`: Custom hook for fetching page data.
+ * - `useErrorHandler`: Custom hook for error handling.
+ * - `useSelector`: Redux hook for accessing global state.
+ * - `Link`: React Router component for navigation.
+ *
+ * @remarks
+ * - The component ensures accessibility and responsiveness.
+ * - It uses Tailwind CSS for styling.
+ * - The layout and content are optimized for RTL languages.
+ */
+
+  
