@@ -75,7 +75,7 @@ export default function HomePage() {
                                             className="absolute top-0 right-0 font-bold opacity-0 animate-typing"
                                             style={{
                                                 animationDelay: `${idx * 3000}ms`,
-                                                animationDuration: `${listSec.content.length * 3000}ms`
+                                                animationDuration: `${listSec?.content?.length ? listSec.content.length * 3000 : 0}ms`
                                             }}
                                         >
                                             {item}

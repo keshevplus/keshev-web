@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "buildCommand": "cd client && npx pnpm install --no-frozen-lockfile && npx pnpm build",
+  "outputDirectory": "client/dist",
+  "rewrites": [
+    { "source": "/api/contact", "destination": "/api/contact.js" },
+    { "source": "/api/neon/leads", "destination": "/api/neon-leads.js" },
+    { "source": "/assets/:path*", "destination": "/client/dist/assets/:path*" },
+    { "source": "/(.*)", "destination": "/client/dist/$1" }
+  ],
+  "headers": [
+    {
+      "source": "/assets/images/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
+  ]
+}

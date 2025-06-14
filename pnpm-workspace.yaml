@@ -1,3 +1,6 @@
 ignoredBuiltDependencies:
+<<<<<<< HEAD
   - '@vercel/speed-insights'
+=======
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
   - esbuild

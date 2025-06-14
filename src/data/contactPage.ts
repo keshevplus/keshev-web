@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { BasePageContent } from '../types/content';
 
 // Simple contact info interface - only what's actually needed
@@ -32,10 +33,36 @@ const contactPageData: BasePageContent = {
       id: 'contact-info',
       heading: 'פרטי התקשרות',
       text: 'יגאל אלון 94, מגדלי אלון 1, קומה 12, משרד 1202, תל אביב - יפו',
+=======
+import { ContentItem } from '../types/content';
+
+const contactPageData: ContentItem = {
+  heading: 'יצירת קשר',
+  subheading: 'השאירו פרטים ואחד מנציגנו יחזור אליכם בהקדם',
+  body: [
+    {
+      title: 'כתובת',
+      description: 'רמת גן, ישראל',
+      image: '/assets/images/icon.png',
+      icon: '🏠',
+    },
+    {
+      title: 'טלפון',
+      description: '054-4777469',
+      image: '/assets/images/icon.png',
+      icon: '📞',
+    },
+    {
+      title: 'אימייל',
+      description: 'dr@keshevplus.co.il',
+      image: '/assets/images/icon.png',
+      icon: '✉️',
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
     }
   ]
 };
 
+<<<<<<< HEAD
 // Contact info data
 export const contactInfo: ContactInfo = {
   address: 'יגאל אלון 94, מגדלי אלון 1, קומה 12, משרד 1202, תל אביב - יפו',
@@ -49,4 +76,6 @@ export const contactInfo: ContactInfo = {
   }
 };
 
+=======
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
 export default contactPageData;

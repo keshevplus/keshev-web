@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "admin": {
     "title": "Admin Area",
     "email": "Email Address",
@@ -9,4 +10,7 @@
     "show_password": "Show password",
     "hide_password": "Hide password"
   }
+=======
+
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
 }

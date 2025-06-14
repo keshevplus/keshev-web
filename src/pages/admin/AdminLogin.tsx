@@ -1,24 +1,41 @@
+<<<<<<< HEAD
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '../../components/ui/LanguageSwitcher';
+=======
+import React, { useState, FormEvent, ChangeEvent } from 'react';
+
+interface LoginResponse {
+  token: string;
+  user: {
+    email: string;
+    role: string;
+  };
+}
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
 
 const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
+<<<<<<< HEAD
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { login } = useAuth();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation(['forms']);
   const isRTL = i18n.language === 'he';
+=======
+  const [token, setToken] = useState<string | null>(null);
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
+<<<<<<< HEAD
     setIsLoading(true);
 
     try {
@@ -116,4 +133,45 @@ const AdminLogin: React.FC = () => {
     </div>
   );
 }
+=======
+    try {
+      const res = await fetch('http://localhost:5000/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data: LoginResponse | { message: string } = await res.json();
+      if (!res.ok) throw new Error((data as { message: string }).message);
+      setToken((data as LoginResponse).token);
+      // Save token in localStorage if needed
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
+
+  if (token) return <div>Welcome, admin! Token: {token}</div>;
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        value={email}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+        placeholder="Email"
+        type="email"
+        required
+      />
+      <input
+        value={password}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+        type="password"
+        placeholder="Password"
+        required
+      />
+      <button type="submit">Login</button>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
+    </form>
+  );
+};
+
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
 export default AdminLogin;
