@@ -2,6 +2,7 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import Backend from 'i18next-http-backend';
+<<<<<<< HEAD
 import { initializeTranslations, fetchAvailableLanguages } from '../services/translationService';
 
 // List of namespaces we use in the application
@@ -10,6 +11,12 @@ const namespaces = ['common', 'accessibility', 'navigation', 'forms', 'home', 'a
 // Initialize i18next instance
 i18n
   // Load translations from backend (our API)
+=======
+
+// Initialize i18next instance
+i18n
+  // Load translations from /public/locales
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
   .use(Backend)
   // Detect user language
   .use(LanguageDetector)
@@ -24,7 +31,11 @@ i18n
     // Load multiple languages
     supportedLngs: ['he', 'en'],
     // Namespaces to use
+<<<<<<< HEAD
     ns: namespaces,
+=======
+    ns: ['common', 'accessibility', 'navigation', 'forms', 'home'],
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
     defaultNS: 'common',
     // Cache languages in browser localStorage
     cache: {
@@ -38,6 +49,7 @@ i18n
     react: {
       useSuspense: true,
     },
+<<<<<<< HEAD
     // Custom backend options to load translations from our API
     backend: {
       // Override the loadPath to use our custom load function
@@ -87,4 +99,8 @@ export const loadAvailableLanguages = async () => {
 // Load languages when the app starts
 loadAvailableLanguages();
 
+=======
+  });
+
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
 export default i18n;

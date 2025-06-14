@@ -2,11 +2,16 @@ import React, { useEffect, useState, useRef, ReactNode } from 'react';
 
 // Define the interface for the Card component props
 interface CardProps {
+<<<<<<< HEAD
   bgColor: string; // Background color of the card
+=======
+  bgcolor: string; // Background color of the card
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
   textColor: string; // Text color of the card
   textSize: string; // Font size for the title text
   paraSize?: string; // Optional font size for the description text
   title: string; // Title of the card
+<<<<<<< HEAD
   description: string; // Description text of the card (HTML markup allowed)
   image?: string; // Optional image URL for the card
   alt?: string; // Optional alt text for the image
@@ -17,10 +22,15 @@ interface CardProps {
   customClass?: string; // Optional customClass for the root element
   widthClass?: string; // Tailwind width classes
   // Removed unused isRtl prop
+=======
+  description: ReactNode; // Description text of the card (can be string or React element)
+  image?: string; // Optional image URL for the card
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
 }
 
 // Card component definition
 const Card: React.FC<CardProps> = ({
+<<<<<<< HEAD
   bgColor = 'bg-white', // Default background color
   textColor = 'text-black', // Default text color
   textSize,
@@ -38,6 +48,18 @@ const Card: React.FC<CardProps> = ({
 
 }) => {
   const [animate, setAnimate] = useState(false);
+=======
+  bgcolor, // Background color passed as a prop
+  textColor, // Text color passed as a prop
+  textSize, // Font size for the title text passed as a prop
+  title, // Title text passed as a prop
+  description, // Description text passed as a prop
+  image, // Optional image URL passed as a prop
+}) => {
+  const [animate, setAnimate] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
   const descriptionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -45,6 +67,7 @@ const Card: React.FC<CardProps> = ({
     return () => clearTimeout(timeout);
   }, []);
 
+<<<<<<< HEAD
   return (
     <div
       className={`flex flex-col ${widthClass} rounded-3xl shadow-xl group px-4 py-2 transition-all duration-500 mb-2 
@@ -112,6 +135,48 @@ const Card: React.FC<CardProps> = ({
               alt={alt || title} // Use alt prop if provided
               className="w-10 h-10 object-cover rounded-full hover:scale-125 transition-transform duration-200"
             />
+=======
+  useEffect(() => {
+    if (descriptionRef.current) {
+      setIsOverflowing(
+        descriptionRef.current.scrollHeight >
+          descriptionRef.current.clientHeight
+      );
+    }
+  }, [description]);
+
+  return (
+    <div
+      className={`flex items-start rounded-3xl shadow-xl group px-4 py-2 transition-transform duration-[2s] mb-2 ${
+        animate ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+      } ${bgcolor}`}
+    >
+      {image && (
+        <img
+          src={image}
+          alt={title}
+          className="w-10 h-10 object-cover rounded-full mx-2 group-hover:scale-125 transition-transform duration-200"
+        />
+      )}
+      <div className="flex flex-col">
+        <h4 className={`font-bold ${textSize} ${textColor}`}>{title}</h4>
+        <div className="overflow-hidden">
+          <div
+            ref={descriptionRef}
+            className={`mx-2 ${textColor} font-normal ${
+              expanded ? '' : 'line-clamp-2'
+            }`}
+          >
+            {description}
+          </div>
+          {isOverflowing && (
+            <button
+              className="text-green-900 cursor-pointer mt-2"
+              onClick={() => setExpanded(!expanded)}
+            >
+              {expanded ? 'קרא פחות' : 'קרא עוד'}
+            </button>
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
           )}
         </div>
       </div>
@@ -119,4 +184,8 @@ const Card: React.FC<CardProps> = ({
   );
 };
 
+<<<<<<< HEAD
 export default Card;
+=======
+export default Card; // Export the Card component for use in other parts of the application
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c

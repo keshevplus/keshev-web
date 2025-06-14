@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Component, ErrorInfo, ReactNode } from 'react';
 
 interface Props {
@@ -6,10 +7,20 @@ interface Props {
 }
 
 interface State {
+=======
+import React, { Component, ReactNode } from 'react';
+
+interface ErrorBoundaryProps {
+  children: ReactNode;
+}
+
+interface ErrorBoundaryState {
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
   hasError: boolean;
   error: Error | null;
 }
 
+<<<<<<< HEAD
 class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -44,6 +55,32 @@ class ErrorBoundary extends Component<Props, State> {
               {this.state.error?.toString()}
             </p>
           </details>
+=======
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('ErrorBoundary caught an error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+          <div className="text-center">
+            <h1 className="text-3xl font-bold text-red-600">
+              Something went wrong.
+            </h1>
+            <p className="text-gray-700 mt-4">{this.state.error?.message}</p>
+          </div>
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
         </div>
       );
     }

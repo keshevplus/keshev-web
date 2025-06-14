@@ -1,0 +1,41 @@
+.language-switcher {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  z-index: 100;
+}
+
+.language-button {
+  padding: 0.35rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid #ccc;
+  transition: all 0.2s ease;
+  min-width: 36px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.language-button:hover {
+  background: rgba(240, 240, 240, 0.9);
+}
+
+.language-button.active {
+  background: rgba(39, 136, 71, 0.1);
+  border-color: rgba(39, 136, 71, 0.5);
+  cursor: default;
+  font-weight: bold;
+  color: #278847;
+}
+
+/* When inside the navbar */
+.navbar-language-switcher {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+/* RTL support */
+[dir="rtl"] .language-button {
+  font-family: 'Arial Hebrew', 'Arial', sans-serif;
+}

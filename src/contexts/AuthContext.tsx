@@ -1,16 +1,27 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+<<<<<<< HEAD
 // Don't import API_BASE_URL since we're using direct connection for login
 
 interface User {
   id: number;
   username: string;
   email: string;
+=======
+
+interface User {
+  username: string;
+  id: number;
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
   role: string;
 }
 
 interface AuthContextType {
   isAuthenticated: boolean;
+<<<<<<< HEAD
   login: (email: string, password_hash?: string) => Promise<any>;
+=======
+  login: (email: string, password: string) => Promise<any>;
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
   logout: () => void;
   token: string | null;
   user: User | null;
@@ -31,24 +42,32 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!token && !!user);
 
   useEffect(() => {
+<<<<<<< HEAD
     console.log('[Auth] Effect triggered with token:', token ? `${token.substring(0, 10)}...` : 'none');
     console.log('[Auth] User state:', user ? `${user.username} (${user.email})` : 'none');
     
     if (token && user) {
       console.log('[Auth] Saving authentication state to localStorage');
+=======
+    if (token && user) {
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       setIsAuthenticated(true);
     } else {
+<<<<<<< HEAD
       console.log('[Auth] Clearing authentication state - missing token or user');
       console.log('[Auth] Token present:', !!token);
       console.log('[Auth] User present:', !!user);
+=======
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       setIsAuthenticated(false);
     }
   }, [token, user]);
 
+<<<<<<< HEAD
   const login = async (email: string, password_hash?: string) => {
     try {
       // Always have fallback values in case env vars aren't loaded
@@ -186,6 +205,44 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Clear any potentially partially set auth state on error
       // logout(); // Consider if this is too aggressive or if error boundary handles display
       console.error('Login process failed:', error);
+=======
+  const login = async (email: string, password: string) => {
+    try {
+      // Check if VITE_DATABASE_URL is present
+      const hasDatabaseUrl = !!import.meta.env.VITE_DATABASE_URL;
+      if (!hasDatabaseUrl) {
+        throw new Error('Database is not configured. Please contact the administrator.');
+      }
+
+      // Get admin credentials from environment variables or use defaults
+      const adminEmail = import.meta.env.VITE_ADMIN_EMAIL || 'dr@keshevplus.co.il';
+      const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD || 'changeme123';
+
+      // Regular API authentication
+      // Ensure the login endpoint matches the backend: /auth/login (not /api/auth/login)
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+      const loginUrl = apiBaseUrl.replace(/\/?$/, '') + '/auth/login';
+      console.log('Making API request to', loginUrl);
+      try {
+        const response = await fetch(loginUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || 'Login failed.');
+        }
+        setToken(data.token);
+        setUser(data.user);
+        return { token: data.token, user: data.user };
+      } catch (error: any) {
+        throw new Error(error.message || 'API login failed.');
+      }
+    } catch (error: any) {
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
       throw error;
     }
   };

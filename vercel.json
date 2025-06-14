@@ -2,6 +2,7 @@
   "version": 2,
   "buildCommand": "pnpm install --no-frozen-lockfile && pnpm run build && mkdir -p dist",
   "outputDirectory": "dist",
+<<<<<<< HEAD
 
   "rewrites": [
     {"source": "/auth/:path*", "destination": "https://api.keshevplus.co.il/auth/:path*"},
@@ -15,6 +16,13 @@
       "destination": "/admin/login",
       "permanent": true
     }
+=======
+  "rewrites": [
+    { "source": "/api/contact", "destination": "/api/contact.js" },
+    { "source": "/api/leads", "destination": "/api/leads.js" },
+    { "source": "/assets/:path*", "destination": "/assets/:path*" },
+    { "source": "/(.*)", "destination": "/" }
+>>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
   ],
   "headers": [
     {
