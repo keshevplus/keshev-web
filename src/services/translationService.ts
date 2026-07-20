@@ -20,10 +20,34 @@ export interface TranslationKey {
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') || '';
 
+// Metadata for languages the platform's /api/settings/language endpoint may
+// report as enabled; it only returns codes, so display info is looked up here.
+const LANGUAGE_META: Record<string, { name: string; native_name: string; rtl: boolean }> = {
+  he: { name: 'Hebrew', native_name: 'עברית', rtl: true },
+  en: { name: 'English', native_name: 'English', rtl: false },
+  fr: { name: 'French', native_name: 'Français', rtl: false },
+  es: { name: 'Spanish', native_name: 'Español', rtl: false },
+  de: { name: 'German', native_name: 'Deutsch', rtl: false },
+  ru: { name: 'Russian', native_name: 'Русский', rtl: false },
+  am: { name: 'Amharic', native_name: 'አማርኛ', rtl: false },
+  ar: { name: 'Arabic', native_name: 'العربية', rtl: true },
+  yi: { name: 'Yiddish', native_name: 'ייִדיש', rtl: true },
+  it: { name: 'Italian', native_name: 'Italiano', rtl: false },
+};
+
 export async function fetchAvailableLanguages(): Promise<Language[]> {
   try {
-    const response = await axios.get<Language[]>(`${API_BASE_URL}/translations/languages`);
-    return response.data;
+    const response = await axios.get<{ enabledLanguages: string[]; defaultLanguage: string }>(
+      `${API_BASE_URL}/api/settings/language`
+    );
+    const { enabledLanguages, defaultLanguage } = response.data;
+    return enabledLanguages.map((code) => ({
+      code,
+      name: LANGUAGE_META[code]?.name || code,
+      native_name: LANGUAGE_META[code]?.native_name,
+      is_default: code === defaultLanguage,
+      rtl: LANGUAGE_META[code]?.rtl || false,
+    }));
   } catch (err) {
     console.error('Error fetching available languages:', err);
     throw err;
@@ -48,22 +72,19 @@ export async function saveTranslation(
 }
 
 /**
- * Fetch translations for a specific language and namespace
+ * Fetch the full flat key->value translation map for a language.
  * @param language Language code (e.g., 'en', 'he')
- * @param namespace Namespace name (e.g., 'common', 'forms')
  */
-export const fetchTranslations = async (language: string, namespace: string): Promise<Record<string, string>> => {
-  try {
-    const response = await axios.get(`${API_BASE_URL}/translations/resources/${language}/${namespace}`);
-    return response.data;
-  } catch (error) {
-    console.error(`Error fetching translations for ${language}/${namespace}:`, error);
-    return {};
-  }
+export const fetchTranslations = async (language: string): Promise<Record<string, string>> => {
+  const response = await axios.get(`${API_BASE_URL}/api/translations`, { params: { lang: language } });
+  return response.data;
 };
 
 /**
- * Fetch translations for multiple namespaces at once
+ * Fetch translations for multiple namespaces at once. The platform stores
+ * translations as a single flat key->value map per language (no namespace
+ * split), so every requested namespace gets the same full map back; lookups
+ * only ever use the keys they need.
  * @param language Language code
  * @param namespaces Array of namespace names
  */
@@ -72,10 +93,12 @@ export const fetchMultipleNamespaces = async (
   namespaces: string[]
 ): Promise<Record<string, Record<string, string>>> => {
   try {
-    const response = await axios.get(
-      `${API_BASE_URL}/translations/resources/${language}?namespaces=${namespaces.join(',')}`
-    );
-    return response.data;
+    const flat = await fetchTranslations(language);
+    const result: Record<string, Record<string, string>> = {};
+    namespaces.forEach((ns) => {
+      result[ns] = flat;
+    });
+    return result;
   } catch (error) {
     console.error(`Error fetching multiple namespaces for ${language}:`, error);
     // Return empty objects for each namespace
