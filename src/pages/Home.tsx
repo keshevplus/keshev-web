@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import PageTitle from '../layouts/PageTitle';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
+import AboutSection from '../components/AboutSection';
 
 export default function Home() {
   const { data: pageData, isLoading } = usePageData<HomePageContent>('home');
@@ -146,6 +147,9 @@ export default function Home() {
           </div>
         )}
       </div>
+
+      {/* Second section: About, styled to match keshevplus.com's About section */}
+      <AboutSection />
 
       {/* Content sections with alternating backgrounds */}
       {pd.sections.filter(section =>
