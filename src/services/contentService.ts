@@ -10,7 +10,6 @@ export const contentService = {
   async getPageContent(page: string): Promise<ContentItem[]> {
     switch (page) {
       case 'about':
-<<<<<<< HEAD
         return [
           {
             ...aboutPageData,
@@ -71,19 +70,6 @@ export const contentService = {
             }))
           }
         ];
-=======
-        return [aboutPageData];
-      case 'services':
-        return [servicesPageData];
-      case 'adhd':
-        return [adhdPageData];
-      case 'diagnosis':
-        return [diagnosisPageData];
-      case 'forms':
-        return [formsPageData];
-      case 'contact':
-        return [contactPageData];
->>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
       default:
         throw new Error(`Unknown page: ${page}`);
     }

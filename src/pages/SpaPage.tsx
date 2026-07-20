@@ -25,6 +25,7 @@ const pages = [
 const MemoizedPageComponent = memo(({ PageComponent }: { PageComponent: React.ComponentType }) => {
     return <PageComponent />;
 });
+MemoizedPageComponent.displayName = 'MemoizedPageComponent';
 
 export default function SpaPage() {
     const [currentPageIndex, setCurrentPageIndex] = useState(0);

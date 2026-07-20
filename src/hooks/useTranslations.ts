@@ -20,7 +20,7 @@ export const useTranslations = (namespace = 'common') => {
   }, [ready, namespace, i18n.language]);
 
   // Handle translation errors gracefully
-  const safeT = (key: string, defaultValue?: string, options?: Record<string, any>) => {
+  const safeT = (key: string, defaultValue?: string, options?: Record<string, unknown>) => {
     // If key starts with namespace, don't add namespace again
     const fullKey = key.includes('.') ? key : `${key}`;
     

@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { navItems } from './Navbar';
-import { usePageData } from '../hooks/usePageData';
 
 export default function Footer() {
   return (
@@ -45,7 +44,7 @@ export default function Footer() {
               >
                 טלפון: 055-27-399-27
               </Link>
-              דוא"ל:
+              דוא&quot;ל:
               <Link
                 to="mailto:dr@keshevplus.co.il"
                 className="text-sm md:text-base text-white hover:text-orange-400 transition-colors"

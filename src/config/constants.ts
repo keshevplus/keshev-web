@@ -3,10 +3,12 @@
 // Determine environment to select appropriate API URL
 const IS_DEV = import.meta.env.DEV;
 
-// API URL based on environment
-export const API_URL = import.meta.env.VITE_API_BASE_URL || (IS_DEV 
-  ? 'http://localhost:3001/api' 
-  : 'https://api.keshevplus.co.il/api');
+// Bare origin of the keshevplus platform API. Individual call sites append
+// their own path (e.g. `${API_URL}/api/contact`).
+export const API_URL = import.meta.env.VITE_API_BASE_URL || (IS_DEV
+  ? 'http://localhost:5000'
+  : 'https://api.keshevplus.com');
 
-// Log API configuration on startup
-console.log(`[API Config] Using API at: ${API_URL} (${IS_DEV ? 'Development' : 'Production'} mode)`);
+// Where visitors are sent for anything admin-related; the admin dashboard
+// lives entirely on the keshevplus platform, not in this frontend.
+export const ADMIN_DASHBOARD_URL = import.meta.env.VITE_ADMIN_DASHBOARD_URL || 'https://admin.keshevplus.com';

@@ -3,6 +3,12 @@ import './AccessibilityWidget.css';
 import { IoClose } from 'react-icons/io5';
 import { FaWheelchair } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import {
+  type AccessibilitySettings,
+  defaultAccessibilitySettings,
+  applyAllAccessibilitySettings,
+  cleanupReadingGuideListener,
+} from './accessibilitySettings';
 
 /**
  * AccessibilityWidget component - Compliant with Israeli Accessibility Regulations (Standard 5568)
@@ -10,16 +16,7 @@ import { Link } from 'react-router-dom';
  */
 const AccessibilityWidget: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [settings, setSettings] = useState({
-    textSize: 0,
-    textSpacing: 0,
-    lineHeight: 0,
-    invertColors: false,
-    grayHues: false,
-    bigCursor: false,
-    readingGuide: false,
-    disableAnimations: false
-  });
+  const [settings, setSettings] = useState<AccessibilitySettings>(defaultAccessibilitySettings);
 
   // Refs for click outside detection
   const menuRef = useRef<HTMLDivElement>(null);
@@ -50,8 +47,9 @@ const AccessibilityWidget: React.FC = () => {
     const storedSettings = localStorage.getItem('accessibilitySettings');
     if (storedSettings) {
       try {
-        setSettings(JSON.parse(storedSettings));
-        applyAllSettings(JSON.parse(storedSettings));
+        const parsed = JSON.parse(storedSettings);
+        setSettings(parsed);
+        applyAllAccessibilitySettings(parsed);
       } catch (e) {
         console.error('Error parsing accessibility settings:', e);
       }
@@ -69,207 +67,33 @@ const AccessibilityWidget: React.FC = () => {
       if (readingGuideElement) {
         document.body.removeChild(readingGuideElement);
       }
-      document.removeEventListener('mousemove', moveReadingGuide);
+      cleanupReadingGuideListener();
     };
   }, []);
 
   // Save settings to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('accessibilitySettings', JSON.stringify(settings));
-    applyAllSettings(settings);
+    applyAllAccessibilitySettings(settings);
   }, [settings]);
 
   const toggleMenu = () => {
     setMenuOpen(open => !open);
   };
 
-  const updateSetting = (setting: keyof typeof settings, value: any) => {
+  const updateSetting = <K extends keyof AccessibilitySettings>(setting: K, value: AccessibilitySettings[K]) => {
     setSettings(prev => ({
       ...prev,
       [setting]: value
     }));
   };
 
-  const applyAllSettings = (currentSettings: typeof settings) => {
-    applyTextSize(currentSettings.textSize);
-    applyTextSpacing(currentSettings.textSpacing);
-    applyLineHeight(currentSettings.lineHeight);
-    applyInvertColors(currentSettings.invertColors);
-    applyGrayHues(currentSettings.grayHues);
-    applyBigCursor(currentSettings.bigCursor);
-    applyReadingGuide(currentSettings.readingGuide);
-    applyDisableAnimations(currentSettings.disableAnimations);
-  };
-
   const resetSettings = () => {
-    setSettings({
-      textSize: 0,
-      textSpacing: 0,
-      lineHeight: 0,
-      invertColors: false,
-      grayHues: false,
-      bigCursor: false,
-      readingGuide: false,
-      disableAnimations: false
-    });
+    setSettings(defaultAccessibilitySettings);
   };
 
   // detect if all settings are at default (0 or false)
   const isDefault = Object.values(settings).every(v => v === 0 || v === false);
-
-  // Apply text size changes
-  const applyTextSize = (size: number) => {
-    const styleId = 'accessibility-text-size';
-    removeExistingStyle(styleId);
-
-    if (size !== 0) {
-      const factor = size * 0.01; // 5% change per step
-      const style = document.createElement('style');
-      style.id = styleId;
-      style.textContent = `
-        *:not(.menu):not(.menu *):not(.menuHeader):not(.accessibility-button) {
-          font-size: calc(1em + ${factor}em) !important;
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  };
-
-  // Apply text spacing changes
-  const applyTextSpacing = (spacing: number) => {
-    const styleId = 'accessibility-text-spacing';
-    removeExistingStyle(styleId);
-
-    if (spacing !== 0) {
-      const factor = spacing * 0.25; // 0.25px change per step
-      const style = document.createElement('style');
-      style.id = styleId;
-      style.textContent = `
-        body:not(.accessibility-menu), body:not(.accessibility-menu) *:not(.accessibility-menu):not(.accessibility-menu *):not(.accessibility-button) {
-          letter-spacing: ${factor}px !important;
-          word-spacing: calc(0.16em + ${factor}px) !important;
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  };
-
-  // Apply line height changes
-  const applyLineHeight = (height: number) => {
-    const styleId = 'accessibility-line-height';
-    removeExistingStyle(styleId);
-
-    if (height !== 0) {
-      const factor = 1 + height * 0.05; // 5% change per step
-      const style = document.createElement('style');
-      style.id = styleId;
-      style.textContent = `
-        body:not(.accessibility-menu), body:not(.accessibility-menu) *:not(.accessibility-menu):not(.accessibility-menu *):not(.accessibility-button) {
-          line-height: ${factor} !important;
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  };
-
-  // Apply color inversion
-  const applyInvertColors = (invert: boolean) => {
-    const styleId = 'accessibility-invert-colors';
-    removeExistingStyle(styleId);
-
-    if (invert) {
-      const style = document.createElement('style');
-      style.id = styleId;
-      style.textContent = `
-        html:not(.accessibility-menu):not(.accessibility-menu *):not(.accessibility-button) {
-          filter: invert(100%) hue-rotate(180deg) !important;
-        }
-        img:not(.accessibility-menu img), video:not(.accessibility-menu video) {
-          filter: invert(100%) hue-rotate(180deg) !important;
-        }
-      `;
-      document.head.appendChild(style);
-      document.documentElement.style.backgroundColor = '#fff';
-    } else {
-      document.documentElement.style.backgroundColor = '';
-    }
-  };
-
-  // Apply gray hues
-  const applyGrayHues = (gray: boolean) => {
-    const styleId = 'accessibility-gray-hues';
-    removeExistingStyle(styleId);
-
-    if (gray) {
-      const style = document.createElement('style');
-      style.id = styleId;
-      style.textContent = `
-        html:not(.menu):not(.menu *):not(.accessibility-button) {
-          filter: grayscale(100%) !important;
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  };
-
-  // Apply big cursor
-  const applyBigCursor = (big: boolean) => {
-    if (big) {
-      document.body.classList.add('bigCursor');
-    } else {
-      document.body.classList.remove('bigCursor');
-    }
-  };
-
-  // Apply reading guide
-  const applyReadingGuide = (show: boolean) => {
-    console.log('applyReadingGuide:', show);
-    const readingGuideElement = document.getElementById('reading-guide-element');
-    if (!readingGuideElement) return;
-
-    if (show) {
-      readingGuideElement.style.display = 'block';
-      document.addEventListener('mousemove', moveReadingGuide);
-    } else {
-      readingGuideElement.style.display = 'none';
-      document.removeEventListener('mousemove', moveReadingGuide);
-    }
-  };
-
-  // Move reading guide with mouse
-  const moveReadingGuide = (e: MouseEvent) => {
-    console.log('moveReadingGuide Y pos:', e.clientY);
-    const readingGuideElement = document.getElementById('reading-guide-element');
-    if (readingGuideElement) {
-      readingGuideElement.style.top = `${e.clientY}px`;
-    }
-  };
-
-  // Apply disable animations
-  const applyDisableAnimations = (disable: boolean) => {
-    const styleId = 'accessibility-disable-animations';
-    removeExistingStyle(styleId);
-
-    if (disable) {
-      const style = document.createElement('style');
-      style.id = styleId;
-      style.textContent = `
-        * {
-          animation: none !important;
-          transition: none !important;
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  };
-
-  // Remove existing style element by id
-  const removeExistingStyle = (id: string) => {
-    const existingStyle = document.getElementById(id);
-    if (existingStyle) {
-      existingStyle.remove();
-    }
-  };
 
   return (
     <div className={`accessibilityContainer${menuOpen ? ' open' : ''}`} dir="rtl">

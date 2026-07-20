@@ -1,14 +1,3 @@
-node_modules
-.vercel
-<<<<<<< HEAD
-.env
-.env.example
-.env.*
-qa/*
-qa/backup/*
-qa/backup/vercel.json
-qa/backup/.env.example
-# Node modules
 node_modules/
 
 # Logs
@@ -18,9 +7,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Environment variables
+# Environment variables (never commit real secrets)
 .env
-.env.*
+.env.local
+.env.*.local
 
 # Build output
 dist/
@@ -36,5 +26,3 @@ coverage/
 out/
 .vercel/
 .netlify/
-=======
->>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c

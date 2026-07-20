@@ -33,12 +33,12 @@ const ContactInfoModal: React.FC<ContactInfoModalProps> = ({ isOpen, onClose }) 
             <ul className="space-y-3 mt-2">
               <li>
                 <strong>חניון אורחים מגדלי אלון</strong> - כניסה דרך מגדל אלון 1 בצד הצפוני
-                <p className="text-sm mt-1">חניות אורחים מסומנות באור ירוק ושלט מגדל"הראל</p>
+                <p className="text-sm mt-1">חניות אורחים מסומנות באור ירוק ושלט מגדל&quot;הראל</p>
                 <Link to="https://waze.com/ul/hsv8wrvb38" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm">מגדלי אלון- כניסה צפונית Waze
                 </Link>
               </li>
               <li>
-                <strong>חניון "אושר עד"</strong> - ממש ברחוב המקביל אלינו
+                <strong>חניון &quot;אושר עד&quot;</strong> - ממש ברחוב המקביל אלינו
                 <br />
                 <Link to="https://waze.com/ul/hsv8wrv8y2" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm">
                   Waze לחניון אושר עד

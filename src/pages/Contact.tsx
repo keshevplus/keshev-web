@@ -1,27 +1,4 @@
-<<<<<<< HEAD
-import { usePageData } from '../hooks/usePageData';
-import { useErrorHandler } from '../hooks/useErrorHandler';
-import defaultContactPage from '../data/contactPage';
-import PageLayout from '../layouts/PageLayout';
-import PageRenderer from '../components/PageRenderer';
-import type { BasePageContent } from '../types/content';
-
-export default function Contact() {
-  const { data, isLoading } = usePageData('contact');
-  const { error } = useErrorHandler();
-
-  // Use type assertion to ensure compatibility with PageRenderer
-  const content = Array.isArray(data)
-    ? defaultContactPage
-    : (data || defaultContactPage);
-
-  if (isLoading) return <div className="container mx-auto py-8 loading"><div className="animate-pulse">Loading...</div></div>;
-  if (error) return <div className="container mx-auto py-8 error"><div className="text-red-600">Error: {error}</div></div>;
-
-  return (
-    <PageLayout page="contact" title={content.title}>
-      <PageRenderer content={content as unknown as BasePageContent} />
-=======
+import type { BaseSyntheticEvent } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -31,9 +8,8 @@ import GoogleMap from '../components/GoogleMap';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
-import emailjs from '@emailjs/browser';
-import { useEffect } from 'react';
-
+import { API_URL } from '../config/constants';
+import type { ContentItem } from '../types/content';
 
 const formSchema = z.object({
   name: z.string().min(2, 'השם חייב להכיל לפחות 2 תווים'),
@@ -47,23 +23,10 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-// Define EmailJS constants - Use your actual values here
-const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID as string;
-const EMAILJS_ADMIN_TEMPLATE_ID = import.meta.env.VITE_ADMIN_TEMPLATE_ID as string; // set this in EmailJS
-const EMAILJS_USER_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string; // set this in EmailJS
-const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string; // use your EmailJS public key
-
 export default function Contact() {
-  const { data: pageData } = usePageData('contact');
+  const { data: pageData } = usePageData<ContentItem>('contact');
   const navigate = useNavigate();
-  
-  // Initialize EmailJS within the component's effect
-  useEffect(() => {
-    emailjs.init(EMAILJS_PUBLIC_KEY);
-    // Log initialization for debugging
-    console.log('EmailJS initialized with public key');
-  }, []);
-  
+
   const {
     register,
     handleSubmit,
@@ -73,12 +36,11 @@ export default function Contact() {
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = async (data: FormValues, event: any) => {
+  const onSubmit = async (data: FormValues, event: BaseSyntheticEvent | undefined) => {
     event?.preventDefault?.();
     const loadingToastId = toast.loading('שולח את הטופס...', { position: 'top-center' });
     try {
-      // Try sending to your own backend API
-      const response = await fetch('/api/contact', {
+      const response = await fetch(`${API_URL}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -103,9 +65,9 @@ export default function Contact() {
   };
 
   return (
-    <PageLayout title={pageData[0]?.heading || ''} background="bg-white" maxWidth="md:max-w-3xl">
+    <PageLayout title={pageData?.[0]?.heading || ''} background="bg-white" maxWidth="md:max-w-3xl">
       <h3 className="text-2xl md:text-xl font-bold text-green-800 text-right mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
-        {pageData[0]?.subheading}
+        {pageData?.[0]?.subheading}
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
         {/* Details and Map */}
@@ -179,7 +141,6 @@ export default function Contact() {
           </div>
         </form>
       </div>
->>>>>>> 430a8d2625f8bfe902f04811e3d440f6634a849c
     </PageLayout>
   );
 }
