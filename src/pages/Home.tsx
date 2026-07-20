@@ -167,9 +167,6 @@ export default function Home() {
 
             <h2 className="text-3xl font-bold mb-6 text-green-800 text-right">{section.heading}</h2>
             {section.text && <p className="text-lg mb-8 text-right">{section.text}</p>}
-            {/* Conditionally render PageTitle only if not scrolled */}
-            {/* This ensures the title is not duplicated when scrolling */}
-            {!isScrolled && <PageTitle title={pd.title} isHomePage={true} />}
             {/* Content list */}
             {section.content && Array.isArray(section.content) && (
 

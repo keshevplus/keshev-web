@@ -31,7 +31,7 @@ export default function PageTitle({ title, isHomePage = false, className = '' }:
   }, [isHomePage]);
 
   // Calculate styles based on scroll percentage
-  const headerHeight = 0 - (scrollPercentage * 40); // shrink from 120px to 80px
+  const headerHeight = 120 - (scrollPercentage * 40); // shrink from 120px to 80px
   const fontSize = 2.5 - (scrollPercentage * 0.5); // shrink from 3rem to 2.5rem
   const opacity = Math.max(1 - scrollPercentage * 1.5, 0.7); // fade a bit on scroll
 
