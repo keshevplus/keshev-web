@@ -35,7 +35,7 @@ const homePageData: HomePageContent = {
  
     {
       id: 'contact-cta', // Call-to-action: contact
-      heading: 'התחל/י את האבחון ',
+      heading: 'התחל/י את האבחון עכשיו',
       bgColor: 'bg-green-800 hover:bg-green-600', // Background color for the section
       textColor: 'text-white', // Text color for the section
     },
