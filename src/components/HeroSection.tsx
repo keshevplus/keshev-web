@@ -62,7 +62,7 @@ export default function HeroSection() {
             slot="hero.image"
             fallback="/assets/images/doctor-hero.png"
             alt={t('hero.doctor_alt', 'ד"ר איירין כוכב-רייפמן')}
-            className="w-full h-auto rounded-lg shadow-xl transition-shadow duration-300 hover:shadow-2xl"
+            className="w-full h-auto rounded-lg"
             loading="eager"
           />
         </div>
