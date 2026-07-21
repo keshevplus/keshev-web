@@ -4,18 +4,9 @@ import {
   IoShieldCheckmarkOutline,
   IoCheckmarkCircleOutline,
 } from 'react-icons/io5';
+import { useTranslations } from '../hooks/useTranslations';
 
-const values = [
-  { Icon: IoHeartOutline, title: 'יחס אישי', desc: 'כל מטופל מקבל יחס אישי ומותאם לצרכיו הייחודיים' },
-  { Icon: IoRibbonOutline, title: 'מקצועיות', desc: 'צוות מומחים עם ניסיון רב ועדכון מתמיד' },
-  { Icon: IoShieldCheckmarkOutline, title: 'דיסקרטיות', desc: 'שמירה על פרטיות מלאה וסביבה בטוחה' },
-];
-
-const credentials = [
-  'מומחית באבחון וטיפול ב-ADHD',
-  'ניסיון של למעלה מ-15 שנה',
-  'התמחות בילדים, נוער ומבוגרים',
-];
+const VALUE_ICONS = [IoHeartOutline, IoRibbonOutline, IoShieldCheckmarkOutline];
 
 /**
  * About section — styled to match keshevplus.com's AboutSection (green banner
@@ -23,12 +14,30 @@ const credentials = [
  * keshev-web's own stack (plain Tailwind + react-icons, no framer-motion/shadcn).
  */
 export default function AboutSection() {
+  const { t } = useTranslations();
+
+  const credentials: string[] = (() => {
+    try {
+      return JSON.parse(t('keshevweb.aboutSection.credentials'));
+    } catch {
+      return [];
+    }
+  })();
+
+  const values: { title: string; desc: string }[] = (() => {
+    try {
+      return JSON.parse(t('keshevweb.aboutSection.values'));
+    } catch {
+      return [];
+    }
+  })();
+
   return (
     <section id="about" className="w-full bg-gray-50 rtl">
       <div className="w-full bg-gradient-to-b from-green-800 to-green-950 px-4 py-6 md:py-8 text-center">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">אודותינו</h2>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">{t('keshevweb.aboutSection.heading')}</h2>
         <p className="text-base sm:text-lg text-white/80 mt-2 max-w-2xl mx-auto">
-          מומחים באבחון וטיפול בהפרעות קשב וריכוז
+          {t('keshevweb.aboutSection.subheading')}
         </p>
       </div>
 
@@ -39,7 +48,7 @@ export default function AboutSection() {
               <div className="absolute -inset-3 bg-gradient-to-br from-green-800/20 to-orange-400/20 rounded-2xl transform rotate-2" />
               <img
                 src="/assets/images/hero-about.jpeg"
-                alt='ד"ר איירין כוכב-רייפמן'
+                alt={t('keshevweb.aboutSection.imageAlt')}
                 className="relative rounded-xl shadow-xl w-full object-cover aspect-[4/5]"
               />
             </div>
@@ -48,11 +57,11 @@ export default function AboutSection() {
           <div className="order-1 md:order-1 text-right">
             <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
               <h3 className="text-2xl md:text-3xl font-bold text-green-800 mb-1">
-                ד&quot;ר איירין כוכב-רייפמן
+                {t('keshevweb.aboutSection.doctorName')}
               </h3>
-              <p className="text-lg text-green-800/80 font-medium mb-4">רופאה מומחית</p>
+              <p className="text-lg text-green-800/80 font-medium mb-4">{t('keshevweb.aboutSection.doctorTitle')}</p>
               <p className="text-gray-700 leading-relaxed mb-6">
-                בעלת ניסיון עשיר באבחון של ילדים, מתבגרים ובוגרים. ליוותה מטופלים רבים במסע להגשמה אישית ותפקוד מיטבי.
+                {t('keshevweb.aboutSection.doctorBio')}
               </p>
               <ul className="space-y-3">
                 {credentials.map((c) => (
@@ -67,22 +76,25 @@ export default function AboutSection() {
         </div>
 
         <p className="text-center text-lg md:text-xl text-gray-600 italic max-w-3xl mx-auto mb-12">
-          &quot;המשימה שלנו היא לספק אבחון מדויק ותוכניות טיפול מותאמות אישית, המאפשרים למטופלים שלנו להגיע למיצוי הפוטנציאל האישי שלהם.&quot;
+          &quot;{t('keshevweb.aboutSection.quote')}&quot;
         </p>
 
         <div className="grid sm:grid-cols-3 gap-6">
-          {values.map(({ Icon, title, desc }) => (
-            <div
-              key={title}
-              className="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition-shadow duration-300"
-            >
-              <div className="w-14 h-14 mx-auto mb-4 bg-green-800/10 rounded-full flex items-center justify-center">
-                <Icon className="w-7 h-7 text-green-800" />
+          {values.map(({ title, desc }, index) => {
+            const Icon = VALUE_ICONS[index] || IoHeartOutline;
+            return (
+              <div
+                key={title}
+                className="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition-shadow duration-300"
+              >
+                <div className="w-14 h-14 mx-auto mb-4 bg-green-800/10 rounded-full flex items-center justify-center">
+                  <Icon className="w-7 h-7 text-green-800" />
+                </div>
+                <h4 className="text-lg font-semibold text-gray-900 mb-2">{title}</h4>
+                <p className="text-gray-600 text-sm leading-relaxed">{desc}</p>
               </div>
-              <h4 className="text-lg font-semibold text-gray-900 mb-2">{title}</h4>
-              <p className="text-gray-600 text-sm leading-relaxed">{desc}</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

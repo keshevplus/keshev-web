@@ -13,20 +13,25 @@ import {
 // import LanguageSwitcher from './LanguageSwitcher'; // Language Switcher component
 
 import FloatingPhoneNumber from '../components/ui/FloatingPhoneNumber';
-// import { useTranslation } from 'react-i18next';
+import { useTranslations } from '../hooks/useTranslations';
 
-export const navItems = [
-  { path: '/', text: 'בית', mobileOnly: true },
-  { path: '/about', text: 'אודותינו' },
-  { path: '/services', text: 'שירותינו' },
-  { path: '/adhd', text: 'מהי ADHD?' },
-  { path: '/diagnosis', text: 'תהליך האבחון' },
-  { path: '/forms', text: 'שאלונים' },
-  { path: '/contact', text: 'יצירת קשר' },
-];
+export function useNavItems() {
+  const { t } = useTranslations();
+  return [
+    { path: '/', text: t('keshevweb.nav.home'), mobileOnly: true },
+    { path: '/about', text: t('keshevweb.nav.about') },
+    { path: '/services', text: t('keshevweb.nav.services') },
+    { path: '/adhd', text: t('keshevweb.nav.adhd') },
+    { path: '/diagnosis', text: t('keshevweb.nav.diagnosis') },
+    { path: '/forms', text: t('keshevweb.nav.forms') },
+    { path: '/contact', text: t('keshevweb.nav.contact') },
+  ];
+}
 
 const Navbar: React.FC = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslations();
+  const navItems = useNavItems();
 
   // Replace the destructuring with safe access to prevent errors when sharedState is undefined
   const sharedState = useSelector((state: RootState) => state.sharedState);
@@ -118,7 +123,7 @@ const Navbar: React.FC = () => {
               {/* Phone icon wrapper */}
               <div className="navbar-item flex items-center justify-center h-full">
                 <Link
-                  to="tel:055-27-399-27"
+                  to={`tel:${t('keshevweb.contactInfo.phone')}`}
                   className="flex items-center justify-center h-full text-green-600 font-bold"
                 >                <span className="ml-2 whitespace-nowrap">
                     <FloatingPhoneNumber />
@@ -126,7 +131,7 @@ const Navbar: React.FC = () => {
 
                   <img
                     src="/assets/images/greenphone.svg"
-                    alt="Call Now"
+                    alt={t('keshevweb.nav.callNowAlt')}
                     className="h-6 hover:opacity-80 transition-transform duration-300"
                   />
 
@@ -156,7 +161,7 @@ const Navbar: React.FC = () => {
 
           {/* Menu header with close button */}
           <div className="bg-green-800 py-4 px-6 flex justify-between items-center">
-            <span className="text-white text-2xl font-bold items-center">תפריט</span>
+            <span className="text-white text-2xl font-bold items-center">{t('keshevweb.nav.menuTitle')}</span>
             <button
               className="text-white p-2"
               onClick={() => dispatch(setIsMenuOpen(false))}
@@ -186,8 +191,8 @@ const Navbar: React.FC = () => {
 
           {/* Footer area */}
           <div className="bg-green-900 py-4 px-6 text-center">
-            <Link to="tel:055-27-399-27" className="text-white text-lg font-semibold">
-              התקשרו: 055-27-399-27
+            <Link to={`tel:${t('keshevweb.contactInfo.phone')}`} className="text-white text-lg font-semibold">
+              {t('keshevweb.nav.callUs')} {t('keshevweb.contactInfo.phone')}
             </Link>
           </div>
         </div>

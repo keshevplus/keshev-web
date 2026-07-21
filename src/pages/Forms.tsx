@@ -1,22 +1,66 @@
 import { useEffect } from 'react';
-import { usePageData } from '../hooks/usePageData';
 import { useErrorHandler } from '../hooks/useErrorHandler';
+import { useTranslations } from '../hooks/useTranslations';
 import type { BasePageContent } from '../types/content';
-import formsPageData from '../data/formsPage';
 import PageRenderer from '../components/PageRenderer';
 import PageTitle from '../layouts/PageTitle';
 
 export default function Forms() {
-  const { data, isLoading } = usePageData<BasePageContent>('forms');
-  const { error, handleError } = useErrorHandler();
-  const content = Array.isArray(data) ? data[0] : data || formsPageData;
+  const { handleError } = useErrorHandler();
+  const { t } = useTranslations();
 
   useEffect(() => {
     handleError(() => { document.documentElement.dir = 'rtl'; });
   }, [handleError]);
 
-  if (isLoading) return <div className="container mx-auto py-8 loading"><div className="animate-pulse">Loading...</div></div>;
-  if (error) return <div className="container mx-auto py-8 error text-red-600">Error: {error}</div>;
+  const content: BasePageContent = {
+    title: t('keshevweb.forms.title'),
+    description: t('keshevweb.forms.description'),
+    image: '/assets/images/forms-hero.jpg',
+    sections: [
+      {
+        id: 'parents',
+        heading: t('keshevweb.forms.parents.heading'),
+        text: t('keshevweb.forms.parents.text'),
+        image: '/assets/images/icon.png',
+        bgColor: 'bg-orange-50',
+        textColor: 'text-black',
+        ctaButtonText: t('keshevweb.forms.parents.cta'),
+      },
+      {
+        id: 'teachers',
+        heading: t('keshevweb.forms.teachers.heading'),
+        text: t('keshevweb.forms.teachers.text'),
+        image: '/assets/images/icon.png',
+        bgColor: 'bg-blue-50',
+        textColor: 'text-black',
+        ctaButtonText: t('keshevweb.forms.teachers.cta'),
+      },
+      {
+        id: 'adults',
+        heading: t('keshevweb.forms.adults.heading'),
+        text: t('keshevweb.forms.adults.text'),
+        image: '/assets/images/icon.png',
+        bgColor: 'bg-green-50',
+        textColor: 'text-black',
+        ctaButtonText: t('keshevweb.forms.adults.cta'),
+      },
+      {
+        id: 'instructions',
+        heading: t('keshevweb.forms.instructions.heading'),
+        text: t('keshevweb.forms.instructions.text'),
+        bgColor: 'bg-yellow-50',
+      },
+      {
+        id: 'cta',
+        heading: t('keshevweb.forms.cta.heading'),
+        text: t('keshevweb.forms.cta.text'),
+        ctaButtonText: t('keshevweb.forms.cta.button'),
+        bgColor: 'bg-green-100',
+        textColor: 'text-green-800',
+      },
+    ],
+  };
 
   return (
     <>
