@@ -4,40 +4,51 @@ import {
   IoShieldCheckmarkOutline,
   IoCheckmarkCircleOutline,
 } from 'react-icons/io5';
-import { useTranslations } from '../hooks/useTranslations';
+import { useCmsTranslations } from '../hooks/useCmsTranslations';
+import CmsImage from './CmsImage';
 
 const VALUE_ICONS = [IoHeartOutline, IoRibbonOutline, IoShieldCheckmarkOutline];
 
+const DEFAULT_CREDENTIALS = [
+  'בוגרת לימודי רפואה, אוניברסיטת בולוניה, איטליה',
+  'התמחות ברפואת משפחה, קופת חולים מאוחדת',
+  'הסמכה לאבחון וטיפול בהפרעות קשב וריכוז, משרד הבריאות',
+];
+
+const DEFAULT_VALUES = [
+  { title: 'אכפתיות', desc: 'ליווי אישי וחם לאורך כל תהליך האבחון והטיפול' },
+  { title: 'מקצועיות', desc: 'שימוש בכלי אבחון מתקדמים ומבוססי מחקר' },
+  { title: 'אמינות', desc: 'שקיפות מלאה והתאמת הטיפול לצרכי המטופל' },
+];
+
 /**
- * About section — styled to match keshevplus.com's AboutSection (green banner
- * header, photo + credentials card, mission quote, values grid), rebuilt with
- * keshev-web's own stack (plain Tailwind + react-icons, no framer-motion/shadcn).
+ * About section — matches keshevplus.com's AboutSection layout (green banner
+ * header, photo + credentials card, mission quote, values grid), content
+ * pulled from the shared platform CMS (/api/translations, /api/images).
  */
 export default function AboutSection() {
-  const { t } = useTranslations();
+  const { t } = useCmsTranslations();
 
-  const credentials: string[] = (() => {
-    try {
-      return JSON.parse(t('keshevweb.aboutSection.credentials'));
-    } catch {
-      return [];
-    }
-  })();
+  const credentials = [
+    t('about.credential1', DEFAULT_CREDENTIALS[0]),
+    t('about.credential2', DEFAULT_CREDENTIALS[1]),
+    t('about.credential3', DEFAULT_CREDENTIALS[2]),
+  ];
 
-  const values: { title: string; desc: string }[] = (() => {
-    try {
-      return JSON.parse(t('keshevweb.aboutSection.values'));
-    } catch {
-      return [];
-    }
-  })();
+  const values = [
+    { title: t('about.value1_title', DEFAULT_VALUES[0].title), desc: t('about.value1_desc', DEFAULT_VALUES[0].desc) },
+    { title: t('about.value2_title', DEFAULT_VALUES[1].title), desc: t('about.value2_desc', DEFAULT_VALUES[1].desc) },
+    { title: t('about.value3_title', DEFAULT_VALUES[2].title), desc: t('about.value3_desc', DEFAULT_VALUES[2].desc) },
+  ];
 
   return (
     <section id="about" className="w-full bg-gray-50 rtl">
       <div className="w-full bg-gradient-to-b from-green-800 to-green-950 px-4 py-6 md:py-8 text-center">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">{t('keshevweb.aboutSection.heading')}</h2>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
+          {t('about.title', 'אודות המרפאה')}
+        </h2>
         <p className="text-base sm:text-lg text-white/80 mt-2 max-w-2xl mx-auto">
-          {t('keshevweb.aboutSection.subheading')}
+          {t('about.subtitle', 'ליווי מקצועי ואישי באבחון וטיפול בהפרעות קשב וריכוז')}
         </p>
       </div>
 
@@ -46,9 +57,10 @@ export default function AboutSection() {
           <div className="order-2 md:order-2 flex justify-center">
             <div className="relative max-w-xs sm:max-w-sm w-full">
               <div className="absolute -inset-3 bg-gradient-to-br from-green-800/20 to-orange-400/20 rounded-2xl transform rotate-2" />
-              <img
-                src="/assets/images/hero-about.jpeg"
-                alt={t('keshevweb.aboutSection.imageAlt')}
+              <CmsImage
+                slot="about.photo"
+                fallback="/assets/images/hero-about.jpeg"
+                alt={t('about.doctor_alt', 'ד"ר איירין כוכב-רייפמן')}
                 className="relative rounded-xl shadow-xl w-full object-cover aspect-[4/5]"
               />
             </div>
@@ -57,11 +69,13 @@ export default function AboutSection() {
           <div className="order-1 md:order-1 text-right">
             <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
               <h3 className="text-2xl md:text-3xl font-bold text-green-800 mb-1">
-                {t('keshevweb.aboutSection.doctorName')}
+                {t('about.doctor_name', 'ד"ר איירין כוכב-רייפמן')}
               </h3>
-              <p className="text-lg text-green-800/80 font-medium mb-4">{t('keshevweb.aboutSection.doctorTitle')}</p>
+              <p className="text-lg text-green-800/80 font-medium mb-4">
+                {t('about.doctor_title', 'רופאה מומחית')}
+              </p>
               <p className="text-gray-700 leading-relaxed mb-6">
-                {t('keshevweb.aboutSection.doctorBio')}
+                {t('about.doctor_desc', 'בעלת ניסיון עשיר באבחון של ילדים, מתבגרים ובוגרים. ליוותה מטופלים רבים במסע להגשמה אישית ותפקוד מיטבי.')}
               </p>
               <ul className="space-y-3">
                 {credentials.map((c) => (
@@ -76,7 +90,7 @@ export default function AboutSection() {
         </div>
 
         <p className="text-center text-lg md:text-xl text-gray-600 italic max-w-3xl mx-auto mb-12">
-          &quot;{t('keshevweb.aboutSection.quote')}&quot;
+          &quot;{t('about.mission', 'לתת לכל מטופל את הכלים להצלחה, באבחון מדויק ותוכנית טיפול המותאמת אישית')}&quot;
         </p>
 
         <div className="grid sm:grid-cols-3 gap-6">
