@@ -1,5 +1,6 @@
 import { IoPeopleOutline, IoDocumentTextOutline, IoPersonOutline } from 'react-icons/io5';
 import { useCmsTranslations } from '../hooks/useCmsTranslations';
+import SectionHeader from './SectionHeader';
 
 const QUESTIONNAIRE_ICONS = [IoPeopleOutline, IoDocumentTextOutline, IoPersonOutline];
 
@@ -36,16 +37,11 @@ export default function QuestionnairesSection() {
 
   return (
     <section id="questionnaires" className="w-full bg-white rtl">
-      <div className="max-w-6xl mx-auto px-4 py-10 md:py-14">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-green-800">
-            {t('questionnaires.title', 'שאלונים')}
-          </h2>
-          <p className="text-base sm:text-lg text-gray-600 mt-2 max-w-2xl mx-auto">
-            {t('questionnaires.subtitle', 'שאלונים לזיהוי סימנים של הפרעת קשב וריכוז (ADHD)')}
-          </p>
-        </div>
-
+      <SectionHeader
+        title={t('questionnaires.title', 'שאלונים')}
+        subtitle={t('questionnaires.subtitle', 'שאלונים לזיהוי סימנים של הפרעת קשב וריכוז (ADHD)')}
+      />
+      <div className="max-w-6xl mx-auto px-4 pt-8 md:pt-10 lg:pt-12 pb-10 md:pb-14">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {questionnaires.map((item, index) => {
             const Icon = QUESTIONNAIRE_ICONS[index] || IoDocumentTextOutline;

@@ -1,0 +1,56 @@
+import { useState, useEffect, useRef } from 'react';
+
+const NAV_HEIGHT = 80;
+
+// Mobile-only sticky bar showing the current section's title, so it stays
+// visible even after its own green banner scrolls out of view. Ported from
+// keshevplus.com's StickySectionTitle, using a CSS transition instead of
+// framer-motion since this stack doesn't include it.
+export default function StickySectionTitle() {
+  const [currentTitle, setCurrentTitle] = useState<string | null>(null);
+  const [visible, setVisible] = useState(false);
+  const rafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(() => {
+        const headers = Array.from(document.querySelectorAll('[data-sticky-title]'));
+        let current: string | null = null;
+        for (const el of headers) {
+          const rect = el.getBoundingClientRect();
+          if (rect.bottom < NAV_HEIGHT) {
+            current = el.getAttribute('data-sticky-title');
+          }
+        }
+        setCurrentTitle(current);
+        setVisible(!!current);
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  return (
+    <div
+      className="fixed left-0 right-0 z-[9985] pointer-events-none overflow-hidden md:hidden"
+      style={{ top: NAV_HEIGHT }}
+    >
+      <div
+        className="bg-gradient-to-b from-green-800 to-green-950 w-full transition-transform duration-200 ease-in-out"
+        style={{ transform: visible ? 'translateY(0)' : 'translateY(-100%)' }}
+      >
+        <div className="w-full px-4 py-1.5 text-center">
+          <span className="text-sm font-bold text-white tracking-wide leading-tight">
+            {currentTitle}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -10,6 +10,7 @@ import {
 } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import { useCmsTranslations } from '../hooks/useCmsTranslations';
+import SectionHeader from './SectionHeader';
 
 const SYMPTOM_ICONS = [IoBulbOutline, IoFlashOutline, IoLocateOutline];
 const DEFAULT_SYMPTOMS = [
@@ -77,16 +78,11 @@ export default function ADHDInfoSection() {
 
   return (
     <section id="adhd" className="w-full bg-gray-50 rtl">
-      <div className="max-w-6xl mx-auto px-4 py-10 md:py-14">
-        <div className="text-center mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-green-800">
-            {t('nav.adhd', 'מה זה ADHD?')}
-          </h2>
-          <p className="text-base sm:text-lg text-gray-600 mt-2 max-w-2xl mx-auto">
-            {t('adhd.subtitle', 'הפרעת קשב וריכוז (ADHD) היא הפרעה נוירו-התפתחותית שמשפיעה על ילדים ומבוגרים כאחד')}
-          </p>
-        </div>
-
+      <SectionHeader
+        title={t('nav.adhd', 'מה זה ADHD?')}
+        subtitle={t('adhd.subtitle', 'הפרעת קשב וריכוז (ADHD) היא הפרעה נוירו-התפתחותית שמשפיעה על ילדים ומבוגרים כאחד')}
+      />
+      <div className="max-w-6xl mx-auto px-4 pt-8 md:pt-10 lg:pt-12 pb-10 md:pb-14">
         <div className="text-center mb-6 sm:mb-8">
           <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-green-800 mb-2">
             {t('adhd.definition_title', 'ADHD = Attention Deficit Hyperactivity Disorder')}

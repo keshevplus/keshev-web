@@ -7,6 +7,7 @@ import {
 } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import { useCmsTranslations } from '../hooks/useCmsTranslations';
+import SectionHeader from './SectionHeader';
 
 const STEP_ICONS = [IoChatbubblesOutline, IoDocumentTextOutline, IoDesktopOutline, IoClipboardOutline, IoMedicalOutline];
 
@@ -31,16 +32,11 @@ export default function DiagnosisSection() {
 
   return (
     <section id="diagnosis" className="w-full bg-white rtl">
-      <div className="max-w-6xl mx-auto px-4 py-10 md:py-14">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-green-800">
-            {t('diagnosis.title', 'תהליך האבחון והטיפול')}
-          </h2>
-          <p className="text-base sm:text-lg text-gray-600 mt-2 max-w-2xl mx-auto">
-            {t('diagnosis.subtitle', 'תהליך אבחון הפרעת קשב מקצועי ואיכותי')}
-          </p>
-        </div>
-
+      <SectionHeader
+        title={t('diagnosis.title', 'תהליך האבחון והטיפול')}
+        subtitle={t('diagnosis.subtitle', 'תהליך אבחון הפרעת קשב מקצועי ואיכותי')}
+      />
+      <div className="max-w-6xl mx-auto px-4 pt-8 md:pt-10 lg:pt-12 pb-10 md:pb-14">
         <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
           {steps.map((step, index) => {
             const Icon = STEP_ICONS[index] || IoMedicalOutline;

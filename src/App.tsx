@@ -25,6 +25,7 @@ import { SpeedInsights } from '@vercel/speed-insights/react';
 import AccessibilityWidget from './components/acc/AccessibilityWidget';
 import CookiesBanner from './components/CookiesBanner';
 import WhatsAppButton from './components/WhatsAppButton';
+import StickySectionTitle from './components/StickySectionTitle';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <AccessibilityWidget />
           <CookiesBanner />
           <WhatsAppButton />
+          <StickySectionTitle />
           <Routes>
             {/* Secret SPA Route */}
             <Route path="/spa" element={<SpaPage />} />

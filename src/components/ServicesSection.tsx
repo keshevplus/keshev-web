@@ -6,6 +6,7 @@ import {
   IoPeopleOutline,
 } from 'react-icons/io5';
 import { useCmsTranslations } from '../hooks/useCmsTranslations';
+import SectionHeader from './SectionHeader';
 
 const SERVICE_ICONS = [IoPulseOutline, IoMedicalOutline, IoDesktopOutline, IoClipboardOutline, IoPeopleOutline];
 
@@ -39,16 +40,11 @@ export default function ServicesSection() {
 
   return (
     <section id="services" className="w-full bg-white rtl">
-      <div className="max-w-6xl mx-auto px-4 py-10 md:py-14">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-green-800">
-            {t('services.title', 'השירותים שלנו')}
-          </h2>
-          <p className="text-base sm:text-lg text-gray-600 mt-2 max-w-2xl mx-auto">
-            {t('services.subtitle', 'אנו מציעים מגוון רחב של שירותים מקצועיים בתחום אבחון וטיפול בהפרעות קשב')}
-          </p>
-        </div>
-
+      <SectionHeader
+        title={t('services.title', 'השירותים שלנו')}
+        subtitle={t('services.subtitle', 'אנו מציעים מגוון רחב של שירותים מקצועיים בתחום אבחון וטיפול בהפרעות קשב')}
+      />
+      <div className="max-w-6xl mx-auto px-4 pt-8 md:pt-10 lg:pt-12 pb-10 md:pb-14">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list">
           {services.map((service, index) => {
             const Icon = SERVICE_ICONS[index] || IoPulseOutline;

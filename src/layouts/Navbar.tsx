@@ -1,6 +1,6 @@
 // Importing necessary libraries and components
-import React, { useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom'; // For navigation and location tracking
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom'; // For navigation and location tracking
 import { IoMenu, IoClose } from 'react-icons/io5'; // Icons for menu toggle
 import { useDispatch, useSelector } from 'react-redux'; // Redux hooks for state management
 import { RootState } from '../store/store'; // Root state type for Redux
@@ -28,10 +28,26 @@ export function useNavItems() {
   ];
 }
 
+// Route -> in-page anchor id. Routes stay real pages (SEO, direct links,
+// sharing); on the homepage, clicking these smooth-scrolls instead of
+// navigating away, matching keshevplus.com's single-scroll-page navbar.
+const ANCHOR_BY_PATH: Record<string, string> = {
+  '/about': 'about',
+  '/services': 'services',
+  '/adhd': 'adhd',
+  '/diagnosis': 'diagnosis',
+  '/forms': 'questionnaires',
+  '/contact': 'contact',
+};
+const SECTION_IDS = ['home', 'about', 'services', 'adhd', 'diagnosis', 'questionnaires', 'contact'];
+const NAV_HEIGHT = 80;
+
 const Navbar: React.FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { t } = useCmsTranslations();
   const navItems = useNavItems();
+  const [activeSection, setActiveSection] = useState('');
 
   // Replace the destructuring with safe access to prevent errors when sharedState is undefined
   const sharedState = useSelector((state: RootState) => state.sharedState);
@@ -42,17 +58,63 @@ const Navbar: React.FC = () => {
   const location = useLocation();
 
   // Function to check if the current path matches the nav item path
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) =>
+    isHomePage ? activeSection === (ANCHOR_BY_PATH[path] ?? 'home') : location.pathname === path;
+
+  const scrollToAnchor = (anchorId: string) => {
+    if (anchorId === 'home') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    const el = document.getElementById(anchorId);
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.scrollY - NAV_HEIGHT;
+    window.scrollTo({ top, behavior: 'smooth' });
+  };
+
+  const handleNavClick = (path: string) => (e: React.MouseEvent) => {
+    const anchorId = ANCHOR_BY_PATH[path] ?? (path === '/' ? 'home' : null);
+    if (isHomePage && anchorId) {
+      e.preventDefault();
+      scrollToAnchor(anchorId);
+      return;
+    }
+    if (!isHomePage && anchorId) {
+      // Navigate to the homepage, then let the anchor effect below scroll once mounted
+      e.preventDefault();
+      navigate(`/#${anchorId}`);
+    }
+  };
 
   useEffect(() => {
     dispatch(setIsHomePage(location.pathname === '/'));
     const handleScroll = () => {
       const scrollY = window.scrollY;
       dispatch(setIsScrolled(scrollY > 100));
+
+      if (location.pathname !== '/') return;
+      const threshold = NAV_HEIGHT + window.scrollY;
+      let current = 'home';
+      for (const id of SECTION_IDS) {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= threshold) current = id;
+      }
+      setActiveSection(current);
     };
     window.addEventListener('scroll', handleScroll);
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, [location.pathname, dispatch]);
+
+  // On the homepage, honor a #anchor in the URL (e.g. arriving from another
+  // page's nav click, or a direct /#services link) by scrolling to it once.
+  useEffect(() => {
+    if (location.pathname === '/' && location.hash) {
+      const id = location.hash.slice(1);
+      const timer = setTimeout(() => scrollToAnchor(id), 50);
+      return () => clearTimeout(timer);
+    }
+  }, [location.pathname, location.hash]);
 
   // Wrap authentication checks in a safe try/catch
   const checkAuthentication = async () => {
@@ -82,6 +144,7 @@ const Navbar: React.FC = () => {
         <div className="container bg-white/70 px-4 max-w-3xl flex items-center justify-between relative backdrop-blur-sm ">
           <Link
             to="/"
+            onClick={handleNavClick('/')}
             className={`flex items-center transition-opacity duration-300 ${isHomePage && !isScrolled ? 'opacity-0' : 'opacity-100'
               }`}
           >
@@ -101,6 +164,7 @@ const Navbar: React.FC = () => {
                 <Link
                   key={item.path}
                   to={item.path}
+                  onClick={handleNavClick(item.path)}
                   className={`text-xl font-semibold px-4 py-2 rounded-lg transition-colors duration-200 ${isActive(item.path)
                     ? 'bg-green-600 text-white' // Active link has green background and white text
                     : 'text-green-800 hover:text-white hover:bg-green-600' // Inactive link behavior
@@ -181,7 +245,10 @@ const Navbar: React.FC = () => {
                     ? 'bg-green-500 text-white' // Active link in mobile menu
                     : 'text-white hover:bg-green-600'
                     }`}
-                  onClick={() => dispatch(setIsMenuOpen(false))}
+                  onClick={(e) => {
+                    handleNavClick(item.path)(e);
+                    dispatch(setIsMenuOpen(false));
+                  }}
                 >
                   {item.text}
                 </Link>

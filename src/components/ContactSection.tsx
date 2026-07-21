@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useCmsTranslations } from '../hooks/useCmsTranslations';
+import SectionHeader from './SectionHeader';
 
 export default function ContactSection() {
   const { t } = useCmsTranslations();
@@ -9,16 +10,11 @@ export default function ContactSection() {
 
   return (
     <section id="contact" className="w-full bg-gray-50 rtl">
-      <div className="max-w-6xl mx-auto px-4 py-10 md:py-14">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-green-800">
-            {t('nav.contact', 'יצירת קשר')}
-          </h2>
-          <p className="text-base sm:text-lg text-gray-600 mt-2 max-w-2xl mx-auto">
-            {t('contact.subtitle', 'השאירו פרטים ונחזור אליכם בהקדם האפשרי')}
-          </p>
-        </div>
-
+      <SectionHeader
+        title={t('nav.contact', 'יצירת קשר')}
+        subtitle={t('contact.subtitle', 'השאירו פרטים ונחזור אליכם בהקדם האפשרי')}
+      />
+      <div className="max-w-6xl mx-auto px-4 pt-8 md:pt-10 lg:pt-12 pb-10 md:pb-14">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
           <Link
             to="/contact"
