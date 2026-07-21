@@ -9,17 +9,20 @@ import Contact from './Contact';
 import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
 import { useDispatch } from 'react-redux';
 import { setIsScrolled } from '../store/sharedStateSlice';
+import { useTranslations } from '../hooks/useTranslations';
 
-// Define the pages to include in the horizontal swipe
-const pages = [
-    { id: 'home', component: Home, title: 'בית' },
-    { id: 'about', component: About, title: 'אודות' },
-    { id: 'services', component: Services, title: 'שירותים' },
-    { id: 'adhd', component: ADHD, title: 'ADHD' },
-    { id: 'diagnosis', component: Diagnosis, title: 'אבחון' },
-    { id: 'forms', component: Forms, title: 'שאלונים' },
-    { id: 'contact', component: Contact, title: 'צור קשר' },
-];
+function usePages() {
+    const { t } = useTranslations();
+    return [
+        { id: 'home', component: Home, title: t('keshevweb.nav.home') },
+        { id: 'about', component: About, title: t('keshevweb.nav.about') },
+        { id: 'services', component: Services, title: t('keshevweb.nav.services') },
+        { id: 'adhd', component: ADHD, title: t('keshevweb.nav.adhd') },
+        { id: 'diagnosis', component: Diagnosis, title: t('keshevweb.nav.diagnosis') },
+        { id: 'forms', component: Forms, title: t('keshevweb.nav.forms') },
+        { id: 'contact', component: Contact, title: t('keshevweb.nav.contact') },
+    ];
+}
 
 // Memoize the page components to prevent unnecessary re-renders
 const MemoizedPageComponent = memo(({ PageComponent }: { PageComponent: React.ComponentType }) => {
@@ -28,6 +31,8 @@ const MemoizedPageComponent = memo(({ PageComponent }: { PageComponent: React.Co
 MemoizedPageComponent.displayName = 'MemoizedPageComponent';
 
 export default function SpaPage() {
+    const { t } = useTranslations();
+    const pages = usePages();
     const [currentPageIndex, setCurrentPageIndex] = useState(0);
     const [touchStartX, setTouchStartX] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
@@ -114,7 +119,7 @@ export default function SpaPage() {
                             ? 'bg-green-600 scale-125'
                             : 'bg-gray-300 hover:bg-gray-400'
                             }`}
-                        aria-label={`עבור לדף ${page.title}`}
+                        aria-label={`${t('keshevweb.spa.goToPageAria')} ${page.title}`}
                         aria-current={currentPageIndex === index ? 'page' : undefined}
                     />
                 ))}
@@ -130,7 +135,7 @@ export default function SpaPage() {
                     <button
                         onClick={() => navigateToPage(currentPageIndex - 1)}
                         className="fixed top-1/2 right-4 transform -translate-y-1/2 z-50 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-green-100 transition-colors"
-                        aria-label="הדף הקודם"
+                        aria-label={t('keshevweb.spa.prevPageAria')}
                     >
                         <FiArrowRight className="text-green-800 text-2xl" />
                     </button>
@@ -140,7 +145,7 @@ export default function SpaPage() {
                     <button
                         onClick={() => navigateToPage(currentPageIndex + 1)}
                         className="fixed top-1/2 left-4 transform -translate-y-1/2 z-50 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-green-100 transition-colors"
-                        aria-label="הדף הבא"
+                        aria-label={t('keshevweb.spa.nextPageAria')}
                     >
                         <FiArrowLeft className="text-green-800 text-2xl" />
                     </button>

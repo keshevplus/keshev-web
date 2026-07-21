@@ -9,12 +9,14 @@ import {
   applyAllAccessibilitySettings,
   cleanupReadingGuideListener,
 } from './accessibilitySettings';
+import { useTranslations } from '../../hooks/useTranslations';
 
 /**
  * AccessibilityWidget component - Compliant with Israeli Accessibility Regulations (Standard 5568)
  * Provides various accessibility features to improve website usability for users with disabilities
  */
 const AccessibilityWidget: React.FC = () => {
+  const { t } = useTranslations();
   const [menuOpen, setMenuOpen] = useState(false);
   const [settings, setSettings] = useState<AccessibilitySettings>(defaultAccessibilitySettings);
 
@@ -103,9 +105,9 @@ const AccessibilityWidget: React.FC = () => {
           className="accessibilityButton"
           type="button"
           onClick={toggleMenu}
-          aria-label="פתח תפריט נגישות"
+          aria-label={t('keshevweb.a11yWidget.openMenuAria')}
           aria-expanded={menuOpen}
-          title="תפריט נגישות"
+          title={t('keshevweb.a11yWidget.menuTitle')}
         >
           <FaWheelchair size={24} aria-hidden="true" />
         </button>
@@ -115,25 +117,25 @@ const AccessibilityWidget: React.FC = () => {
         ref={menuRef}
         className="menu accessibility-menu"
         role="dialog"
-        aria-label="תפריט נגישות"
+        aria-label={t('keshevweb.a11yWidget.menuTitle')}
       >
         {/* Reset button—hidden when all defaults */}
         <button
           className="resetButton"
           style={{ display: isDefault ? 'none' : 'block' }}
           onClick={resetSettings}
-          aria-label="איפוס כל הגדרות הנגישות"
+          aria-label={t('keshevweb.a11yWidget.resetAria')}
         >
-          איפוס הגדרות
+          {t('keshevweb.a11yWidget.resetButton')}
         </button>
 
         <div className="menuHeader whitespace-nowrap">
-          <h2>תפריט נגישות</h2>
+          <h2>{t('keshevweb.a11yWidget.menuTitle')}</h2>
           <div className="headerButtons">
             <button
               className="closeButton"
               onClick={toggleMenu}
-              aria-label="סגור תפריט נגישות"
+              aria-label={t('keshevweb.a11yWidget.closeAria')}
             >
               <IoClose size={24} aria-hidden="true" />
             </button>
@@ -144,92 +146,92 @@ const AccessibilityWidget: React.FC = () => {
           className={`menuItem ${settings.textSize > 0 ? 'active' : ''}`}
           onClick={() => updateSetting('textSize', settings.textSize + 1)}
         >
-          הגדל טקסט
+          {t('keshevweb.a11yWidget.increaseText')}
         </button>
         <button
           className={`menuItem ${settings.textSize < 0 ? 'active' : ''}`}
           onClick={() => updateSetting('textSize', settings.textSize - 1)}
         >
-          הקטן טקסט
+          {t('keshevweb.a11yWidget.decreaseText')}
         </button>
 
         <button
           className={`menuItem ${settings.textSpacing > 0 ? 'active' : ''}`}
           onClick={() => updateSetting('textSpacing', settings.textSpacing + 1)}
         >
-          הגדל מרווח
+          {t('keshevweb.a11yWidget.increaseSpacing')}
         </button>
         <button
           className={`menuItem ${settings.textSpacing < 0 ? 'active' : ''}`}
           onClick={() => updateSetting('textSpacing', settings.textSpacing - 1)}
         >
-          הקטן מרווח
+          {t('keshevweb.a11yWidget.decreaseSpacing')}
         </button>
 
         <button
           className={`menuItem ${settings.lineHeight > 0 ? 'active' : ''}`}
           onClick={() => updateSetting('lineHeight', settings.lineHeight + 1)}
         >
-          הגדל גובה שורה
+          {t('keshevweb.a11yWidget.increaseLineHeight')}
         </button>
         <button
           className={`menuItem ${settings.lineHeight < 0 ? 'active' : ''}`}
           onClick={() => updateSetting('lineHeight', settings.lineHeight - 1)}
         >
-          הקטן גובה שורה
+          {t('keshevweb.a11yWidget.decreaseLineHeight')}
         </button>
 
         <button
           className={`menuItem ${settings.invertColors ? 'active' : ''}`}
           onClick={() => updateSetting('invertColors', !settings.invertColors)}
         >
-          הפוך צבעים
+          {t('keshevweb.a11yWidget.invertColors')}
         </button>
 
         <button
           className={`menuItem ${settings.grayHues ? 'active' : ''}`}
           onClick={() => updateSetting('grayHues', !settings.grayHues)}
         >
-          גווני אפור
+          {t('keshevweb.a11yWidget.grayHues')}
         </button>
 
         <button
           className={`menuItem ${settings.linkHighlight ? 'active' : ''}`}
           onClick={() => updateSetting('linkHighlight', !settings.linkHighlight)}
         >
-          הדגשת קישורים
+          {t('keshevweb.a11yWidget.linkHighlight')}
         </button>
 
         <button
           className={`menuItem ${settings.readableFont ? 'active' : ''}`}
           onClick={() => updateSetting('readableFont', !settings.readableFont)}
         >
-          גופן קריא
+          {t('keshevweb.a11yWidget.readableFont')}
         </button>
 
         <button
           className={`menuItem ${settings.bigCursor ? 'active' : ''}`}
           onClick={() => updateSetting('bigCursor', !settings.bigCursor)}
         >
-          סמן גדול
+          {t('keshevweb.a11yWidget.bigCursor')}
         </button>
 
         <button
           className={`menuItem ${settings.readingGuide ? 'active' : ''}`}
           onClick={() => updateSetting('readingGuide', !settings.readingGuide)}
         >
-          מדריך קריאה
+          {t('keshevweb.a11yWidget.readingGuide')}
         </button>
 
         <button
           className={`menuItem ${settings.disableAnimations ? 'active' : ''}`}
           onClick={() => updateSetting('disableAnimations', !settings.disableAnimations)}
         >
-          בטל אנימציות
+          {t('keshevweb.a11yWidget.disableAnimations')}
         </button>
 
         <div className="menuLink md:text-sm" style={{ marginBottom: '12px' }}>
-          <Link to="/accessibility">לצפיה בהצהרת הנגישות</Link>
+          <Link to="/accessibility">{t('keshevweb.a11yWidget.statementLink')}</Link>
         </div>
       </div>
     </div>
