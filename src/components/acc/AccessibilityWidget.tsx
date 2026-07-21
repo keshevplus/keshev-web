@@ -194,6 +194,20 @@ const AccessibilityWidget: React.FC = () => {
         </button>
 
         <button
+          className={`menuItem ${settings.linkHighlight ? 'active' : ''}`}
+          onClick={() => updateSetting('linkHighlight', !settings.linkHighlight)}
+        >
+          הדגשת קישורים
+        </button>
+
+        <button
+          className={`menuItem ${settings.readableFont ? 'active' : ''}`}
+          onClick={() => updateSetting('readableFont', !settings.readableFont)}
+        >
+          גופן קריא
+        </button>
+
+        <button
           className={`menuItem ${settings.bigCursor ? 'active' : ''}`}
           onClick={() => updateSetting('bigCursor', !settings.bigCursor)}
         >

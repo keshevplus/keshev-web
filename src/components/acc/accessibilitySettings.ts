@@ -7,6 +7,8 @@ export interface AccessibilitySettings {
   bigCursor: boolean;
   readingGuide: boolean;
   disableAnimations: boolean;
+  linkHighlight: boolean;
+  readableFont: boolean;
 }
 
 export const defaultAccessibilitySettings: AccessibilitySettings = {
@@ -18,6 +20,8 @@ export const defaultAccessibilitySettings: AccessibilitySettings = {
   bigCursor: false,
   readingGuide: false,
   disableAnimations: false,
+  linkHighlight: false,
+  readableFont: false,
 };
 
 // Remove existing style element by id
@@ -172,6 +176,41 @@ const applyDisableAnimations = (disable: boolean) => {
   }
 };
 
+// Highlight all links (underline + bold) for easier scanning
+const applyLinkHighlight = (highlight: boolean) => {
+  const styleId = 'accessibility-link-highlight';
+  removeExistingStyle(styleId);
+
+  if (highlight) {
+    const style = document.createElement('style');
+    style.id = styleId;
+    style.textContent = `
+      a:not(.menu a):not(.accessibility-button) {
+        text-decoration: underline !important;
+        font-weight: bold !important;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+};
+
+// Switch body text to a more readable, dyslexia-friendly font
+const applyReadableFont = (readable: boolean) => {
+  const styleId = 'accessibility-readable-font';
+  removeExistingStyle(styleId);
+
+  if (readable) {
+    const style = document.createElement('style');
+    style.id = styleId;
+    style.textContent = `
+      body:not(.accessibility-menu), body:not(.accessibility-menu) *:not(.accessibility-menu):not(.accessibility-menu *):not(.accessibility-button) {
+        font-family: Verdana, Arial, sans-serif !important;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+};
+
 export const applyAllAccessibilitySettings = (settings: AccessibilitySettings) => {
   applyTextSize(settings.textSize);
   applyTextSpacing(settings.textSpacing);
@@ -181,6 +220,8 @@ export const applyAllAccessibilitySettings = (settings: AccessibilitySettings) =
   applyBigCursor(settings.bigCursor);
   applyReadingGuide(settings.readingGuide);
   applyDisableAnimations(settings.disableAnimations);
+  applyLinkHighlight(settings.linkHighlight);
+  applyReadableFont(settings.readableFont);
 };
 
 export const cleanupReadingGuideListener = () => {

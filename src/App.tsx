@@ -10,6 +10,8 @@ import Diagnosis from './pages/Diagnosis';
 import Forms from './pages/Forms';
 import Contact from './pages/Contact';
 import AccessibilityStatementPage from './pages/AccessibilityStatement';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfUse from './pages/TermsOfUse';
 import NotFound from './pages/NotFound';
 import SpaPage from './pages/SpaPage';
 
@@ -21,6 +23,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ErrorBoundary from './components/ErrorBoundary';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import AccessibilityWidget from './components/acc/AccessibilityWidget';
+import CookiesBanner from './components/CookiesBanner';
 
 function App() {
   return (
@@ -30,6 +33,7 @@ function App() {
       <ErrorBoundary>
         <div id="main-container" className="flex flex-col min-h-screen scrollbar overflow">
           <AccessibilityWidget />
+          <CookiesBanner />
           <Routes>
             {/* Secret SPA Route */}
             <Route path="/spa" element={<SpaPage />} />
@@ -48,6 +52,8 @@ function App() {
                     <Route path="forms" element={<Forms />} />
                     <Route path="contact" element={<Contact />} />
                     <Route path="accessibility" element={<AccessibilityStatementPage />} />
+                    <Route path="privacy-policy" element={<PrivacyPolicy />} />
+                    <Route path="terms-of-use" element={<TermsOfUse />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </Layout>

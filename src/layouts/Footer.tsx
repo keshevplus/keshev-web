@@ -55,6 +55,18 @@ export default function Footer() {
           </div>
 
         </div>
+
+        <div className="border-t border-gray-700 mt-4 pt-4 flex flex-wrap justify-center gap-x-6 gap-y-1">
+          <Link to="/accessibility" className="text-sm text-gray-300 hover:text-orange-400 transition-colors">
+            הצהרת נגישות
+          </Link>
+          <Link to="/privacy-policy" className="text-sm text-gray-300 hover:text-orange-400 transition-colors">
+            מדיניות פרטיות
+          </Link>
+          <Link to="/terms-of-use" className="text-sm text-gray-300 hover:text-orange-400 transition-colors">
+            תנאי שימוש
+          </Link>
+        </div>
       </div>
     </footer>
   );
