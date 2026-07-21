@@ -26,6 +26,7 @@ import AccessibilityWidget from './components/acc/AccessibilityWidget';
 import CookiesBanner from './components/CookiesBanner';
 import WhatsAppButton from './components/WhatsAppButton';
 import StickySectionTitle from './components/StickySectionTitle';
+import ChatWidget from './components/ChatWidget';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <CookiesBanner />
           <WhatsAppButton />
           <StickySectionTitle />
+          <ChatWidget />
           <Routes>
             {/* Secret SPA Route */}
             <Route path="/spa" element={<SpaPage />} />

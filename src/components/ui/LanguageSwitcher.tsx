@@ -89,21 +89,22 @@ const LanguageSwitcher: React.FC = () => {
     return <div className="language-switcher-loading">{t('loading', 'Loading...')}</div>;
   }
 
+  // 10 supported languages don't fit as flat buttons, especially on mobile -
+  // a compact native select keeps this responsive with no custom dropdown/
+  // click-outside logic needed.
   return (
-    <div className="language-switcher">
-      {languages.map(lang => (
-        <button
-          key={lang.code}
-          className={`language-button ${i18n.language === lang.code ? 'active' : ''}`}
-          onClick={() => changeLanguage(lang.code)}
-          aria-label={`Switch to ${lang.name}`}
-          aria-pressed={i18n.language === lang.code}
-          title={lang.name}
-        >
-          {lang.code.toUpperCase()}
-        </button>
+    <select
+      className="language-select"
+      value={i18n.language}
+      onChange={(e) => changeLanguage(e.target.value)}
+      aria-label="Select language"
+    >
+      {languages.map((lang) => (
+        <option key={lang.code} value={lang.code}>
+          {lang.native_name || lang.name}
+        </option>
       ))}
-    </div>
+    </select>
   );
 };
 

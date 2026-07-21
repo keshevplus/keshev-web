@@ -11,6 +11,41 @@
   --color-card-shadow: rgba(0, 0, 0, 0.1);
 }
 
+/* Basic dark mode: overrides the handful of background/text utility
+   classes used throughout the site, toggled via the .dark class on
+   <html>. Components use fixed Tailwind colors rather than dark:
+   variants, so this covers the common cases globally instead of
+   requiring a per-component retrofit. */
+.dark {
+  color-scheme: dark;
+}
+.dark body {
+  background-color: #111827;
+}
+.dark .bg-white {
+  background-color: #1f2937 !important;
+}
+.dark .bg-gray-50,
+.dark .bg-gray-100 {
+  background-color: #111827 !important;
+}
+.dark .text-black,
+.dark .text-gray-900 {
+  color: #f3f4f6 !important;
+}
+.dark .text-gray-800,
+.dark .text-gray-700 {
+  color: #e5e7eb !important;
+}
+.dark .text-gray-600,
+.dark .text-gray-500 {
+  color: #9ca3af !important;
+}
+.dark .border-gray-200,
+.dark .border-gray-300 {
+  border-color: #374151 !important;
+}
+
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
@@ -87,11 +122,6 @@ body::selection {
   h3 {
     font-size: 1.2rem !important;
   }
-}
-
-/* Add padding-top to main content to account for fixed navbar */
-main {
-  padding-top: 4rem;
 }
 
 /* Loading and error states */

@@ -1,7 +1,7 @@
 // Importing necessary libraries and components
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom'; // For navigation and location tracking
-import { IoMenu, IoClose } from 'react-icons/io5'; // Icons for menu toggle
+import { IoMenu, IoClose, IoCalendarOutline } from 'react-icons/io5'; // Icons for menu toggle
 import { useDispatch, useSelector } from 'react-redux'; // Redux hooks for state management
 import { RootState } from '../store/store'; // Root state type for Redux
 import {
@@ -13,6 +13,9 @@ import {
 // import LanguageSwitcher from './LanguageSwitcher'; // Language Switcher component
 
 import FloatingPhoneNumber from '../components/ui/FloatingPhoneNumber';
+import BookingModal from '../components/BookingModal';
+import LanguageSwitcher from '../components/ui/LanguageSwitcher';
+import ThemeToggle from '../components/ui/ThemeToggle';
 import { useCmsTranslations } from '../hooks/useCmsTranslations';
 
 export function useNavItems() {
@@ -48,6 +51,7 @@ const Navbar: React.FC = () => {
   const { t } = useCmsTranslations();
   const navItems = useNavItems();
   const [activeSection, setActiveSection] = useState('');
+  const [bookingOpen, setBookingOpen] = useState(false);
 
   // Replace the destructuring with safe access to prevent errors when sharedState is undefined
   const sharedState = useSelector((state: RootState) => state.sharedState);
@@ -175,15 +179,21 @@ const Navbar: React.FC = () => {
               ))}
           </div>
           <div className="flex items-center space-x-3">
+            <button
+              type="button"
+              onClick={() => setBookingOpen(true)}
+              className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-green-800 hover:bg-green-700 text-white font-bold px-4 py-2 text-sm"
+            >
+              <IoCalendarOutline className="w-4 h-4" />
+              {t('nav.book_now', 'קביעת תור')}
+            </button>
+            {/* Desktop-only controls: language + theme, kept off the tighter mobile/tablet bar */}
+            <div className="hidden lg:flex items-center gap-2 h-12">
+              <LanguageSwitcher />
+              <ThemeToggle />
+            </div>
             {/* Controls wrapper - contains both language switcher and phone icon */}
             <div className="flex items-center justify-center h-12 mx-4">
-
-              {/* Language Switcher in Navbar  - CURRENTLY DISABLED  */}
-              {/* 
-            <div className="navbar-language-switcher flex items-center justify-center h-full mr-3">
-              <LanguageSwitcher />
-            </div>
-            */}
               {/* Phone icon wrapper */}
               <div className="navbar-item flex items-center justify-center h-full">
                 <Link
@@ -253,6 +263,18 @@ const Navbar: React.FC = () => {
                   {item.text}
                 </Link>
               ))}
+              <button
+                type="button"
+                onClick={() => { setBookingOpen(true); dispatch(setIsMenuOpen(false)); }}
+                className="flex items-center justify-center gap-2 rounded-full bg-white text-green-800 font-bold py-3 mt-2"
+              >
+                <IoCalendarOutline className="w-5 h-5" />
+                {t('nav.book_now', 'קביעת תור')}
+              </button>
+              <div className="flex items-center justify-center gap-3 pt-2">
+                <LanguageSwitcher />
+                <ThemeToggle className="text-white hover:bg-white/10" />
+              </div>
             </div>
           </div>
 
@@ -265,6 +287,7 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
+      <BookingModal open={bookingOpen} onClose={() => setBookingOpen(false)} />
     </nav>
   );
 };
