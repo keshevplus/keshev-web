@@ -13,24 +13,24 @@ import {
 // import LanguageSwitcher from './LanguageSwitcher'; // Language Switcher component
 
 import FloatingPhoneNumber from '../components/ui/FloatingPhoneNumber';
-import { useTranslations } from '../hooks/useTranslations';
+import { useCmsTranslations } from '../hooks/useCmsTranslations';
 
 export function useNavItems() {
-  const { t } = useTranslations();
+  const { t } = useCmsTranslations();
   return [
-    { path: '/', text: t('keshevweb.nav.home'), mobileOnly: true },
-    { path: '/about', text: t('keshevweb.nav.about') },
-    { path: '/services', text: t('keshevweb.nav.services') },
-    { path: '/adhd', text: t('keshevweb.nav.adhd') },
-    { path: '/diagnosis', text: t('keshevweb.nav.diagnosis') },
-    { path: '/forms', text: t('keshevweb.nav.forms') },
-    { path: '/contact', text: t('keshevweb.nav.contact') },
+    { path: '/', text: t('nav.home', 'בית'), mobileOnly: true },
+    { path: '/about', text: t('nav.about', 'אודותינו') },
+    { path: '/services', text: t('nav.services', 'שירותינו') },
+    { path: '/adhd', text: t('nav.adhd', 'מהי ADHD') },
+    { path: '/diagnosis', text: t('nav.diagnosis', 'תהליך האבחון') },
+    { path: '/forms', text: t('nav.questionnaires', 'שאלונים') },
+    { path: '/contact', text: t('nav.contact', 'יצירת קשר') },
   ];
 }
 
 const Navbar: React.FC = () => {
   const dispatch = useDispatch();
-  const { t } = useTranslations();
+  const { t } = useCmsTranslations();
   const navItems = useNavItems();
 
   // Replace the destructuring with safe access to prevent errors when sharedState is undefined
@@ -123,7 +123,7 @@ const Navbar: React.FC = () => {
               {/* Phone icon wrapper */}
               <div className="navbar-item flex items-center justify-center h-full">
                 <Link
-                  to={`tel:${t('keshevweb.contactInfo.phone')}`}
+                  to={`tel:${t('contact.phone', '055-27-399-27').replace(/-/g, '')}`}
                   className="flex items-center justify-center h-full text-green-600 font-bold"
                 >                <span className="ml-2 whitespace-nowrap">
                     <FloatingPhoneNumber />
@@ -131,7 +131,7 @@ const Navbar: React.FC = () => {
 
                   <img
                     src="/assets/images/greenphone.svg"
-                    alt={t('keshevweb.nav.callNowAlt')}
+                    alt="Call Now"
                     className="h-6 hover:opacity-80 transition-transform duration-300"
                   />
 
@@ -161,7 +161,7 @@ const Navbar: React.FC = () => {
 
           {/* Menu header with close button */}
           <div className="bg-green-800 py-4 px-6 flex justify-between items-center">
-            <span className="text-white text-2xl font-bold items-center">{t('keshevweb.nav.menuTitle')}</span>
+            <span className="text-white text-2xl font-bold items-center">{t('nav.menu', 'תפריט')}</span>
             <button
               className="text-white p-2"
               onClick={() => dispatch(setIsMenuOpen(false))}
@@ -191,8 +191,8 @@ const Navbar: React.FC = () => {
 
           {/* Footer area */}
           <div className="bg-green-900 py-4 px-6 text-center">
-            <Link to={`tel:${t('keshevweb.contactInfo.phone')}`} className="text-white text-lg font-semibold">
-              {t('keshevweb.nav.callUs')} {t('keshevweb.contactInfo.phone')}
+            <Link to={`tel:${t('contact.phone', '055-27-399-27').replace(/-/g, '')}`} className="text-white text-lg font-semibold">
+              {t('nav.call_us', 'התקשרו: 055-27-399-27')}
             </Link>
           </div>
         </div>
