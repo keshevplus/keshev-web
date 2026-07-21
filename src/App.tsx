@@ -24,6 +24,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import AccessibilityWidget from './components/acc/AccessibilityWidget';
 import CookiesBanner from './components/CookiesBanner';
+import WhatsAppButton from './components/WhatsAppButton';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <div id="main-container" className="flex flex-col min-h-screen scrollbar overflow">
           <AccessibilityWidget />
           <CookiesBanner />
+          <WhatsAppButton />
           <Routes>
             {/* Secret SPA Route */}
             <Route path="/spa" element={<SpaPage />} />

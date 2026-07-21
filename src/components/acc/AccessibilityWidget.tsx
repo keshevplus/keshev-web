@@ -10,6 +10,7 @@ import {
   cleanupReadingGuideListener,
 } from './accessibilitySettings';
 import { useTranslations } from '../../hooks/useTranslations';
+import { useWidgetSettings } from '../../hooks/useWidgetSettings';
 
 /**
  * AccessibilityWidget component - Compliant with Israeli Accessibility Regulations (Standard 5568)
@@ -17,6 +18,7 @@ import { useTranslations } from '../../hooks/useTranslations';
  */
 const AccessibilityWidget: React.FC = () => {
   const { t } = useTranslations();
+  const { showAccessibility } = useWidgetSettings();
   const [menuOpen, setMenuOpen] = useState(false);
   const [settings, setSettings] = useState<AccessibilitySettings>(defaultAccessibilitySettings);
 
@@ -96,6 +98,8 @@ const AccessibilityWidget: React.FC = () => {
 
   // detect if all settings are at default (0 or false)
   const isDefault = Object.values(settings).every(v => v === 0 || v === false);
+
+  if (!showAccessibility) return null;
 
   return (
     <div className={`accessibilityContainer${menuOpen ? ' open' : ''}`} dir="rtl">
