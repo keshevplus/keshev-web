@@ -4,6 +4,7 @@ import HeroSection from '../components/HeroSection';
 import AboutSection from '../components/AboutSection';
 import ServicesSection from '../components/ServicesSection';
 import ADHDInfoSection from '../components/ADHDInfoSection';
+import DiagnosisSection from '../components/DiagnosisSection';
 import QuestionnairesSection from '../components/QuestionnairesSection';
 import ContactSection from '../components/ContactSection';
 import GenericCmsSection from '../components/GenericCmsSection';
@@ -34,7 +35,13 @@ export default function Home() {
     <div className="relative">
       <HeroSection />
       {sections.map((section) => (
-        <RenderedSection key={section.id} section={section} />
+        <>
+          <RenderedSection key={section.id} section={section} />
+          {/* Diagnosis is keshev-web-only (no equivalent on keshevplus.com),
+              so it isn't part of the shared home_sections CMS list — it's
+              pinned right after ADHD info, before the questionnaires. */}
+          {section.type === 'legacy:adhdInfo' && <DiagnosisSection key="diagnosis" />}
+        </>
       ))}
     </div>
   );

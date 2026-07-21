@@ -9,7 +9,7 @@ import {
   applyAllAccessibilitySettings,
   cleanupReadingGuideListener,
 } from './accessibilitySettings';
-import { useTranslations } from '../../hooks/useTranslations';
+import { useCmsTranslations } from '../../hooks/useCmsTranslations';
 import { useWidgetSettings } from '../../hooks/useWidgetSettings';
 
 /**
@@ -17,7 +17,7 @@ import { useWidgetSettings } from '../../hooks/useWidgetSettings';
  * Provides various accessibility features to improve website usability for users with disabilities
  */
 const AccessibilityWidget: React.FC = () => {
-  const { t } = useTranslations();
+  const { t } = useCmsTranslations();
   const { showAccessibility } = useWidgetSettings();
   const [menuOpen, setMenuOpen] = useState(false);
   const [settings, setSettings] = useState<AccessibilitySettings>(defaultAccessibilitySettings);
@@ -109,9 +109,9 @@ const AccessibilityWidget: React.FC = () => {
           className="accessibilityButton"
           type="button"
           onClick={toggleMenu}
-          aria-label={t('keshevweb.a11yWidget.openMenuAria')}
+          aria-label={t('a11y.accessibility_menu', 'פתח תפריט נגישות')}
           aria-expanded={menuOpen}
-          title={t('keshevweb.a11yWidget.menuTitle')}
+          title={t('a11y.accessibility_menu', 'תפריט נגישות')}
         >
           <FaWheelchair size={24} aria-hidden="true" />
         </button>
@@ -121,25 +121,25 @@ const AccessibilityWidget: React.FC = () => {
         ref={menuRef}
         className="menu accessibility-menu"
         role="dialog"
-        aria-label={t('keshevweb.a11yWidget.menuTitle')}
+        aria-label={t('a11y.accessibility_menu', 'תפריט נגישות')}
       >
         {/* Reset button—hidden when all defaults */}
         <button
           className="resetButton"
           style={{ display: isDefault ? 'none' : 'block' }}
           onClick={resetSettings}
-          aria-label={t('keshevweb.a11yWidget.resetAria')}
+          aria-label={t('a11y.reset', 'איפוס כל הגדרות הנגישות')}
         >
-          {t('keshevweb.a11yWidget.resetButton')}
+          {t('a11y.reset', 'איפוס הגדרות')}
         </button>
 
         <div className="menuHeader whitespace-nowrap">
-          <h2>{t('keshevweb.a11yWidget.menuTitle')}</h2>
+          <h2>{t('a11y.accessibility_settings', 'תפריט נגישות')}</h2>
           <div className="headerButtons">
             <button
               className="closeButton"
               onClick={toggleMenu}
-              aria-label={t('keshevweb.a11yWidget.closeAria')}
+              aria-label={t('a11y.close', 'סגור תפריט נגישות')}
             >
               <IoClose size={24} aria-hidden="true" />
             </button>
@@ -150,92 +150,92 @@ const AccessibilityWidget: React.FC = () => {
           className={`menuItem ${settings.textSize > 0 ? 'active' : ''}`}
           onClick={() => updateSetting('textSize', settings.textSize + 1)}
         >
-          {t('keshevweb.a11yWidget.increaseText')}
+          {t('a11y.increase_text', 'הגדל טקסט')}
         </button>
         <button
           className={`menuItem ${settings.textSize < 0 ? 'active' : ''}`}
           onClick={() => updateSetting('textSize', settings.textSize - 1)}
         >
-          {t('keshevweb.a11yWidget.decreaseText')}
+          {t('a11y.decrease_text', 'הקטן טקסט')}
         </button>
 
         <button
           className={`menuItem ${settings.textSpacing > 0 ? 'active' : ''}`}
           onClick={() => updateSetting('textSpacing', settings.textSpacing + 1)}
         >
-          {t('keshevweb.a11yWidget.increaseSpacing')}
+          {t('a11y.increase_letter_spacing', 'הגדל מרווח')}
         </button>
         <button
           className={`menuItem ${settings.textSpacing < 0 ? 'active' : ''}`}
           onClick={() => updateSetting('textSpacing', settings.textSpacing - 1)}
         >
-          {t('keshevweb.a11yWidget.decreaseSpacing')}
+          {t('a11y.decrease_letter_spacing', 'הקטן מרווח')}
         </button>
 
         <button
           className={`menuItem ${settings.lineHeight > 0 ? 'active' : ''}`}
           onClick={() => updateSetting('lineHeight', settings.lineHeight + 1)}
         >
-          {t('keshevweb.a11yWidget.increaseLineHeight')}
+          {t('a11y.increase_line_height', 'הגדל גובה שורה')}
         </button>
         <button
           className={`menuItem ${settings.lineHeight < 0 ? 'active' : ''}`}
           onClick={() => updateSetting('lineHeight', settings.lineHeight - 1)}
         >
-          {t('keshevweb.a11yWidget.decreaseLineHeight')}
+          {t('a11y.decrease_line_height', 'הקטן גובה שורה')}
         </button>
 
         <button
           className={`menuItem ${settings.invertColors ? 'active' : ''}`}
           onClick={() => updateSetting('invertColors', !settings.invertColors)}
         >
-          {t('keshevweb.a11yWidget.invertColors')}
+          {t('a11y.high_contrast', 'הפוך צבעים')}
         </button>
 
         <button
           className={`menuItem ${settings.grayHues ? 'active' : ''}`}
           onClick={() => updateSetting('grayHues', !settings.grayHues)}
         >
-          {t('keshevweb.a11yWidget.grayHues')}
+          {t('a11y.grayscale', 'גווני אפור')}
         </button>
 
         <button
           className={`menuItem ${settings.linkHighlight ? 'active' : ''}`}
           onClick={() => updateSetting('linkHighlight', !settings.linkHighlight)}
         >
-          {t('keshevweb.a11yWidget.linkHighlight')}
+          {t('a11y.highlight_links', 'הדגשת קישורים')}
         </button>
 
         <button
           className={`menuItem ${settings.readableFont ? 'active' : ''}`}
           onClick={() => updateSetting('readableFont', !settings.readableFont)}
         >
-          {t('keshevweb.a11yWidget.readableFont')}
+          {t('a11y.readable_font', 'גופן קריא')}
         </button>
 
         <button
           className={`menuItem ${settings.bigCursor ? 'active' : ''}`}
           onClick={() => updateSetting('bigCursor', !settings.bigCursor)}
         >
-          {t('keshevweb.a11yWidget.bigCursor')}
+          {t('a11y.large_cursor', 'סמן גדול')}
         </button>
 
         <button
           className={`menuItem ${settings.readingGuide ? 'active' : ''}`}
           onClick={() => updateSetting('readingGuide', !settings.readingGuide)}
         >
-          {t('keshevweb.a11yWidget.readingGuide')}
+          {t('a11y.reading_guide', 'מדריך קריאה')}
         </button>
 
         <button
           className={`menuItem ${settings.disableAnimations ? 'active' : ''}`}
           onClick={() => updateSetting('disableAnimations', !settings.disableAnimations)}
         >
-          {t('keshevweb.a11yWidget.disableAnimations')}
+          {t('a11y.stop_animations', 'בטל אנימציות')}
         </button>
 
         <div className="menuLink md:text-sm" style={{ marginBottom: '12px' }}>
-          <Link to="/accessibility">{t('keshevweb.a11yWidget.statementLink')}</Link>
+          <Link to="/accessibility">{t('a11y.accessibility_statement', 'לצפיה בהצהרת הנגישות')}</Link>
         </div>
       </div>
     </div>

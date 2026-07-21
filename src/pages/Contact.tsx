@@ -8,26 +8,26 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { API_URL } from '../config/constants';
-import { useTranslations } from '../hooks/useTranslations';
+import { useCmsTranslations } from '../hooks/useCmsTranslations';
 
-function buildFormSchema(t: (key: string) => string) {
+function buildFormSchema(t: (key: string, fallback: string) => string) {
   return z.object({
-    name: z.string().min(2, t('keshevweb.contact.validation.nameMin')),
-    email: z.string().email(t('keshevweb.contact.validation.emailInvalid')),
+    name: z.string().min(2, t('contact.validation_name_min', 'השם חייב להכיל לפחות 2 תווים')),
+    email: z.string().email(t('contact.validation_email_invalid', 'אנא הכנס כתובת דוא"ל חוקית')),
     phone: z
       .string()
-      .regex(/^0(5[^7]|[2-4]|[8-9]|7[0-9])[0-9]{7}$/, t('keshevweb.contact.validation.phoneInvalid')),
+      .regex(/^0(5[^7]|[2-4]|[8-9]|7[0-9])[0-9]{7}$/, t('contact.validation_phone_invalid', 'מספר טלפון לא תקין')),
     subject: z.string().optional(),
-    message: z.string().min(2, t('keshevweb.contact.validation.messageMin')),
+    message: z.string().min(2, t('contact.validation_message_min', 'ההודעה חייבת להכיל לפחות 2 תווים')),
   });
 }
 
 type FormValues = z.infer<ReturnType<typeof buildFormSchema>>;
 
 export default function Contact() {
-  const { t } = useTranslations();
+  const { t } = useCmsTranslations();
   const navigate = useNavigate();
-  const address = t('keshevweb.contactInfo.address');
+  const address = t('contact.address_line1', 'יגאל אלון 94, תל אביב');
 
   const {
     register,
@@ -40,7 +40,7 @@ export default function Contact() {
 
   const onSubmit = async (data: FormValues, event: BaseSyntheticEvent | undefined) => {
     event?.preventDefault?.();
-    const loadingToastId = toast.loading(t('keshevweb.contact.toast.sending'), { position: 'top-center' });
+    const loadingToastId = toast.loading(t('contact.toast_sending', 'שולח את הטופס...'), { position: 'top-center' });
     try {
       const response = await fetch(`${API_URL}/api/contact`, {
         method: 'POST',
@@ -51,37 +51,37 @@ export default function Contact() {
       if (!response.ok) {
         const errorData = await response.json();
         toast.dismiss(loadingToastId);
-        toast.error(errorData.message || t('keshevweb.contact.toast.error'));
+        toast.error(errorData.message || t('contact.toast_error', 'אירעה שגיאה בשליחת הטופס.'));
         return;
       }
 
       toast.dismiss(loadingToastId);
-      toast.success(t('keshevweb.contact.toast.success'));
+      toast.success(t('contact.toast_success', 'הטופס נשלח בהצלחה!'));
       reset();
       setTimeout(() => navigate('/'), 1500);
     } catch (err) {
       toast.dismiss(loadingToastId);
-      toast.error(t('keshevweb.contact.toast.error'));
+      toast.error(t('contact.toast_error', 'אירעה שגיאה בשליחת הטופס.'));
       console.error('Contact form error:', err);
     }
   };
 
   const fields: { name: keyof FormValues; label: string; type?: string }[] = [
-    { name: 'name', label: t('keshevweb.contact.form.nameLabel') },
-    { name: 'email', label: t('keshevweb.contact.form.emailLabel'), type: 'email' },
-    { name: 'phone', label: t('keshevweb.contact.form.phoneLabel'), type: 'tel' },
-    { name: 'subject', label: t('keshevweb.contact.form.subjectLabel') },
+    { name: 'name', label: t('contact.full_name', 'שם מלא') },
+    { name: 'email', label: t('contact.email_placeholder', 'דוא"ל'), type: 'email' },
+    { name: 'phone', label: t('contact.phone_placeholder', 'מספר טלפון'), type: 'tel' },
+    { name: 'subject', label: t('contact.topic_label', 'נושא') },
   ];
 
   return (
-    <PageLayout title={t('keshevweb.contact.title')} background="bg-white" maxWidth="md:max-w-3xl">
+    <PageLayout title={t('contact.title', 'יצירת קשר')} background="bg-white" maxWidth="md:max-w-3xl">
       <h3 className="text-2xl md:text-xl font-bold text-green-800 text-right mb-8 transition-transform duration-300 ease-in-out hover:scale-105">
-        {t('keshevweb.contact.subheading')}
+        {t('contact.subtitle', 'נשמח לענות על כל שאלה ולעזור לכם בכל נושא')}
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
         {/* Details and Map */}
         <div className="mb-8 md:mb-0 text-right">
-          <div className="font-bold text-lg">{t('keshevweb.contact.addressLabel')}</div>
+          <div className="font-bold text-lg">{t('contact.address_label', 'כתובת:')}</div>
           <div className="mb-2">{address}</div>
           <a
             href={`https://maps.google.com/?q=${encodeURIComponent(address)}`}
@@ -89,7 +89,7 @@ export default function Contact() {
             rel="noopener noreferrer"
             className="text-green-700 underline hover:text-green-900"
           >
-            {t('keshevweb.contact.mapLink')}
+            {t('contact.navigate_google_maps', 'פתח במפות גוגל')}
           </a>
           <GoogleMap />
         </div>
@@ -123,7 +123,7 @@ export default function Contact() {
             <textarea
               {...register('message')}
               rows={3}
-              placeholder={t('keshevweb.contact.form.messageLabel')}
+              placeholder={t('contact.message_placeholder', 'ספרו לנו במה נוכל לעזור...')}
               className={`w-full p-3 rounded-lg border text-right ${errors.message ? 'border-red-700 border-2' : 'border-gray-300 focus:border-green-500'}`}
             />
             {errors.message && (
@@ -138,14 +138,14 @@ export default function Contact() {
               className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 transition-colors duration-300 mr-2"
               onClick={() => reset()}
             >
-              {t('keshevweb.contact.form.clearButton')}
+              {t('contact.clear_form', 'נקה טופס')}
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
               className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition-colors duration-300 disabled:bg-gray-400"
             >
-              {isSubmitting ? t('keshevweb.contact.form.sending') : t('keshevweb.contact.form.sendButton')}
+              {isSubmitting ? t('contact.sending', 'שולח...') : t('contact.send_message', 'שלח הודעה')}
             </button>
           </div>
         </form>

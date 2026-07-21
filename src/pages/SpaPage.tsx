@@ -9,18 +9,18 @@ import Contact from './Contact';
 import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
 import { useDispatch } from 'react-redux';
 import { setIsScrolled } from '../store/sharedStateSlice';
-import { useTranslations } from '../hooks/useTranslations';
+import { useCmsTranslations } from '../hooks/useCmsTranslations';
 
 function usePages() {
-    const { t } = useTranslations();
+    const { t } = useCmsTranslations();
     return [
-        { id: 'home', component: Home, title: t('keshevweb.nav.home') },
-        { id: 'about', component: About, title: t('keshevweb.nav.about') },
-        { id: 'services', component: Services, title: t('keshevweb.nav.services') },
-        { id: 'adhd', component: ADHD, title: t('keshevweb.nav.adhd') },
-        { id: 'diagnosis', component: Diagnosis, title: t('keshevweb.nav.diagnosis') },
-        { id: 'forms', component: Forms, title: t('keshevweb.nav.forms') },
-        { id: 'contact', component: Contact, title: t('keshevweb.nav.contact') },
+        { id: 'home', component: Home, title: t('nav.home', 'בית') },
+        { id: 'about', component: About, title: t('nav.about', 'אודותינו') },
+        { id: 'services', component: Services, title: t('nav.services', 'שירותינו') },
+        { id: 'adhd', component: ADHD, title: t('nav.adhd', 'מהי ADHD') },
+        { id: 'diagnosis', component: Diagnosis, title: t('nav.diagnosis', 'תהליך האבחון') },
+        { id: 'forms', component: Forms, title: t('nav.questionnaires', 'שאלונים') },
+        { id: 'contact', component: Contact, title: t('nav.contact', 'יצירת קשר') },
     ];
 }
 
@@ -31,7 +31,7 @@ const MemoizedPageComponent = memo(({ PageComponent }: { PageComponent: React.Co
 MemoizedPageComponent.displayName = 'MemoizedPageComponent';
 
 export default function SpaPage() {
-    const { t } = useTranslations();
+    const { t } = useCmsTranslations();
     const pages = usePages();
     const [currentPageIndex, setCurrentPageIndex] = useState(0);
     const [touchStartX, setTouchStartX] = useState(0);
@@ -119,7 +119,7 @@ export default function SpaPage() {
                             ? 'bg-green-600 scale-125'
                             : 'bg-gray-300 hover:bg-gray-400'
                             }`}
-                        aria-label={`${t('keshevweb.spa.goToPageAria')} ${page.title}`}
+                        aria-label={`${t('spa.go_to_page', 'עבור לדף')} ${page.title}`}
                         aria-current={currentPageIndex === index ? 'page' : undefined}
                     />
                 ))}
@@ -135,7 +135,7 @@ export default function SpaPage() {
                     <button
                         onClick={() => navigateToPage(currentPageIndex - 1)}
                         className="fixed top-1/2 right-4 transform -translate-y-1/2 z-50 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-green-100 transition-colors"
-                        aria-label={t('keshevweb.spa.prevPageAria')}
+                        aria-label={t('spa.prev_page', 'הדף הקודם')}
                     >
                         <FiArrowRight className="text-green-800 text-2xl" />
                     </button>
@@ -145,7 +145,7 @@ export default function SpaPage() {
                     <button
                         onClick={() => navigateToPage(currentPageIndex + 1)}
                         className="fixed top-1/2 left-4 transform -translate-y-1/2 z-50 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-green-100 transition-colors"
-                        aria-label={t('keshevweb.spa.nextPageAria')}
+                        aria-label={t('spa.next_page', 'הדף הבא')}
                     >
                         <FiArrowLeft className="text-green-800 text-2xl" />
                     </button>
