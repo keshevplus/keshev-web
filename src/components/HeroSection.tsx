@@ -13,8 +13,16 @@ export default function HeroSection() {
 
   return (
     <section id="home" className="relative bg-white overflow-x-hidden" dir="rtl">
-      <div className="container mx-auto px-4 sm:px-6 flex flex-col sm:flex-row gap-8 sm:gap-10 items-center justify-between pt-24 sm:pt-28 pb-10 sm:pb-14">
+      <div className="container mx-auto px-4 sm:px-6 flex flex-col sm:flex-row gap-8 sm:gap-10 items-center justify-between pb-10 sm:pb-14">
         <div className="flex flex-col w-full sm:w-[55%] order-2 sm:order-1 text-center sm:text-right animate-slide-in">
+          <CmsImage
+            slot="logo"
+            fallback="/assets/images/logoSVG.svg"
+            alt="קשב פלוס"
+            className="h-14 sm:h-16 md:h-20 w-auto mx-auto sm:ms-auto sm:me-0 mb-4"
+            loading="eager"
+          />
+
           <h1 className="text-2xl sm:text-3xl font-bold text-green-800 mb-3">
             {t('hero.welcome_line1', 'ברוכים הבאים למרפאת')} {t('hero.welcome_line2', '"קשב פלוס"')}
           </h1>
