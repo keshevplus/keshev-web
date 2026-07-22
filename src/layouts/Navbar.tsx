@@ -125,6 +125,7 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
+    <>
     <nav
       className={`sticky top-0 z-[50] transition-shadow duration-300 rtl ${isScrolled ? 'shadow-md bg-white/95 backdrop-blur-lg' : 'bg-white/70 backdrop-blur-sm'
         }`}
@@ -204,7 +205,12 @@ const Navbar: React.FC = () => {
           </div>
         </div>
       </div>
+    </nav>
 
+      {/* Rendered outside <nav> - that element's backdrop-blur establishes a
+          CSS containing block, which would break these fixed-position
+          overlays' full-viewport coverage (they'd size/center against the
+          navbar's small box instead of the whole screen). */}
       <div
         className={`lg:hidden fixed inset-0 transition-all duration-300 ${isMenuOpen
           ? 'opacity-100 z-[100] block'
@@ -270,7 +276,7 @@ const Navbar: React.FC = () => {
       </div>
 
       <BookingModal open={bookingOpen} onClose={() => setBookingOpen(false)} />
-    </nav>
+    </>
   );
 };
 
