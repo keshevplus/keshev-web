@@ -16,8 +16,10 @@ export function useCmsTranslations() {
   });
 
   const t = (key: string, fallback: string): string => {
-    const value = data?.[key];
-    return value && value.trim() !== '' ? value : fallback;
+    // An admin-saved empty string is a deliberate "leave this blank", not
+    // "not customized yet" - only fall back when the key was never saved.
+    if (data && key in data) return data[key];
+    return fallback;
   };
 
   return { t, ready: !!data };
