@@ -26,7 +26,7 @@ export default function HeroSection() {
             slot="logo"
             fallback="/assets/images/logoSVG.svg"
             alt="קשב פלוס"
-            className="h-14 sm:h-16 md:h-20 w-auto ms-auto me-0 mb-4"
+            className="h-20 sm:h-24 md:h-28 w-auto ms-0 me-auto mb-4"
             loading="eager"
           />
 

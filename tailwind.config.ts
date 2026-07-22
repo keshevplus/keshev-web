@@ -10,7 +10,10 @@ export default {
     extend: {
       colors: {
         // Add custom colors for dark mode if needed
-      }
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
     },
   },
   plugins: [],
