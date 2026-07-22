@@ -172,7 +172,7 @@ export default function ChatWidget() {
         type="button"
         onClick={() => setOpen(true)}
         aria-label={t('chat.open', 'פתח צ\'אט')}
-        className="fixed bottom-5 right-5 z-[9999] h-14 w-14 rounded-full bg-orange-500 border-2 border-green-700 shadow-lg hover:scale-105 transition-transform duration-200 flex items-center justify-center"
+        className="fixed bottom-[76px] left-5 z-[9999] h-14 w-14 rounded-full bg-orange-500 border-2 border-green-700 shadow-lg hover:scale-105 transition-transform duration-200 flex items-center justify-center"
       >
         <IoChatbubbleEllipsesOutline className="h-6 w-6 text-white" />
       </button>
