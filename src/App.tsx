@@ -3,6 +3,7 @@ import Layout from './components/Layout';
 
 // pages
 import Home from './pages/Home';
+import Questionnaire from './pages/Questionnaire';
 import AccessibilityStatementPage from './pages/AccessibilityStatement';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfUse from './pages/TermsOfUse';
@@ -37,6 +38,9 @@ function App() {
           <Routes>
             {/* Secret SPA Route */}
             <Route path="/spa" element={<SpaPage />} />
+
+            {/* Standalone questionnaire flow - no site chrome, same as keshevplus.com */}
+            <Route path="/questionnaire/:type" element={<Questionnaire />} />
 
             {/* Public Routes */}
             <Route
