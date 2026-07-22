@@ -1,28 +1,33 @@
-import { IoPeopleOutline, IoDocumentTextOutline, IoPersonOutline } from 'react-icons/io5';
+import { Link } from 'react-router-dom';
+import { IoPeopleOutline, IoDocumentTextOutline, IoPersonOutline, IoClipboardOutline } from 'react-icons/io5';
 import { useCmsTranslations } from '../hooks/useCmsTranslations';
 import { useSectionId } from '../lib/sectionSlugs';
 import SectionHeader from './SectionHeader';
+import type { QuestionnaireType } from '../lib/questionnaireData';
 
 const QUESTIONNAIRE_ICONS = [IoPeopleOutline, IoDocumentTextOutline, IoPersonOutline];
 
-const DEFAULT_QUESTIONNAIRES = [
+const DEFAULT_QUESTIONNAIRES: { title: string; desc: string; pdf: string; docx: string; type: QuestionnaireType }[] = [
   {
     title: 'שאלון להורים',
     desc: 'שאלון זה מיועד להורים ומספק תובנות על התנהגות הילד בבית ובסביבה המשפחתית.',
     pdf: '/assets/forms/vanderbilt_parent_form.pdf',
     docx: '/assets/forms/vanderbilt_parent_form.docx',
+    type: 'parent',
   },
   {
     title: 'שאלון למורה',
     desc: 'שאלון זה מיועד למורים ומספק תובנות על התנהגות הילד בכיתה ובסביבה החינוכית.',
     pdf: '/assets/forms/vanderbilt_teacher_form.pdf',
     docx: '/assets/forms/vanderbilt_teacher_form.docx',
+    type: 'teacher',
   },
   {
     title: 'שאלון דיווח עצמי',
     desc: 'שאלון זה מיועד למילוי על ידי מבוגר מעל גיל 18 להערכת הפרעות קשב ופעלתנות יתר.',
     pdf: '/assets/forms/vanderbilt_self_form.pdf',
     docx: '/assets/forms/vanderbilt_self_form.docx',
+    type: 'self_report',
   },
 ];
 
@@ -35,6 +40,7 @@ export default function QuestionnairesSection() {
     desc: t(`questionnaires.${['parent_form_desc', 'teacher_form_desc', 'self_report_desc'][i]}`, d.desc),
     pdf: d.pdf,
     docx: d.docx,
+    type: d.type,
   }));
 
   return (
@@ -54,6 +60,14 @@ export default function QuestionnairesSection() {
                 </div>
                 <h3 className="font-bold text-base sm:text-lg mb-2 text-gray-900">{item.title}</h3>
                 <p className="text-gray-600 text-sm leading-relaxed mb-4">{item.desc}</p>
+
+                <Link
+                  to={`/questionnaire/${item.type}`}
+                  className="inline-flex items-center gap-2 rounded-lg bg-green-800 text-white text-sm font-medium px-4 py-2 hover:bg-green-900 transition-colors mb-4"
+                >
+                  <IoClipboardOutline className="w-4 h-4" />
+                  {t('questionnaires.fill_online', 'מילוי מקוון')}
+                </Link>
 
                 <div className="w-full space-y-3">
                   <p className="text-sm font-medium text-gray-800 text-center">
