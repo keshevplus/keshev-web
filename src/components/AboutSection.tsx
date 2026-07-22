@@ -7,6 +7,7 @@ import {
 import { useCmsTranslations } from '../hooks/useCmsTranslations';
 import { useSectionId } from '../lib/sectionSlugs';
 import CmsImage from './CmsImage';
+import SectionHeader from './SectionHeader';
 
 const VALUE_ICONS = [IoHeartOutline, IoRibbonOutline, IoShieldCheckmarkOutline];
 
@@ -45,14 +46,10 @@ export default function AboutSection() {
 
   return (
     <section id={sectionId} className="w-full bg-gray-50 rtl">
-      <div className="w-full bg-gradient-to-b from-green-800 to-green-950 px-4 py-6 md:py-8 text-center">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
-          {t('about.title', 'אודות המרפאה')}
-        </h2>
-        <p className="text-base sm:text-lg text-white/80 mt-2 max-w-2xl mx-auto">
-          {t('about.subtitle', 'ליווי מקצועי ואישי באבחון וטיפול בהפרעות קשב וריכוז')}
-        </p>
-      </div>
+      <SectionHeader
+        title={t('about.title', 'אודות המרפאה')}
+        subtitle={t('about.subtitle', 'ליווי מקצועי ואישי באבחון וטיפול בהפרעות קשב וריכוז')}
+      />
 
       <div className="max-w-6xl mx-auto px-4 py-10 md:py-14">
         <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center mb-12">
