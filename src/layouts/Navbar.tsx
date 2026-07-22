@@ -7,7 +7,6 @@ import { RootState } from '../store/store'; // Root state type for Redux
 import {
   setIsMenuOpen,
   setIsScrolled,
-  setIsHomePage,
 } from '../store/sharedStateSlice'; // Redux actions for shared state
 
 // import LanguageSwitcher from './LanguageSwitcher'; // Language Switcher component
@@ -17,32 +16,21 @@ import BookingModal from '../components/BookingModal';
 import LanguageSwitcher from '../components/ui/LanguageSwitcher';
 import ThemeToggle from '../components/ui/ThemeToggle';
 import { useCmsTranslations } from '../hooks/useCmsTranslations';
+import { ROUTE_BY_SECTION, sectionKeyForPath, useAllSectionIds, type SectionKey } from '../lib/sectionSlugs';
 
 export function useNavItems() {
   const { t } = useCmsTranslations();
   return [
-    { path: '/', text: t('nav.home', 'בית'), mobileOnly: true },
-    { path: '/about', text: t('nav.about', 'אודותינו') },
-    { path: '/services', text: t('nav.services', 'שירותינו') },
-    { path: '/adhd', text: t('nav.adhd', 'מהי ADHD') },
-    { path: '/diagnosis', text: t('nav.diagnosis', 'תהליך האבחון') },
-    { path: '/forms', text: t('nav.questionnaires', 'שאלונים') },
-    { path: '/contact', text: t('nav.contact', 'יצירת קשר') },
+    { path: ROUTE_BY_SECTION.home, text: t('nav.home', 'בית'), mobileOnly: true },
+    { path: ROUTE_BY_SECTION.about, text: t('nav.about', 'אודותינו') },
+    { path: ROUTE_BY_SECTION.services, text: t('nav.services', 'שירותינו') },
+    { path: ROUTE_BY_SECTION.adhd, text: t('nav.adhd', 'מהי ADHD') },
+    { path: ROUTE_BY_SECTION.diagnosis, text: t('nav.diagnosis', 'תהליך האבחון') },
+    { path: ROUTE_BY_SECTION.questionnaires, text: t('nav.questionnaires', 'שאלונים') },
+    { path: ROUTE_BY_SECTION.contact, text: t('nav.contact', 'יצירת קשר') },
   ];
 }
 
-// Route -> in-page anchor id. Routes stay real pages (SEO, direct links,
-// sharing); on the homepage, clicking these smooth-scrolls instead of
-// navigating away, matching keshevplus.com's single-scroll-page navbar.
-const ANCHOR_BY_PATH: Record<string, string> = {
-  '/about': 'about',
-  '/services': 'services',
-  '/adhd': 'adhd',
-  '/diagnosis': 'diagnosis',
-  '/forms': 'questionnaires',
-  '/contact': 'contact',
-};
-const SECTION_IDS = ['home', 'about', 'services', 'adhd', 'diagnosis', 'questionnaires', 'contact'];
 const NAV_HEIGHT = 80;
 
 const Navbar: React.FC = () => {
@@ -50,75 +38,73 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useCmsTranslations();
   const navItems = useNavItems();
-  const [activeSection, setActiveSection] = useState('');
+  const sectionIds = useAllSectionIds();
+  const [activeSection, setActiveSection] = useState<SectionKey>('home');
   const [bookingOpen, setBookingOpen] = useState(false);
 
   // Replace the destructuring with safe access to prevent errors when sharedState is undefined
   const sharedState = useSelector((state: RootState) => state.sharedState);
-  const isHomePage = sharedState?.isHomePage || false;
   const isScrolled = sharedState?.isScrolled || false;
   const isMenuOpen = sharedState?.isMenuOpen || false;
 
   const location = useLocation();
+  // Every section route (/, /about, /services, ...) renders the same
+  // one-page SPA; "isHomePage" here really means "on one of those routes".
+  const isHomePage = sectionKeyForPath(location.pathname) !== null;
 
-  // Function to check if the current path matches the nav item path
-  const isActive = (path: string) =>
-    isHomePage ? activeSection === (ANCHOR_BY_PATH[path] ?? 'home') : location.pathname === path;
+  const isActive = (path: string) => activeSection === sectionKeyForPath(path);
 
-  const scrollToAnchor = (anchorId: string) => {
-    if (anchorId === 'home') {
+  const scrollToAnchor = (key: SectionKey) => {
+    if (key === 'home') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
-    const el = document.getElementById(anchorId);
+    const el = document.getElementById(sectionIds[key]);
     if (!el) return;
     const top = el.getBoundingClientRect().top + window.scrollY - NAV_HEIGHT;
     window.scrollTo({ top, behavior: 'smooth' });
   };
 
   const handleNavClick = (path: string) => (e: React.MouseEvent) => {
-    const anchorId = ANCHOR_BY_PATH[path] ?? (path === '/' ? 'home' : null);
-    if (isHomePage && anchorId) {
-      e.preventDefault();
-      scrollToAnchor(anchorId);
-      return;
-    }
-    if (!isHomePage && anchorId) {
-      // Navigate to the homepage, then let the anchor effect below scroll once mounted
-      e.preventDefault();
-      navigate(`/#${anchorId}`);
-    }
+    const key = sectionKeyForPath(path);
+    if (!key) return;
+    e.preventDefault();
+    // Every section route renders the same Home component, so this just
+    // updates the URL (SEO/back-button/direct-link correctness) without
+    // remounting anything, then scrolls to the anchor.
+    navigate(path);
+    scrollToAnchor(key);
   };
 
   useEffect(() => {
-    dispatch(setIsHomePage(location.pathname === '/'));
     const handleScroll = () => {
       const scrollY = window.scrollY;
       dispatch(setIsScrolled(scrollY > 100));
 
-      if (location.pathname !== '/') return;
+      if (!isHomePage) return;
       const threshold = NAV_HEIGHT + window.scrollY;
-      let current = 'home';
-      for (const id of SECTION_IDS) {
-        const el = document.getElementById(id);
-        if (el && el.offsetTop <= threshold) current = id;
+      let current: SectionKey = 'home';
+      for (const key of Object.keys(sectionIds) as SectionKey[]) {
+        const el = document.getElementById(sectionIds[key]);
+        if (el && el.offsetTop <= threshold) current = key;
       }
       setActiveSection(current);
     };
     window.addEventListener('scroll', handleScroll);
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [location.pathname, dispatch]);
+  }, [isHomePage, sectionIds, dispatch]);
 
-  // On the homepage, honor a #anchor in the URL (e.g. arriving from another
-  // page's nav click, or a direct /#services link) by scrolling to it once.
+  // Landing directly on a section route (e.g. /about, or a direct link to
+  // /contact) scrolls to that section once its content is mounted.
   useEffect(() => {
-    if (location.pathname === '/' && location.hash) {
-      const id = location.hash.slice(1);
-      const timer = setTimeout(() => scrollToAnchor(id), 50);
+    const key = sectionKeyForPath(location.pathname);
+    if (key && key !== 'home') {
+      const timer = setTimeout(() => scrollToAnchor(key), 50);
       return () => clearTimeout(timer);
     }
-  }, [location.pathname, location.hash]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
 
   // Wrap authentication checks in a safe try/catch
   const checkAuthentication = async () => {

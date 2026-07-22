@@ -5,6 +5,7 @@ import {
   IoCheckmarkCircleOutline,
 } from 'react-icons/io5';
 import { useCmsTranslations } from '../hooks/useCmsTranslations';
+import { useSectionId } from '../lib/sectionSlugs';
 import CmsImage from './CmsImage';
 
 const VALUE_ICONS = [IoHeartOutline, IoRibbonOutline, IoShieldCheckmarkOutline];
@@ -28,6 +29,7 @@ const DEFAULT_VALUES = [
  */
 export default function AboutSection() {
   const { t } = useCmsTranslations();
+  const sectionId = useSectionId('about');
 
   const credentials = [
     t('about.credential1', DEFAULT_CREDENTIALS[0]),
@@ -42,7 +44,7 @@ export default function AboutSection() {
   ];
 
   return (
-    <section id="about" className="w-full bg-gray-50 rtl">
+    <section id={sectionId} className="w-full bg-gray-50 rtl">
       <div className="w-full bg-gradient-to-b from-green-800 to-green-950 px-4 py-6 md:py-8 text-center">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
           {t('about.title', 'אודות המרפאה')}
