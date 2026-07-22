@@ -10,6 +10,7 @@ import {
 } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import { useCmsTranslations } from '../hooks/useCmsTranslations';
+import { useSectionId } from '../lib/sectionSlugs';
 import SectionHeader from './SectionHeader';
 
 const SYMPTOM_ICONS = [IoBulbOutline, IoFlashOutline, IoLocateOutline];
@@ -59,6 +60,7 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
 
 export default function ADHDInfoSection() {
   const { t } = useCmsTranslations();
+  const sectionId = useSectionId('adhd');
 
   const symptoms = DEFAULT_SYMPTOMS.map((d, i) => ({
     title: t(`adhd.symptom${i + 1}_title`, d.title),
@@ -77,7 +79,7 @@ export default function ADHDInfoSection() {
   }));
 
   return (
-    <section id="adhd" className="w-full bg-gray-50 rtl">
+    <section id={sectionId} className="w-full bg-gray-50 rtl">
       <SectionHeader
         title={t('nav.adhd', 'מה זה ADHD?')}
         subtitle={t('adhd.subtitle', 'הפרעת קשב וריכוז (ADHD) היא הפרעה נוירו-התפתחותית שמשפיעה על ילדים ומבוגרים כאחד')}

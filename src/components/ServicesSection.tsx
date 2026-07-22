@@ -6,6 +6,7 @@ import {
   IoPeopleOutline,
 } from 'react-icons/io5';
 import { useCmsTranslations } from '../hooks/useCmsTranslations';
+import { useSectionId } from '../lib/sectionSlugs';
 import SectionHeader from './SectionHeader';
 
 const SERVICE_ICONS = [IoPulseOutline, IoMedicalOutline, IoDesktopOutline, IoClipboardOutline, IoPeopleOutline];
@@ -20,6 +21,7 @@ const DEFAULT_SERVICES = [
 
 export default function ServicesSection() {
   const { t } = useCmsTranslations();
+  const sectionId = useSectionId('services');
 
   const services = DEFAULT_SERVICES.map((d, i) => ({
     title: t(`services.service${i + 1}_title`, d.title),
@@ -27,7 +29,7 @@ export default function ServicesSection() {
   }));
 
   return (
-    <section id="services" className="w-full bg-white rtl">
+    <section id={sectionId} className="w-full bg-white rtl">
       <SectionHeader
         title={t('services.title', 'השירותים שלנו')}
         subtitle={t('services.subtitle', 'אנו מציעים מגוון רחב של שירותים מקצועיים בתחום אבחון וטיפול בהפרעות קשב')}

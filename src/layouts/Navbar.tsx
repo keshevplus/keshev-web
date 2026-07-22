@@ -7,7 +7,6 @@ import { RootState } from '../store/store'; // Root state type for Redux
 import {
   setIsMenuOpen,
   setIsScrolled,
-  setIsHomePage,
 } from '../store/sharedStateSlice'; // Redux actions for shared state
 
 // import LanguageSwitcher from './LanguageSwitcher'; // Language Switcher component
@@ -17,32 +16,21 @@ import BookingModal from '../components/BookingModal';
 import LanguageSwitcher from '../components/ui/LanguageSwitcher';
 import ThemeToggle from '../components/ui/ThemeToggle';
 import { useCmsTranslations } from '../hooks/useCmsTranslations';
+import { ROUTE_BY_SECTION, sectionKeyForPath, useAllSectionIds, type SectionKey } from '../lib/sectionSlugs';
 
 export function useNavItems() {
   const { t } = useCmsTranslations();
   return [
-    { path: '/', text: t('nav.home', 'בית'), mobileOnly: true },
-    { path: '/about', text: t('nav.about', 'אודותינו') },
-    { path: '/services', text: t('nav.services', 'שירותינו') },
-    { path: '/adhd', text: t('nav.adhd', 'מהי ADHD') },
-    { path: '/diagnosis', text: t('nav.diagnosis', 'תהליך האבחון') },
-    { path: '/forms', text: t('nav.questionnaires', 'שאלונים') },
-    { path: '/contact', text: t('nav.contact', 'יצירת קשר') },
+    { path: ROUTE_BY_SECTION.home, text: t('nav.home', 'בית'), mobileOnly: true },
+    { path: ROUTE_BY_SECTION.about, text: t('nav.about', 'אודותינו') },
+    { path: ROUTE_BY_SECTION.services, text: t('nav.services', 'שירותינו') },
+    { path: ROUTE_BY_SECTION.adhd, text: t('nav.adhd', 'מהי ADHD') },
+    { path: ROUTE_BY_SECTION.diagnosis, text: t('nav.diagnosis', 'תהליך האבחון') },
+    { path: ROUTE_BY_SECTION.questionnaires, text: t('nav.questionnaires', 'שאלונים') },
+    { path: ROUTE_BY_SECTION.contact, text: t('nav.contact', 'יצירת קשר') },
   ];
 }
 
-// Route -> in-page anchor id. Routes stay real pages (SEO, direct links,
-// sharing); on the homepage, clicking these smooth-scrolls instead of
-// navigating away, matching keshevplus.com's single-scroll-page navbar.
-const ANCHOR_BY_PATH: Record<string, string> = {
-  '/about': 'about',
-  '/services': 'services',
-  '/adhd': 'adhd',
-  '/diagnosis': 'diagnosis',
-  '/forms': 'questionnaires',
-  '/contact': 'contact',
-};
-const SECTION_IDS = ['home', 'about', 'services', 'adhd', 'diagnosis', 'questionnaires', 'contact'];
 const NAV_HEIGHT = 80;
 
 const Navbar: React.FC = () => {
@@ -50,75 +38,73 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useCmsTranslations();
   const navItems = useNavItems();
-  const [activeSection, setActiveSection] = useState('');
+  const sectionIds = useAllSectionIds();
+  const [activeSection, setActiveSection] = useState<SectionKey>('home');
   const [bookingOpen, setBookingOpen] = useState(false);
 
   // Replace the destructuring with safe access to prevent errors when sharedState is undefined
   const sharedState = useSelector((state: RootState) => state.sharedState);
-  const isHomePage = sharedState?.isHomePage || false;
   const isScrolled = sharedState?.isScrolled || false;
   const isMenuOpen = sharedState?.isMenuOpen || false;
 
   const location = useLocation();
+  // Every section route (/, /about, /services, ...) renders the same
+  // one-page SPA; "isHomePage" here really means "on one of those routes".
+  const isHomePage = sectionKeyForPath(location.pathname) !== null;
 
-  // Function to check if the current path matches the nav item path
-  const isActive = (path: string) =>
-    isHomePage ? activeSection === (ANCHOR_BY_PATH[path] ?? 'home') : location.pathname === path;
+  const isActive = (path: string) => activeSection === sectionKeyForPath(path);
 
-  const scrollToAnchor = (anchorId: string) => {
-    if (anchorId === 'home') {
+  const scrollToAnchor = (key: SectionKey) => {
+    if (key === 'home') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
-    const el = document.getElementById(anchorId);
+    const el = document.getElementById(sectionIds[key]);
     if (!el) return;
     const top = el.getBoundingClientRect().top + window.scrollY - NAV_HEIGHT;
     window.scrollTo({ top, behavior: 'smooth' });
   };
 
   const handleNavClick = (path: string) => (e: React.MouseEvent) => {
-    const anchorId = ANCHOR_BY_PATH[path] ?? (path === '/' ? 'home' : null);
-    if (isHomePage && anchorId) {
-      e.preventDefault();
-      scrollToAnchor(anchorId);
-      return;
-    }
-    if (!isHomePage && anchorId) {
-      // Navigate to the homepage, then let the anchor effect below scroll once mounted
-      e.preventDefault();
-      navigate(`/#${anchorId}`);
-    }
+    const key = sectionKeyForPath(path);
+    if (!key) return;
+    e.preventDefault();
+    // Every section route renders the same Home component, so this just
+    // updates the URL (SEO/back-button/direct-link correctness) without
+    // remounting anything, then scrolls to the anchor.
+    navigate(path);
+    scrollToAnchor(key);
   };
 
   useEffect(() => {
-    dispatch(setIsHomePage(location.pathname === '/'));
     const handleScroll = () => {
       const scrollY = window.scrollY;
       dispatch(setIsScrolled(scrollY > 100));
 
-      if (location.pathname !== '/') return;
+      if (!isHomePage) return;
       const threshold = NAV_HEIGHT + window.scrollY;
-      let current = 'home';
-      for (const id of SECTION_IDS) {
-        const el = document.getElementById(id);
-        if (el && el.offsetTop <= threshold) current = id;
+      let current: SectionKey = 'home';
+      for (const key of Object.keys(sectionIds) as SectionKey[]) {
+        const el = document.getElementById(sectionIds[key]);
+        if (el && el.offsetTop <= threshold) current = key;
       }
       setActiveSection(current);
     };
     window.addEventListener('scroll', handleScroll);
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [location.pathname, dispatch]);
+  }, [isHomePage, sectionIds, dispatch]);
 
-  // On the homepage, honor a #anchor in the URL (e.g. arriving from another
-  // page's nav click, or a direct /#services link) by scrolling to it once.
+  // Landing directly on a section route (e.g. /about, or a direct link to
+  // /contact) scrolls to that section once its content is mounted.
   useEffect(() => {
-    if (location.pathname === '/' && location.hash) {
-      const id = location.hash.slice(1);
-      const timer = setTimeout(() => scrollToAnchor(id), 50);
+    const key = sectionKeyForPath(location.pathname);
+    if (key && key !== 'home') {
+      const timer = setTimeout(() => scrollToAnchor(key), 50);
       return () => clearTimeout(timer);
     }
-  }, [location.pathname, location.hash]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
 
   // Wrap authentication checks in a safe try/catch
   const checkAuthentication = async () => {
@@ -145,76 +131,72 @@ const Navbar: React.FC = () => {
     >
 
       <div className="relative w-full bg-[url('/assets/images/bgvideogif.gif')">
-        <div className="container bg-white/70 px-4 max-w-3xl flex items-center justify-between relative backdrop-blur-sm ">
+        <div className="w-full max-w-7xl mx-auto px-3 xl:px-4 flex items-center justify-between gap-2 relative bg-white/70 backdrop-blur-sm">
           <Link
             to="/"
             onClick={handleNavClick('/')}
-            className={`flex items-center transition-opacity duration-300 ${isHomePage && !isScrolled ? 'opacity-0' : 'opacity-100'
+            className={`flex items-center shrink-0 transition-opacity duration-300 ${isHomePage && !isScrolled ? 'opacity-0' : 'opacity-100'
               }`}
           >
             <div className="flex items-center ">
               <img
                 src="/assets/images/logoSVG.svg"
                 alt="קשב"
-                className={`object-contain w-40 transition-all duration-700 hover:opacity-80 ${isHomePage && isScrolled ? 'opacity-0' : 'opacity-100'
+                className={`object-contain w-32 xl:w-40 transition-all duration-700 hover:opacity-80 ${isHomePage && isScrolled ? 'opacity-0' : 'opacity-100'
                   }`}
               />
             </div>
           </Link>
-          <div className="hidden lg:flex space-x-4 mx-4 ">
+          <div className="hidden lg:flex items-center gap-0.5 xl:gap-1 flex-1 justify-center min-w-0">
             {navItems
               .filter((item) => !item.mobileOnly)
-              .map((item, index) => (
+              .map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
                   onClick={handleNavClick(item.path)}
-                  className={`text-xl font-semibold px-4 py-2 rounded-lg transition-colors duration-200 ${isActive(item.path)
+                  className={`whitespace-nowrap text-sm xl:text-base font-semibold px-2 xl:px-3 py-2 rounded-lg transition-colors duration-200 ${isActive(item.path)
                     ? 'bg-green-600 text-white' // Active link has green background and white text
                     : 'text-green-800 hover:text-white hover:bg-green-600' // Inactive link behavior
-                    } ${index === 0 ? 'mx-4' : ''}`}
+                    }`}
                 >
                   {item.text}
                 </Link>
               ))}
           </div>
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center gap-1.5 xl:gap-2 shrink-0">
             <button
               type="button"
               onClick={() => setBookingOpen(true)}
-              className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-green-800 hover:bg-green-700 text-white font-bold px-4 py-2 text-sm"
+              className="hidden sm:inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-green-800 hover:bg-green-700 text-white font-bold px-3 xl:px-4 py-2 text-sm"
             >
-              <IoCalendarOutline className="w-4 h-4" />
+              <IoCalendarOutline className="w-4 h-4 shrink-0" />
               {t('nav.book_now', 'קביעת תור')}
             </button>
             {/* Desktop-only controls: language + theme, kept off the tighter mobile/tablet bar */}
-            <div className="hidden lg:flex items-center gap-2 h-12">
+            <div className="hidden lg:flex items-center gap-1">
               <LanguageSwitcher />
               <ThemeToggle />
             </div>
-            {/* Controls wrapper - contains both language switcher and phone icon */}
-            <div className="flex items-center justify-center h-12 mx-4">
-              {/* Phone icon wrapper */}
-              <div className="navbar-item flex items-center justify-center h-full">
-                <Link
-                  to={`tel:${t('contact.phone', '055-27-399-27').replace(/-/g, '')}`}
-                  className="flex items-center justify-center h-full text-green-600 font-bold"
-                >                <span className="ml-2 whitespace-nowrap">
-                    <FloatingPhoneNumber />
-                  </span>
-
-                  <img
-                    src="/assets/images/greenphone.svg"
-                    alt="Call Now"
-                    className="h-6 hover:opacity-80 transition-transform duration-300"
-                  />
-
-                </Link>
-              </div>
+            {/* Phone icon */}
+            <div className="hidden md:flex items-center justify-center h-12">
+              <Link
+                to={`tel:${t('contact.phone', '055-27-399-27').replace(/-/g, '')}`}
+                className="flex items-center justify-center h-full text-green-600 font-bold whitespace-nowrap"
+              >
+                <span className="me-1.5 whitespace-nowrap">
+                  <FloatingPhoneNumber />
+                </span>
+                <img
+                  src="/assets/images/greenphone.svg"
+                  alt="Call Now"
+                  className="h-6 hover:opacity-80 transition-transform duration-300"
+                />
+              </Link>
             </div>
             {/* Hamburger menu button */}
             <button
-              className="lg:hidden text-black h-12 flex items-center justify-center"
+              className="lg:hidden text-black h-12 flex items-center justify-center shrink-0"
               onClick={() => dispatch(setIsMenuOpen(!isMenuOpen))}
             >
               {isMenuOpen ? <IoClose size={24} /> : <IoMenu size={24} />}
@@ -272,7 +254,7 @@ const Navbar: React.FC = () => {
                 {t('nav.book_now', 'קביעת תור')}
               </button>
               <div className="flex items-center justify-center gap-3 pt-2">
-                <LanguageSwitcher />
+                <LanguageSwitcher className="text-white hover:bg-white/10" />
                 <ThemeToggle className="text-white hover:bg-white/10" />
               </div>
             </div>

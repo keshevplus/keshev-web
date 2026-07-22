@@ -1,5 +1,6 @@
 import { IoPeopleOutline, IoDocumentTextOutline, IoPersonOutline } from 'react-icons/io5';
 import { useCmsTranslations } from '../hooks/useCmsTranslations';
+import { useSectionId } from '../lib/sectionSlugs';
 import SectionHeader from './SectionHeader';
 
 const QUESTIONNAIRE_ICONS = [IoPeopleOutline, IoDocumentTextOutline, IoPersonOutline];
@@ -27,6 +28,7 @@ const DEFAULT_QUESTIONNAIRES = [
 
 export default function QuestionnairesSection() {
   const { t } = useCmsTranslations();
+  const sectionId = useSectionId('questionnaires');
 
   const questionnaires = DEFAULT_QUESTIONNAIRES.map((d, i) => ({
     title: t(`questionnaires.${['parent_form', 'teacher_form', 'self_report'][i]}`, d.title),
@@ -36,7 +38,7 @@ export default function QuestionnairesSection() {
   }));
 
   return (
-    <section id="questionnaires" className="w-full bg-white rtl">
+    <section id={sectionId} className="w-full bg-white rtl">
       <SectionHeader
         title={t('questionnaires.title', 'שאלונים')}
         subtitle={t('questionnaires.subtitle', 'שאלונים לזיהוי סימנים של הפרעת קשב וריכוז (ADHD)')}

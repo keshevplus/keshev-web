@@ -1,9 +1,12 @@
 import { IoLeafOutline } from 'react-icons/io5';
 import { useCmsTranslations } from '../hooks/useCmsTranslations';
+import { useSectionId } from '../lib/sectionSlugs';
 import CmsImage from './CmsImage';
 
 export default function HeroSection() {
   const { t } = useCmsTranslations();
+  const homeId = useSectionId('home');
+  const aboutId = useSectionId('about');
 
   const typingItems = [
     t('hero.typing_children', 'בילדים'),
@@ -12,7 +15,7 @@ export default function HeroSection() {
   ];
 
   return (
-    <section id="home" className="relative bg-white overflow-x-hidden" dir="rtl">
+    <section id={homeId} className="relative bg-white overflow-x-hidden" dir="rtl">
       <div className="container mx-auto px-4 sm:px-6 flex flex-col sm:flex-row gap-8 sm:gap-10 items-center justify-between pb-10 sm:pb-14">
         <div className="flex flex-col w-full sm:w-[55%] order-2 sm:order-1 text-center sm:text-right animate-slide-in">
           <h1 className="text-2xl sm:text-3xl font-bold text-green-800 mb-3">
@@ -56,7 +59,7 @@ export default function HeroSection() {
 
             <button
               type="button"
-              onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => document.getElementById(aboutId)?.scrollIntoView({ behavior: 'smooth' })}
               className="inline-flex items-center gap-2 rounded-full bg-orange-400 hover:bg-orange-500 text-black px-6 py-3 font-bold shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
             >
               {t('hero.read_about_us', 'קראו עוד עלינו')}

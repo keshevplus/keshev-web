@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef, memo } from 'react';
-import Home from './Home';
-import About from './About';
-import Services from './Services';
-import ADHD from './ADHD';
-import Diagnosis from './Diagnosis';
-import Forms from './Forms';
-import Contact from './Contact';
+import HeroSection from '../components/HeroSection';
+import AboutSection from '../components/AboutSection';
+import ServicesSection from '../components/ServicesSection';
+import ADHDInfoSection from '../components/ADHDInfoSection';
+import DiagnosisSection from '../components/DiagnosisSection';
+import QuestionnairesSection from '../components/QuestionnairesSection';
+import ContactSection from '../components/ContactSection';
 import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
 import { useDispatch } from 'react-redux';
 import { setIsScrolled } from '../store/sharedStateSlice';
@@ -14,13 +14,13 @@ import { useCmsTranslations } from '../hooks/useCmsTranslations';
 function usePages() {
     const { t } = useCmsTranslations();
     return [
-        { id: 'home', component: Home, title: t('nav.home', 'בית') },
-        { id: 'about', component: About, title: t('nav.about', 'אודותינו') },
-        { id: 'services', component: Services, title: t('nav.services', 'שירותינו') },
-        { id: 'adhd', component: ADHD, title: t('nav.adhd', 'מהי ADHD') },
-        { id: 'diagnosis', component: Diagnosis, title: t('nav.diagnosis', 'תהליך האבחון') },
-        { id: 'forms', component: Forms, title: t('nav.questionnaires', 'שאלונים') },
-        { id: 'contact', component: Contact, title: t('nav.contact', 'יצירת קשר') },
+        { id: 'home', component: HeroSection, title: t('nav.home', 'בית') },
+        { id: 'about', component: AboutSection, title: t('nav.about', 'אודותינו') },
+        { id: 'services', component: ServicesSection, title: t('nav.services', 'שירותינו') },
+        { id: 'adhd', component: ADHDInfoSection, title: t('nav.adhd', 'מהי ADHD') },
+        { id: 'diagnosis', component: DiagnosisSection, title: t('nav.diagnosis', 'תהליך האבחון') },
+        { id: 'forms', component: QuestionnairesSection, title: t('nav.questionnaires', 'שאלונים') },
+        { id: 'contact', component: ContactSection, title: t('nav.contact', 'יצירת קשר') },
     ];
 }
 
