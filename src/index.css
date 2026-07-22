@@ -15,35 +15,57 @@
    classes used throughout the site, toggled via the .dark class on
    <html>. Components use fixed Tailwind colors rather than dark:
    variants, so this covers the common cases globally instead of
-   requiring a per-component retrofit. */
+   requiring a per-component retrofit.
+   Palette matches keshevplus.com's dark theme (green-tinted near-black
+   surfaces, muted brand green/orange) rather than a generic slate gray. */
 .dark {
   color-scheme: dark;
 }
 .dark body {
-  background-color: #111827;
+  background-color: #151917;
 }
 .dark .bg-white {
-  background-color: #1f2937 !important;
+  background-color: #1e2421 !important;
 }
 .dark .bg-gray-50,
 .dark .bg-gray-100 {
-  background-color: #111827 !important;
+  background-color: #262b29 !important;
 }
 .dark .text-black,
 .dark .text-gray-900 {
-  color: #f3f4f6 !important;
+  color: #e4e7e5 !important;
 }
 .dark .text-gray-800,
 .dark .text-gray-700 {
-  color: #e5e7eb !important;
+  color: #d1d5d3 !important;
 }
 .dark .text-gray-600,
 .dark .text-gray-500 {
-  color: #9ca3af !important;
+  color: #a1aaa4 !important;
 }
 .dark .border-gray-200,
 .dark .border-gray-300 {
-  border-color: #374151 !important;
+  border-color: #353b38 !important;
+}
+.dark .bg-green-800 {
+  background-color: #447e5c !important;
+}
+.dark .hover\:bg-green-900:hover,
+.dark .hover\:bg-green-800:hover {
+  background-color: #569f74 !important;
+}
+.dark .text-green-800 {
+  color: #6bb98b !important;
+}
+.dark .border-green-800 {
+  border-color: #447e5c !important;
+}
+.dark .bg-orange-400,
+.dark .bg-orange-500 {
+  background-color: #d48a35 !important;
+}
+.dark .hover\:bg-orange-500:hover {
+  background-color: #e0a05a !important;
 }
 
 body {
