@@ -143,8 +143,7 @@ const Navbar: React.FC = () => {
               <img
                 src="/assets/images/logoSVG.svg"
                 alt="קשב"
-                className={`object-contain w-32 xl:w-40 transition-all duration-700 hover:opacity-80 ${isHomePage && isScrolled ? 'opacity-0' : 'opacity-100'
-                  }`}
+                className="object-contain w-32 xl:w-40 transition-all duration-700 hover:opacity-80"
               />
             </div>
           </Link>

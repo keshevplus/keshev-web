@@ -17,7 +17,7 @@ export default function HeroSection() {
   return (
     <section id={homeId} className="relative bg-white overflow-x-hidden" dir="rtl">
       <div className="container mx-auto px-4 sm:px-6 flex flex-col sm:flex-row gap-8 sm:gap-10 items-center justify-between pb-10 sm:pb-14">
-        <div className="flex flex-col w-full sm:w-[55%] order-2 sm:order-1 text-center sm:text-right animate-slide-in">
+        <div className="flex flex-col w-full sm:w-[55%] order-2 sm:order-1 text-center sm:text-right animate-hero-fade-in-up">
           <h1 className="text-2xl sm:text-3xl font-bold text-green-800 mb-3">
             {t('hero.welcome_line1', 'ברוכים הבאים למרפאת')} {t('hero.welcome_line2', '"קשב פלוס"')}
           </h1>
@@ -41,7 +41,11 @@ export default function HeroSection() {
 
           <div className="mb-6 flex flex-wrap justify-center sm:justify-end gap-2">
             {typingItems.map((item, idx) => (
-              <span key={item} className="inline-flex items-center">
+              <span
+                key={item}
+                className="opacity-0 animate-typing inline-flex items-center"
+                style={{ animationDelay: `${idx * 400}ms`, animationFillMode: 'forwards' }}
+              >
                 <span className="text-lg font-semibold text-gray-800">{item}</span>
                 {idx < typingItems.length - 1 && <span className="text-green-800 font-bold mx-2">+</span>}
               </span>
@@ -68,7 +72,7 @@ export default function HeroSection() {
           </div>
         </div>
 
-        <div className="w-full sm:w-[45%] flex justify-center sm:justify-start order-1 sm:order-2">
+        <div className="w-full sm:w-[45%] flex justify-center sm:justify-start order-1 sm:order-2 animate-hero-fade-in-side">
           <CmsImage
             slot="hero.image"
             fallback="/assets/images/doctor-hero.png"
