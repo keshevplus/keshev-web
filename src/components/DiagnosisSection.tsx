@@ -7,6 +7,7 @@ import {
 } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import { useCmsTranslations } from '../hooks/useCmsTranslations';
+import { useSectionId } from '../lib/sectionSlugs';
 import SectionHeader from './SectionHeader';
 
 const STEP_ICONS = [IoChatbubblesOutline, IoDocumentTextOutline, IoDesktopOutline, IoClipboardOutline, IoMedicalOutline];
@@ -19,8 +20,12 @@ const DEFAULT_STEPS = [
   { title: 'תכנית טיפול', desc: 'בניית תכנית טיפול מקיפה הכוללת התערבות תרופתית, פסיכולוגית, חינוכית והתנהגותית לפי הצורך.' },
 ];
 
+// keshev-web-specific section (no equivalent on keshevplus.com's own homepage) —
+// keys live under their own "diagnosis.*" namespace rather than reusing
+// shared platform keys, since this content has no production counterpart.
 export default function DiagnosisSection() {
   const { t } = useCmsTranslations();
+  const sectionId = useSectionId('diagnosis');
 
   const steps = DEFAULT_STEPS.map((d, i) => ({
     title: t(`diagnosis.step${i + 1}_title`, d.title),
@@ -28,7 +33,7 @@ export default function DiagnosisSection() {
   }));
 
   return (
-    <section id="diagnosis" className="w-full bg-white rtl">
+    <section id={sectionId} className="w-full bg-white rtl">
       <SectionHeader
         title={t('diagnosis.title', 'תהליך האבחון והטיפול')}
         subtitle={t('diagnosis.subtitle', 'תהליך אבחון הפרעת קשב מקצועי ואיכותי')}

@@ -1,25 +1,28 @@
 import { useState, useEffect, useRef, memo } from 'react';
-import Home from './Home';
-import About from './About';
-import Services from './Services';
-import ADHD from './ADHD';
-import Diagnosis from './Diagnosis';
-import Forms from './Forms';
-import Contact from './Contact';
+import HeroSection from '../components/HeroSection';
+import AboutSection from '../components/AboutSection';
+import ServicesSection from '../components/ServicesSection';
+import ADHDInfoSection from '../components/ADHDInfoSection';
+import DiagnosisSection from '../components/DiagnosisSection';
+import QuestionnairesSection from '../components/QuestionnairesSection';
+import ContactSection from '../components/ContactSection';
 import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
 import { useDispatch } from 'react-redux';
 import { setIsScrolled } from '../store/sharedStateSlice';
+import { useCmsTranslations } from '../hooks/useCmsTranslations';
 
-// Define the pages to include in the horizontal swipe
-const pages = [
-    { id: 'home', component: Home, title: 'בית' },
-    { id: 'about', component: About, title: 'אודות' },
-    { id: 'services', component: Services, title: 'שירותים' },
-    { id: 'adhd', component: ADHD, title: 'ADHD' },
-    { id: 'diagnosis', component: Diagnosis, title: 'אבחון' },
-    { id: 'forms', component: Forms, title: 'שאלונים' },
-    { id: 'contact', component: Contact, title: 'צור קשר' },
-];
+function usePages() {
+    const { t } = useCmsTranslations();
+    return [
+        { id: 'home', component: HeroSection, title: t('nav.home', 'בית') },
+        { id: 'about', component: AboutSection, title: t('nav.about', 'אודותינו') },
+        { id: 'services', component: ServicesSection, title: t('nav.services', 'שירותינו') },
+        { id: 'adhd', component: ADHDInfoSection, title: t('nav.adhd', 'מהי ADHD') },
+        { id: 'diagnosis', component: DiagnosisSection, title: t('nav.diagnosis', 'תהליך האבחון') },
+        { id: 'forms', component: QuestionnairesSection, title: t('nav.questionnaires', 'שאלונים') },
+        { id: 'contact', component: ContactSection, title: t('nav.contact', 'יצירת קשר') },
+    ];
+}
 
 // Memoize the page components to prevent unnecessary re-renders
 const MemoizedPageComponent = memo(({ PageComponent }: { PageComponent: React.ComponentType }) => {
@@ -28,6 +31,8 @@ const MemoizedPageComponent = memo(({ PageComponent }: { PageComponent: React.Co
 MemoizedPageComponent.displayName = 'MemoizedPageComponent';
 
 export default function SpaPage() {
+    const { t } = useCmsTranslations();
+    const pages = usePages();
     const [currentPageIndex, setCurrentPageIndex] = useState(0);
     const [touchStartX, setTouchStartX] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
@@ -114,7 +119,7 @@ export default function SpaPage() {
                             ? 'bg-green-600 scale-125'
                             : 'bg-gray-300 hover:bg-gray-400'
                             }`}
-                        aria-label={`עבור לדף ${page.title}`}
+                        aria-label={`${t('spa.go_to_page', 'עבור לדף')} ${page.title}`}
                         aria-current={currentPageIndex === index ? 'page' : undefined}
                     />
                 ))}
@@ -130,7 +135,7 @@ export default function SpaPage() {
                     <button
                         onClick={() => navigateToPage(currentPageIndex - 1)}
                         className="fixed top-1/2 right-4 transform -translate-y-1/2 z-50 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-green-100 transition-colors"
-                        aria-label="הדף הקודם"
+                        aria-label={t('spa.prev_page', 'הדף הקודם')}
                     >
                         <FiArrowRight className="text-green-800 text-2xl" />
                     </button>
@@ -140,7 +145,7 @@ export default function SpaPage() {
                     <button
                         onClick={() => navigateToPage(currentPageIndex + 1)}
                         className="fixed top-1/2 left-4 transform -translate-y-1/2 z-50 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-green-100 transition-colors"
-                        aria-label="הדף הבא"
+                        aria-label={t('spa.next_page', 'הדף הבא')}
                     >
                         <FiArrowLeft className="text-green-800 text-2xl" />
                     </button>

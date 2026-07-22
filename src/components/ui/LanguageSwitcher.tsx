@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import './LanguageSwitcher.css';
+import { IoGlobeOutline } from 'react-icons/io5';
 import { fetchAvailableLanguages } from '../../services/translationService';
 
 export interface LocalLanguage {
@@ -18,46 +18,41 @@ const fallbackLanguages = [
   { id: 2, code: 'en', name: 'English', native_name: 'English', rtl: false, is_default: false }
 ];
 
-const LanguageSwitcher: React.FC = () => {
+interface LanguageSwitcherProps {
+  className?: string;
+}
+
+// Compact globe-icon button that opens a small dropdown of languages -
+// avoids a native <select> (which always shows the current language's text
+// and doesn't fit alongside 6+ nav links) while keeping the same 10-language
+// support and RTL-aware page reload on change.
+const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ className = 'text-green-800 hover:bg-green-800/10' }) => {
   const { i18n, t } = useTranslation('common');
   const [languages, setLanguages] = useState<LocalLanguage[]>(fallbackLanguages);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // Load available languages from API
   useEffect(() => {
     const loadLanguages = async () => {
       try {
-        setLoading(true);
         const langData = await fetchAvailableLanguages();
-
-        // Check if langData is an array and has items
         if (Array.isArray(langData) && langData.length > 0) {
           setLanguages(langData.map(lang => ({
-            id: 0, // Provide a default value since 'id' is not part of the Language type
+            id: 0,
             code: lang.code,
             name: lang.name,
-            native_name: lang.native_name || lang.name, // Fallback to name if native_name is missing
-            is_default: lang.is_default || false, // Provide a default value if is_default is missing
-            rtl: lang.rtl || false // Provide a default value if rtl is missing
+            native_name: lang.native_name || lang.name,
+            is_default: lang.is_default || false,
+            rtl: lang.rtl || false
           })));
-        } else {
-          // Use fallback languages if API returns invalid data
-          console.log('Using fallback languages because API returned invalid data');
-          setLanguages(fallbackLanguages);
         }
       } catch (error) {
         console.error('Error loading languages:', error);
-        // Fallback languages if API fails
-        setLanguages(fallbackLanguages);
-      } finally {
-        setLoading(false);
       }
     };
-
     loadLanguages();
   }, []);
 
-  // Initialize language on component mount
   useEffect(() => {
     const savedLanguage = localStorage.getItem('i18nextLng');
     if (savedLanguage) {
@@ -65,44 +60,56 @@ const LanguageSwitcher: React.FC = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
+
   const changeLanguage = (lng: string) => {
-    if (i18n.language !== lng) { // Only change if different
-      console.log(`Language changed from ${i18n.language} to ${lng}`);
-      i18n.changeLanguage(lng);
-
-      // Get language info to determine RTL
-      const langInfo = languages.find(l => l.code === lng);
-      const isRtl = langInfo ? langInfo.rtl : lng === 'he';
-
-      // Set document direction based on language RTL property
-      document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
-
-      // Store language preference in localStorage
-      localStorage.setItem('i18nextLng', lng);
-
-      // Reload the page to ensure all components reflect the new language
-      window.location.reload();
-    }
+    setIsOpen(false);
+    if (i18n.language === lng) return;
+    i18n.changeLanguage(lng);
+    const langInfo = languages.find(l => l.code === lng);
+    const isRtl = langInfo ? langInfo.rtl : lng === 'he';
+    document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+    localStorage.setItem('i18nextLng', lng);
+    window.location.reload();
   };
 
-  if (loading) {
-    return <div className="language-switcher-loading">{t('loading', 'Loading...')}</div>;
-  }
-
   return (
-    <div className="language-switcher">
-      {languages.map(lang => (
-        <button
-          key={lang.code}
-          className={`language-button ${i18n.language === lang.code ? 'active' : ''}`}
-          onClick={() => changeLanguage(lang.code)}
-          aria-label={`Switch to ${lang.name}`}
-          aria-pressed={i18n.language === lang.code}
-          title={lang.name}
-        >
-          {lang.code.toUpperCase()}
-        </button>
-      ))}
+    <div className="relative" ref={containerRef}>
+      <button
+        type="button"
+        onClick={() => setIsOpen((v) => !v)}
+        aria-label={t('nav.change_language', 'החלף שפה')}
+        aria-expanded={isOpen}
+        className={`w-9 h-9 shrink-0 rounded-full flex items-center justify-center transition-colors ${className}`}
+      >
+        <IoGlobeOutline className="w-5 h-5" />
+      </button>
+      {isOpen && (
+        <div className="absolute end-0 top-full mt-2 min-w-[8rem] bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-50">
+          {languages.map((lang) => (
+            <button
+              key={lang.code}
+              type="button"
+              onClick={() => changeLanguage(lang.code)}
+              className={`w-full text-start px-3 py-2 text-sm transition-colors ${i18n.language === lang.code
+                ? 'bg-green-600 text-white font-semibold'
+                : 'text-gray-800 hover:bg-green-50'
+                }`}
+            >
+              {lang.native_name || lang.name}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -9,12 +9,16 @@ import {
   applyAllAccessibilitySettings,
   cleanupReadingGuideListener,
 } from './accessibilitySettings';
+import { useCmsTranslations } from '../../hooks/useCmsTranslations';
+import { useWidgetSettings } from '../../hooks/useWidgetSettings';
 
 /**
  * AccessibilityWidget component - Compliant with Israeli Accessibility Regulations (Standard 5568)
  * Provides various accessibility features to improve website usability for users with disabilities
  */
 const AccessibilityWidget: React.FC = () => {
+  const { t } = useCmsTranslations();
+  const { showAccessibility } = useWidgetSettings();
   const [menuOpen, setMenuOpen] = useState(false);
   const [settings, setSettings] = useState<AccessibilitySettings>(defaultAccessibilitySettings);
 
@@ -95,6 +99,8 @@ const AccessibilityWidget: React.FC = () => {
   // detect if all settings are at default (0 or false)
   const isDefault = Object.values(settings).every(v => v === 0 || v === false);
 
+  if (!showAccessibility) return null;
+
   return (
     <div className={`accessibilityContainer${menuOpen ? ' open' : ''}`} dir="rtl">
       <div className="accessibilityButtonGroup">
@@ -103,9 +109,9 @@ const AccessibilityWidget: React.FC = () => {
           className="accessibilityButton"
           type="button"
           onClick={toggleMenu}
-          aria-label="פתח תפריט נגישות"
+          aria-label={t('a11y.accessibility_menu', 'פתח תפריט נגישות')}
           aria-expanded={menuOpen}
-          title="תפריט נגישות"
+          title={t('a11y.accessibility_menu', 'תפריט נגישות')}
         >
           <FaWheelchair size={24} aria-hidden="true" />
         </button>
@@ -115,25 +121,25 @@ const AccessibilityWidget: React.FC = () => {
         ref={menuRef}
         className="menu accessibility-menu"
         role="dialog"
-        aria-label="תפריט נגישות"
+        aria-label={t('a11y.accessibility_menu', 'תפריט נגישות')}
       >
         {/* Reset button—hidden when all defaults */}
         <button
           className="resetButton"
           style={{ display: isDefault ? 'none' : 'block' }}
           onClick={resetSettings}
-          aria-label="איפוס כל הגדרות הנגישות"
+          aria-label={t('a11y.reset', 'איפוס כל הגדרות הנגישות')}
         >
-          איפוס הגדרות
+          {t('a11y.reset', 'איפוס הגדרות')}
         </button>
 
         <div className="menuHeader whitespace-nowrap">
-          <h2>תפריט נגישות</h2>
+          <h2>{t('a11y.accessibility_settings', 'תפריט נגישות')}</h2>
           <div className="headerButtons">
             <button
               className="closeButton"
               onClick={toggleMenu}
-              aria-label="סגור תפריט נגישות"
+              aria-label={t('a11y.close', 'סגור תפריט נגישות')}
             >
               <IoClose size={24} aria-hidden="true" />
             </button>
@@ -144,92 +150,92 @@ const AccessibilityWidget: React.FC = () => {
           className={`menuItem ${settings.textSize > 0 ? 'active' : ''}`}
           onClick={() => updateSetting('textSize', settings.textSize + 1)}
         >
-          הגדל טקסט
+          {t('a11y.increase_text', 'הגדל טקסט')}
         </button>
         <button
           className={`menuItem ${settings.textSize < 0 ? 'active' : ''}`}
           onClick={() => updateSetting('textSize', settings.textSize - 1)}
         >
-          הקטן טקסט
+          {t('a11y.decrease_text', 'הקטן טקסט')}
         </button>
 
         <button
           className={`menuItem ${settings.textSpacing > 0 ? 'active' : ''}`}
           onClick={() => updateSetting('textSpacing', settings.textSpacing + 1)}
         >
-          הגדל מרווח
+          {t('a11y.increase_letter_spacing', 'הגדל מרווח')}
         </button>
         <button
           className={`menuItem ${settings.textSpacing < 0 ? 'active' : ''}`}
           onClick={() => updateSetting('textSpacing', settings.textSpacing - 1)}
         >
-          הקטן מרווח
+          {t('a11y.decrease_letter_spacing', 'הקטן מרווח')}
         </button>
 
         <button
           className={`menuItem ${settings.lineHeight > 0 ? 'active' : ''}`}
           onClick={() => updateSetting('lineHeight', settings.lineHeight + 1)}
         >
-          הגדל גובה שורה
+          {t('a11y.increase_line_height', 'הגדל גובה שורה')}
         </button>
         <button
           className={`menuItem ${settings.lineHeight < 0 ? 'active' : ''}`}
           onClick={() => updateSetting('lineHeight', settings.lineHeight - 1)}
         >
-          הקטן גובה שורה
+          {t('a11y.decrease_line_height', 'הקטן גובה שורה')}
         </button>
 
         <button
           className={`menuItem ${settings.invertColors ? 'active' : ''}`}
           onClick={() => updateSetting('invertColors', !settings.invertColors)}
         >
-          הפוך צבעים
+          {t('a11y.high_contrast', 'הפוך צבעים')}
         </button>
 
         <button
           className={`menuItem ${settings.grayHues ? 'active' : ''}`}
           onClick={() => updateSetting('grayHues', !settings.grayHues)}
         >
-          גווני אפור
+          {t('a11y.grayscale', 'גווני אפור')}
         </button>
 
         <button
           className={`menuItem ${settings.linkHighlight ? 'active' : ''}`}
           onClick={() => updateSetting('linkHighlight', !settings.linkHighlight)}
         >
-          הדגשת קישורים
+          {t('a11y.highlight_links', 'הדגשת קישורים')}
         </button>
 
         <button
           className={`menuItem ${settings.readableFont ? 'active' : ''}`}
           onClick={() => updateSetting('readableFont', !settings.readableFont)}
         >
-          גופן קריא
+          {t('a11y.readable_font', 'גופן קריא')}
         </button>
 
         <button
           className={`menuItem ${settings.bigCursor ? 'active' : ''}`}
           onClick={() => updateSetting('bigCursor', !settings.bigCursor)}
         >
-          סמן גדול
+          {t('a11y.large_cursor', 'סמן גדול')}
         </button>
 
         <button
           className={`menuItem ${settings.readingGuide ? 'active' : ''}`}
           onClick={() => updateSetting('readingGuide', !settings.readingGuide)}
         >
-          מדריך קריאה
+          {t('a11y.reading_guide', 'מדריך קריאה')}
         </button>
 
         <button
           className={`menuItem ${settings.disableAnimations ? 'active' : ''}`}
           onClick={() => updateSetting('disableAnimations', !settings.disableAnimations)}
         >
-          בטל אנימציות
+          {t('a11y.stop_animations', 'בטל אנימציות')}
         </button>
 
         <div className="menuLink md:text-sm" style={{ marginBottom: '12px' }}>
-          <Link to="/accessibility">לצפיה בהצהרת הנגישות</Link>
+          <Link to="/accessibility">{t('a11y.accessibility_statement', 'לצפיה בהצהרת הנגישות')}</Link>
         </div>
       </div>
     </div>

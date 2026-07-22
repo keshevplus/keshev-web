@@ -11,9 +11,44 @@
   --color-card-shadow: rgba(0, 0, 0, 0.1);
 }
 
+/* Basic dark mode: overrides the handful of background/text utility
+   classes used throughout the site, toggled via the .dark class on
+   <html>. Components use fixed Tailwind colors rather than dark:
+   variants, so this covers the common cases globally instead of
+   requiring a per-component retrofit. */
+.dark {
+  color-scheme: dark;
+}
+.dark body {
+  background-color: #111827;
+}
+.dark .bg-white {
+  background-color: #1f2937 !important;
+}
+.dark .bg-gray-50,
+.dark .bg-gray-100 {
+  background-color: #111827 !important;
+}
+.dark .text-black,
+.dark .text-gray-900 {
+  color: #f3f4f6 !important;
+}
+.dark .text-gray-800,
+.dark .text-gray-700 {
+  color: #e5e7eb !important;
+}
+.dark .text-gray-600,
+.dark .text-gray-500 {
+  color: #9ca3af !important;
+}
+.dark .border-gray-200,
+.dark .border-gray-300 {
+  border-color: #374151 !important;
+}
+
 body {
   margin: 0;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   direction: rtl;
@@ -63,35 +98,6 @@ body::selection {
   .container {
     max-width: 100%;
   }
-}
-
-@media (max-width: 768px) {
-  h1 {
-    font-size: 2.5rem !important;
-  }
-  h2 {
-    font-size: 1.8rem !important;
-  }
-  h3 {
-    font-size: 1.4rem !important;
-  }
-}
-
-@media (max-width: 640px) {
-  h1 {
-    font-size: 2rem !important;
-  }
-  h2 {
-    font-size: 1.5rem !important;
-  }
-  h3 {
-    font-size: 1.2rem !important;
-  }
-}
-
-/* Add padding-top to main content to account for fixed navbar */
-main {
-  padding-top: 4rem;
 }
 
 /* Loading and error states */
@@ -147,6 +153,53 @@ main {
 /* Enable context menu in admin */
 [style*="direction: ltr"] *:not(input):not(textarea) {
   -webkit-touch-callout: default !important;
+}
+
+/* Hero entrance animations, matching keshevplus.com's framer-motion
+   fade/slide-in timings (keshev-web has no framer-motion dependency, so
+   these are the plain-CSS equivalent). */
+@keyframes hero-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-hero-fade-in-up {
+  animation: hero-fade-in-up 0.6s ease-out 0.1s both;
+}
+
+@keyframes hero-fade-in-side {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.animate-hero-fade-in-side {
+  animation: hero-fade-in-side 0.6s ease-out 0.3s both;
+}
+
+/* Staggered fade-in for the hero's rotating "+" joined list, matching
+   keshevplus.com's .animate-typing */
+@keyframes typing-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-typing {
+  animation: typing-fade-in 0.5s ease-out forwards;
 }
 
 /* Word cycling animation for homepage */

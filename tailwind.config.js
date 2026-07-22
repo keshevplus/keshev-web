@@ -8,7 +8,10 @@ module.exports = {
       colors: {
         'kplus-green': '#166534',   // your brand green
         'kplus-orange': '#F97316'   // your brand orange
-      }
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
     }
   },
   plugins: []
