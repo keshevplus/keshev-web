@@ -131,76 +131,72 @@ const Navbar: React.FC = () => {
     >
 
       <div className="relative w-full bg-[url('/assets/images/bgvideogif.gif')">
-        <div className="container bg-white/70 px-4 max-w-3xl flex items-center justify-between relative backdrop-blur-sm ">
+        <div className="w-full max-w-7xl mx-auto px-3 xl:px-4 flex items-center justify-between gap-2 relative bg-white/70 backdrop-blur-sm">
           <Link
             to="/"
             onClick={handleNavClick('/')}
-            className={`flex items-center transition-opacity duration-300 ${isHomePage && !isScrolled ? 'opacity-0' : 'opacity-100'
+            className={`flex items-center shrink-0 transition-opacity duration-300 ${isHomePage && !isScrolled ? 'opacity-0' : 'opacity-100'
               }`}
           >
             <div className="flex items-center ">
               <img
                 src="/assets/images/logoSVG.svg"
                 alt="קשב"
-                className={`object-contain w-40 transition-all duration-700 hover:opacity-80 ${isHomePage && isScrolled ? 'opacity-0' : 'opacity-100'
+                className={`object-contain w-32 xl:w-40 transition-all duration-700 hover:opacity-80 ${isHomePage && isScrolled ? 'opacity-0' : 'opacity-100'
                   }`}
               />
             </div>
           </Link>
-          <div className="hidden lg:flex space-x-4 mx-4 ">
+          <div className="hidden lg:flex items-center gap-0.5 xl:gap-1 flex-1 justify-center min-w-0">
             {navItems
               .filter((item) => !item.mobileOnly)
-              .map((item, index) => (
+              .map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
                   onClick={handleNavClick(item.path)}
-                  className={`text-xl font-semibold px-4 py-2 rounded-lg transition-colors duration-200 ${isActive(item.path)
+                  className={`whitespace-nowrap text-sm xl:text-base font-semibold px-2 xl:px-3 py-2 rounded-lg transition-colors duration-200 ${isActive(item.path)
                     ? 'bg-green-600 text-white' // Active link has green background and white text
                     : 'text-green-800 hover:text-white hover:bg-green-600' // Inactive link behavior
-                    } ${index === 0 ? 'mx-4' : ''}`}
+                    }`}
                 >
                   {item.text}
                 </Link>
               ))}
           </div>
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center gap-1.5 xl:gap-2 shrink-0">
             <button
               type="button"
               onClick={() => setBookingOpen(true)}
-              className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-green-800 hover:bg-green-700 text-white font-bold px-4 py-2 text-sm"
+              className="hidden sm:inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-green-800 hover:bg-green-700 text-white font-bold px-3 xl:px-4 py-2 text-sm"
             >
-              <IoCalendarOutline className="w-4 h-4" />
+              <IoCalendarOutline className="w-4 h-4 shrink-0" />
               {t('nav.book_now', 'קביעת תור')}
             </button>
             {/* Desktop-only controls: language + theme, kept off the tighter mobile/tablet bar */}
-            <div className="hidden lg:flex items-center gap-2 h-12">
+            <div className="hidden lg:flex items-center gap-1">
               <LanguageSwitcher />
               <ThemeToggle />
             </div>
-            {/* Controls wrapper - contains both language switcher and phone icon */}
-            <div className="flex items-center justify-center h-12 mx-4">
-              {/* Phone icon wrapper */}
-              <div className="navbar-item flex items-center justify-center h-full">
-                <Link
-                  to={`tel:${t('contact.phone', '055-27-399-27').replace(/-/g, '')}`}
-                  className="flex items-center justify-center h-full text-green-600 font-bold"
-                >                <span className="ml-2 whitespace-nowrap">
-                    <FloatingPhoneNumber />
-                  </span>
-
-                  <img
-                    src="/assets/images/greenphone.svg"
-                    alt="Call Now"
-                    className="h-6 hover:opacity-80 transition-transform duration-300"
-                  />
-
-                </Link>
-              </div>
+            {/* Phone icon */}
+            <div className="hidden md:flex items-center justify-center h-12">
+              <Link
+                to={`tel:${t('contact.phone', '055-27-399-27').replace(/-/g, '')}`}
+                className="flex items-center justify-center h-full text-green-600 font-bold whitespace-nowrap"
+              >
+                <span className="me-1.5 whitespace-nowrap">
+                  <FloatingPhoneNumber />
+                </span>
+                <img
+                  src="/assets/images/greenphone.svg"
+                  alt="Call Now"
+                  className="h-6 hover:opacity-80 transition-transform duration-300"
+                />
+              </Link>
             </div>
             {/* Hamburger menu button */}
             <button
-              className="lg:hidden text-black h-12 flex items-center justify-center"
+              className="lg:hidden text-black h-12 flex items-center justify-center shrink-0"
               onClick={() => dispatch(setIsMenuOpen(!isMenuOpen))}
             >
               {isMenuOpen ? <IoClose size={24} /> : <IoMenu size={24} />}
@@ -258,7 +254,7 @@ const Navbar: React.FC = () => {
                 {t('nav.book_now', 'קביעת תור')}
               </button>
               <div className="flex items-center justify-center gap-3 pt-2">
-                <LanguageSwitcher />
+                <LanguageSwitcher className="text-white hover:bg-white/10" />
                 <ThemeToggle className="text-white hover:bg-white/10" />
               </div>
             </div>
