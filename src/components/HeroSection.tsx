@@ -2,6 +2,7 @@ import { IoLeafOutline } from 'react-icons/io5';
 import { useCmsTranslations } from '../hooks/useCmsTranslations';
 import { useSectionId } from '../lib/sectionSlugs';
 import CmsImage from './CmsImage';
+import RotatingWords from './ui/RotatingWords';
 
 export default function HeroSection() {
   const { t } = useCmsTranslations();
@@ -31,33 +32,26 @@ export default function HeroSection() {
           />
 
           <p className="text-lg mb-2 text-gray-800 leading-relaxed">
-            {t('hero.clinic_description', 'מרפאה לאבחון וטיפול של הפרעות קשב וריכוז')}
+            {t('hero.clinic_description', 'מרפאה לאבחון וטיפול של הפרעות קשב וריכוז')}{' '}
+            <RotatingWords words={typingItems} className="font-semibold text-green-800" />
           </p>
           <p className="text-lg mb-4 text-gray-800 leading-relaxed">
-            {t('hero.accurate_diagnosis', 'ב"קשב פלוס" תקבלו אבחון מדויק')}
-            <br />
-            {t('hero.personal_plan', 'ותוכנית טיפול אישית')}
+            {t('hero.accurate_diagnosis', 'ב"קשב פלוס" תקבלו אבחון מדויק')} {t('hero.personal_plan', 'ותוכנית טיפול אישית')}
           </p>
 
-          <div className="mb-6 flex flex-wrap justify-center sm:justify-end gap-2">
-            {typingItems.map((item, idx) => (
-              <span
-                key={item}
-                className="opacity-0 animate-typing inline-flex items-center"
-                style={{ animationDelay: `${idx * 400}ms`, animationFillMode: 'forwards' }}
-              >
-                <span className="text-lg font-semibold text-gray-800">{item}</span>
-                {idx < typingItems.length - 1 && <span className="text-green-800 font-bold mx-2">+</span>}
-              </span>
-            ))}
-          </div>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+            {t('hero.first_step', 'הצעד הראשון מתחיל כאן')}
+          </h2>
+          <p className="text-base mb-6 text-gray-600 leading-relaxed">
+            {t('hero.schedule_consultation', 'קבעו פגישת ייעוץ - בואו לגלות את הדרך להצלחה')}
+          </p>
 
           <div className="flex flex-wrap justify-center sm:justify-end gap-4">
             <a
               href="/contact"
               className="inline-flex items-center gap-2 rounded-full bg-green-800 hover:bg-green-700 text-white px-6 py-3 font-bold shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
             >
-              {t('hero.contact_us_now', 'התחל/י את האבחון עכשיו')}
+              {t('hero.start_now', 'התחל/י את האבחון עכשיו')}
               <IoLeafOutline className="h-4 w-4" aria-hidden="true" />
             </a>
 

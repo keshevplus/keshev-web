@@ -36,7 +36,7 @@ export default function AboutSection() {
     t('about.credential1', DEFAULT_CREDENTIALS[0]),
     t('about.credential2', DEFAULT_CREDENTIALS[1]),
     t('about.credential3', DEFAULT_CREDENTIALS[2]),
-  ];
+  ].filter((c) => c.trim() !== '');
 
   const values = [
     { title: t('about.value1_title', DEFAULT_VALUES[0].title), desc: t('about.value1_desc', DEFAULT_VALUES[0].desc) },
@@ -76,14 +76,16 @@ export default function AboutSection() {
               <p className="text-gray-700 leading-relaxed mb-6">
                 {t('about.doctor_desc', 'בעלת ניסיון עשיר באבחון של ילדים, מתבגרים ובוגרים. ליוותה מטופלים רבים במסע להגשמה אישית ותפקוד מיטבי.')}
               </p>
-              <ul className="space-y-3">
-                {credentials.map((c) => (
-                  <li key={c} className="flex items-center justify-end gap-3">
-                    <span className="text-gray-800">{c}</span>
-                    <IoCheckmarkCircleOutline className="w-5 h-5 text-green-800 shrink-0" />
-                  </li>
-                ))}
-              </ul>
+              {credentials.length > 0 && (
+                <ul className="space-y-3">
+                  {credentials.map((c) => (
+                    <li key={c} className="flex items-center justify-end gap-3">
+                      <span className="text-gray-800">{c}</span>
+                      <IoCheckmarkCircleOutline className="w-5 h-5 text-green-800 shrink-0" />
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
         </div>
