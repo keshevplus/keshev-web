@@ -153,13 +153,15 @@ export default function BookingModal({ open, onClose }: BookingModalProps) {
     try {
       const clientName = `${form.clientFirstName.trim()} ${form.clientLastName.trim()}`.trim();
       const childName = `${form.childFirstName.trim()} ${form.childLastName.trim()}`.trim();
-      const {
-        clientFirstName: _clientFirstName,
-        clientLastName: _clientLastName,
-        childFirstName: _childFirstName,
-        childLastName: _childLastName,
-        ...appointmentFields
-      } = form;
+      const appointmentFields = {
+        clientEmail: form.clientEmail,
+        clientPhone: form.clientPhone,
+        appointmentFor: form.appointmentFor,
+        date: form.date,
+        time: form.time,
+        type: form.type,
+        notes: form.notes,
+      };
       const response = await fetch(getAppointmentApiUrl('/api/appointments'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
