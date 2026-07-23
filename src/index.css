@@ -242,7 +242,11 @@ body::selection {
 
 .animate-word-cycle {
   animation: word-cycle 9s infinite;
-  animation-fill-mode: forwards;
+  /* "both" (not just "forwards"): without "backwards" too, a word with a
+     positive animation-delay renders in its default (fully visible) state
+     for the whole delay instead of the keyframe's opacity:0, so all three
+     stacked words show at once until their turn comes around. */
+  animation-fill-mode: both;
 }
 
 /* Hide scrollbar */
