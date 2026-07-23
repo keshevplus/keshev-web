@@ -8,10 +8,21 @@
   ],
   "rewrites": [
     { "source": "/api/:path*", "destination": "https://www.keshevplus.com/api/:path*" },
-    { "source": "/assets/:path*", "destination": "/assets/:path*" },
-    { "source": "/(.*)", "destination": "/" }
+    { "source": "/:path((?!assets/|manifest.json|favicon.ico|locales/|contact-details.json).*)", "destination": "/index.html" }
   ],
   "headers": [
+    {
+      "source": "/",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, max-age=0" }
+      ]
+    },
+    {
+      "source": "/index.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, max-age=0" }
+      ]
+    },
     {
       "source": "/(.*)",
       "headers": [
