@@ -10,12 +10,33 @@ interface ChatMessage {
 }
 
 interface VisitorInfo {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   phone: string;
 }
 
 const VISITOR_STORAGE_KEY = 'kp_visitor_info';
+
+const joinName = (firstName: string, lastName: string) => `${firstName.trim()} ${lastName.trim()}`.trim();
+
+const normalizeVisitorInfo = (value: Partial<VisitorInfo> & { name?: string }): VisitorInfo => {
+  if (value.firstName || value.lastName) {
+    return {
+      firstName: value.firstName || '',
+      lastName: value.lastName || '',
+      email: value.email || '',
+      phone: value.phone || '',
+    };
+  }
+  const [firstName = '', ...lastNameParts] = (value.name || '').trim().split(/\s+/).filter(Boolean);
+  return {
+    firstName,
+    lastName: lastNameParts.join(' '),
+    email: value.email || '',
+    phone: value.phone || '',
+  };
+};
 
 // Connects to the same /api/chat + /api/conversations backend keshevplus.com
 // uses, so conversations show up in the same admin dashboard regardless of
@@ -28,7 +49,7 @@ export default function ChatWidget() {
   const [loading, setLoading] = useState(false);
   const [conversationId, setConversationId] = useState<number | null>(null);
   const [visitorInfo, setVisitorInfo] = useState<VisitorInfo | null>(null);
-  const [infoForm, setInfoForm] = useState<VisitorInfo>({ name: '', email: '', phone: '' });
+  const [infoForm, setInfoForm] = useState<VisitorInfo>({ firstName: '', lastName: '', email: '', phone: '' });
   const [submittingInfo, setSubmittingInfo] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -36,8 +57,8 @@ export default function ChatWidget() {
     try {
       const stored = localStorage.getItem(VISITOR_STORAGE_KEY);
       if (stored) {
-        const parsed = JSON.parse(stored) as VisitorInfo;
-        if (parsed.name && parsed.email) {
+        const parsed = normalizeVisitorInfo(JSON.parse(stored) as Partial<VisitorInfo> & { name?: string });
+        if (parsed.firstName && parsed.lastName && parsed.email) {
           setInfoForm(parsed);
           setVisitorInfo(parsed);
         }
@@ -57,14 +78,15 @@ export default function ChatWidget() {
   }, [messages]);
 
   const startConversation = async () => {
-    if (!infoForm.name.trim() || !infoForm.email.trim()) return;
+    const visitorName = joinName(infoForm.firstName, infoForm.lastName);
+    if (!visitorName || !infoForm.firstName.trim() || !infoForm.lastName.trim() || !infoForm.email.trim()) return;
     setSubmittingInfo(true);
     try {
       const res = await fetch(`${API_URL}/api/conversations`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          visitorName: infoForm.name.trim(),
+          visitorName,
           visitorEmail: infoForm.email.trim(),
           visitorPhone: infoForm.phone.trim(),
         }),
@@ -96,7 +118,7 @@ export default function ChatWidget() {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            visitorName: visitorInfo.name.trim(),
+            visitorName: joinName(visitorInfo.firstName, visitorInfo.lastName),
             visitorEmail: visitorInfo.email.trim(),
             visitorPhone: visitorInfo.phone?.trim() || '',
           }),
@@ -201,13 +223,22 @@ export default function ChatWidget() {
         {!visitorInfo ? (
           <div className="flex-1 flex flex-col justify-center p-6 space-y-3">
             <p className="text-sm text-gray-500 text-center mb-2">{t('chat.before_start', 'לפני שנתחיל, אנא מלאו את הפרטים הבאים:')}</p>
-            <input
-              value={infoForm.name}
-              onChange={(e) => setInfoForm((f) => ({ ...f, name: e.target.value }))}
-              onKeyDown={(e) => handleKeyDown(e, startConversation)}
-              placeholder={t('chat.full_name_placeholder', 'שם מלא *')}
-              className="w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 text-right"
-            />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <input
+                value={infoForm.firstName}
+                onChange={(e) => setInfoForm((f) => ({ ...f, firstName: e.target.value }))}
+                onKeyDown={(e) => handleKeyDown(e, startConversation)}
+                placeholder={t('chat.first_name_placeholder', 'שם פרטי *')}
+                className="w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 text-right"
+              />
+              <input
+                value={infoForm.lastName}
+                onChange={(e) => setInfoForm((f) => ({ ...f, lastName: e.target.value }))}
+                onKeyDown={(e) => handleKeyDown(e, startConversation)}
+                placeholder={t('chat.last_name_placeholder', 'שם משפחה *')}
+                className="w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 text-right"
+              />
+            </div>
             <input
               value={infoForm.email}
               onChange={(e) => setInfoForm((f) => ({ ...f, email: e.target.value }))}
@@ -227,7 +258,7 @@ export default function ChatWidget() {
             <button
               type="button"
               onClick={startConversation}
-              disabled={!infoForm.name.trim() || !infoForm.email.trim() || submittingInfo}
+              disabled={!infoForm.firstName.trim() || !infoForm.lastName.trim() || !infoForm.email.trim() || submittingInfo}
               className="w-full min-h-[44px] rounded-lg bg-green-800 hover:bg-green-700 disabled:bg-gray-400 text-white font-bold"
             >
               {submittingInfo ? t('chat.starting', 'מתחיל...') : t('chat.start_chat', 'התחל שיחה')}
@@ -238,7 +269,7 @@ export default function ChatWidget() {
             <div className="flex-1 overflow-y-auto p-4 space-y-3">
               {messages.length === 0 && (
                 <p className="text-center text-gray-500 text-sm pt-8">
-                  {t('chat.welcome_message', 'שלום {name}! אני העוזר הווירטואלי של קשב פלוס. איך אוכל לעזור לכם?').replace('{name}', visitorInfo.name)}
+                  {t('chat.welcome_message', 'שלום {name}! אני העוזר הווירטואלי של קשב פלוס. איך אוכל לעזור לכם?').replace('{name}', joinName(visitorInfo.firstName, visitorInfo.lastName))}
                 </p>
               )}
               {messages.map((msg, i) => (

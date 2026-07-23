@@ -47,7 +47,16 @@ function App() {
   return (
     <Provider store={store}>
       <ScrollToTop />
-      <ToastContainer position="top-center" />
+      <ToastContainer
+        position="bottom-right"
+        newestOnTop
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored"
+        toastClassName="kp-toast"
+        className="kp-toast-container"
+      />
       <ErrorBoundary>
         <div id="main-container" className="flex flex-col min-h-screen scrollbar overflow">
           <DevModeBanner />

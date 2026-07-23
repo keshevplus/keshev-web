@@ -23,6 +23,8 @@ function getQuestionnaireApiUrl(path: string) {
   return import.meta.env.DEV ? `${API_URL}${normalizedPath}` : normalizedPath;
 }
 
+const joinName = (firstName: string, lastName: string) => `${firstName.trim()} ${lastName.trim()}`.trim();
+
 export default function Questionnaire() {
   const { type: rawType } = useParams<{ type: string }>();
   const type = (rawType || 'parent') as QuestionnaireType;
@@ -83,8 +85,11 @@ export default function Questionnaire() {
 
   const validateRegistration = (): boolean => {
     const newErrors: Record<string, string> = {};
-    if (!respondent.respondentName.trim()) {
-      newErrors.respondentName = isHe ? 'שם מלא הוא שדה חובה' : 'Full name is required';
+    if (!respondent.respondentFirstName.trim()) {
+      newErrors.respondentFirstName = isHe ? 'שם פרטי הוא שדה חובה' : 'First name is required';
+    }
+    if (!respondent.respondentLastName.trim()) {
+      newErrors.respondentLastName = isHe ? 'שם משפחה הוא שדה חובה' : 'Last name is required';
     }
     if (!respondent.respondentEmail.trim() || !/\S+@\S+\.\S+/.test(respondent.respondentEmail)) {
       newErrors.respondentEmail = isHe ? 'כתובת אימייל תקינה נדרשת' : 'Valid email is required';
@@ -93,8 +98,11 @@ export default function Questionnaire() {
       newErrors.respondentPhone = isHe ? 'מספר טלפון תקין נדרש' : 'Valid phone number is required';
     }
     if (config.requiresChildInfo) {
-      if (!respondent.childName.trim()) {
-        newErrors.childName = isHe ? 'שם הילד/ה הוא שדה חובה' : "Child's name is required";
+      if (!respondent.childFirstName.trim()) {
+        newErrors.childFirstName = isHe ? 'שם פרטי של הילד/ה הוא שדה חובה' : "Child's first name is required";
+      }
+      if (!respondent.childLastName.trim()) {
+        newErrors.childLastName = isHe ? 'שם משפחה של הילד/ה הוא שדה חובה' : "Child's last name is required";
       }
       if (!respondent.childAge.trim() || isNaN(Number(respondent.childAge)) || Number(respondent.childAge) < 1) {
         newErrors.childAge = isHe ? 'גיל תקין נדרש' : 'Valid age is required';
@@ -158,12 +166,14 @@ export default function Questionnaire() {
     setSubmitting(true);
     try {
       const scores = calculateScores(type, answers);
+      const respondentName = joinName(respondent.respondentFirstName, respondent.respondentLastName);
+      const childName = joinName(respondent.childFirstName, respondent.childLastName);
       const payload = {
         type,
-        respondentName: respondent.respondentName,
+        respondentName,
         respondentEmail: respondent.respondentEmail,
         respondentPhone: respondent.respondentPhone,
-        childName: config.requiresChildInfo ? respondent.childName : null,
+        childName: config.requiresChildInfo ? childName : null,
         childAge: config.requiresChildInfo && respondent.childAge ? parseInt(respondent.childAge, 10) : null,
         childGender: config.requiresChildInfo ? respondent.childGender || null : null,
         relationship: config.requiresChildInfo ? respondent.relationship || null : null,
@@ -380,7 +390,7 @@ export default function Questionnaire() {
               {step === 'success' && (
                 <QuestionnaireSuccessStep
                   isHe={isHe}
-                  respondentName={respondent.respondentName}
+                  respondentName={joinName(respondent.respondentFirstName, respondent.respondentLastName)}
                   respondentEmail={respondent.respondentEmail}
                   BackArrow={BackArrow}
                 />

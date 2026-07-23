@@ -32,15 +32,17 @@ export default function BookingModal({ open, onClose }: BookingModalProps) {
   const inputAlign = isRTL ? 'text-right' : 'text-left';
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState('');
   const [availability, setAvailability] = useState<AppointmentAvailability | null>(null);
   const [availabilityLoading, setAvailabilityLoading] = useState(false);
   const [form, setForm] = useState({
-    clientName: '',
+    clientFirstName: '',
+    clientLastName: '',
     clientEmail: '',
     clientPhone: '',
     appointmentFor: 'self' as AppointmentFor,
     childName: '',
+    childFirstName: '',
+    childLastName: '',
     childAge: '' as number | '',
     date: '',
     time: '',
@@ -110,10 +112,9 @@ export default function BookingModal({ open, onClose }: BookingModalProps) {
 
   const resetForm = () => {
     setSubmitted(false);
-    setSubmitError('');
     setForm({
-      clientName: '', clientEmail: '', clientPhone: '', appointmentFor: 'self',
-      childName: '', childAge: '', date: '', time: '', type: 'consultation', notes: '',
+      clientFirstName: '', clientLastName: '', clientEmail: '', clientPhone: '', appointmentFor: 'self',
+      childName: '', childFirstName: '', childLastName: '', childAge: '', date: '', time: '', type: 'consultation', notes: '',
     });
   };
 
@@ -124,39 +125,48 @@ export default function BookingModal({ open, onClose }: BookingModalProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitError('');
     const validationErrors = [
-      !form.clientName.trim() && t('booking.full_name', 'שם מלא'),
+      !form.clientFirstName.trim() && t('booking.first_name', 'שם פרטי'),
+      !form.clientLastName.trim() && t('booking.last_name', 'שם משפחה'),
       !form.clientEmail.trim() && t('booking.email', 'דוא"ל'),
       !form.clientPhone.trim() && t('booking.phone', 'טלפון'),
       !form.date && t('booking.date', 'תאריך'),
       !form.time && t('booking.time', 'שעה'),
-      form.appointmentFor === 'child' && !form.childName.trim() && t('appt_for.child_name', 'שם הילד/ה'),
+      form.appointmentFor === 'child' && !form.childFirstName.trim() && t('appt_for.child_first_name', 'שם פרטי של הילד/ה'),
+      form.appointmentFor === 'child' && !form.childLastName.trim() && t('appt_for.child_last_name', 'שם משפחה של הילד/ה'),
       form.appointmentFor === 'child' && form.childAge === '' && t('appt_for.child_age', 'גיל הילד/ה'),
     ].filter(Boolean);
 
     if (validationErrors.length > 0) {
       const message = `${t('booking.fill_required_fields', 'אנא מלאו את כל השדות הנדרשים')}: ${validationErrors.join(', ')}`;
-      setSubmitError(message);
       toast.error(message);
       return;
     }
 
     if (form.appointmentFor === 'child' && Number(form.childAge) < MIN_CHILD_AGE) {
       const message = t('appt_for.min_age_error', 'הגיל המינימלי הוא 6');
-      setSubmitError(message);
       toast.error(message);
       return;
     }
 
     setSubmitting(true);
     try {
+      const clientName = `${form.clientFirstName.trim()} ${form.clientLastName.trim()}`.trim();
+      const childName = `${form.childFirstName.trim()} ${form.childLastName.trim()}`.trim();
+      const {
+        clientFirstName: _clientFirstName,
+        clientLastName: _clientLastName,
+        childFirstName: _childFirstName,
+        childLastName: _childLastName,
+        ...appointmentFields
+      } = form;
       const response = await fetch(getAppointmentApiUrl('/api/appointments'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...form,
-          childName: form.appointmentFor === 'child' ? form.childName.trim() : null,
+          ...appointmentFields,
+          clientName,
+          childName: form.appointmentFor === 'child' ? childName : null,
           childAge: form.appointmentFor === 'child' ? form.childAge : null,
         }),
       });
@@ -167,7 +177,6 @@ export default function BookingModal({ open, onClose }: BookingModalProps) {
       toast.success(t('booking.booked_toast_title', 'הפגישה נקבעה!'));
     } catch (err) {
       const message = getAppointmentSubmitError(err, isHe) || t('booking.submit_failed', 'קביעת הפגישה נכשלה. נסו שוב.');
-      setSubmitError(message);
       toast.error(message);
     } finally {
       setSubmitting(false);
@@ -211,24 +220,31 @@ export default function BookingModal({ open, onClose }: BookingModalProps) {
           <div className="px-6 py-5">
             <p className="text-sm text-gray-500 mb-4">{t('booking.modal_intro', 'מלאו את הפרטים ונחזור אליכם לאישור הפגישה. שדות עם * הם חובה.')}</p>
 
-            {submitError && (
-              <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm font-medium text-red-800" role="alert">
-                {submitError}
-              </div>
-            )}
-
             <form onSubmit={handleSubmit} noValidate className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-gray-800">{t('booking.full_name', 'שם מלא')} *</label>
+                  <label className="text-sm font-medium text-gray-800">{t('booking.first_name', 'שם פרטי')} *</label>
                   <input
-                    value={form.clientName}
-                    onChange={(e) => setForm((f) => ({ ...f, clientName: e.target.value }))}
-                    placeholder={t('booking.full_name_placeholder', 'הכניסו את שמכם')}
+                    value={form.clientFirstName}
+                    onChange={(e) => setForm((f) => ({ ...f, clientFirstName: e.target.value }))}
+                    placeholder={t('booking.first_name_placeholder', 'הכניסו שם פרטי')}
                     required
                     className={`w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 ${inputAlign}`}
                   />
                 </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-gray-800">{t('booking.last_name', 'שם משפחה')} *</label>
+                  <input
+                    value={form.clientLastName}
+                    onChange={(e) => setForm((f) => ({ ...f, clientLastName: e.target.value }))}
+                    placeholder={t('booking.last_name_placeholder', 'הכניסו שם משפחה')}
+                    required
+                    className={`w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 ${inputAlign}`}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <label className="text-sm font-medium text-gray-800">{t('booking.phone', 'טלפון')} *</label>
                   <input
@@ -261,7 +277,14 @@ export default function BookingModal({ open, onClose }: BookingModalProps) {
                     <button
                       key={value}
                       type="button"
-                      onClick={() => setForm((f) => ({ ...f, appointmentFor: value, childName: value === 'self' ? '' : f.childName, childAge: value === 'self' ? '' : f.childAge }))}
+                      onClick={() => setForm((f) => ({
+                        ...f,
+                        appointmentFor: value,
+                        childName: value === 'self' ? '' : f.childName,
+                        childFirstName: value === 'self' ? '' : f.childFirstName,
+                        childLastName: value === 'self' ? '' : f.childLastName,
+                        childAge: value === 'self' ? '' : f.childAge,
+                      }))}
                       className={`h-10 rounded-md text-sm font-medium transition-colors ${form.appointmentFor === value ? 'bg-white text-green-800 shadow-sm' : 'text-gray-600'}`}
                     >
                       {value === 'self' ? t('appt_for.me', 'עבורי') : t('appt_for.child', 'עבור הילד/ה')}
@@ -271,16 +294,30 @@ export default function BookingModal({ open, onClose }: BookingModalProps) {
               </div>
 
               {form.appointmentFor === 'child' && (
-                <div className="grid grid-cols-1 sm:grid-cols-[1fr_120px] gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="space-y-1.5">
-                    <label className="text-sm font-medium text-gray-800">{t('appt_for.child_name', 'שם הילד/ה')} *</label>
+                    <label className="text-sm font-medium text-gray-800">{t('appt_for.child_first_name', 'שם פרטי של הילד/ה')} *</label>
                     <input
-                      value={form.childName}
-                      onChange={(e) => setForm((f) => ({ ...f, childName: e.target.value }))}
+                      value={form.childFirstName}
+                      onChange={(e) => setForm((f) => ({ ...f, childFirstName: e.target.value }))}
                       required
                       className={`w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 ${inputAlign}`}
                     />
                   </div>
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-medium text-gray-800">{t('appt_for.child_last_name', 'שם משפחה של הילד/ה')} *</label>
+                    <input
+                      value={form.childLastName}
+                      onChange={(e) => setForm((f) => ({ ...f, childLastName: e.target.value }))}
+                      required
+                      className={`w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 ${inputAlign}`}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {form.appointmentFor === 'child' && (
+                <div className="grid grid-cols-1 sm:grid-cols-[120px_1fr] gap-3">
                   <div className="space-y-1.5">
                     <label className="text-sm font-medium text-gray-800">{t('appt_for.child_age', 'גיל הילד/ה')} *</label>
                     <input

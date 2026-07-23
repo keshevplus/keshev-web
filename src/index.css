@@ -279,3 +279,21 @@ body::selection {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+.kp-toast-container {
+  z-index: 2147483647 !important;
+  inset-inline-end: 1rem !important;
+  bottom: 1rem !important;
+}
+
+.kp-toast {
+  direction: rtl;
+  border-radius: 0.75rem !important;
+  font-weight: 700;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35) !important;
+}
+
+.Toastify__toast--error {
+  background: #b91c1c !important;
+  color: #ffffff !important;
+}

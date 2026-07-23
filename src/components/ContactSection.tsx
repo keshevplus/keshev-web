@@ -11,7 +11,8 @@ import GoogleMap from './GoogleMap';
 
 function buildFormSchema(t: (key: string, fallback: string) => string) {
   return z.object({
-    name: z.string().min(2, t('contact.validation_name_min', 'השם חייב להכיל לפחות 2 תווים')),
+    firstName: z.string().min(2, t('contact.validation_first_name_min', 'השם הפרטי חייב להכיל לפחות 2 תווים')),
+    lastName: z.string().min(2, t('contact.validation_last_name_min', 'שם המשפחה חייב להכיל לפחות 2 תווים')),
     email: z.string().email(t('contact.validation_email_invalid', 'אנא הכנס כתובת דוא"ל חוקית')),
     phone: z
       .string()
@@ -49,7 +50,10 @@ export default function ContactSection() {
       const response = await fetch(`${API_URL}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          name: `${data.firstName.trim()} ${data.lastName.trim()}`.trim(),
+        }),
       });
 
       if (!response.ok) {
@@ -70,7 +74,8 @@ export default function ContactSection() {
   };
 
   const fields: { name: keyof FormValues; label: string; type?: string }[] = [
-    { name: 'name', label: t('contact.full_name', 'שם מלא') },
+    { name: 'firstName', label: t('contact.first_name', 'שם פרטי') },
+    { name: 'lastName', label: t('contact.last_name', 'שם משפחה') },
     { name: 'email', label: t('contact.email_placeholder', 'דוא"ל'), type: 'email' },
     { name: 'phone', label: t('contact.phone_placeholder', 'מספר טלפון'), type: 'tel' },
     { name: 'subject', label: t('contact.topic_label', 'נושא') },

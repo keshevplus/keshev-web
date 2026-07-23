@@ -38,18 +38,34 @@ export default function QuestionnaireRegisterStep({
           </div>
 
           <div className="space-y-3">
-            <div>
-              <label htmlFor="respondentName" className="block text-sm font-medium text-gray-700 mb-1">
-                {isHe ? 'שם מלא *' : 'Full Name *'}
-              </label>
-              <input
-                id="respondentName"
-                value={respondent.respondentName}
-                onChange={(e) => setRespondent((p) => ({ ...p, respondentName: e.target.value }))}
-                placeholder={isHe ? 'הכניסו את שמכם המלא' : 'Enter your full name'}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-800/40"
-              />
-              {errors.respondentName && <p className="text-red-600 text-xs mt-1">{errors.respondentName}</p>}
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div>
+                <label htmlFor="respondentFirstName" className="block text-sm font-medium text-gray-700 mb-1">
+                  {isHe ? 'שם פרטי *' : 'First Name *'}
+                </label>
+                <input
+                  id="respondentFirstName"
+                  value={respondent.respondentFirstName}
+                  onChange={(e) => setRespondent((p) => ({ ...p, respondentFirstName: e.target.value }))}
+                  placeholder={isHe ? 'שם פרטי' : 'First name'}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-800/40"
+                />
+                {errors.respondentFirstName && <p className="text-red-600 text-xs mt-1">{errors.respondentFirstName}</p>}
+              </div>
+
+              <div>
+                <label htmlFor="respondentLastName" className="block text-sm font-medium text-gray-700 mb-1">
+                  {isHe ? 'שם משפחה *' : 'Last Name *'}
+                </label>
+                <input
+                  id="respondentLastName"
+                  value={respondent.respondentLastName}
+                  onChange={(e) => setRespondent((p) => ({ ...p, respondentLastName: e.target.value }))}
+                  placeholder={isHe ? 'שם משפחה' : 'Last name'}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-800/40"
+                />
+                {errors.respondentLastName && <p className="text-red-600 text-xs mt-1">{errors.respondentLastName}</p>}
+              </div>
             </div>
 
             <div>
@@ -91,18 +107,34 @@ export default function QuestionnaireRegisterStep({
                 </h3>
               </div>
               <div className="space-y-3">
-                <div>
-                  <label htmlFor="childName" className="block text-sm font-medium text-gray-700 mb-1">
-                    {isHe ? 'שם הילד/ה *' : "Child's Name *"}
-                  </label>
-                  <input
-                    id="childName"
-                    value={respondent.childName}
-                    onChange={(e) => setRespondent((p) => ({ ...p, childName: e.target.value }))}
-                    placeholder={isHe ? 'שם מלא של הילד/ה' : "Child's full name"}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-800/40"
-                  />
-                  {errors.childName && <p className="text-red-600 text-xs mt-1">{errors.childName}</p>}
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="childFirstName" className="block text-sm font-medium text-gray-700 mb-1">
+                      {isHe ? 'שם פרטי של הילד/ה *' : "Child's First Name *"}
+                    </label>
+                    <input
+                      id="childFirstName"
+                      value={respondent.childFirstName}
+                      onChange={(e) => setRespondent((p) => ({ ...p, childFirstName: e.target.value }))}
+                      placeholder={isHe ? 'שם פרטי' : 'First name'}
+                      className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-800/40"
+                    />
+                    {errors.childFirstName && <p className="text-red-600 text-xs mt-1">{errors.childFirstName}</p>}
+                  </div>
+
+                  <div>
+                    <label htmlFor="childLastName" className="block text-sm font-medium text-gray-700 mb-1">
+                      {isHe ? 'שם משפחה של הילד/ה *' : "Child's Last Name *"}
+                    </label>
+                    <input
+                      id="childLastName"
+                      value={respondent.childLastName}
+                      onChange={(e) => setRespondent((p) => ({ ...p, childLastName: e.target.value }))}
+                      placeholder={isHe ? 'שם משפחה' : 'Last name'}
+                      className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-800/40"
+                    />
+                    {errors.childLastName && <p className="text-red-600 text-xs mt-1">{errors.childLastName}</p>}
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
