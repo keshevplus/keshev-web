@@ -4,9 +4,10 @@ const STORAGE_KEY = 'kp_theme';
 
 function getInitialDark(): boolean {
   try {
+    // Default to light regardless of OS preference - dark mode is opt-in
+    // only, via the toggle, not automatic based on the visitor's system.
     const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) return stored === 'dark';
-    return window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
+    return stored === 'dark';
   } catch {
     return false;
   }
