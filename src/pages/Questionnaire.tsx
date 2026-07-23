@@ -122,6 +122,19 @@ export default function Questionnaire() {
 
   const handleAnswer = (questionId: string, value: number) => {
     setAnswers((prev) => ({ ...prev, [questionId]: value }));
+
+    window.setTimeout(() => {
+      if (questionId !== currentQuestion?.question.id) {
+        return;
+      }
+
+      if (currentQuestionIndex < totalQuestions - 1) {
+        setCurrentQuestionIndex((p) => Math.min(p + 1, totalQuestions - 1));
+        return;
+      }
+
+      setStep('review');
+    }, 180);
   };
 
   const goNext = () => {

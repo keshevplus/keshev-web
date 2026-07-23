@@ -127,12 +127,12 @@ const Navbar: React.FC = () => {
   return (
     <>
     <nav
-      className={`sticky top-0 z-[50] transition-shadow duration-300 rtl ${isScrolled ? 'shadow-md bg-white/95 backdrop-blur-lg' : 'bg-white/70 backdrop-blur-sm'
+      className={`sticky top-0 z-[9990] transition-shadow duration-300 rtl ${isScrolled ? 'shadow-md bg-white/95 backdrop-blur-lg' : 'bg-white/70 backdrop-blur-sm'
         }`}
     >
 
       <div className="relative w-full">
-        <div className="w-full max-w-7xl mx-auto px-3 xl:px-4 flex items-center justify-between gap-2 relative bg-white/70 backdrop-blur-sm">
+        <div className="w-full max-w-7xl mx-auto px-3 xl:px-4 flex min-h-16 lg:min-h-20 items-center justify-between gap-2 relative bg-white/70 backdrop-blur-sm">
           <Link
             to="/"
             onClick={handleNavClick('/')}
@@ -143,7 +143,7 @@ const Navbar: React.FC = () => {
               <img
                 src="/assets/images/logo.png"
                 alt="קשב"
-                className="object-contain w-32 xl:w-40 transition-all duration-700 hover:opacity-80"
+                className="object-contain w-24 sm:w-32 xl:w-40 transition-all duration-700 hover:opacity-80"
               />
             </div>
           </Link>
@@ -173,10 +173,13 @@ const Navbar: React.FC = () => {
               <IoCalendarOutline className="w-4 h-4 shrink-0" />
               {t('nav.book_now', 'קביעת תור')}
             </button>
-            {/* Desktop-only controls: language + theme, kept off the tighter mobile/tablet bar */}
             <div className="hidden lg:flex items-center gap-1">
               <LanguageSwitcher />
               <ThemeToggle />
+            </div>
+            <div className="flex lg:hidden items-center gap-0.5">
+              <LanguageSwitcher className="text-green-800 hover:bg-green-800/10" />
+              <ThemeToggle className="text-green-800 hover:bg-green-800/10" />
             </div>
             {/* Phone icon */}
             <div className="hidden md:flex items-center justify-center h-12">
@@ -196,8 +199,9 @@ const Navbar: React.FC = () => {
             </div>
             {/* Hamburger menu button */}
             <button
-              className="lg:hidden text-black h-12 flex items-center justify-center shrink-0"
+              className="lg:hidden text-black w-10 h-10 flex items-center justify-center shrink-0 rounded-full hover:bg-green-800/10"
               onClick={() => dispatch(setIsMenuOpen(!isMenuOpen))}
+              aria-label={isMenuOpen ? t('nav.close_menu', 'סגור תפריט') : t('nav.open_menu', 'פתח תפריט')}
             >
               {isMenuOpen ? <IoClose size={24} /> : <IoMenu size={24} />}
             </button>
@@ -212,7 +216,7 @@ const Navbar: React.FC = () => {
           navbar's small box instead of the whole screen). */}
       <div
         className={`lg:hidden fixed inset-0 transition-all duration-300 ${isMenuOpen
-          ? 'opacity-100 z-[100] block'
+          ? 'opacity-100 z-[10000] block'
           : 'hidden'
           }`}
       >

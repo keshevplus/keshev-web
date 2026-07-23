@@ -39,8 +39,7 @@ export default function StickySectionTitle() {
 
   return (
     <div
-      className="fixed left-0 right-0 z-[9985] pointer-events-none overflow-hidden"
-      style={{ top: NAV_HEIGHT }}
+      className="fixed left-0 right-0 top-16 lg:top-20 z-[9985] pointer-events-none overflow-hidden"
     >
       <div
         className="bg-gradient-to-b from-green-800 to-green-950 w-full transition-transform duration-200 ease-in-out"
