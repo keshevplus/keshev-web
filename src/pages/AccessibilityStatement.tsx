@@ -16,7 +16,7 @@ const DEFAULT_MENU_ITEMS = JSON.stringify(['הגדלת והקטנת טקסטים
 export default function AccessibilityPage() {
     const { t } = useCmsTranslations();
     const phone = t('contact.phone', '055-27-399-27');
-    const email = t('contact.email', 'dr@keshevplus.co.il');
+    const email = t('contact.email', 'office@keshevplus.co.il');
     const whatsapp = '972552739927';
     const adaptations = parseJsonList(t('a11y_statement.adaptations_items', DEFAULT_ADAPTATIONS));
     const menuItems = parseJsonList(t('a11y_statement.menu_items', DEFAULT_MENU_ITEMS));
@@ -27,7 +27,9 @@ export default function AccessibilityPage() {
 
             <div className="accessibility-statement container mx-auto px-4 py-8 bg-gray-50" dir="rtl">
                 <h2 className="text-4xl font-bold text-center mb-8 text-green-700">{t('a11y_statement.title', 'הצהרת נגישות')}</h2>
-                <p className="text-lg mb-6 leading-relaxed" dangerouslySetInnerHTML={{ __html: t('a11y_statement.commitment_text', 'אנו ב-<strong>קשב פלוס</strong> מחויבים להנגשת האתר שלנו לכלל האוכלוסייה, כולל אנשים עם מוגבלויות. אנו רואים חשיבות רבה במתן שירות שוויוני לכלל המשתמשים, ולכן השקענו מאמצים רבים בהנגשת האתר בהתאם לתקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), התשע"ג-2013.') }} />
+                <p className="text-lg mb-6 leading-relaxed">
+                    {t('a11y_statement.commitment_text', 'אנו בקשב פלוס מחויבים להנגשת האתר שלנו לכלל האוכלוסייה, כולל אנשים עם מוגבלויות. אנו רואים חשיבות רבה במתן שירות שוויוני לכלל המשתמשים, ולכן השקענו מאמצים רבים בהנגשת האתר בהתאם לתקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), התשע"ג-2013.')}
+                </p>
 
                 <h2 className="text-2xl font-semibold mb-4 text-green-600">{t('a11y_statement.adaptations_heading', 'התאמות נגישות שבוצעו באתר')}</h2>
                 <ul className="list-disc pl-5 mb-6 text-lg leading-relaxed">

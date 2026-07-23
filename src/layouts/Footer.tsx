@@ -6,7 +6,7 @@ export default function Footer() {
   const navItems = useNavItems();
   const { t } = useCmsTranslations();
   const phone = t('contact.phone', '055-27-399-27');
-  const email = t('contact.email', 'dr@keshevplus.co.il');
+  const email = t('contact.email', 'office@keshevplus.co.il');
 
   return (
     <footer className="bg-gray-800 text-white py-6">

@@ -198,7 +198,7 @@ export default function Questionnaire() {
               <IoClose className="h-5 w-5" />
             </Link>
             <Link to="/" className="shrink-0">
-              <img src="/assets/images/logoSVG.svg" alt={isHe ? 'קשב פלוס' : 'Keshev Plus'} className="h-9 w-auto" />
+              <img src="/assets/images/logo.png" alt={isHe ? 'קשב פלוס' : 'Keshev Plus'} className="h-9 w-auto" />
             </Link>
             <div className="min-w-0 flex-1">
               <h1 className="truncate text-base font-bold text-gray-900 sm:text-lg">{title}</h1>

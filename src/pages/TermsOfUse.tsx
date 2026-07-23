@@ -46,7 +46,7 @@ export default function TermsOfUse() {
         <h2 className="text-2xl font-semibold mb-4 text-green-600">יצירת קשר</h2>
         <ul className="list-disc pl-5 mb-6 text-lg leading-relaxed">
           <li>טלפון: <Link to="tel:0552739927" className="text-blue-500 hover:underline">055-27-399-27</Link></li>
-          <li>דוא&quot;ל: <Link to="mailto:dr@keshevplus.co.il" className="text-blue-500 hover:underline">dr@keshevplus.co.il</Link></li>
+          <li>דוא&quot;ל: <Link to="mailto:office@keshevplus.co.il" className="text-blue-500 hover:underline">office@keshevplus.co.il</Link></li>
         </ul>
 
         <h2 className="text-2xl font-semibold mb-4 text-green-600">תאריך עדכון אחרון</h2>

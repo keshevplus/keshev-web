@@ -25,7 +25,7 @@ export default function HeroSection() {
 
           <CmsImage
             slot="logo"
-            fallback="/assets/images/logoSVG.svg"
+            fallback="/assets/images/logo.png"
             alt="קשב פלוס"
             className="h-40 sm:h-24 md:h-28 w-auto ms-0 me-auto mb-4"
             loading="eager"

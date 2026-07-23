@@ -131,7 +131,7 @@ const Navbar: React.FC = () => {
         }`}
     >
 
-      <div className="relative w-full bg-[url('/assets/images/bgvideogif.gif')">
+      <div className="relative w-full">
         <div className="w-full max-w-7xl mx-auto px-3 xl:px-4 flex items-center justify-between gap-2 relative bg-white/70 backdrop-blur-sm">
           <Link
             to="/"
@@ -141,7 +141,7 @@ const Navbar: React.FC = () => {
           >
             <div className="flex items-center ">
               <img
-                src="/assets/images/logoSVG.svg"
+                src="/assets/images/logo.png"
                 alt="קשב"
                 className="object-contain w-32 xl:w-40 transition-all duration-700 hover:opacity-80"
               />

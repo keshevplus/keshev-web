@@ -39,7 +39,7 @@ const contactPageData: BasePageContent = {
 // Contact info data
 export const contactInfo: ContactInfo = {
   address: 'יגאל אלון 94, מגדלי אלון 1, קומה 12, משרד 1202, תל אביב - יפו',
-  email: 'dr@keshevplus.co.il',
+  email: 'office@keshevplus.co.il',
   phone: '055-27-399-27',
   whatsapp: '972552739927',
   location: {

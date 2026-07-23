@@ -30,6 +30,8 @@ export default function ContactSection() {
   const { t } = useCmsTranslations();
   const sectionId = useSectionId('contact');
   const address = t('contact.address_line1', 'יגאל אלון 94, תל אביב');
+  const email = t('contact.email', 'office@keshevplus.co.il');
+  const phone = t('contact.phone', '055-27-399-27');
 
   const {
     register,
@@ -51,7 +53,7 @@ export default function ContactSection() {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({}));
         toast.dismiss(loadingToastId);
         toast.error(errorData.message || t('contact.toast_error', 'אירעה שגיאה בשליחת הטופס.'));
         return;
@@ -154,15 +156,15 @@ export default function ContactSection() {
 
               <div className="flex flex-col items-center gap-1">
                 <p className="font-bold text-xl text-gray-900">{t('contact.email_label', 'דוא"ל:')}</p>
-                <a href="mailto:dr@keshevplus.co.il" className="text-green-700 font-bold text-lg hover:underline">
-                  dr@keshevplus.co.il
+                <a href={`mailto:${email}`} className="text-green-700 font-bold text-lg hover:underline">
+                  {email}
                 </a>
               </div>
 
               <div className="flex flex-col items-center gap-1">
                 <p className="font-bold text-xl text-gray-900">{t('contact.phone_label', 'טלפון')}</p>
-                <a href="tel:055-27-399-27" className="text-gray-900 font-bold text-lg hover:underline">
-                  055-27-399-27
+                <a href={`tel:${phone.replace(/-/g, '')}`} className="text-gray-900 font-bold text-lg hover:underline">
+                  {phone}
                 </a>
               </div>
             </div>

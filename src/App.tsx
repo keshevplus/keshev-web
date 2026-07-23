@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 
@@ -17,11 +18,30 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ErrorBoundary from './components/ErrorBoundary';
 import { SpeedInsights } from '@vercel/speed-insights/react';
-import AccessibilityWidget from './components/acc/AccessibilityWidget';
 import CookiesBanner from './components/CookiesBanner';
-import WhatsAppButton from './components/WhatsAppButton';
 import StickySectionTitle from './components/StickySectionTitle';
-import ChatWidget from './components/ChatWidget';
+import DevModeBanner from './components/DevModeBanner';
+import { useWidgetSettings } from './hooks/useWidgetSettings';
+
+const AccessibilityWidget = lazy(() => import('./components/acc/AccessibilityWidget'));
+const WhatsAppButton = lazy(() => import('./components/WhatsAppButton'));
+const ChatWidget = lazy(() => import('./components/ChatWidget'));
+
+function SiteWidgets() {
+  const widgets = useWidgetSettings();
+
+  return (
+    <>
+      <CookiesBanner />
+      <StickySectionTitle />
+      <Suspense fallback={null}>
+        {widgets.showAccessibility && <AccessibilityWidget />}
+        {widgets.showWhatsApp && <WhatsAppButton />}
+        {widgets.showChat && <ChatWidget />}
+      </Suspense>
+    </>
+  );
+}
 
 function App() {
   return (
@@ -30,11 +50,8 @@ function App() {
       <ToastContainer position="top-center" />
       <ErrorBoundary>
         <div id="main-container" className="flex flex-col min-h-screen scrollbar overflow">
-          <AccessibilityWidget />
-          <CookiesBanner />
-          <WhatsAppButton />
-          <StickySectionTitle />
-          <ChatWidget />
+          <DevModeBanner />
+          <SiteWidgets />
           <Routes>
             {/* Secret SPA Route */}
             <Route path="/spa" element={<SpaPage />} />

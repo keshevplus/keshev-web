@@ -99,6 +99,28 @@ body::selection {
   background: none; /* Disable selection highlight */
 }
 
+.dev-mode-banner {
+  position: sticky;
+  top: 0;
+  z-index: 10000;
+  width: 100%;
+  background: #f97316;
+  color: #111827;
+  border-bottom: 2px solid #c2410c;
+  padding: 0.55rem 1rem;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1.35;
+  box-shadow: 0 2px 8px rgba(124, 45, 18, 0.22);
+}
+
+.dark .dev-mode-banner {
+  background: #fb923c;
+  color: #111827;
+  border-bottom-color: #ea580c;
+}
+
 .container {
   max-width: 1280px;
   margin: 0 auto;
