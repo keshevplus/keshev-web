@@ -8,11 +8,10 @@ function getNavHeight() {
   return nav?.getBoundingClientRect().height || FALLBACK_NAV_HEIGHT;
 }
 
-// Full-width sticky bar showing the current section's title, so it stays
-// visible even after its own green banner scrolls out of view - shown at
-// every breakpoint (keshevplus.com's own version is mobile-only; this one
-// isn't, per explicit request). Uses a CSS transition instead of
-// framer-motion since this stack doesn't include that dependency.
+// Full-width sticky bar showing the current section's title on mobile and
+// tablet, so it stays visible after its own green banner scrolls out of view.
+// Uses a CSS transition instead of framer-motion since this stack doesn't
+// include that dependency.
 export default function StickySectionTitle() {
   const [currentTitle, setCurrentTitle] = useState<string | null>(null);
   const [visible, setVisible] = useState(false);
@@ -50,7 +49,7 @@ export default function StickySectionTitle() {
 
   return (
     <div
-      className="fixed left-0 right-0 z-[9985] pointer-events-none overflow-hidden"
+      className="fixed left-0 right-0 z-[9985] pointer-events-none overflow-hidden lg:hidden"
       style={{ top: navHeight }}
     >
       <div
