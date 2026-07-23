@@ -1,6 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 
-const NAV_HEIGHT = 80;
+const FALLBACK_NAV_HEIGHT = 80;
+
+function getNavHeight() {
+  if (typeof document === 'undefined') return FALLBACK_NAV_HEIGHT;
+  const nav = document.querySelector<HTMLElement>('[data-site-navbar]');
+  return nav?.getBoundingClientRect().height || FALLBACK_NAV_HEIGHT;
+}
 
 // Full-width sticky bar showing the current section's title, so it stays
 // visible even after its own green banner scrolls out of view - shown at
@@ -10,17 +16,20 @@ const NAV_HEIGHT = 80;
 export default function StickySectionTitle() {
   const [currentTitle, setCurrentTitle] = useState<string | null>(null);
   const [visible, setVisible] = useState(false);
+  const [navHeight, setNavHeight] = useState(FALLBACK_NAV_HEIGHT);
   const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       rafRef.current = requestAnimationFrame(() => {
+        const currentNavHeight = getNavHeight();
+        setNavHeight(currentNavHeight);
         const headers = Array.from(document.querySelectorAll('[data-sticky-title]'));
         let current: string | null = null;
         for (const el of headers) {
           const rect = el.getBoundingClientRect();
-          if (rect.bottom < NAV_HEIGHT) {
+          if (rect.bottom < currentNavHeight) {
             current = el.getAttribute('data-sticky-title');
           }
         }
@@ -30,16 +39,19 @@ export default function StickySectionTitle() {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
     handleScroll();
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
 
   return (
     <div
-      className="fixed left-0 right-0 top-16 lg:top-20 z-[9985] pointer-events-none overflow-hidden"
+      className="fixed left-0 right-0 z-[9985] pointer-events-none overflow-hidden"
+      style={{ top: navHeight }}
     >
       <div
         className="bg-gradient-to-b from-green-800 to-green-950 w-full transition-transform duration-200 ease-in-out"

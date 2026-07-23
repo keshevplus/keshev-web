@@ -58,7 +58,7 @@ function App() {
         className="kp-toast-container"
       />
       <ErrorBoundary>
-        <div id="main-container" className="flex flex-col min-h-screen scrollbar overflow">
+        <div id="main-container" className="flex min-h-screen flex-col overflow-x-hidden">
           <DevModeBanner />
           <SiteWidgets />
           <Routes>

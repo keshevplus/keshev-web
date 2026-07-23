@@ -33,6 +33,12 @@ export function useNavItems() {
 
 const NAV_HEIGHT = 80;
 
+function getCurrentNavHeight() {
+  if (typeof document === 'undefined') return NAV_HEIGHT;
+  const nav = document.querySelector<HTMLElement>('[data-site-navbar]');
+  return nav?.getBoundingClientRect().height || NAV_HEIGHT;
+}
+
 const Navbar: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -61,7 +67,7 @@ const Navbar: React.FC = () => {
     }
     const el = document.getElementById(sectionIds[key]);
     if (!el) return;
-    const top = el.getBoundingClientRect().top + window.scrollY - NAV_HEIGHT;
+    const top = el.getBoundingClientRect().top + window.scrollY - getCurrentNavHeight();
     window.scrollTo({ top, behavior: 'smooth' });
   };
 
@@ -82,7 +88,7 @@ const Navbar: React.FC = () => {
       dispatch(setIsScrolled(scrollY > 100));
 
       if (!isHomePage) return;
-      const threshold = NAV_HEIGHT + window.scrollY;
+      const threshold = getCurrentNavHeight() + window.scrollY;
       let current: SectionKey = 'home';
       for (const key of Object.keys(sectionIds) as SectionKey[]) {
         const el = document.getElementById(sectionIds[key]);
@@ -127,6 +133,7 @@ const Navbar: React.FC = () => {
   return (
     <>
     <nav
+      data-site-navbar
       className={`sticky top-0 z-[9990] transition-shadow duration-300 rtl ${isScrolled ? 'shadow-md bg-white/95 backdrop-blur-lg' : 'bg-white/70 backdrop-blur-sm'
         }`}
     >

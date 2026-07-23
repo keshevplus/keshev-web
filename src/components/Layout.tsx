@@ -9,14 +9,14 @@ export default function Layout({ children }: { children: ReactNode }) {
             <main
                 className="
           mx-auto
-          flex 
-          touch-pan-x 
-          snap-x snap-mandatory 
-          scrollbar-hide
+          flex
+          w-full
+          flex-col
+          overflow-x-hidden
         "
             >
                 {Children.map(children, (child, idx) => (
-                    <section key={idx} className="snap-start flex-shrink-0 w-full">
+                    <section key={idx} className="w-full">
                         {child}
                     </section>
                 ))}
