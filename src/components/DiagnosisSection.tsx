@@ -1,4 +1,4 @@
-import {
+﻿import {
   IoChatbubblesOutline,
   IoDocumentTextOutline,
   IoDesktopOutline,
@@ -35,8 +35,8 @@ export default function DiagnosisSection() {
   return (
     <section id={sectionId} className="w-full bg-white rtl">
       <SectionHeader
-        title={t('diagnosis.title', 'תהליך האבחון והטיפול')}
-        subtitle={t('diagnosis.subtitle', 'תהליך אבחון הפרעת קשב מקצועי ואיכותי')}
+        title={t('diagnosis.title', 'תהליך ההערכה והטיפול')}
+        subtitle={t('diagnosis.subtitle', 'תהליך הערכת הפרעת קשב מקצועי ואיכותי')}
       />
       <div className="max-w-6xl mx-auto px-4 pt-8 md:pt-10 lg:pt-12 pb-10 md:pb-14">
         <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
@@ -66,3 +66,5 @@ export default function DiagnosisSection() {
     </section>
   );
 }
+
+

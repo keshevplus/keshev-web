@@ -12,7 +12,7 @@ import SectionHeader from './SectionHeader';
 const SERVICE_ICONS = [IoPulseOutline, IoMedicalOutline, IoDesktopOutline, IoClipboardOutline, IoPeopleOutline];
 
 const DEFAULT_SERVICES = [
-  { title: 'אבחון מקיף', desc: 'אבחון מותאם אישית באמצעות כלים מתקדמים, ראיונות קליניים ומבחנים ממוחשבים' },
+  { title: 'הערכה מקיפה', desc: 'הערכה מותאמת אישית באמצעות כלים מתקדמים, ראיונות קליניים ומבחנים ממוחשבים' },
   { title: 'התאמת טיפול תרופתי', desc: 'התאמת טיפול תרופתי אישי עם מעקב בטיחות מתמשך' },
   { title: 'מבחן MOXO ממוחשב', desc: 'הערכה אובייקטיבית של תפקודי הקשב והריכוז' },
   { title: 'ייעוץ ומעקב', desc: 'תמיכה מקצועית מתמשכת ומעקב אחר הטיפול' },
@@ -32,7 +32,7 @@ export default function ServicesSection() {
     <section id={sectionId} className="w-full bg-white rtl">
       <SectionHeader
         title={t('services.title', 'השירותים שלנו')}
-        subtitle={t('services.subtitle', 'אנו מציעים מגוון רחב של שירותים מקצועיים בתחום אבחון וטיפול בהפרעות קשב')}
+        subtitle={t('services.subtitle', 'אנו מציעים מגוון רחב של שירותים מקצועיים בתחום הערכה וטיפול בהפרעות קשב')}
       />
       <div className="max-w-6xl mx-auto px-4 pt-8 md:pt-10 lg:pt-12 pb-10 md:pb-14">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list">

@@ -1,12 +1,14 @@
+/* eslint-disable max-lines */
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { IoClose, IoCalendarOutline, IoTimeOutline, IoCheckmarkCircle } from 'react-icons/io5';
 import { toast } from 'react-toastify';
 import { useCmsTranslations } from '../hooks/useCmsTranslations';
-import { API_URL } from '../config/constants';
 import {
   APPOINTMENT_TIME_SLOTS,
   APPOINTMENT_TYPES,
   fetchAppointmentAvailability,
+  getAppointmentApiUrl,
   getAppointmentSubmitError,
   getLocalDateInputValue,
   type AppointmentAvailability,
@@ -23,8 +25,14 @@ const MIN_CHILD_AGE = 6;
 
 export default function BookingModal({ open, onClose }: BookingModalProps) {
   const { t } = useCmsTranslations();
+  const { i18n } = useTranslation();
+  const language = i18n.language || 'he';
+  const isHe = language === 'he';
+  const isRTL = ['he', 'ar', 'yi'].includes(language);
+  const inputAlign = isRTL ? 'text-right' : 'text-left';
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [availability, setAvailability] = useState<AppointmentAvailability | null>(null);
   const [availabilityLoading, setAvailabilityLoading] = useState(false);
   const [form, setForm] = useState({
@@ -102,6 +110,7 @@ export default function BookingModal({ open, onClose }: BookingModalProps) {
 
   const resetForm = () => {
     setSubmitted(false);
+    setSubmitError('');
     setForm({
       clientName: '', clientEmail: '', clientPhone: '', appointmentFor: 'self',
       childName: '', childAge: '', date: '', time: '', type: 'consultation', notes: '',
@@ -115,14 +124,34 @@ export default function BookingModal({ open, onClose }: BookingModalProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.clientName || !form.clientEmail || !form.clientPhone || !form.date || !form.time
-      || (form.appointmentFor === 'child' && (!form.childName.trim() || form.childAge === ''))) {
-      toast.error(t('booking.fill_required_fields', 'אנא מלאו את כל השדות הנדרשים'));
+    setSubmitError('');
+    const validationErrors = [
+      !form.clientName.trim() && t('booking.full_name', 'שם מלא'),
+      !form.clientEmail.trim() && t('booking.email', 'דוא"ל'),
+      !form.clientPhone.trim() && t('booking.phone', 'טלפון'),
+      !form.date && t('booking.date', 'תאריך'),
+      !form.time && t('booking.time', 'שעה'),
+      form.appointmentFor === 'child' && !form.childName.trim() && t('appt_for.child_name', 'שם הילד/ה'),
+      form.appointmentFor === 'child' && form.childAge === '' && t('appt_for.child_age', 'גיל הילד/ה'),
+    ].filter(Boolean);
+
+    if (validationErrors.length > 0) {
+      const message = `${t('booking.fill_required_fields', 'אנא מלאו את כל השדות הנדרשים')}: ${validationErrors.join(', ')}`;
+      setSubmitError(message);
+      toast.error(message);
       return;
     }
+
+    if (form.appointmentFor === 'child' && Number(form.childAge) < MIN_CHILD_AGE) {
+      const message = t('appt_for.min_age_error', 'הגיל המינימלי הוא 6');
+      setSubmitError(message);
+      toast.error(message);
+      return;
+    }
+
     setSubmitting(true);
     try {
-      const response = await fetch(`${API_URL}/api/appointments`, {
+      const response = await fetch(getAppointmentApiUrl('/api/appointments'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -137,7 +166,9 @@ export default function BookingModal({ open, onClose }: BookingModalProps) {
       setSubmitted(true);
       toast.success(t('booking.booked_toast_title', 'הפגישה נקבעה!'));
     } catch (err) {
-      toast.error(getAppointmentSubmitError(err, true) || t('booking.submit_failed', 'קביעת הפגישה נכשלה. נסו שוב.'));
+      const message = getAppointmentSubmitError(err, isHe) || t('booking.submit_failed', 'קביעת הפגישה נכשלה. נסו שוב.');
+      setSubmitError(message);
+      toast.error(message);
     } finally {
       setSubmitting(false);
     }
@@ -156,7 +187,7 @@ export default function BookingModal({ open, onClose }: BookingModalProps) {
     >
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
 
-      <div className="relative z-10 w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-xl border-2 border-green-800 bg-white shadow-2xl" dir="rtl">
+      <div className="relative z-10 w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-xl border-2 border-green-800 bg-white shadow-2xl" dir={isRTL ? 'rtl' : 'ltr'}>
         <div className="sticky top-0 z-10 flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-200 bg-white rounded-t-xl">
           <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
             <IoCalendarOutline className="h-5 w-5 text-green-800" />
@@ -180,7 +211,13 @@ export default function BookingModal({ open, onClose }: BookingModalProps) {
           <div className="px-6 py-5">
             <p className="text-sm text-gray-500 mb-4">{t('booking.modal_intro', 'מלאו את הפרטים ונחזור אליכם לאישור הפגישה. שדות עם * הם חובה.')}</p>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            {submitError && (
+              <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm font-medium text-red-800" role="alert">
+                {submitError}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} noValidate className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <label className="text-sm font-medium text-gray-800">{t('booking.full_name', 'שם מלא')} *</label>
@@ -189,7 +226,7 @@ export default function BookingModal({ open, onClose }: BookingModalProps) {
                     onChange={(e) => setForm((f) => ({ ...f, clientName: e.target.value }))}
                     placeholder={t('booking.full_name_placeholder', 'הכניסו את שמכם')}
                     required
-                    className="w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 text-right"
+                    className={`w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 ${inputAlign}`}
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -200,7 +237,7 @@ export default function BookingModal({ open, onClose }: BookingModalProps) {
                     onChange={(e) => setForm((f) => ({ ...f, clientPhone: e.target.value }))}
                     placeholder={t('booking.phone_placeholder', 'מספר הטלפון שלכם')}
                     required
-                    className="w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 text-right"
+                    className={`w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 ${inputAlign}`}
                   />
                 </div>
               </div>
@@ -213,7 +250,7 @@ export default function BookingModal({ open, onClose }: BookingModalProps) {
                   onChange={(e) => setForm((f) => ({ ...f, clientEmail: e.target.value }))}
                   placeholder={t('booking.email_placeholder', 'כתובת הדוא"ל שלכם')}
                   required
-                  className="w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 text-right"
+                  className={`w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 ${inputAlign}`}
                 />
               </div>
 
@@ -241,7 +278,7 @@ export default function BookingModal({ open, onClose }: BookingModalProps) {
                       value={form.childName}
                       onChange={(e) => setForm((f) => ({ ...f, childName: e.target.value }))}
                       required
-                      className="w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 text-right"
+                      className={`w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 ${inputAlign}`}
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -253,7 +290,7 @@ export default function BookingModal({ open, onClose }: BookingModalProps) {
                       onChange={(e) => setForm((f) => ({ ...f, childAge: e.target.value === '' ? '' : Number(e.target.value) }))}
                       placeholder={t('appt_for.child_age_placeholder', '(מינימום 6)')}
                       required
-                      className={`w-full p-3 rounded-lg border text-right ${showMinAgeError ? 'border-red-700' : 'border-gray-300 focus:border-green-500'}`}
+                      className={`w-full p-3 rounded-lg border ${inputAlign} ${showMinAgeError ? 'border-red-700' : 'border-gray-300 focus:border-green-500'}`}
                     />
                     {showMinAgeError && (
                       <p className="text-xs text-red-700">{t('appt_for.min_age_error', 'הגיל המינימלי הוא 6')}</p>
@@ -267,10 +304,12 @@ export default function BookingModal({ open, onClose }: BookingModalProps) {
                 <select
                   value={form.type}
                   onChange={(e) => handleTypeChange(e.target.value)}
-                  className="w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 text-right"
+                  className={`w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 ${inputAlign}`}
                 >
                   {APPOINTMENT_TYPES.map((apptType) => (
-                    <option key={apptType.value} value={apptType.value}>{apptType.he}</option>
+                    <option key={apptType.value} value={apptType.value}>
+                      {t(apptType.translationKey, isHe ? apptType.he : apptType.en)}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -286,7 +325,7 @@ export default function BookingModal({ open, onClose }: BookingModalProps) {
                     min={today}
                     onChange={(e) => handleDateChange(e.target.value)}
                     required
-                    className="w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 text-right"
+                    className={`w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 ${inputAlign}`}
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -298,7 +337,7 @@ export default function BookingModal({ open, onClose }: BookingModalProps) {
                     onChange={(e) => setForm((f) => ({ ...f, time: e.target.value }))}
                     disabled={!form.date || availabilityLoading || availableTimes.length === 0}
                     required
-                    className="w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 text-right disabled:bg-gray-100"
+                    className={`w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 disabled:bg-gray-100 ${inputAlign}`}
                   >
                     <option value="">{availabilityLoading ? t('booking.checking_availability', 'בודק זמינות...') : t('booking.select_time', 'בחרו שעה')}</option>
                     {availableTimes.map((time) => (
@@ -318,7 +357,7 @@ export default function BookingModal({ open, onClose }: BookingModalProps) {
                   onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
                   placeholder={t('booking.notes_placeholder', 'מידע נוסף שתרצו לשתף...')}
                   rows={3}
-                  className="w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 text-right"
+                  className={`w-full p-3 rounded-lg border border-gray-300 focus:border-green-500 ${inputAlign}`}
                 />
               </div>
 

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, memo } from 'react';
+import { useState, useEffect, useRef, memo, useCallback } from 'react';
 import HeroSection from '../components/HeroSection';
 import AboutSection from '../components/AboutSection';
 import ServicesSection from '../components/ServicesSection';
@@ -18,7 +18,7 @@ function usePages() {
         { id: 'about', component: AboutSection, title: t('nav.about', 'אודותינו') },
         { id: 'services', component: ServicesSection, title: t('nav.services', 'שירותינו') },
         { id: 'adhd', component: ADHDInfoSection, title: t('nav.adhd', 'מהי ADHD') },
-        { id: 'diagnosis', component: DiagnosisSection, title: t('nav.diagnosis', 'תהליך האבחון') },
+        { id: 'diagnosis', component: DiagnosisSection, title: t('nav.process', 'תהליך ההערכה') },
         { id: 'forms', component: QuestionnairesSection, title: t('nav.questionnaires', 'שאלונים') },
         { id: 'contact', component: ContactSection, title: t('nav.contact', 'יצירת קשר') },
     ];
@@ -55,6 +55,25 @@ export default function SpaPage() {
         };
     }, [dispatch]);
 
+    // Improved navigation with scroll reset and smoother transitions
+    const navigateToPage = useCallback((index: number) => {
+        if (isTransitioning) return;
+
+        setIsTransitioning(true);
+        setCurrentPageIndex(index);
+
+        // Reset scroll position on page change
+        window.scrollTo(0, 0);
+
+        // Reset isScrolled when changing pages
+        dispatch(setIsScrolled(false));
+
+        // Reset transition state after animation completes
+        setTimeout(() => {
+            setIsTransitioning(false);
+        }, 500);
+    }, [dispatch, isTransitioning]);
+
     // Handle touch events for swiping with better performance
     const handleTouchStart = (e: React.TouchEvent) => {
         setTouchStartX(e.touches[0].clientX);
@@ -86,26 +105,7 @@ export default function SpaPage() {
 
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [currentPageIndex]);
-
-    // Improved navigation with scroll reset and smoother transitions
-    const navigateToPage = (index: number) => {
-        if (isTransitioning) return;
-
-        setIsTransitioning(true);
-        setCurrentPageIndex(index);
-
-        // Reset scroll position on page change
-        window.scrollTo(0, 0);
-
-        // Reset isScrolled when changing pages
-        dispatch(setIsScrolled(false));
-
-        // Reset transition state after animation completes
-        setTimeout(() => {
-            setIsTransitioning(false);
-        }, 500);
-    };
+    }, [currentPageIndex, navigateToPage, pages.length]);
 
     // Generate navigation dots with improved accessibility
     const renderNavigationDots = () => {

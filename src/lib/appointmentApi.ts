@@ -11,11 +11,11 @@ export const APPOINTMENT_TIME_SLOTS = [
 ] as const;
 
 export const APPOINTMENT_TYPES = [
-  { value: 'consultation', he: 'ייעוץ ראשוני', en: 'Initial Consultation' },
-  { value: 'diagnosis', he: 'אבחון', en: 'Diagnosis' },
-  { value: 'followup', he: 'מעקב', en: 'Follow-up' },
-  { value: 'treatment', he: 'טיפול', en: 'Treatment' },
-  { value: 'moxo', he: 'בדיקת MOXO', en: 'MOXO Test' },
+  { value: 'consultation', translationKey: 'booking.type_consultation', he: 'ייעוץ ראשוני', en: 'Initial Consultation' },
+  { value: 'diagnosis', translationKey: 'booking.type_diagnosis', he: 'הערכה', en: 'Assessment' },
+  { value: 'followup', translationKey: 'booking.type_followup', he: 'מעקב', en: 'Follow-up' },
+  { value: 'treatment', translationKey: 'booking.type_treatment', he: 'טיפול', en: 'Treatment' },
+  { value: 'moxo', translationKey: 'booking.type_moxo', he: 'בדיקת MOXO', en: 'MOXO Test' },
 ] as const;
 
 export function getLocalDateInputValue(date = new Date()) {
@@ -33,6 +33,11 @@ export interface AppointmentAvailability {
   timeSlots: string[];
 }
 
+export function getAppointmentApiUrl(path: string) {
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  return import.meta.env.DEV ? `${API_URL}${normalizedPath}` : normalizedPath;
+}
+
 // Hits the same backend keshevplus.com uses, so bookings land in the same
 // admin dashboard/database regardless of which site the visitor came from.
 export async function fetchAppointmentAvailability(date?: string, type?: string): Promise<AppointmentAvailability> {
@@ -40,13 +45,19 @@ export async function fetchAppointmentAvailability(date?: string, type?: string)
   if (date) params.set('date', date);
   if (type) params.set('type', type);
   const query = params.toString();
-  const response = await fetch(`${API_URL}/api/appointments/availability${query ? `?${query}` : ''}`);
+  const response = await fetch(getAppointmentApiUrl(`/api/appointments/availability${query ? `?${query}` : ''}`));
   if (!response.ok) throw new Error(await response.text());
   return response.json();
 }
 
 export function getAppointmentSubmitError(error: unknown, isHe: boolean) {
   const raw = error instanceof Error ? error.message : String(error || '');
+  const trimmed = raw.trim();
+  if (trimmed.startsWith('<!DOCTYPE') || trimmed.startsWith('<html')) {
+    return isHe
+      ? 'מערכת קביעת הפגישות לא זמינה כרגע. נסו שוב בעוד רגע או צרו קשר בטלפון.'
+      : 'The appointment system is currently unavailable. Try again shortly or contact us by phone.';
+  }
   const jsonStart = raw.indexOf('{');
   if (jsonStart >= 0) {
     try {
@@ -57,6 +68,11 @@ export function getAppointmentSubmitError(error: unknown, isHe: boolean) {
     } catch {
       // Fall through to the raw message.
     }
+  }
+  if (!raw || raw === 'Failed to fetch') {
+    return isHe
+      ? 'לא הצלחנו להתחבר למערכת קביעת הפגישות. בדקו את החיבור ונסו שוב.'
+      : 'Could not connect to the appointment system. Check your connection and try again.';
   }
   return raw;
 }

@@ -8,7 +8,7 @@ import { fetchTranslations } from '../services/cms';
 // pages never show blank/missing text. Follows the active i18next language
 // so the language switcher actually changes page content, not just chrome.
 export function useCmsTranslations() {
-  const { i18n } = useTranslation();
+  const { i18n, t: i18nextT } = useTranslation();
   const language = i18n.language || 'he';
   const { data } = useQuery({
     queryKey: ['cms-translations', language],
@@ -19,6 +19,8 @@ export function useCmsTranslations() {
     // An admin-saved empty string is a deliberate "leave this blank", not
     // "not customized yet" - only fall back when the key was never saved.
     if (data && key in data) return data[key];
+    const local = i18nextT(key, { defaultValue: '' });
+    if (local) return local;
     return fallback;
   };
 

@@ -1,4 +1,4 @@
-export interface MenuItem {
+﻿export interface MenuItem {
   label: string
   path: string
 }
@@ -8,7 +8,8 @@ export const menuData: MenuItem[] = [
   { label: 'אודותנו',     path: '/about' },
   { label: 'שירותינו',  path: '/services' },
   { label: 'מהי ADHD',      path: '/adhd' },
-  { label: 'תהליך האבחון', path: '/diagnosis' },
+  { label: 'תהליך ההערכה', path: '/diagnosis' },
   { label: 'שאלונים',     path: '/forms' },
   { label: 'יצירת קשר',   path: '/contact' },
 ]
+

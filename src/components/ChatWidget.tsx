@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { useEffect, useRef, useState } from 'react';
 import { IoChatbubbleEllipsesOutline, IoClose, IoSend, IoPersonCircleOutline } from 'react-icons/io5';
 import { useCmsTranslations } from '../hooks/useCmsTranslations';
@@ -121,9 +122,13 @@ export default function ChatWidget() {
       let assistantContent = '';
       setMessages((prev) => [...prev, { role: 'assistant', content: '' }]);
 
-      while (true) {
+      let streamOpen = true;
+      while (streamOpen) {
         const { done, value } = await reader.read();
-        if (done) break;
+        if (done) {
+          streamOpen = false;
+          break;
+        }
         buffer += decoder.decode(value, { stream: true });
         const lines = buffer.split('\n');
         buffer = lines.pop() || '';

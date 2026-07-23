@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+﻿import { useTranslation } from 'react-i18next';
 
 // Section keys map to a stable route path (for SEO/direct links) and a
 // per-language in-page anchor id (what actually becomes the DOM element's
@@ -23,7 +23,7 @@ const ANCHOR_SLUGS: Record<SectionKey, Record<string, string>> = {
   about: { he: 'אודות', en: 'about' },
   services: { he: 'שירותים', en: 'services' },
   adhd: { he: 'מהי-adhd', en: 'adhd' },
-  diagnosis: { he: 'תהליך-האבחון', en: 'diagnosis' },
+  diagnosis: { he: 'תהליך-ההערכה', en: 'diagnosis' },
   questionnaires: { he: 'שאלונים', en: 'questionnaires' },
   contact: { he: 'יצירת-קשר', en: 'contact' },
 };
@@ -52,3 +52,4 @@ export function sectionKeyForPath(pathname: string): SectionKey | null {
   const entry = (Object.entries(ROUTE_BY_SECTION) as [SectionKey, string][]).find(([, path]) => path === pathname);
   return entry ? entry[0] : null;
 }
+

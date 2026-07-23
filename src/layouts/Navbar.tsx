@@ -25,7 +25,7 @@ export function useNavItems() {
     { path: ROUTE_BY_SECTION.about, text: t('nav.about', 'אודותינו') },
     { path: ROUTE_BY_SECTION.services, text: t('nav.services', 'שירותינו') },
     { path: ROUTE_BY_SECTION.adhd, text: t('nav.adhd', 'מהי ADHD') },
-    { path: ROUTE_BY_SECTION.diagnosis, text: t('nav.diagnosis', 'תהליך האבחון') },
+    { path: ROUTE_BY_SECTION.diagnosis, text: t('nav.process', 'תהליך ההערכה') },
     { path: ROUTE_BY_SECTION.questionnaires, text: t('nav.questionnaires', 'שאלונים') },
     { path: ROUTE_BY_SECTION.contact, text: t('nav.contact', 'יצירת קשר') },
   ];

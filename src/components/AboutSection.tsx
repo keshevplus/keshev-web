@@ -1,4 +1,4 @@
-import {
+﻿import {
   IoHeartOutline,
   IoRibbonOutline,
   IoShieldCheckmarkOutline,
@@ -14,12 +14,12 @@ const VALUE_ICONS = [IoHeartOutline, IoRibbonOutline, IoShieldCheckmarkOutline];
 const DEFAULT_CREDENTIALS = [
   'בוגרת לימודי רפואה, אוניברסיטת בולוניה, איטליה',
   'התמחות ברפואת משפחה, קופת חולים מאוחדת',
-  'הסמכה לאבחון וטיפול בהפרעות קשב וריכוז, משרד הבריאות',
+  'הסמכה להערכה וטיפול בהפרעות קשב וריכוז, משרד הבריאות',
 ];
 
 const DEFAULT_VALUES = [
-  { title: 'אכפתיות', desc: 'ליווי אישי וחם לאורך כל תהליך האבחון והטיפול' },
-  { title: 'מקצועיות', desc: 'שימוש בכלי אבחון מתקדמים ומבוססי מחקר' },
+  { title: 'אכפתיות', desc: 'ליווי אישי וחם לאורך כל תהליך ההערכה והטיפול' },
+  { title: 'מקצועיות', desc: 'שימוש בכלי הערכה מתקדמים ומבוססי מחקר' },
   { title: 'אמינות', desc: 'שקיפות מלאה והתאמת הטיפול לצרכי המטופל' },
 ];
 
@@ -48,7 +48,7 @@ export default function AboutSection() {
     <section id={sectionId} className="w-full bg-gray-50 rtl">
       <SectionHeader
         title={t('about.title', 'אודות המרפאה')}
-        subtitle={t('about.subtitle', 'ליווי מקצועי ואישי באבחון וטיפול בהפרעות קשב וריכוז')}
+        subtitle={t('about.subtitle', 'ליווי מקצועי ואישי בהערכה וטיפול בהפרעות קשב וריכוז')}
       />
 
       <div className="max-w-6xl mx-auto px-4 py-10 md:py-14">
@@ -74,7 +74,7 @@ export default function AboutSection() {
                 {t('about.doctor_title', 'רופאה מומחית')}
               </p>
               <p className="text-gray-700 leading-relaxed mb-6">
-                {t('about.doctor_desc', 'בעלת ניסיון עשיר באבחון של ילדים, מתבגרים ובוגרים. ליוותה מטופלים רבים במסע להגשמה אישית ותפקוד מיטבי.')}
+                {t('about.doctor_desc', 'בעלת ניסיון עשיר בהערכה של ילדים, מתבגרים ובוגרים. ליוותה מטופלים רבים במסע להגשמה אישית ותפקוד מיטבי.')}
               </p>
               {credentials.length > 0 && (
                 <ul className="space-y-3">
@@ -91,7 +91,7 @@ export default function AboutSection() {
         </div>
 
         <p className="text-center text-lg md:text-xl text-gray-600 italic max-w-3xl mx-auto mb-12">
-          &quot;{t('about.mission', 'לתת לכל מטופל את הכלים להצלחה, באבחון מדויק ותוכנית טיפול המותאמת אישית')}&quot;
+          &quot;{t('about.mission', 'לתת לכל מטופל את הכלים להצלחה, בהערכה מדויקת ותוכנית טיפול המותאמת אישית')}&quot;
         </p>
 
         <div className="grid sm:grid-cols-3 gap-6">
@@ -115,3 +115,5 @@ export default function AboutSection() {
     </section>
   );
 }
+
+

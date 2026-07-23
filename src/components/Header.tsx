@@ -1,9 +1,20 @@
 import { Link, useLocation } from 'react-router-dom';
 import { PhoneIcon } from './ui/PhoneIcon';
+import { useCmsTranslations } from '../hooks/useCmsTranslations';
 
 export default function Header() {
   const location = useLocation();
+  const { t } = useCmsTranslations();
   const isHomePage = location.pathname === '/';
+  const navItems = [
+    { path: '/', label: t('nav.home', 'בית') },
+    { path: '/about', label: t('nav.about', 'אודותינו') },
+    { path: '/services', label: t('nav.services', 'שירותינו') },
+    { path: '/diagnosis', label: t('nav.process', 'תהליך ההערכה') },
+    { path: '/adhd', label: t('nav.adhd', 'מהי ADHD') },
+    { path: '/forms', label: t('nav.questionnaires', 'שאלונים') },
+    { path: '/contact', label: t('nav.contact', 'יצירת קשר') },
+  ];
 
   return (
     <header className="bg-white shadow-md rtl">
@@ -23,15 +34,7 @@ export default function Header() {
         <nav className="hidden md:block">
           <ul className="flex space-x-8">
             {
-              [
-                { path: '/', label: 'בית' },
-                { path: '/about', label: 'אודותנו' },
-                { path: '/services', label: 'שירותינו' },
-                { path: '/diagnosis', label: 'תהליך אבחון' },
-                { path: '/adhd', label: 'מהי ADHD' },
-                { path: '/forms', label: 'שאלונים' },
-                { path: '/contact', label: 'יצירת קשר' },
-              ].map((item) => (
+              navItems.map((item) => (
                 <li key={item.path}>
                   <Link
                     to={item.path}

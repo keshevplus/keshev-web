@@ -1,6 +1,7 @@
 // Translation service to fetch translations from the API
 
 import axios from 'axios';
+import { API_URL } from '../config/constants';
 
 // Define the Language interface
 export interface Language {
@@ -18,7 +19,7 @@ export interface TranslationKey {
   translations: Record<string, string>;
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') || '';
+const API_BASE_URL = API_URL;
 
 // Metadata for languages the platform's /api/settings/language endpoint may
 // report as enabled; it only returns codes, so display info is looked up here.
