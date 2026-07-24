@@ -1,4 +1,5 @@
 import type { BaseSyntheticEvent } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,7 +10,7 @@ import { API_URL } from '../config/constants';
 import SectionHeader from './SectionHeader';
 import GoogleMap from './GoogleMap';
 
-function buildFormSchema(t: (key: string, fallback: string) => string) {
+function buildFormSchema(t: (key: string, fallback: string) => string, requireMessage: boolean) {
   return z.object({
     firstName: z.string().min(2, t('contact.validation_first_name_min', 'השם הפרטי חייב להכיל לפחות 2 תווים')),
     lastName: z.string().min(2, t('contact.validation_last_name_min', 'שם המשפחה חייב להכיל לפחות 2 תווים')),
@@ -18,11 +19,20 @@ function buildFormSchema(t: (key: string, fallback: string) => string) {
       .string()
       .regex(/^0(5[^7]|[2-4]|[8-9]|7[0-9])[0-9]{7}$/, t('contact.validation_phone_invalid', 'מספר טלפון לא תקין')),
     subject: z.string().optional(),
-    message: z.string().min(2, t('contact.validation_message_min', 'ההודעה חייבת להכיל לפחות 2 תווים')),
+    message: requireMessage
+      ? z.string().trim().min(1, t('contact.validation_message_required', 'נא למלא הודעה'))
+      : z.string().optional().default(''),
   });
 }
 
-type FormValues = z.infer<ReturnType<typeof buildFormSchema>>;
+type FormValues = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  subject?: string;
+  message?: string;
+};
 
 // Holds the real, working contact form directly (rather than a preview card
 // linking to a separate /contact page) since every section route now
@@ -33,6 +43,18 @@ export default function ContactSection() {
   const address = t('contact.address_line1', 'יגאל אלון 94, תל אביב');
   const email = t('contact.email', 'office@keshevplus.co.il');
   const phone = t('contact.phone', '055-27-399-27');
+  const [requireMessage, setRequireMessage] = useState(false);
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/settings/contact-form`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data && typeof data.requireMessage === 'boolean') {
+          setRequireMessage(data.requireMessage);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const {
     register,
@@ -40,7 +62,7 @@ export default function ContactSection() {
     formState: { errors, isSubmitting },
     reset,
   } = useForm<FormValues>({
-    resolver: zodResolver(buildFormSchema(t)),
+    resolver: zodResolver(buildFormSchema(t, requireMessage)),
   });
 
   const onSubmit = async (data: FormValues, event: BaseSyntheticEvent | undefined) => {
@@ -115,7 +137,11 @@ export default function ContactSection() {
               ))}
             </div>
             <div className="relative mb-4">
+              <label htmlFor="contact-message" className="sr-only">
+                {t('contact.message', 'הודעה')}{requireMessage ? ' *' : ''}
+              </label>
               <textarea
+                id="contact-message"
                 {...register('message')}
                 rows={3}
                 placeholder={t('contact.message_placeholder', 'ספרו לנו במה נוכל לעזור...')}

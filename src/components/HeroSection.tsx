@@ -29,7 +29,7 @@ export default function HeroSection() {
   return (
     <section id={homeId} className="relative bg-white overflow-x-hidden" dir="rtl">
       <div className="container mx-auto px-4 sm:px-6 flex flex-col sm:flex-row gap-8 sm:gap-10 items-center justify-between pb-10 sm:pb-14">
-        <div className="flex flex-col w-full sm:w-[55%] order-2 sm:order-1 text-center sm:text-right animate-hero-fade-in-up">
+        <div className="flex flex-col w-full sm:w-[55%] order-2 sm:order-1 text-center animate-hero-fade-in-up">
           <h1 className="text-2xl sm:text-3xl font-bold text-green-800 mb-3">
             {t('hero.welcome_line1', 'ברוכים הבאים למרפאת')} {t('hero.welcome_line2', '"קשב פלוס"')}
           </h1>
@@ -64,7 +64,7 @@ export default function HeroSection() {
             {t('hero.schedule_consultation', 'קבעו פגישת ייעוץ - בואו לגלות את הדרך להצלחה')}
           </p>
 
-          <div className="flex flex-wrap justify-center sm:justify-end gap-4">
+          <div className="flex flex-wrap justify-center gap-4">
             <a
               href="/contact"
               className="inline-flex items-center gap-2 rounded-full bg-green-800 hover:bg-green-700 text-white px-6 py-3 font-bold shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"

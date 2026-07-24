@@ -300,15 +300,15 @@ body::selection {
 
 .hero-logo-image {
   display: block;
-  width: auto;
-  height: var(--hero-logo-height-mobile, 96px);
-  max-width: min(100%, var(--hero-logo-max-width-mobile, 245px));
+  width: min(92vw, var(--hero-logo-max-width-mobile, 326px));
+  height: auto;
+  max-height: var(--hero-logo-height-mobile, 128px);
   object-fit: contain;
 }
 
 @media (min-width: 640px) {
   .hero-logo-image {
-    height: var(--hero-logo-height-desktop, 112px);
-    max-width: min(100%, var(--hero-logo-max-width-desktop, 286px));
+    width: min(100%, var(--hero-logo-max-width-desktop, 459px));
+    max-height: var(--hero-logo-height-desktop, 180px);
   }
 }

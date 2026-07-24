@@ -46,8 +46,8 @@ export const DEFAULT_WIDGET_SETTINGS: WidgetSettings = {
 };
 
 export const DEFAULT_HERO_LAYOUT: HeroLayoutSettings = {
-  logoHeightMobile: 96,
-  logoHeightDesktop: 112,
+  logoHeightMobile: 128,
+  logoHeightDesktop: 180,
 };
 
 async function getJson<T>(path: string, fallback: T): Promise<T> {
