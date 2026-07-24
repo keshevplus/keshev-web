@@ -26,6 +26,11 @@ export interface WidgetSettings {
   showWhatsApp: boolean;
 }
 
+export interface HeroLayoutSettings {
+  logoHeightMobile: number;
+  logoHeightDesktop: number;
+}
+
 export const DEFAULT_HOME_SECTIONS: HomeSection[] = [
   { id: 'about', type: 'legacy:about', enabled: true, config: {} },
   { id: 'services', type: 'legacy:services', enabled: true, config: {} },
@@ -38,6 +43,11 @@ export const DEFAULT_WIDGET_SETTINGS: WidgetSettings = {
   showChat: true,
   showAccessibility: true,
   showWhatsApp: true,
+};
+
+export const DEFAULT_HERO_LAYOUT: HeroLayoutSettings = {
+  logoHeightMobile: 96,
+  logoHeightDesktop: 112,
 };
 
 async function getJson<T>(path: string, fallback: T): Promise<T> {
@@ -58,6 +68,9 @@ export const fetchHomeSections = (): Promise<HomeSection[]> =>
 
 export const fetchWidgetSettings = (): Promise<WidgetSettings> =>
   getJson('/api/settings/widgets', DEFAULT_WIDGET_SETTINGS);
+
+export const fetchHeroLayout = (): Promise<HeroLayoutSettings> =>
+  getJson('/api/settings/hero-layout', DEFAULT_HERO_LAYOUT);
 
 // Admin-managed image, served by slot name (e.g. "hero.image"). Callers
 // should render an <img onError> fallback since a slot may not be filled in.

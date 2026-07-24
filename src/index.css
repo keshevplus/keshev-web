@@ -297,3 +297,18 @@ body::selection {
   background: #b91c1c !important;
   color: #ffffff !important;
 }
+
+.hero-logo-image {
+  display: block;
+  width: auto;
+  height: var(--hero-logo-height-mobile, 96px);
+  max-width: min(100%, var(--hero-logo-max-width-mobile, 245px));
+  object-fit: contain;
+}
+
+@media (min-width: 640px) {
+  .hero-logo-image {
+    height: var(--hero-logo-height-desktop, 112px);
+    max-width: min(100%, var(--hero-logo-max-width-desktop, 286px));
+  }
+}

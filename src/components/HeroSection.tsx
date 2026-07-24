@@ -1,6 +1,9 @@
-﻿import { IoLeafOutline } from 'react-icons/io5';
+import { type CSSProperties } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { IoLeafOutline } from 'react-icons/io5';
 import { useCmsTranslations } from '../hooks/useCmsTranslations';
 import { useSectionId } from '../lib/sectionSlugs';
+import { DEFAULT_HERO_LAYOUT, fetchHeroLayout } from '../services/cms';
 import CmsImage from './CmsImage';
 import RotatingWords from './ui/RotatingWords';
 
@@ -8,6 +11,14 @@ export default function HeroSection() {
   const { t } = useCmsTranslations();
   const homeId = useSectionId('home');
   const aboutId = useSectionId('about');
+  const { data: heroLayout = DEFAULT_HERO_LAYOUT } = useQuery({
+    queryKey: ['hero-layout'],
+    queryFn: fetchHeroLayout,
+    placeholderData: DEFAULT_HERO_LAYOUT,
+  });
+
+  const logoWidthMobile = Math.max(180, Math.round(heroLayout.logoHeightMobile * 2.55));
+  const logoWidthDesktop = Math.max(240, Math.round(heroLayout.logoHeightDesktop * 2.55));
 
   const typingItems = [
     t('hero.typing_children', 'בילדים'),
@@ -27,8 +38,15 @@ export default function HeroSection() {
             slot="logo"
             fallback="/assets/images/logo.png"
             alt="קשב פלוס"
-            className="h-40 sm:h-24 md:h-28 w-auto ms-0 me-auto mb-4"
+            className="hero-logo-image mx-auto mb-4"
+            style={{
+              '--hero-logo-height-mobile': `${heroLayout.logoHeightMobile}px`,
+              '--hero-logo-height-desktop': `${heroLayout.logoHeightDesktop}px`,
+              '--hero-logo-max-width-mobile': `${logoWidthMobile}px`,
+              '--hero-logo-max-width-desktop': `${logoWidthDesktop}px`,
+            } as CSSProperties}
             loading="eager"
+            fetchPriority="high"
           />
 
           <p className="text-lg mb-2 text-gray-800 leading-relaxed">
@@ -79,5 +97,3 @@ export default function HeroSection() {
     </section>
   );
 }
-
-
